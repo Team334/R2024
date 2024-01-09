@@ -1,0 +1,34 @@
+{
+    "HALProvider": {
+      "Other Devices": {
+        "window": {
+          "visible": false
+        }
+      }
+    },
+    "NTProvider": {
+      "types": {
+        "/FMSInfo": "FMSInfo"
+      }
+    },
+    "NetworkTables Info": {
+      "Server": {
+        "Subscribers": {
+          "open": true
+        },
+        "open": true
+      }
+    },
+    "Plot": {
+      "Plot <0>": {
+        "plots": [
+          {
+            "height": 332
+          }
+        ],
+        "window": {
+          "visible": false
+        }
+      }
+    }
+  }
