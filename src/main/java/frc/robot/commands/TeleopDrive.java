@@ -8,12 +8,12 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.RobotCtrl;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
-public class TeleopDrive extends CommandBase {
+public class TeleopDrive extends Command {
   private final SwerveDriveSubsystem _swerveDrive;
 
   private final DoubleSupplier _xSpeed;

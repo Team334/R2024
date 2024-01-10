@@ -1,10 +1,9 @@
 package frc.robot.utils;
 
-
-import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.sensors.AbsoluteSensorRange;
-import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix6.configs.MagnetSensorConfigs;
+import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
@@ -16,21 +15,24 @@ import frc.robot.Constants;
 
 public class SwerveModule {
     private final TalonFX _driveMotor;
-    public final TalonFX _rotationMotor;
+    private final TalonFX _rotationMotor;
 
     private final PIDController _driveController;
     private final PIDController _rotationController;
 
-    private final CANCoder _encoder;
+    private final CANcoder _encoder;
 
     public SwerveModule(int driveMotorId, int rotationMotorId, int encoderId, double angleOffset, double driveP, double rotationP) {
         _driveMotor = new TalonFX(driveMotorId);
         _rotationMotor = new TalonFX(rotationMotorId);
 
-        _encoder = new CANCoder(encoderId);
+        // new stuff because CTRE update
+        MagnetSensorConfigs encoderConfig = new MagnetSensorConfigs();
+        encoderConfig.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
+        encoderConfig.MagnetOffset = angleOffset;
 
-        _encoder.configMagnetOffset(angleOffset, Constants.CAN.CAN_TIMEOUT);
-        _encoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180, Constants.CAN.CAN_TIMEOUT);
+        _encoder = new CANcoder(encoderId);
+        _encoder.getConfigurator().apply(encoderConfig);
 
         _driveController = new PIDController(driveP, 0, 0);
 
@@ -42,15 +44,15 @@ public class SwerveModule {
     }
 
     public void drive(double speed) {
-        _driveMotor.set(TalonFXControlMode.PercentOutput, speed);
+        _driveMotor.set(speed);
     }
 
     public void rotate(double speed) {
-        _rotationMotor.set(TalonFXControlMode.PercentOutput, speed);
+        _rotationMotor.set(speed);
     }
 
     public double getDriveVelocity() {
-        double talon_rps = (_driveMotor.getSelectedSensorVelocity() / 2048) * 10;
+        double talon_rps = (_driveMotor.getRotorVelocity().getValueAsDouble() / 2048) * 10; // ctre update
         double wheel_circumference = 2 * Math.PI * Constants.Physical.SWERVE_DRIVE_WHEEL_RADIUS;
 
         // return the speed of the drive wheel itself (talon rps times gear ratio time wheel size) in m/s
@@ -63,7 +65,7 @@ public class SwerveModule {
     }
 
     public double getAngle() {
-        return _encoder.getAbsolutePosition();
+        return _encoder.getAbsolutePosition().getValueAsDouble() * 2 * 180; // ctre update
     }
 
     public void setState(SwerveModuleState state) {

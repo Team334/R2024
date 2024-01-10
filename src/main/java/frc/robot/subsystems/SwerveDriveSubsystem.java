@@ -71,9 +71,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
    * Sets the state of each SwerveModule through an array.
    */
   public void setStates(SwerveModuleState[] states) {
-    SmartDashboard.putNumber("Front Left Deg", states[0].angle.getDegrees());
-    SmartDashboard.putNumber("Front Left Rot Volt", _frontLeft._rotationMotor.getMotorOutputVoltage());
-
     _frontLeft.setState(states[0]);
     _frontRight.setState(states[1]);
     _backRight.setState(states[2]);
