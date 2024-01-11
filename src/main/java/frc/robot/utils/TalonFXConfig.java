@@ -3,7 +3,6 @@ package frc.robot.utils;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
-
 import frc.robot.Constants;
 
 /**
@@ -18,6 +17,8 @@ public class TalonFXConfig {
      */
     public static void configureFalcon(TalonFX falcon) {
         TalonFXConfiguration config = new TalonFXConfiguration();
+
+        falcon.getConfigurator().DefaultTimeoutSeconds = Constants.CAN.CAN_TIMEOUT;
 
         // TODO: ⬇ GOTTA FIX THIS FOR THE NEW CTRE UPDATE ⬇⬇
 
