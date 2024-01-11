@@ -19,7 +19,7 @@ public class TalonFXConfig {
     public static void configureFalcon(TalonFX falcon) {
         TalonFXConfiguration config = new TalonFXConfiguration();
 
-        // ⬇⬇ GOTTA FIX THIS FOR THE NEW CTRE UPDATE ⬇⬇
+        // TODO: ⬇ GOTTA FIX THIS FOR THE NEW CTRE UPDATE ⬇⬇
 
         // falcon.configFactoryDefault(Constants.CAN.CAN_TIMEOUT);
         // config.configNeutralDeadband(0.01, Constants.CAN.CAN_TIMEOUT);
