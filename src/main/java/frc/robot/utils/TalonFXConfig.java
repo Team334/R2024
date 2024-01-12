@@ -3,6 +3,9 @@ package frc.robot.utils;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+
 import frc.robot.Constants;
 
 /**
@@ -19,18 +22,14 @@ public class TalonFXConfig {
         TalonFXConfiguration config = new TalonFXConfiguration();
 
         falcon.getConfigurator().DefaultTimeoutSeconds = Constants.CAN.CAN_TIMEOUT;
+        falcon.getConfigurator().apply(config); // FACTORY RESET
+        
 
-        // TODO: ⬇ GOTTA FIX THIS FOR THE NEW CTRE UPDATE ⬇⬇
-
-        // falcon.configFactoryDefault(Constants.CAN.CAN_TIMEOUT);
-        // config.configNeutralDeadband(0.01, Constants.CAN.CAN_TIMEOUT);
-        // config.setNeutralMode(NeutralMode.Brake);
-
-        // config.configForwardSoftLimitEnable(false);
-        // config.configReverseSoftLimitEnable(false);
-
-        // config.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-        // config.(0);
+        config.MotorOutput.DutyCycleNeutralDeadband = 0.01;
+        config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        config.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
+        config.SoftwareLimitSwitch.ReverseSoftLimitEnable = false;
+        config.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
     }
 
     /**
