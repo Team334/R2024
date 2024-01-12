@@ -29,7 +29,7 @@ public class SwerveModule {
         // new stuff because CTRE update
         MagnetSensorConfigs encoderConfig = new MagnetSensorConfigs();
         encoderConfig.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
-        encoderConfig.MagnetOffset = angleOffset;
+        encoderConfig.MagnetOffset = (angleOffset / 180) / 2;
 
         _encoder = new CANcoder(encoderId);
         _encoder.getConfigurator().apply(encoderConfig);
@@ -65,8 +65,8 @@ public class SwerveModule {
     }
 
     public double getAngle() {
-        // return _encoder.getAbsolutePosition().getValueAsDouble() * 2 * 180; // ctre update
-        return _encoder.getPosition().getValueAsDouble() * 2 * 180; // this might work
+        return _encoder.getAbsolutePosition().getValueAsDouble() * 2 * 180; // ctre update
+        // return _encoder.getPosition().getValueAsDouble() * 2 * 180; // this might work
     }
 
     public void setState(SwerveModuleState state) {

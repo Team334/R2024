@@ -48,15 +48,22 @@ public class TeleopDrive extends Command {
     double rotationSpeed = RobotCtrl.ApplyDeadband(_rotationSpeed.getAsDouble(), 0.1);
 
     // IMPORTANT: X-axis and Y-axis are flipped (based on wpilib coord system)
-    ChassisSpeeds chassisSpeeds = new ChassisSpeeds(
-      xSpeed * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED,
-      ySpeed * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED,
-      // 0,
-      rotationSpeed * Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED
-    );
+    ChassisSpeeds chassisSpeeds;
+
+    if (_swerveDrive.getFieldOrientated()) {
+      chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED, ySpeed * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED, rotationSpeed * Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED, _swerveDrive.getHeading());
+    } 
+    
+    else {
+      chassisSpeeds = new ChassisSpeeds(
+        // 0,
+        xSpeed * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED,
+        ySpeed * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED,
+        rotationSpeed * Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED
+      );
+    }
 
     SwerveModuleState[] moduleStates = Constants.Physical.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds);
-
     _swerveDrive.setStates(moduleStates);
   }
 
