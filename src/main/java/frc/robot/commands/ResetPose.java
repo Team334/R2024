@@ -4,27 +4,31 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
 /**
- * @author Peter Gutkovich
+ * @author Quazi Hossain
  */
-public class ToggleSwerveOrient extends Command {
-  private final SwerveDriveSubsystem _swerveDrive;
 
-  /** Creates a new ToggleSwerveOrient. */
-  public ToggleSwerveOrient(SwerveDriveSubsystem swerveDrive) {
-    // Use addRequirements() here to declare subsystem dependencies.
+public class ResetPose extends Command {
+
+  private SwerveDriveSubsystem _swerveDrive;
+  /** Creates a new ResetPose. */
+  public ResetPose(SwerveDriveSubsystem swerveDrive) {
     _swerveDrive = swerveDrive;
-
-    addRequirements(swerveDrive);
+    addRequirements(_swerveDrive);
+    
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    _swerveDrive.toggleOrient();
+    _swerveDrive.resetPose(new Pose2d());
+
+    System.out.println("RESETING POSE");
   }
 
   // Called every time the scheduler runs while the command is scheduled.

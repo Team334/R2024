@@ -7,24 +7,25 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
-/**
- * @author Peter Gutkovich
- */
-public class ToggleSwerveOrient extends Command {
-  private final SwerveDriveSubsystem _swerveDrive;
 
-  /** Creates a new ToggleSwerveOrient. */
-  public ToggleSwerveOrient(SwerveDriveSubsystem swerveDrive) {
+/**
+ * @author Elvis Osmanov
+ */
+public class ResetGyro extends Command {
+  private SwerveDriveSubsystem _swerveDrive;
+  /** Creates a new ResetGyro. */
+  public ResetGyro(SwerveDriveSubsystem swerveDrive) {
     // Use addRequirements() here to declare subsystem dependencies.
     _swerveDrive = swerveDrive;
-
     addRequirements(swerveDrive);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    _swerveDrive.toggleOrient();
+    System.out.println("RESET GYRO COMMAND");
+
+    _swerveDrive.resetGyro();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

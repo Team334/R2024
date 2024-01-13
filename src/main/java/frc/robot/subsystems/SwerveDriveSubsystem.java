@@ -9,6 +9,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -19,6 +20,8 @@ import frc.robot.utils.SwerveModule;
 /**
  * @author Peter Gutkovich
  * @author Elvis Osmanov
+ * @author Cherine Soewignjo
+ * @author Peleh Liu
  */
 
 public class SwerveDriveSubsystem extends SubsystemBase {
@@ -32,9 +35,13 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   private boolean _fieldOrientated = false;
 
+  private Pose2d m_pose = new Pose2d();
+
+  private Field2d _field = new Field2d();
+
   private final SwerveDrivePoseEstimator _odometry = new SwerveDrivePoseEstimator(
     Constants.Physical.SWERVE_KINEMATICS,
-    getHeading(),
+    getHeadingRaw(),
     new SwerveModulePosition[] {
       _frontLeft.getPosition(),
       _frontRight.getPosition(),
@@ -60,19 +67,21 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Back Right Speed", _backRight.getDriveVelocity());
     SmartDashboard.putNumber("Back Left Speed", _backLeft.getDriveVelocity());
 
-    SmartDashboard.putNumber("Gyro", getHeadingRaw());
+    SmartDashboard.putNumber("Gyro Raw", getHeadingRaw().getDegrees());
+    SmartDashboard.putNumber("Gyro", getHeading().getDegrees());
 
     SmartDashboard.putBoolean("Field Orientated", _fieldOrientated);
-
-     // Get the rotation of the robot from the gyro.
-    var gyroAngle = m_gyro.getRotation2d();
-
+    
     // Update the pose
-    m_pose = m_odometry.update(gyroAngle,
-      new SwerveModulePosition[] {
-        m_frontLeftModule.getPosition(), m_frontRightModule.getPosition(),
-        m_backLeftModule.getPosition(), m_backRightModule.getPosition()
-      });
+    m_pose = _odometry.update(getHeadingRaw(), new SwerveModulePosition[] {
+      _frontLeft.getPosition(),
+      _frontRight.getPosition(),
+      _backRight.getPosition(),
+      _backLeft.getPosition()
+    });
+
+    _field.setRobotPose(m_pose);
+    SmartDashboard.putData("FIELD", _field);
   }
 
   public boolean getFieldOrientated() {
@@ -94,26 +103,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   }
 
   /**
-   * Calls drive method of each SwerveModule.
-   */
-  public void driveTest(double speed) {
-    _frontLeft.drive(speed);
-    _frontRight.drive(speed);
-    _backRight.drive(speed);
-    _backLeft.drive(speed);
-  }
-
-  /**
-   * Calls rotate method of each SwerveModule.
-   */
-  public void rotateTest(double speed) {
-    _frontLeft.rotate(speed);
-    _frontRight.rotate(speed);
-    _backRight.rotate(speed);
-    _backLeft.rotate(speed);
-  }
-
-  /**
    * Sets all the SwerveModules to the provided state.
    */
   public void stateTest(SwerveModuleState state) {
@@ -124,14 +113,49 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   }
 
   public void resetGyro() {
-    // TODO: SET UP ODOMETRY
+    Pose2d new_pose = new Pose2d(
+      m_pose.getTranslation().getX(),
+      m_pose.getTranslation().getY(),
+      Rotation2d.fromDegrees(0)
+    );
+
+    resetPose(new_pose);
+    
   }
 
-  public double getHeadingRaw() {
-    return -Math.IEEEremainder(_gyro.getHeading(), 360);
+  public void resetTranslation(){
+    Pose2d new_pose = new Pose2d(
+      0,
+      0,
+      m_pose.getRotation()
+    );
+
+    resetPose(new_pose);
   }
 
+
+  public void resetPose(Pose2d new_pose){
+    _odometry.resetPosition(getHeadingRaw(), 
+      new SwerveModulePosition[] {
+        _frontLeft.getPosition(),
+        _frontRight.getPosition(),
+        _backRight.getPosition(),
+        _backLeft.getPosition()
+      }, new_pose);
+  }
+
+  
+  /**
+   * Get heading directly from gyro as Rotation2d
+   */
+  public Rotation2d getHeadingRaw() {
+    return Rotation2d.fromDegrees(-Math.IEEEremainder(_gyro.getHeading(), 360));
+  }
+
+  /**
+   * Get heading from the odometry (pose estimator)
+   */
   public Rotation2d getHeading() {
-    return Rotation2d.fromDegrees(getHeadingRaw());
+    return _odometry.getEstimatedPosition().getRotation();
   }
 }

@@ -13,6 +13,11 @@ import frc.robot.Constants;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.utils.UtilFuncs;
 
+/**
+ * @author Peter Gutkovich
+ * @author Elvis Osmanov
+ */
+
 public class TeleopDrive extends Command {
   private final SwerveDriveSubsystem _swerveDrive;
 

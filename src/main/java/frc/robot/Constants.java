@@ -49,6 +49,10 @@ public final class Constants {
 
     public static final double SWERVE_DRIVE_GEAR_RATIO = 6.75; 
     public static final double SWERVE_DRIVE_WHEEL_RADIUS = 0.1; 
+    public static final double SWERVE_DRIVE_WHEEL_CIRCUMFERENCE = 2 * Math.PI * SWERVE_DRIVE_WHEEL_RADIUS;
+
+
+    public static final double TALON_TICKS_PER_REVOLUTION = 2048;
 
     public static final SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(
       new Translation2d(0.292, 0.292),

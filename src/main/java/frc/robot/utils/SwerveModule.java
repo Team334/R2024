@@ -13,6 +13,10 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.RobotController;
 import frc.robot.Constants;
 
+/**
+ * @author Peter Gutkovich
+ * @author Elvis Osmanov
+ */
 public class SwerveModule {
     private final TalonFX _driveMotor;
     private final TalonFX _rotationMotor;
@@ -52,21 +56,25 @@ public class SwerveModule {
     }
 
     public double getDriveVelocity() {
-        double talon_rps = (_driveMotor.getRotorVelocity().getValueAsDouble() / 2048) * 10; // ctre update
-        double wheel_circumference = 2 * Math.PI * Constants.Physical.SWERVE_DRIVE_WHEEL_RADIUS;
+        double talon_rps = _driveMotor.getRotorVelocity().getValueAsDouble(); // ctre update
 
         // return the speed of the drive wheel itself (talon rps times gear ratio time wheel size) in m/s
-        return (talon_rps / Constants.Physical.SWERVE_DRIVE_GEAR_RATIO) * wheel_circumference;
+        return (talon_rps / Constants.Physical.SWERVE_DRIVE_GEAR_RATIO) * Constants.Physical.SWERVE_DRIVE_WHEEL_CIRCUMFERENCE;
     }
 
     // TODO: make this actually work
     public SwerveModulePosition getPosition() {
-        return new SwerveModulePosition();
+        double talon_rotations = _driveMotor.getPosition().getValueAsDouble();
+        double distance = (talon_rotations / Constants.Physical.SWERVE_DRIVE_GEAR_RATIO) * Constants.Physical.SWERVE_DRIVE_WHEEL_CIRCUMFERENCE;
+
+        return new SwerveModulePosition(
+            distance,
+            Rotation2d.fromDegrees(getAngle())
+        );
     }
 
     public double getAngle() {
         return _encoder.getAbsolutePosition().getValueAsDouble() * 2 * 180; // ctre update
-        // return _encoder.getPosition().getValueAsDouble() * 2 * 180; // this might work
     }
 
     public void setState(SwerveModuleState state) {

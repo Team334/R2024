@@ -4,11 +4,15 @@ package frc.robot.utils;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import frc.robot.Constants;
+
+/**
+ * @author Jerry Zheng
+ * @author Peter Gutkovich
+ */
 
 /**
  * For configuring Falcons.
@@ -24,7 +28,9 @@ public class TalonFXConfig {
         TalonFXConfiguration config = new TalonFXConfiguration();
 
         falcon.getConfigurator().DefaultTimeoutSeconds = Constants.CAN.CAN_TIMEOUT;
-        falcon.getConfigurator().apply(config); // FACTORY RESET
+        // falcon.getConfigurator().apply(config); // FACTORY RESET
+
+        falcon.getConfigurator().refresh(config);
         
         
         config.MotorOutput.DutyCycleNeutralDeadband = 0.01;
@@ -35,7 +41,7 @@ public class TalonFXConfig {
         config.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
         config.SoftwareLimitSwitch.ReverseSoftLimitEnable = false;
 
-        config.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
+        // config.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
 
         falcon.getConfigurator().apply(config);
 
