@@ -15,6 +15,12 @@ import frc.robot.Constants;
 import frc.robot.utils.BNO055;
 import frc.robot.utils.SwerveModule;
 
+
+/**
+ * @author Peter Gutkovich
+ * @author Elvis Osmanov
+ */
+
 public class SwerveDriveSubsystem extends SubsystemBase {
   // TODO: Get angle offset for each module (zero each one)
   private final SwerveModule _frontLeft = new SwerveModule(Constants.CAN.DRIVE_FRONT_LEFT, Constants.CAN.ROT_FRONT_LEFT, Constants.CAN.ENC_FRONT_LEFT, Constants.Offsets.ENCODER_FRONT_LEFT, 0.015, 0.15);
@@ -57,6 +63,16 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Gyro", getHeadingRaw());
 
     SmartDashboard.putBoolean("Field Orientated", _fieldOrientated);
+
+     // Get the rotation of the robot from the gyro.
+    var gyroAngle = m_gyro.getRotation2d();
+
+    // Update the pose
+    m_pose = m_odometry.update(gyroAngle,
+      new SwerveModulePosition[] {
+        m_frontLeftModule.getPosition(), m_frontRightModule.getPosition(),
+        m_backLeftModule.getPosition(), m_backRightModule.getPosition()
+      });
   }
 
   public boolean getFieldOrientated() {
