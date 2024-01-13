@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.commands.ToggleSwerveOrient;
 import frc.robot.subsystems.SwerveDriveSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -19,6 +20,7 @@ import frc.robot.subsystems.SwerveDriveSubsystem;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final SwerveDriveSubsystem _swerveDrive = new SwerveDriveSubsystem();
+  private final VisionSubsystem _VisionSubsystem = new VisionSubsystem();
 
   // controllers (for driver and operator)
   private final CommandPS4Controller _driveController = new CommandPS4Controller(Constants.Ports.DRIVER_CONTROLLER);
