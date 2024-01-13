@@ -24,7 +24,7 @@ public class TalonFXConfig {
         falcon.getConfigurator().DefaultTimeoutSeconds = Constants.CAN.CAN_TIMEOUT;
         falcon.getConfigurator().apply(config); // FACTORY RESET
         
-
+        
         config.MotorOutput.DutyCycleNeutralDeadband = 0.01;
         config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         config.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;

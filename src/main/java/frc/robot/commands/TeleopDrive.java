@@ -10,8 +10,8 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.RobotCtrl;
 import frc.robot.subsystems.SwerveDriveSubsystem;
+import frc.robot.utils.UtilFuncs;
 
 public class TeleopDrive extends Command {
   private final SwerveDriveSubsystem _swerveDrive;
@@ -43,9 +43,9 @@ public class TeleopDrive extends Command {
   @Override
   public void execute() {
     // apply controller deadband
-    double xSpeed = RobotCtrl.ApplyDeadband(_xSpeed.getAsDouble(), 0.1);
-    double ySpeed = RobotCtrl.ApplyDeadband(_ySpeed.getAsDouble(), 0.1);
-    double rotationSpeed = RobotCtrl.ApplyDeadband(_rotationSpeed.getAsDouble(), 0.1);
+    double xSpeed = UtilFuncs.ApplyDeadband(_xSpeed.getAsDouble(), 0.1);
+    double ySpeed = UtilFuncs.ApplyDeadband(_ySpeed.getAsDouble(), 0.1);
+    double rotationSpeed = UtilFuncs.ApplyDeadband(_rotationSpeed.getAsDouble(), 0.1);
 
     // IMPORTANT: X-axis and Y-axis are flipped (based on wpilib coord system)
     ChassisSpeeds chassisSpeeds;

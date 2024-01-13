@@ -70,7 +70,10 @@ public class SwerveModule {
     }
 
     public void setState(SwerveModuleState state) {
-        // TODO: TEST THAT THIS WORKS
+        // current system for setting the state of a module
+        // rotation: pure pid control
+        // velocity: feedforward control mainly along with pid control for small disturbances
+
         state = SwerveModuleState.optimize(state, new Rotation2d(Math.toRadians(getAngle())));
         double speed = MathUtil.clamp(state.speedMetersPerSecond, -Constants.Speeds.SWERVE_DRIVE_MAX_SPEED, Constants.Speeds.SWERVE_DRIVE_MAX_SPEED);
 
