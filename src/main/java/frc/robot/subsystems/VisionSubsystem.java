@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import java.util.Optional;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -47,7 +48,25 @@ public class VisionSubsystem extends SubsystemBase {
     }
 
     SmartDashboard.putNumber("retrieved botpose", botpose[0]);
+    
+    _field.setRobotPose(getBotPose(botpose));
 
-    // public Pose2d
+    SmartDashboard.putData(_field);
+    
   }
+
+  public Pose2d getBotPose(double[] botposeArray) {
+    double botposeX = botposeArray[0];
+    double botposeY = botposeArray[1];
+    double botposeYaw = Math.toRadians(botposeArray[5]);
+    System.out.println(botposeYaw); 
+
+    Rotation2d botposeRotation = new Rotation2d(botposeYaw);
+    Pose2d botpose = new Pose2d(botposeX, botposeY, botposeRotation);
+    // System.out.println(botposeRotation);
+
+    return(botpose);
+  }
+
+
 }
