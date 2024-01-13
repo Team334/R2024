@@ -39,8 +39,8 @@ public class SwerveModule {
         _rotationController = new PIDController(rotationP, 0, 0);
         _rotationController.enableContinuousInput(-180, 180);
 
-        TalonFXConfig.configureFalcon(_driveMotor);
-        TalonFXConfig.configureFalcon(_rotationMotor);
+        TalonFXConfig.configureFalcon(_driveMotor, false);
+        TalonFXConfig.configureFalcon(_rotationMotor, false);
     }
 
     public void drive(double speed) {
