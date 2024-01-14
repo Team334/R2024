@@ -23,7 +23,6 @@ import frc.robot.utils.SwerveModule;
  * @author Cherine Soewignjo
  * @author Peleh Liu
  */
-
 public class SwerveDriveSubsystem extends SubsystemBase {
   // TODO: Get angle offset for each module (zero each one)
   private final SwerveModule _frontLeft = new SwerveModule(Constants.CAN.DRIVE_FRONT_LEFT, Constants.CAN.ROT_FRONT_LEFT, Constants.CAN.ENC_FRONT_LEFT, Constants.Offsets.ENCODER_FRONT_LEFT, 0.015, 0.15);
@@ -35,7 +34,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   private boolean _fieldOrientated = false;
 
-  private Pose2d m_pose = new Pose2d();
+  private Pose2d _pose = new Pose2d();
 
   private Field2d _field = new Field2d();
 
@@ -72,22 +71,24 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     SmartDashboard.putBoolean("Field Orientated", _fieldOrientated);
     
-    // Update the pose
-    m_pose = _odometry.update(getHeadingRaw(), new SwerveModulePosition[] {
+    // Update the bot's pose
+    _pose = _odometry.update(getHeadingRaw(), new SwerveModulePosition[] {
       _frontLeft.getPosition(),
       _frontRight.getPosition(),
       _backRight.getPosition(),
       _backLeft.getPosition()
     });
 
-    _field.setRobotPose(m_pose);
+    _field.setRobotPose(_pose);
     SmartDashboard.putData("FIELD", _field);
   }
 
+  /** Whether the drive is field oriented or not. */
   public boolean getFieldOrientated() {
     return _fieldOrientated;
   }
 
+  /** Toggle the field orient. */
   public void toggleOrient() {
     _fieldOrientated = !_fieldOrientated;
   }
@@ -102,60 +103,51 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     _backLeft.setState(states[3]);
   }
 
-  /**
-   * Sets all the SwerveModules to the provided state.
-   */
-  public void stateTest(SwerveModuleState state) {
-    _frontLeft.setState(state);
-    _frontRight.setState(state);
-    _backRight.setState(state);
-    _backLeft.setState(state);
-  }
-
+  /** Resets the heading of the drive as supplied by the pose estimator. */
   public void resetGyro() {
     Pose2d new_pose = new Pose2d(
-      m_pose.getTranslation().getX(),
-      m_pose.getTranslation().getY(),
+      _pose.getTranslation().getX(),
+      _pose.getTranslation().getY(),
       Rotation2d.fromDegrees(0)
     );
 
     resetPose(new_pose);
-    
   }
 
+  /** Resets the translation of the drive as supplied by the pose estimator. */
   public void resetTranslation(){
     Pose2d new_pose = new Pose2d(
       0,
       0,
-      m_pose.getRotation()
+      _pose.getRotation()
     );
 
     resetPose(new_pose);
   }
 
-
-  public void resetPose(Pose2d new_pose){
+  /** Resets the pose of the pose estimator to the supplied new pose. */
+  public void resetPose(Pose2d newPose){
     _odometry.resetPosition(getHeadingRaw(), 
       new SwerveModulePosition[] {
         _frontLeft.getPosition(),
         _frontRight.getPosition(),
         _backRight.getPosition(),
         _backLeft.getPosition()
-      }, new_pose);
+      }, newPose);
   }
 
-  
   /**
-   * Get heading directly from gyro as Rotation2d
+   * Get heading of the drive from the odometry (pose estimator).
+   */
+  public Rotation2d getHeading() {
+    return _odometry.getEstimatedPosition().getRotation();
+  }
+
+  /**
+   * Get heading DIRECTLY from gyro as a Rotation2d.
    */
   public Rotation2d getHeadingRaw() {
     return Rotation2d.fromDegrees(-Math.IEEEremainder(_gyro.getHeading(), 360));
   }
 
-  /**
-   * Get heading from the odometry (pose estimator)
-   */
-  public Rotation2d getHeading() {
-    return _odometry.getEstimatedPosition().getRotation();
-  }
 }

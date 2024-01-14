@@ -13,7 +13,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.RobotController;
 import frc.robot.Constants;
 
-/**
+/** 
  * @author Peter Gutkovich
  * @author Elvis Osmanov
  */
@@ -47,14 +47,22 @@ public class SwerveModule {
         TalonFXConfig.configureFalcon(_rotationMotor, false);
     }
 
+    /** Set the percentage output of the drive motor. */
     public void drive(double speed) {
         _driveMotor.set(speed);
     }
 
+    /** Set the percentage output of the rotation motor. */
     public void rotate(double speed) {
         _rotationMotor.set(speed);
     }
 
+    /** Get the absolute angle of the module (-180 to 180 degrees). */
+    public double getAngle() {
+        return _encoder.getAbsolutePosition().getValueAsDouble() * 2 * 180; // ctre update
+    }
+
+    /** Get the velocity of the drive wheel (meters per second). */
     public double getDriveVelocity() {
         double talon_rps = _driveMotor.getRotorVelocity().getValueAsDouble(); // ctre update
 
@@ -62,7 +70,7 @@ public class SwerveModule {
         return (talon_rps / Constants.Physical.SWERVE_DRIVE_GEAR_RATIO) * Constants.Physical.SWERVE_DRIVE_WHEEL_CIRCUMFERENCE;
     }
 
-    // TODO: make this actually work
+    /** Get the position of this module (distance traveled by wheel + angle). */
     public SwerveModulePosition getPosition() {
         double talon_rotations = _driveMotor.getPosition().getValueAsDouble();
         double distance = (talon_rotations / Constants.Physical.SWERVE_DRIVE_GEAR_RATIO) * Constants.Physical.SWERVE_DRIVE_WHEEL_CIRCUMFERENCE;
@@ -73,10 +81,7 @@ public class SwerveModule {
         );
     }
 
-    public double getAngle() {
-        return _encoder.getAbsolutePosition().getValueAsDouble() * 2 * 180; // ctre update
-    }
-
+    /** Set the state of this module. */
     public void setState(SwerveModuleState state) {
         // current system for setting the state of a module
         // rotation: pure pid control

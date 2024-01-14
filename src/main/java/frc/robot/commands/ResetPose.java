@@ -11,10 +11,9 @@ import frc.robot.subsystems.SwerveDriveSubsystem;
 /**
  * @author Quazi Hossain
  */
-
 public class ResetPose extends Command {
-
   private SwerveDriveSubsystem _swerveDrive;
+  
   /** Creates a new ResetPose. */
   public ResetPose(SwerveDriveSubsystem swerveDrive) {
     _swerveDrive = swerveDrive;

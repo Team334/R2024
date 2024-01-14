@@ -21,7 +21,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
  * @author Lucas Ou
  * @author Alex Reyes
  */
-
 public class VisionSubsystem extends SubsystemBase {
   NetworkTableInstance inst = NetworkTableInstance.getDefault();
   NetworkTable limelight = inst.getTable("limelight");
@@ -53,7 +52,6 @@ public class VisionSubsystem extends SubsystemBase {
     _field.setRobotPose(getBotPose(botpose));
 
     SmartDashboard.putData(_field);
-    
   }
 
   public Pose2d getBotPose(double[] botposeArray) {
@@ -68,6 +66,4 @@ public class VisionSubsystem extends SubsystemBase {
 
     return(botpose);
   }
-
-
 }

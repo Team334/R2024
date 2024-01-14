@@ -13,6 +13,7 @@ import frc.robot.subsystems.SwerveDriveSubsystem;
  */
 public class ResetGyro extends Command {
   private SwerveDriveSubsystem _swerveDrive;
+  
   /** Creates a new ResetGyro. */
   public ResetGyro(SwerveDriveSubsystem swerveDrive) {
     // Use addRequirements() here to declare subsystem dependencies.
