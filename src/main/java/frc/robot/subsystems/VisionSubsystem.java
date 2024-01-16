@@ -34,6 +34,15 @@ public class VisionSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
+    SmartDashboard.putNumber("retrieved botpose", getBotpose().getTranslation().getX());
+    
+    _field.setRobotPose(getBotpose());
+
+    SmartDashboard.putData("Limelight Field", _field);
+  }
+
+  public Pose2d getBotpose() {
     double[] botpose = new double[6];
 
     Optional<Alliance> alliance = DriverStation.getAlliance();
@@ -47,22 +56,15 @@ public class VisionSubsystem extends SubsystemBase {
       }
     }
 
-    SmartDashboard.putNumber("retrieved botpose", botpose[0]);
-    
-    _field.setRobotPose(getBotPose(botpose));
-
-    SmartDashboard.putData(_field);
-  }
-
-  public Pose2d getBotPose(double[] botposeArray) {
-    double botposeX = botposeArray[0];
-    double botposeY = botposeArray[1];
-    double botposeYaw = Math.toRadians(botposeArray[5]);
+    double botposeX = botpose[0];
+    double botposeY = botpose[1];
+    double botposeYaw = Math.toRadians(botpose[5]);
+    System.out.println(botposeYaw); 
 
     Rotation2d botposeRotation = new Rotation2d(botposeYaw);
-    Pose2d botpose = new Pose2d(botposeX, botposeY, botposeRotation);
+    Pose2d botPose2D = new Pose2d(botposeX, botposeY, botposeRotation);
     // System.out.println(botposeRotation);
 
-    return(botpose);
+    return(botPose2D);
   }
 }
