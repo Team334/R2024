@@ -99,4 +99,8 @@ public class SwerveModule {
         rotate(rotation_volts / RobotController.getBatteryVoltage());
         drive(drive_output);
     }
+
+    public SwerveModuleState getState() {
+        return new SwerveModuleState(getDriveVelocity(), Rotation2d.fromDegrees(getAngle()));
+    }
 }
