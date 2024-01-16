@@ -27,7 +27,7 @@ public class ResetPose extends Command {
   public void initialize() {
     _swerveDrive.resetPose(new Pose2d());
 
-    System.out.println("RESETING POSE");
+    System.out.println("RESETTING POSE");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
