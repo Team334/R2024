@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.ResetPose;
@@ -21,9 +22,8 @@ import frc.robot.subsystems.VisionSubsystem;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final SwerveDriveSubsystem _swerveDrive = new SwerveDriveSubsystem();
   private final VisionSubsystem _visionSubsystem = new VisionSubsystem();
-
+  private final SwerveDriveSubsystem _swerveDrive = new SwerveDriveSubsystem(_visionSubsystem);
   // controllers (for driver and operator)
   private final CommandPS4Controller _driveController = new CommandPS4Controller(Constants.Ports.DRIVER_CONTROLLER);
 
@@ -46,6 +46,8 @@ public class RobotContainer {
     ));
 
     configureBindings();
+
+    _swerveDrive.resetPose(_visionSubsystem.getBotpose());
   }
 
   private void configureBindings() {

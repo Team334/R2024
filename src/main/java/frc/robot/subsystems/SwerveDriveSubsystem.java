@@ -4,11 +4,13 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -38,6 +40,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   private Field2d _field = new Field2d();
 
+  private VisionSubsystem _visionSubsystem;
+
   private final SwerveDrivePoseEstimator _odometry = new SwerveDrivePoseEstimator(
     Constants.Physical.SWERVE_KINEMATICS,
     getHeadingRaw(),
@@ -47,11 +51,15 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       _backRight.getPosition(),
       _backLeft.getPosition()
     },
-    new Pose2d()
+    new Pose2d(),
+    VecBuilder.fill(0.008, 0.008, 0.0075),    
+    VecBuilder.fill(0.2, .2, .75)
   );
 
   /** Creates a new SwerveDrive. */
-  public SwerveDriveSubsystem() {}
+  public SwerveDriveSubsystem(VisionSubsystem visionSubsystem) {
+     _visionSubsystem = visionSubsystem;
+  }
 
   @Override
   public void periodic() {
@@ -78,6 +86,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       _backRight.getPosition(),
       _backLeft.getPosition()
     });
+
+    if (_visionSubsystem.isApriltagVisible()) {
+      _odometry.addVisionMeasurement(_visionSubsystem.getBotpose(), Timer.getFPGATimestamp());
+    }
 
     _field.setRobotPose(_pose);
     SmartDashboard.putData("FIELD", _field);
