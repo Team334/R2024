@@ -58,7 +58,6 @@ public class VisionSubsystem extends SubsystemBase {
     double botposeX = botposeArray[0];
     double botposeY = botposeArray[1];
     double botposeYaw = Math.toRadians(botposeArray[5]);
-    System.out.println(botposeYaw); 
 
     Rotation2d botposeRotation = new Rotation2d(botposeYaw);
     Pose2d botpose = new Pose2d(botposeX, botposeY, botposeRotation);
