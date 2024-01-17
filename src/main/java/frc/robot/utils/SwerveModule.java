@@ -26,6 +26,15 @@ public class SwerveModule {
 
     private final CANcoder _encoder;
 
+    /**
+     * Represents 
+     * @param driveMotorId
+     * @param rotationMotorId
+     * @param encoderId
+     * @param angleOffset
+     * @param driveP
+     * @param rotationP
+     */
     public SwerveModule(int driveMotorId, int rotationMotorId, int encoderId, double angleOffset, double driveP, double rotationP) {
         _driveMotor = new TalonFX(driveMotorId);
         _rotationMotor = new TalonFX(rotationMotorId);

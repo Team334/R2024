@@ -4,8 +4,12 @@
 
 package frc.robot.subsystems;
 
+import java.sql.Driver;
+import java.util.Optional;
+
 import com.fasterxml.jackson.databind.deser.std.ContainerDeserializerBase;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -14,7 +18,9 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -42,7 +48,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   private final BNO055 _gyro = BNO055.getInstance(BNO055.opmode_t.OPERATION_MODE_IMUPLUS,
       BNO055.vector_type_t.VECTOR_EULER);
 
-  private boolean _fieldOrientated = false;
+  public boolean fieldOriented = false;
 
   private Pose2d _pose = new Pose2d();
 
@@ -63,17 +69,17 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       VecBuilder.fill(0.008, 0.008, 0.0075),
       VecBuilder.fill(0.2, .2, .75));
 
+  /** Get the estimated pose of the swerve chassis. */
   public Pose2d getPose() {
     return _pose;
   }
 
-  public ChassisSpeeds getRobotRelativeSpeeds(){
+  public ChassisSpeeds getRobotRelativeSpeeds() {
     return Constants.Physical.SWERVE_KINEMATICS.toChassisSpeeds(
-      _frontLeft.getState(),
-      _frontRight.getState(),
-      _backRight.getState(),
-      _backLeft.getState()
-    );
+        _frontLeft.getState(),
+        _frontRight.getState(),
+        _backRight.getState(),
+        _backLeft.getState());
   }
 
   /** Creates a new SwerveDrive. */
@@ -85,8 +91,16 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         this::getPose,
         this::resetPose,
         this::getRobotRelativeSpeeds,
+        this::driveChassis,
+        new HolonomicPathFollowerConfig(0, 0, null),
+        () -> {
+          Optional<Alliance> alliance = DriverStation.getAlliance();
 
-        );
+          if (alliance.isPresent()) {
+            return alliance.get() == DriverStation.Alliance.Red;
+          }
+          return false;
+        }, this);
   }
 
   @Override
@@ -105,7 +119,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Gyro Raw", getHeadingRaw().getDegrees());
     SmartDashboard.putNumber("Gyro", getHeading().getDegrees());
 
-    SmartDashboard.putBoolean("Field Orientated", _fieldOrientated);
+    SmartDashboard.putBoolean("Field Oriented", fieldOriented);
 
     // Update the bot's pose
     _pose = _odometry.update(getHeadingRaw(), new SwerveModulePosition[] {
@@ -123,35 +137,21 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     SmartDashboard.putData("FIELD", _field);
   }
 
-  /** Whether the drive is field oriented or not. */
-  public boolean getFieldOrientated() {
-    return _fieldOrientated;
-  }
-
-  /** Toggle the field orient. */
-  public void toggleOrient() {
-    _fieldOrientated = !_fieldOrientated;
-  }
-
-  public void driveChassis() {
+  /**
+   * Set the chassis speed of the swerve drive.
+   * 
+   * Field Oriented based on fieldOriented attribute.
+   */
+  public void driveChassis(ChassisSpeeds chassisSpeeds) {
     // IMPORTANT: X-axis and Y-axis are flipped (based on wpilib coord system)
-    ChassisSpeeds chassisSpeeds;
-
-    if (_fieldOrientated) {
-      chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED, ySpeed * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED, rotationSpeed * Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED, _swerveDrive.getHeading());
-    } 
-    
-    else {
-      chassisSpeeds = new ChassisSpeeds(
-        // 0,
-        xSpeed * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED,
-        ySpeed * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED,
-        rotationSpeed * Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED
-      );
+    if (fieldOriented) {
+      chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(chassisSpeeds, getHeading());
+    } else {
+      
     }
 
     SwerveModuleState[] moduleStates = Constants.Physical.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds);
-    _swerveDrive.setStates(moduleStates);
+    setStates(moduleStates);
   }
 
   /**
