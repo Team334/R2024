@@ -5,10 +5,10 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.revrobotics.CANSparkMax;
+import r
 
 public class ShooterSubsystem extends SubsystemBase {
-  private CANSparkMax asd;
+  
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {}
 
