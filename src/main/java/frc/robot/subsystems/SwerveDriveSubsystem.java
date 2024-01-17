@@ -10,6 +10,8 @@ import java.util.Optional;
 import com.fasterxml.jackson.databind.deser.std.ContainerDeserializerBase;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -35,7 +37,7 @@ import frc.robot.utils.SwerveModule;
  * @author Peleh Liu
  */
 public class SwerveDriveSubsystem extends SubsystemBase {
-  // TODO: Get angle offset for each module (zero each one)
+  // each swerve module
   private final SwerveModule _frontLeft = new SwerveModule(Constants.CAN.DRIVE_FRONT_LEFT, Constants.CAN.ROT_FRONT_LEFT,
       Constants.CAN.ENC_FRONT_LEFT, Constants.Offsets.ENCODER_FRONT_LEFT, 0.015, 0.15);
   private final SwerveModule _frontRight = new SwerveModule(Constants.CAN.DRIVE_FRONT_RIGHT,
@@ -48,13 +50,13 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   private final BNO055 _gyro = BNO055.getInstance(BNO055.opmode_t.OPERATION_MODE_IMUPLUS,
       BNO055.vector_type_t.VECTOR_EULER);
 
-  public boolean fieldOriented = false;
+
+  private VisionSubsystem _visionSubsystem;
 
   private Pose2d _pose = new Pose2d();
 
   private Field2d _field = new Field2d();
-
-  private VisionSubsystem _visionSubsystem;
+  public boolean fieldOriented = false;
 
   private final SwerveDrivePoseEstimator _odometry = new SwerveDrivePoseEstimator(
       Constants.Physical.SWERVE_KINEMATICS,
@@ -67,59 +69,61 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       },
       new Pose2d(),
       VecBuilder.fill(0.008, 0.008, 0.0075),
-      VecBuilder.fill(0.2, .2, .75));
+      VecBuilder.fill(0.2, .2, .75)
+  );
 
   /** Get the estimated pose of the swerve chassis. */
   public Pose2d getPose() {
     return _pose;
   }
 
+  /** Get the chassis speeds  */
   public ChassisSpeeds getRobotRelativeSpeeds() {
     return Constants.Physical.SWERVE_KINEMATICS.toChassisSpeeds(
-        _frontLeft.getState(),
-        _frontRight.getState(),
-        _backRight.getState(),
-        _backLeft.getState());
+      _frontLeft.getState(),
+      _frontRight.getState(),
+      _backRight.getState(),
+      _backLeft.getState()
+    );
   }
 
   /** Creates a new SwerveDrive. */
-  // TODO: GET THIS SHITZ FIXED
   public SwerveDriveSubsystem(VisionSubsystem visionSubsystem) {
     _visionSubsystem = visionSubsystem;
 
+    // pathplannerlib setup
     AutoBuilder.configureHolonomic(
-        this::getPose,
-        this::resetPose,
-        this::getRobotRelativeSpeeds,
-        this::driveChassis,
-        new HolonomicPathFollowerConfig(0, 0, null),
-        () -> {
-          Optional<Alliance> alliance = DriverStation.getAlliance();
+      this::getPose,
+      this::resetPose,
+      this::getRobotRelativeSpeeds,
+      this::driveChassis,
+      new HolonomicPathFollowerConfig(
+        new PIDConstants(2.5, 0, 0),
+        new PIDConstants(5.0, 0, 0),
+        Constants.Speeds.SWERVE_DRIVE_MAX_SPEED,
+        Constants.Physical.SWERVE_DRIVE_BASE_RADIUS,
+        new ReplanningConfig()
+      ),
+      () -> {
+        Optional<Alliance> alliance = DriverStation.getAlliance();
 
-          if (alliance.isPresent()) {
-            return alliance.get() == DriverStation.Alliance.Red;
-          }
-          return false;
-        }, this);
+        if (alliance.isPresent()) {
+          return alliance.get() == DriverStation.Alliance.Red;
+        }
+        return false;
+      }, 
+      this
+    );
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Front Left Angle", _frontLeft.getAngle());
-    SmartDashboard.putNumber("Front Right Angle", _frontRight.getAngle());
-    SmartDashboard.putNumber("Back Right Angle", _backRight.getAngle());
-    SmartDashboard.putNumber("Back Left Angle", _backLeft.getAngle());
-
-    SmartDashboard.putNumber("Front Left Speed", _frontLeft.getDriveVelocity());
-    SmartDashboard.putNumber("Front Right Speed", _frontRight.getDriveVelocity());
-    SmartDashboard.putNumber("Back Right Speed", _backRight.getDriveVelocity());
-    SmartDashboard.putNumber("Back Left Speed", _backLeft.getDriveVelocity());
-
-    SmartDashboard.putNumber("Gyro Raw", getHeadingRaw().getDegrees());
     SmartDashboard.putNumber("Gyro", getHeading().getDegrees());
-
     SmartDashboard.putBoolean("Field Oriented", fieldOriented);
+
+
+    SmartDashboard.putNumber("Chassis X Speed", getRobotRelativeSpeeds().vxMetersPerSecond);
 
     // Update the bot's pose
     _pose = _odometry.update(getHeadingRaw(), new SwerveModulePosition[] {
@@ -146,8 +150,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     // IMPORTANT: X-axis and Y-axis are flipped (based on wpilib coord system)
     if (fieldOriented) {
       chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(chassisSpeeds, getHeading());
-    } else {
-      
     }
 
     SwerveModuleState[] moduleStates = Constants.Physical.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds);

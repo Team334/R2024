@@ -47,6 +47,8 @@ public final class Constants {
   public static class Physical {
     // GEAR RATIOS ARE: DRIVEN GEAR TEETH / DRIVING GEAR TEETH
 
+    public static final double SWERVE_DRIVE_BASE_RADIUS = 0.43;
+
     public static final double SWERVE_DRIVE_GEAR_RATIO = 6.75; 
     public static final double SWERVE_DRIVE_WHEEL_RADIUS = 0.1; 
     public static final double SWERVE_DRIVE_WHEEL_CIRCUMFERENCE = 2 * Math.PI * SWERVE_DRIVE_WHEEL_RADIUS;

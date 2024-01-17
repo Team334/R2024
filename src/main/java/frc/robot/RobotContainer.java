@@ -4,7 +4,12 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import frc.robot.commands.ResetGyro;
@@ -33,6 +38,8 @@ public class RobotContainer {
   private final SlewRateLimiter _driveFilterRightX = new SlewRateLimiter(4);
   private final SlewRateLimiter _driveFilterRightY = new SlewRateLimiter(4);
 
+  private final SendableChooser<Command> autonChooser;
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -47,12 +54,22 @@ public class RobotContainer {
 
     configureBindings();
 
-    _swerveDrive.resetPose(_visionSubsystem.getBotpose());
+    autonChooser = AutoBuilder.buildAutoChooser();
+
+    SmartDashboard.putData("AUTON CHOOSER", autonChooser);
+
+    // _swerveDrive.resetPose(_visionSubsystem.getBotpose());
   }
 
   private void configureBindings() {
     _driveController.R1().onTrue(new ToggleSwerveOrient(_swerveDrive));
     _driveController.L1().onTrue(new ResetGyro(_swerveDrive));
     _driveController.cross().onTrue(new ResetPose(_swerveDrive));
+  }
+
+  public Command getAutonCommand() {
+    _swerveDrive.fieldOriented = false;
+
+    return autonChooser.getSelected();
   }
 }
