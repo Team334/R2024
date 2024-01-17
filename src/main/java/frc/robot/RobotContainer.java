@@ -14,10 +14,12 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.ResetPose;
+import frc.robot.commands.Shooter;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.commands.ToggleSwerveOrient;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -29,6 +31,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final VisionSubsystem _visionSubsystem = new VisionSubsystem();
   private final SwerveDriveSubsystem _swerveDrive = new SwerveDriveSubsystem(_visionSubsystem);
+  private final ShooterSubsystem _shooterSubsystem = new ShooterSubsystem();
   // controllers (for driver and operator)
   private final CommandPS4Controller _driveController = new CommandPS4Controller(Constants.Ports.DRIVER_CONTROLLER);
 
@@ -65,6 +68,7 @@ public class RobotContainer {
     _driveController.R1().onTrue(new ToggleSwerveOrient(_swerveDrive));
     _driveController.L1().onTrue(new ResetGyro(_swerveDrive));
     _driveController.cross().onTrue(new ResetPose(_swerveDrive));
+    _driveController.circle().whileTrue(new Shooter(_shooterSubsystem));
   }
 
   public Command getAutonCommand() {
