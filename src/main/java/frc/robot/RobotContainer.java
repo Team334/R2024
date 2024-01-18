@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
+import frc.robot.commands.BrakeSwerve;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.ResetPose;
 import frc.robot.commands.Shooter;
@@ -78,6 +79,8 @@ public class RobotContainer {
     _driveController.L1().onTrue(new ResetGyro(_swerveDrive));
     _driveController.cross().onTrue(new ResetPose(_swerveDrive));
     _driveController.circle().whileTrue(new Shooter(_shooterSubsystem));
+
+    _driveController.square().whileTrue(new BrakeSwerve(_swerveDrive));
   }
 
   public Command getAutonCommand() {
