@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.9468795694348142,
-      "y": 6.4528028155155415
+      "x": 2.0,
+      "y": 7.0
     },
-    "rotation": -1.762391023660534
+    "rotation": 180.0
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Test1"
+            "pathName": "Really Short Path pt.1"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 5.0
           }
         }
       ]

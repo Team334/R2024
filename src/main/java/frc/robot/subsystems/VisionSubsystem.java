@@ -45,17 +45,8 @@ public class VisionSubsystem extends SubsystemBase {
   }
 
   public Pose2d getBotpose() {
-    Optional<Alliance> alliance = DriverStation.getAlliance();
-
-    if (alliance.isPresent()) {
-      if (alliance.get() == Alliance.Red) {
-        botpose = limelight.getEntry("botpose_wpired").getDoubleArray(botpose);
-      }
-      if (alliance.get() == Alliance.Blue) {
-        botpose = limelight.getEntry("botpose_wpiblue").getDoubleArray(botpose);
-      }
-    }
-
+    
+    botpose = limelight.getEntry("botpose_wpiblue").getDoubleArray(botpose);
 
     double botposeX = botpose[0];
     double botposeY = botpose[1];

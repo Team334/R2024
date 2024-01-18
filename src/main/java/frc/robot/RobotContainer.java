@@ -5,12 +5,15 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.ResetPose;
@@ -47,6 +50,12 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
+    Command interruptSwerve = new WaitCommand(7);
+    interruptSwerve.addRequirements(_swerveDrive);
+
+    NamedCommands.registerCommand("printHello", new PrintCommand("AUTON HELLO"));
+    NamedCommands.registerCommand("waitCommand", new WaitCommand(3));
+    NamedCommands.registerCommand("interruptSwerve", interruptSwerve);
 
     _swerveDrive.setDefaultCommand(new TeleopDrive(
       _swerveDrive,
