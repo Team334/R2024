@@ -33,6 +33,9 @@ public final class Constants {
     public static final int ENC_BACK_LEFT = 12;
     public static final int ENC_BACK_RIGHT = 11;
 
+    public static final int SHOOTER_LEFT = 13;
+    public static final int SHOOTER_RIGHT = 14;
+
     public static final int CAN_TIMEOUT = 10;
   }
 
