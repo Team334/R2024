@@ -54,8 +54,7 @@ body:
       label: Add your system information and OS here
       description: Add all the information
       value: >
-        Control + Shift + P > WPILIB Open Project Information
-        Open project information and paste it here 
+        Control + Shift + P > WPILIB Open Project Information and paste it here 
     validations:
       required: true
       
