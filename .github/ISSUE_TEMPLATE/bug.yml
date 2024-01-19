@@ -30,7 +30,6 @@ body:
   - type: markdown
     id: sys-info
     attributes:
-      label: Add system information here
       value: |
         Operating System: (MacOS/Windows/Linux (if linux specify distro)
         WPILIB info:
@@ -44,7 +43,7 @@ body:
   - type: checkboxes
     id: checkboxes
     attributes:
-      label: 
+      label: Checklist
       options:
         - label: I've search for duplicated
           required: true
