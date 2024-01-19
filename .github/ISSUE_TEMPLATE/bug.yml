@@ -2,7 +2,7 @@ name: Bug Report
 description: File a bug report
 labels: ["bug"]
 
-body: 
+body:
   - type: input
     attributes:
       label: Summary
@@ -18,7 +18,7 @@ body:
       description: What did you expect compared to reality?
     validations:
       required: true
-      
+
   - type: textarea
     id: reproduction-steps
     attributes:
@@ -41,21 +41,21 @@ body:
       multiple: false
       options:
         - label: Windows 10/11
-        - label: MacOS 
+        - label: MacOS
         - label: Linux
       default: 0
     validations:
       required: true
-        
+
   - type: textarea
     id: sys-info
-    attributes: 
+    attributes:
       label: Add your project information
       value: >
-        Control + Shift + P > WPILIB Open Project Information and paste it here 
+        Control + Shift + P > WPILIB Open Project Information and paste it here
     validations:
       required: true
-      
+
   - type: checkboxes
     id: checkboxes
     attributes:
@@ -67,7 +67,7 @@ body:
           required: true
         - label: I have provided all information about this bug.
           required: true
-          
+
   - type: textarea
     id: additional-context
     attributes:

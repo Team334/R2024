@@ -1,6 +1,5 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+/*                                  Team 334                                  */
+/* Copyright (c) 2024 Team 334. All Rights Reserved.                          */
 
 package frc.robot.subsystems;
 
@@ -113,7 +112,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
           return alliance.get() == DriverStation.Alliance.Red;
         }
         return false;
-      }, 
+      },
       this
     );
   }
@@ -142,10 +141,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   /**
    * Set the chassis speed of the swerve drive.
-   * 
-   * Chassis speed will be treated as field oriented if the fieldOriented class attribute is set to true, 
+   *
+   * Chassis speed will be treated as field oriented if the fieldOriented class attribute is set to true,
    * otherwise it will be robot-relative.
-   * 
+   *
    * @see ChassisSpeeds (wpilib chassis speeds class)
    */
   public void driveChassis(ChassisSpeeds chassisSpeeds) {
@@ -160,7 +159,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   /**
    * Sets the state of each SwerveModule through an array.
-   * 
+   *
    * Order -> front left, front right, back right, back left
    */
   public void setStates(SwerveModuleState[] states) {

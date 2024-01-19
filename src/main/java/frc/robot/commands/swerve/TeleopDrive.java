@@ -1,6 +1,5 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+/*                                  Team 334                                  */
+/* Copyright (c) 2024 Team 334. All Rights Reserved.                          */
 
 package frc.robot.commands.swerve;
 
@@ -14,7 +13,7 @@ import frc.robot.utils.UtilFuncs;
 
 /**
  * Drive the swerve chassis based on teleop joystick input
- * 
+ *
  * @author Peter Gutkovich
  * @author Elvis Osmanov
  */

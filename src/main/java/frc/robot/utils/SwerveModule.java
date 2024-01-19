@@ -1,3 +1,6 @@
+/*                                  Team 334                                  */
+/* Copyright (c) 2024 Team 334. All Rights Reserved.                          */
+
 package frc.robot.utils;
 
 import com.ctre.phoenix6.configs.MagnetSensorConfigs;
@@ -13,7 +16,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.RobotController;
 import frc.robot.Constants;
 
-/** 
+/**
  * @author Peter Gutkovich
  * @author Elvis Osmanov
  */
@@ -92,7 +95,7 @@ public class SwerveModule {
         );
     }
 
-    /** Set the state of this module. 
+    /** Set the state of this module.
      * @see SwerveModuleState */
     public void setState(SwerveModuleState state) {
         // current system for setting the state of a module
