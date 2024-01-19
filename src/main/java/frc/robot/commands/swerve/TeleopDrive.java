@@ -7,13 +7,14 @@ package frc.robot.commands.swerve;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.utils.UtilFuncs;
 
 /**
+ * Drive the swerve chassis based on teleop joystick input
+ * 
  * @author Peter Gutkovich
  * @author Elvis Osmanov
  */

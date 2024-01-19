@@ -4,10 +4,8 @@
 
 package frc.robot.subsystems;
 
-import java.sql.Driver;
 import java.util.Optional;
 
-import com.fasterxml.jackson.databind.deser.std.ContainerDeserializerBase;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
@@ -53,12 +51,16 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   private VisionSubsystem _visionSubsystem;
 
+  // estimated pose
   private Pose2d _pose = new Pose2d();
 
   private Field2d _field = new Field2d();
+
+  /** A boolean for whether the swerve is field oriented or not. */
   public boolean fieldOriented = false;
 
-  private final SwerveDrivePoseEstimator _odometry = new SwerveDrivePoseEstimator(
+  // Pose Estimator -> Has built in odometry and uses supplied vision measurements
+  private final SwerveDrivePoseEstimator _estimator = new SwerveDrivePoseEstimator(
       Constants.Physical.SWERVE_KINEMATICS,
       getHeadingRaw(),
       new SwerveModulePosition[] {
@@ -72,12 +74,12 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       VecBuilder.fill(0.2, .2, .75)
   );
 
-  /** Get the estimated pose of the swerve chassis. */
+  /** Return the estimated pose of the swerve chassis. */
   public Pose2d getPose() {
     return _pose;
   }
 
-  /** Get the chassis speeds  */
+  /** Get the drive's chassis speeds (robot relative). */
   public ChassisSpeeds getRobotRelativeSpeeds() {
     return Constants.Physical.SWERVE_KINEMATICS.toChassisSpeeds(
       _frontLeft.getState(),
@@ -87,7 +89,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     );
   }
 
-  /** Creates a new SwerveDrive. */
+  /** Creates a new SwerveDriveSubsystem. */
   public SwerveDriveSubsystem(VisionSubsystem visionSubsystem) {
     _visionSubsystem = visionSubsystem;
 
@@ -126,7 +128,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Chassis X Speed", getRobotRelativeSpeeds().vxMetersPerSecond);
 
     // Update the bot's pose
-    _pose = _odometry.update(getHeadingRaw(), new SwerveModulePosition[] {
+    _pose = _estimator.update(getHeadingRaw(), new SwerveModulePosition[] {
         _frontLeft.getPosition(),
         _frontRight.getPosition(),
         _backRight.getPosition(),
@@ -134,7 +136,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     });
 
     if (_visionSubsystem.isApriltagVisible()) {
-      _odometry.addVisionMeasurement(_visionSubsystem.getBotpose(), Timer.getFPGATimestamp());
+      _estimator.addVisionMeasurement(_visionSubsystem.getBotpose(), Timer.getFPGATimestamp());
     }
 
     _field.setRobotPose(_pose);
@@ -144,7 +146,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   /**
    * Set the chassis speed of the swerve drive.
    * 
-   * Field Oriented based on fieldOriented attribute.
+   * Chassis speed will be treated as field oriented if the fieldOriented class attribute is set to true, 
+   * otherwise it will be robot-relative.
+   * 
+   * @see ChassisSpeeds (wpilib chassis speeds class)
    */
   public void driveChassis(ChassisSpeeds chassisSpeeds) {
     // IMPORTANT: X-axis and Y-axis are flipped (based on wpilib coord system)
@@ -158,6 +163,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   /**
    * Sets the state of each SwerveModule through an array.
+   * 
+   * Order -> front left, front right, back right, back left
    */
   public void setStates(SwerveModuleState[] states) {
     _frontLeft.setState(states[0]);
@@ -166,7 +173,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     _backLeft.setState(states[3]);
   }
 
-  /** Resets the heading of the drive as supplied by the pose estimator. */
+  /** Resets the pose estimator's heading of the drive to 0. */
   public void resetGyro() {
     Pose2d new_pose = new Pose2d(
         _pose.getTranslation().getX(),
@@ -176,7 +183,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     resetPose(new_pose);
   }
 
-  /** Resets the translation of the drive as supplied by the pose estimator. */
+  /** Resets pose estimator's translation of the drive to (0, 0). */
   public void resetTranslation() {
     Pose2d new_pose = new Pose2d(
         0,
@@ -186,9 +193,9 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     resetPose(new_pose);
   }
 
-  /** Resets the pose of the pose estimator to the supplied new pose. */
+  /** Resets the pose estimator to the supplied new pose. */
   public void resetPose(Pose2d newPose) {
-    _odometry.resetPosition(getHeadingRaw(),
+    _estimator.resetPosition(getHeadingRaw(),
         new SwerveModulePosition[] {
             _frontLeft.getPosition(),
             _frontRight.getPosition(),
@@ -198,14 +205,14 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   }
 
   /**
-   * Get heading of the drive from the odometry (pose estimator).
+   * Get heading of the drive from the pose estimator.
    */
   public Rotation2d getHeading() {
-    return _odometry.getEstimatedPosition().getRotation();
+    return _estimator.getEstimatedPosition().getRotation();
   }
 
   /**
-   * Get heading DIRECTLY from gyro as a Rotation2d.
+   * Get heading DIRECTLY from the BNO055 gyro as a Rotation2d.
    */
   public Rotation2d getHeadingRaw() {
     return Rotation2d.fromDegrees(-Math.IEEEremainder(_gyro.getHeading(), 360));

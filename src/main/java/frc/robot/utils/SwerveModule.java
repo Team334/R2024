@@ -27,13 +27,13 @@ public class SwerveModule {
     private final CANcoder _encoder;
 
     /**
-     * Represents 
-     * @param driveMotorId
-     * @param rotationMotorId
-     * @param encoderId
-     * @param angleOffset
-     * @param driveP
-     * @param rotationP
+     * Represents a single swerve module built with talons for rotation and drive control, and a cancoder for angle.
+     * @param driveMotorId CAN ID of drive motor.
+     * @param rotationMotorId CAN ID of rotation motor.
+     * @param encoderId CAN ID of canoder.
+     * @param angleOffset Angle offset to add to the absolute cancoder.
+     * @param driveP kP for the drive controller.
+     * @param rotationP kP for the rotation controller.
      */
     public SwerveModule(int driveMotorId, int rotationMotorId, int encoderId, double angleOffset, double driveP, double rotationP) {
         _driveMotor = new TalonFX(driveMotorId);
@@ -79,7 +79,9 @@ public class SwerveModule {
         return (talon_rps / Constants.Physical.SWERVE_DRIVE_GEAR_RATIO) * Constants.Physical.SWERVE_DRIVE_WHEEL_CIRCUMFERENCE;
     }
 
-    /** Get the position of this module (distance traveled by wheel + angle). */
+    /** Get the position of this module (distance traveled by wheel + angle).
+     * @see SwerveModulePosition
+     */
     public SwerveModulePosition getPosition() {
         double talon_rotations = _driveMotor.getPosition().getValueAsDouble();
         double distance = (talon_rotations / Constants.Physical.SWERVE_DRIVE_GEAR_RATIO) * Constants.Physical.SWERVE_DRIVE_WHEEL_CIRCUMFERENCE;
@@ -90,7 +92,8 @@ public class SwerveModule {
         );
     }
 
-    /** Set the state of this module. */
+    /** Set the state of this module. 
+     * @see SwerveModuleState */
     public void setState(SwerveModuleState state) {
         // current system for setting the state of a module
         // rotation: pure pid control
@@ -109,6 +112,9 @@ public class SwerveModule {
         drive(drive_output);
     }
 
+    /** Get the state of this module.
+     * @see SwerveModuleState
+     */
     public SwerveModuleState getState() {
         return new SwerveModuleState(getDriveVelocity(), Rotation2d.fromDegrees(getAngle()));
     }

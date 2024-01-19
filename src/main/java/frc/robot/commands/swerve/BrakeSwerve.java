@@ -4,13 +4,16 @@
 
 package frc.robot.commands.swerve;
 
-import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.SwerveDriveBrake;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
+/**
+ * Creates a natural brake on the swerve drive by facing the modules so they form an "X" shape.
+ * 
+ * @author Peter Gutkovich
+ */
 public class BrakeSwerve extends Command {
   private final SwerveDriveSubsystem _swerveDrive;
 
