@@ -28,7 +28,6 @@ body:
       required: false
 
   - type: markdown
-    id: sys-info
     attributes:
       value: |
         Operating System: (MacOS/Windows/Linux (if linux specify distro)
@@ -37,6 +36,12 @@ body:
         Control + Shift + P > WPILIB: Open Project Information
         Open project information and paste it here 
         ```
+        
+  - type: textarea
+    id: sys-info
+    attributes: 
+      label: Add your information here
+      description: Add all the information
     validations:
       required: true
       
