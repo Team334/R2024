@@ -1,6 +1,5 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+/*                                  Team 334                                  */
+/* Copyright (c) 2024 Team 334. All Rights Reserved.                          */
 
 package frc.robot;
 
@@ -19,7 +18,7 @@ public final class Constants {
   public static class CAN {
     public static final int DRIVE_FRONT_LEFT = 1;
     public static final int ROT_FRONT_LEFT = 2;
-    
+
     public static final int DRIVE_FRONT_RIGHT = 3;
     public static final int ROT_FRONT_RIGHT = 4;
 
@@ -52,8 +51,8 @@ public final class Constants {
 
     public static final double SWERVE_DRIVE_BASE_RADIUS = 0.43;
 
-    public static final double SWERVE_DRIVE_GEAR_RATIO = 6.75; 
-    public static final double SWERVE_DRIVE_WHEEL_RADIUS = 0.1; 
+    public static final double SWERVE_DRIVE_GEAR_RATIO = 6.75;
+    public static final double SWERVE_DRIVE_WHEEL_RADIUS = 0.1;
     public static final double SWERVE_DRIVE_WHEEL_CIRCUMFERENCE = 2 * Math.PI * SWERVE_DRIVE_WHEEL_RADIUS;
 
 
@@ -72,7 +71,7 @@ public final class Constants {
     public static final double ENCODER_FRONT_RIGHT = -58;
     public static final double ENCODER_BACK_RIGHT = 10;
     public static final double ENCODER_BACK_LEFT = 43;
-   
+
   }
 
   public static class Ports {

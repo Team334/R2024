@@ -1,3 +1,6 @@
+/*                                  Team 334                                  */
+/* Copyright (c) 2024 Team 334. All Rights Reserved.                          */
+
 package frc.robot.utils;
 
 
@@ -19,9 +22,9 @@ import frc.robot.Constants;
  */
 public class TalonFXConfig {
     /**
-     * Basic Falcon config, sets Falcon to factory defaults, sets encoder to 0, 
+     * Basic Falcon config, sets Falcon to factory defaults, sets encoder to 0,
      * and sets Falcon deadband and sets Falcon to Brake neutral mode.
-     * 
+     *
      * @param falcon - The Falcon to config.
      */
     public static TalonFXConfiguration configureFalcon(TalonFX falcon, boolean invert) {
@@ -31,8 +34,8 @@ public class TalonFXConfig {
         // falcon.getConfigurator().apply(config); // FACTORY RESET
 
         falcon.getConfigurator().refresh(config);
-        
-        
+
+
         config.MotorOutput.DutyCycleNeutralDeadband = 0.01;
         config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
@@ -51,7 +54,7 @@ public class TalonFXConfig {
 
     /**
      * Configure a follower of a master Falcon motor.
-     * 
+     *
      * @param falcon - The follower motor to config.
      * @param master - The master motor.
      * @param opposeMaster - Boolean for whether the follower motor inverted to the master.
