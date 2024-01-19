@@ -3,6 +3,14 @@ description: File a bug report
 labels: ["bug"]
 
 body: 
+  - type: input
+    attributes:
+      label: Summary
+      description: >
+        A short summary of what your feature request is.
+    validations:
+      required: true
+
   - type: textarea
     id: expected-result
     attributes:
@@ -26,6 +34,17 @@ body:
       description: Images goes here
     validations:
       required: false
+
+  - type: checkbox
+    id: os
+    attributes:
+      label: Operating System
+      multiple: false
+      options:
+        - label: Windows 10/11
+        - label: MacOS 
+        - label: Linux
+      default: 0
         
   - type: textarea
     id: sys-info
@@ -33,7 +52,6 @@ body:
       label: Add your system information and OS here
       description: Add all the information
       value: >
-        Operating System (MacOS/Windows/Linux) (if linux specify distro eg. arch, ubuntu, etc)
         ```
         Control + Shift + P > WPILIB Open Project Information
         Open project information and paste it here 
