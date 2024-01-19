@@ -15,12 +15,12 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
-import frc.robot.commands.BrakeSwerve;
-import frc.robot.commands.ResetGyro;
-import frc.robot.commands.ResetPose;
-import frc.robot.commands.Shooter;
-import frc.robot.commands.TeleopDrive;
-import frc.robot.commands.ToggleSwerveOrient;
+import frc.robot.commands.shooter.Shooter;
+import frc.robot.commands.swerve.BrakeSwerve;
+import frc.robot.commands.swerve.ResetGyro;
+import frc.robot.commands.swerve.ResetPose;
+import frc.robot.commands.swerve.TeleopDrive;
+import frc.robot.commands.swerve.ToggleSwerveOrient;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -45,12 +45,11 @@ public class RobotContainer {
   private final SlewRateLimiter _driveFilterRightX = new SlewRateLimiter(4);
   private final SlewRateLimiter _driveFilterRightY = new SlewRateLimiter(4);
 
+  // sendable chooser for auton commands
   private final SendableChooser<Command> autonChooser;
-
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // Configure the trigger bindings
     Command interruptSwerve = new WaitCommand(7);
     interruptSwerve.addRequirements(_swerveDrive);
 
@@ -65,15 +64,15 @@ public class RobotContainer {
       () -> -_driveFilterRightX.calculate(_driveController.getRightX())
     ));
 
+    // configure trigger bindings
     configureBindings();
 
     autonChooser = AutoBuilder.buildAutoChooser();
 
     SmartDashboard.putData("AUTON CHOOSER", autonChooser);
-
-    // _swerveDrive.resetPose(_visionSubsystem.getBotpose());
   }
 
+  // to configure button bindings
   private void configureBindings() {
     _driveController.R1().onTrue(new ToggleSwerveOrient(_swerveDrive));
     _driveController.L1().onTrue(new ResetGyro(_swerveDrive));
@@ -83,8 +82,9 @@ public class RobotContainer {
     _driveController.square().whileTrue(new BrakeSwerve(_swerveDrive));
   }
 
+  /** @return The Command to schedule for auton. */
   public Command getAutonCommand() {
-    _swerveDrive.fieldOriented = false;
+    _swerveDrive.fieldOriented = false; // make sure swerve is robot-relative for pathplanner to work
 
     return autonChooser.getSelected();
   }

@@ -2,29 +2,23 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.SwerveDriveSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
-/**
- * @author Peter Gutkovich
- */
-public class ToggleSwerveOrient extends Command {
-  private final SwerveDriveSubsystem _swerveDrive;
+public class Shooter extends Command {
+  private ShooterSubsystem _shooter;
 
-  /** Creates a new ToggleSwerveOrient. */
-  public ToggleSwerveOrient(SwerveDriveSubsystem swerveDrive) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    _swerveDrive = swerveDrive;
-
-    addRequirements(swerveDrive);
+  public Shooter(ShooterSubsystem shooter) {
+    _shooter = shooter;
+    addRequirements(_shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    _swerveDrive.fieldOriented = !_swerveDrive.fieldOriented;
+    _shooter.spinMotor();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -33,11 +27,13 @@ public class ToggleSwerveOrient extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    _shooter.stopMotors();
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }
