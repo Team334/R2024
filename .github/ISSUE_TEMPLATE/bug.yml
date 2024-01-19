@@ -26,22 +26,19 @@ body:
       description: Images goes here
     validations:
       required: false
-
-  - type: markdown
-    attributes:
-      value: |
-        Operating System: (MacOS/Windows/Linux (if linux specify distro)
-        WPILIB info:
-        ```
-        Control + Shift + P > WPILIB: Open Project Information
-        Open project information and paste it here 
-        ```
         
   - type: textarea
     id: sys-info
     attributes: 
       label: Add your information here
       description: Add all the information
+      value: >
+      perating System: (MacOS/Windows/Linux (if linux specify distro)
+        WPILIB info:
+        ```
+        Control + Shift + P > WPILIB: Open Project Information
+        Open project information and paste it here 
+        ```
     validations:
       required: true
       
