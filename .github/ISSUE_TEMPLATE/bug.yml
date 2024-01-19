@@ -30,13 +30,12 @@ body:
   - type: textarea
     id: sys-info
     attributes: 
-      label: Add your information here
+      label: Add your system information and OS here
       description: Add all the information
       value: >
-      perating System: (MacOS/Windows/Linux (if linux specify distro)
-        WPILIB info:
+        Operating System (MacOS/Windows/Linux) (if linux specify distro eg. arch, ubuntu, etc)
         ```
-        Control + Shift + P > WPILIB: Open Project Information
+        Control + Shift + P > WPILIB Open Project Information
         Open project information and paste it here 
         ```
     validations:
