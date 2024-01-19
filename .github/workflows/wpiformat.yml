@@ -1,8 +1,10 @@
 name: Wpiformat
 
 on:
-  pull_request:
   push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   wpiformat:
@@ -15,7 +17,7 @@ jobs:
       - name: Fetch all history and metadata
         run: |
           git checkout -b pr
-          git branch -f master origin/master;
+          git branch -f main origin/main;
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
