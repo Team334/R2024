@@ -35,7 +35,7 @@ body:
     validations:
       required: false
 
-  - type: checkboxes
+  - type: dropdown
     id: os
     attributes:
       label: Operating System
