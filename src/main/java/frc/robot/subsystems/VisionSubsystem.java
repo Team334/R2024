@@ -37,7 +37,6 @@ public class VisionSubsystem extends SubsystemBase {
   }
 
   public Pose2d getBotpose() {
-
     botpose = limelight.getEntry("botpose_wpiblue").getDoubleArray(botpose);
 
     double botposeX = botpose[0];
