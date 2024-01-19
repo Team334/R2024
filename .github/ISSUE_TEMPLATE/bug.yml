@@ -14,7 +14,7 @@ body:
   - type: textarea
     id: reproduction-steps
     attributes:
-      label: What did you do to make this happened? List the steps:
+      label: What did you do to make this happened? List the steps
       description: Reproduction Steps
     validations:
       required: true
@@ -51,3 +51,11 @@ body:
           required: true
         - label: I have provided all information about this bug.
           required: true
+          
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: If there is something you like to add or say please add it here:
+      description: Add here
+    validations:
+      required: false
