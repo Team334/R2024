@@ -30,6 +30,7 @@ body:
   - type: markdown
     id: sys-info
     attributes:
+      label: Add system information here
       value: |
         Operating System: (MacOS/Windows/Linux (if linux specify distro)
         WPILIB info:
