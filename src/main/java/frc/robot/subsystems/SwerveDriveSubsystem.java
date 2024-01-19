@@ -123,6 +123,12 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Gyro", getHeading().getDegrees());
     SmartDashboard.putBoolean("Field Oriented", fieldOriented);
 
+    SmartDashboard.putNumber("Front Left Angle", _frontLeft.getAngle());
+    SmartDashboard.putNumber("Front Right Angle", _frontRight.getAngle());
+    SmartDashboard.putNumber("Back Left Angle", _backLeft.getAngle());
+    SmartDashboard.putNumber("Back Right Angle", _backRight.getAngle());
+
+
     // Update the bot's pose
     _pose = _estimator.update(getHeadingRaw(), new SwerveModulePosition[] {
         _frontLeft.getPosition(),
