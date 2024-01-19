@@ -124,9 +124,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Gyro", getHeading().getDegrees());
     SmartDashboard.putBoolean("Field Oriented", fieldOriented);
 
-
-    SmartDashboard.putNumber("Chassis X Speed", getRobotRelativeSpeeds().vxMetersPerSecond);
-
     // Update the bot's pose
     _pose = _estimator.update(getHeadingRaw(), new SwerveModulePosition[] {
         _frontLeft.getPosition(),

@@ -30,7 +30,7 @@ public class SwerveModule {
      * Represents a single swerve module built with talons for rotation and drive control, and a cancoder for angle.
      * @param driveMotorId CAN ID of drive motor.
      * @param rotationMotorId CAN ID of rotation motor.
-     * @param encoderId CAN ID of canoder.
+     * @param encoderId CAN ID of cancoder.
      * @param angleOffset Angle offset to add to the absolute cancoder.
      * @param driveP kP for the drive controller.
      * @param rotationP kP for the rotation controller.
