@@ -1,4 +1,4 @@
-## Contributing to discord.py
+## Contributing to this robot
 
 First off, thanks for taking the time to contribute!
 
