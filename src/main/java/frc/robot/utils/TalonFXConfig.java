@@ -37,7 +37,7 @@ public class TalonFXConfig {
 
 
         config.MotorOutput.DutyCycleNeutralDeadband = 0.01;
-        config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
         config.MotorOutput.Inverted = invert ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
 

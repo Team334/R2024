@@ -56,7 +56,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   private double _robotSpeed = 0;
 
-  Orchestra _orchestra;
+  Orchestra _orchestra = new Orchestra();
   String song = "output.chrp"; 
 
   // estimated pose
@@ -115,9 +115,9 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         }
     } 
 
-    _orchestra.loadMusic(song);
+    // _orchestra.loadMusic(song);
 
-    _orchestra.play();
+    // _orchestra.play();
   
     // pathplannerlib setup
     AutoBuilder.configureHolonomic(
@@ -159,8 +159,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Front Left Velocity", _frontLeft.getDriveVelocity());
     SmartDashboard.putNumber("Front Right Velocity", _frontRight.getDriveVelocity());
     SmartDashboard.putNumber("Back Left Velocity", _backLeft.getDriveVelocity());
-    SmartDashboard.putNumber("Back Right Velocity", _backRight.getDriveVelociy());
+    SmartDashboard.putNumber("Back Right Velocity", _backRight.getDriveVelocity());
 
+
+    SmartDashboard.putNumber("SPEED", getRobotRelativeSpeeds().vxMetersPerSecond);
 
     // Update the bot's pose
     _pose = _estimator.update(getHeadingRaw(), new SwerveModulePosition[] {
