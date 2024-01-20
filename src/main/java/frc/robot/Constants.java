@@ -42,6 +42,8 @@ public final class Constants {
   public static class Speeds {
     public static final double SWERVE_DRIVE_COEFF = 0.3;
 
+    public static final double SWERVE_PID_KP = 0.012;
+
     public static final double SWERVE_DRIVE_MAX_SPEED = 4.67; // TODO: Get this value
     public static final double SWERVE_DRIVE_MAX_ANGULAR_SPEED = Math.PI * 1; // Todo: Get this value
   }
@@ -52,7 +54,7 @@ public final class Constants {
     public static final double SWERVE_DRIVE_BASE_RADIUS = 0.43;
 
     public static final double SWERVE_DRIVE_GEAR_RATIO = 6.75;
-    public static final double SWERVE_DRIVE_WHEEL_RADIUS = 0.1;
+    public static final double SWERVE_DRIVE_WHEEL_RADIUS = 0.05;
     public static final double SWERVE_DRIVE_WHEEL_CIRCUMFERENCE =
         2 * Math.PI * SWERVE_DRIVE_WHEEL_RADIUS;
 

@@ -41,7 +41,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
           Constants.CAN.ROT_FRONT_LEFT,
           Constants.CAN.ENC_FRONT_LEFT,
           Constants.Offsets.ENCODER_FRONT_LEFT,
-          0.015,
+          .05,
           0.15);
   private final SwerveModule _frontRight =
       new SwerveModule(
@@ -49,7 +49,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
           Constants.CAN.ROT_FRONT_RIGHT,
           Constants.CAN.ENC_FRONT_RIGHT,
           Constants.Offsets.ENCODER_FRONT_RIGHT,
-          0.015,
+          .05,
           0.17);
   private final SwerveModule _backRight =
       new SwerveModule(
@@ -57,7 +57,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
           Constants.CAN.ROT_BACK_RIGHT,
           Constants.CAN.ENC_BACK_RIGHT,
           Constants.Offsets.ENCODER_BACK_RIGHT,
-          0.015,
+          .05,
           0.18);
   private final SwerveModule _backLeft =
       new SwerveModule(
@@ -65,7 +65,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
           Constants.CAN.ROT_BACK_LEFT,
           Constants.CAN.ENC_BACK_LEFT,
           Constants.Offsets.ENCODER_BACK_LEFT,
-          0.015,
+          .05,
           0.17);
 
   private final BNO055 _gyro =
@@ -124,11 +124,11 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     modules[2] = _backRight;
     modules[3] = _backLeft;
 
-    for (int i = 0; i < modules.length; i++) {
-      for (int j = 0; j < 2; j++) {
-        _orchestra.addInstrument(modules[i].returnTalons()[j]);
-      }
-    }
+    // for (int i = 0; i < modules.length; i++) {
+    //   for (int j = 0; j < 2; j++) {
+    //     _orchestra.addInstrument(modules[i].returnTalons()[j]);
+    //   }
+    // }
 
     // _orchestra.loadMusic(song);
 
@@ -136,13 +136,13 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     // pathplannerlib setup
     AutoBuilder.configureHolonomic(
-        this::getPose,
+        this::getPose, 
         this::resetPose,
         this::getRobotRelativeSpeeds,
         this::driveChassis,
         new HolonomicPathFollowerConfig(
             new PIDConstants(2.5, 0, 0),
-            new PIDConstants(5.0, 0, 0),
+            new PIDConstants(2.8, 0, 0),
             Constants.Speeds.SWERVE_DRIVE_MAX_SPEED,
             Constants.Physical.SWERVE_DRIVE_BASE_RADIUS,
             new ReplanningConfig()),
@@ -198,11 +198,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
             Math.pow(getRobotRelativeSpeeds().vxMetersPerSecond, 2)
                 + Math.pow(getRobotRelativeSpeeds().vyMetersPerSecond, 2));
 
-    SmartDashboard.putNumber(
-        "ANGULAR SPEED", getRobotRelativeSpeeds().omegaRadiansPerSecond / Math.PI);
-    SmartDashboard.putNumber("DRIVE SPEED (m/s)", _robotSpeed);
-
-    SmartDashboard.putNumber("Front Left Module Speed", _frontLeft.getDriveVelocity());
+    // SmartDashboard.putNumber("ACTUAL X SPEED", getRobotRelativeSpeeds().vxMetersPerSecond);
+    // SmartDashboard.putNumber("ACTUAL Y SPEED", getRobotRelativeSpeeds().vyMetersPerSecond);
   }
 
   /**

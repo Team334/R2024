@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 2.0,
+      "x": 1.9099007567384503,
       "y": 7.0
     },
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "command": {
     "type": "sequential",
@@ -15,18 +15,6 @@
           "type": "path",
           "data": {
             "pathName": "Really Short Path pt.1"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "brakeSwerve"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Really Short Path pt.2"
           }
         }
       ]
