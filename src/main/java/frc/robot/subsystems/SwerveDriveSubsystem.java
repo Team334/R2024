@@ -3,8 +3,11 @@
 
 package frc.robot.subsystems;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
+import com.ctre.phoenix6.Orchestra;
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
@@ -53,6 +56,9 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   private double _robotSpeed = 0;
 
+  Orchestra _orchestra;
+  String song = "output.chrp"; 
+
   // estimated pose
   private Pose2d _pose = new Pose2d();
 
@@ -97,6 +103,22 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   public SwerveDriveSubsystem(VisionSubsystem visionSubsystem) {
     _visionSubsystem = visionSubsystem;
 
+    SwerveModule[] modules = new SwerveModule[4];
+    modules[0] = _frontLeft;
+    modules[1] = _frontRight;
+    modules[2] = _backRight;
+    modules[3] = _backLeft;
+
+    for (int i = 0; i < modules.length; i++) {
+        for (int j = 0; j < 2; j++){
+            _orchestra.addInstrument(modules[i].returnTalons()[j]);
+        }
+    } 
+
+    _orchestra.loadMusic(song);
+
+    _orchestra.play();
+  
     // pathplannerlib setup
     AutoBuilder.configureHolonomic(
       this::getPose,
@@ -238,6 +260,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     return Rotation2d.fromDegrees(-Math.IEEEremainder(_gyro.getHeading(), 360));
       }
 
-  
+
 
 }

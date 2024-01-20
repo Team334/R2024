@@ -48,7 +48,7 @@ Powershell
 
 ### Linux
 ```bash
-chmod +x gradlew 
+chmod +x gradlew
 ./gradlew build
 ```
 > Alternatively you can run `chmod +x gradlew && gradlew build`
@@ -59,14 +59,14 @@ Note: `chmod +x gradlew` is giving it permission. Read more [here](https://en.wi
 > All these commands are in the WPILIB (Icon) button (in the top right corner) options if you have WPILIB vscode.
 
 ### Deploying
-Deploying will build your code, and deploy it to the robot. 
+Deploying will build your code, and deploy it to the robot.
 
 ```bash
 ./gradlew deploy
 ```
 > (You have to be connected to the robot for this to work.)
 
-### Clean 
+### Clean
 This removes all cache (gradle default uses cache to rebuild) when gradle builds. This is to ensure your dependences/vendordeps work.
 
 ```bash
@@ -80,7 +80,7 @@ This outputs what is happening while its building and a good way to see what its
 ./gradlew --debug
 ```
 
-### Scan 
+### Scan
 This is preferbly not used, it will scan the project and send all the data into a website where it will give a link to email to you.
 
 ```bash
