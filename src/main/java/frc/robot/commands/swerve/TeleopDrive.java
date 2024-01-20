@@ -3,13 +3,12 @@
 
 package frc.robot.commands.swerve;
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.utils.UtilFuncs;
+import java.util.function.DoubleSupplier;
 
 /**
  * Drive the swerve chassis based on teleop joystick input
@@ -26,7 +25,11 @@ public class TeleopDrive extends Command {
   private final DoubleSupplier _rotationSpeed;
 
   /** Creates a new TeleopDrive. */
-  public TeleopDrive(SwerveDriveSubsystem swerveDrive, DoubleSupplier xSpeed, DoubleSupplier ySpeed, DoubleSupplier rotationSpeed) {
+  public TeleopDrive(
+      SwerveDriveSubsystem swerveDrive,
+      DoubleSupplier xSpeed,
+      DoubleSupplier ySpeed,
+      DoubleSupplier rotationSpeed) {
     _swerveDrive = swerveDrive;
 
     _xSpeed = xSpeed;
@@ -40,8 +43,7 @@ public class TeleopDrive extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -52,11 +54,11 @@ public class TeleopDrive extends Command {
     double rotationSpeed = UtilFuncs.ApplyDeadband(_rotationSpeed.getAsDouble(), 0.1);
 
     // drive the swerve chassis subsystem
-    _swerveDrive.driveChassis(new ChassisSpeeds(
-      xSpeed * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
-      ySpeed * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
-      rotationSpeed * Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED
-    ));
+    _swerveDrive.driveChassis(
+        new ChassisSpeeds(
+            xSpeed * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
+            ySpeed * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
+            rotationSpeed * Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED));
   }
 
   // Called once the command ends or is interrupted.

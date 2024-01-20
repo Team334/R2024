@@ -36,11 +36,11 @@ public class ShooterSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void spinMotor(){
+  public void spinMotor() {
     _leftMotor.set(-1.0);
   }
 
-  public void stopMotors(){
+  public void stopMotors() {
     _leftMotor.set(0);
   }
 

@@ -5,24 +5,21 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import frc.robot.commands.shooter.Shooter;
 import frc.robot.commands.swerve.BrakeSwerve;
-import frc.robot.commands.swerve.ResetGyro;
 import frc.robot.commands.swerve.ResetPose;
 import frc.robot.commands.swerve.TeleopDrive;
 import frc.robot.commands.swerve.ToggleSwerveOrient;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -36,7 +33,8 @@ public class RobotContainer {
   private final SwerveDriveSubsystem _swerveDrive = new SwerveDriveSubsystem(_visionSubsystem);
   private final ShooterSubsystem _shooterSubsystem = new ShooterSubsystem();
   // controllers (for driver and operator)
-  private final CommandPS4Controller _driveController = new CommandPS4Controller(Constants.Ports.DRIVER_CONTROLLER);
+  private final CommandPS4Controller _driveController =
+      new CommandPS4Controller(Constants.Ports.DRIVER_CONTROLLER);
 
   // slew rate limiters applied to joysticks
   private final SlewRateLimiter _driveFilterLeftX = new SlewRateLimiter(4);
@@ -55,12 +53,12 @@ public class RobotContainer {
     NamedCommands.registerCommand("waitCommand", new WaitCommand(3));
     NamedCommands.registerCommand("brakeSwerve", brakeSwerve);
 
-    _swerveDrive.setDefaultCommand(new TeleopDrive(
-      _swerveDrive,
-      () -> -_driveFilterLeftY.calculate(_driveController.getLeftY()),
-      () -> -_driveFilterLeftX.calculate(_driveController.getLeftX()),
-      () -> -_driveFilterRightX.calculate(_driveController.getRightX())
-    ));
+    _swerveDrive.setDefaultCommand(
+        new TeleopDrive(
+            _swerveDrive,
+            () -> -_driveFilterLeftY.calculate(_driveController.getLeftY()),
+            () -> -_driveFilterLeftX.calculate(_driveController.getLeftX()),
+            () -> -_driveFilterRightX.calculate(_driveController.getRightX())));
 
     // configure trigger bindings
     configureBindings();
@@ -78,9 +76,12 @@ public class RobotContainer {
     _driveController.cross().whileTrue(new BrakeSwerve(_swerveDrive, 0));
   }
 
-  /** @return The Command to schedule for auton. */
+  /**
+   * @return The Command to schedule for auton.
+   */
   public Command getAutonCommand() {
-    _swerveDrive.fieldOriented = false; // make sure swerve is robot-relative for pathplanner to work
+    _swerveDrive.fieldOriented =
+        false; // make sure swerve is robot-relative for pathplanner to work
 
     return autonChooser.getSelected();
   }
