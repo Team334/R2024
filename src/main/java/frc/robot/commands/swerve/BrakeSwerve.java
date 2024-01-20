@@ -48,9 +48,7 @@ public class BrakeSwerve extends Command {
       new SwerveModuleState(0, Rotation2d.fromDegrees(-45))
     };
 
-    _swerveDrive.setStates(
-      states
-    );
+    _swerveDrive.setStates(states);
   }
 
   // Called once the command ends or is interrupted.
