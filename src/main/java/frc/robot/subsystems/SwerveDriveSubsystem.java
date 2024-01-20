@@ -50,6 +50,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   private VisionSubsystem _visionSubsystem;
 
+  private double _robotSpeed = 0;
+
   // estimated pose
   private Pose2d _pose = new Pose2d();
 
@@ -143,6 +145,9 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     _field.setRobotPose(_pose);
     SmartDashboard.putData("FIELD", _field);
+
+    _robotSpeed = Math.sqrt(Math.pow(getRobotRelativeSpeeds().vxMetersPerSecond, 2)  + Math.pow(getRobotRelativeSpeeds().vyMetersPerSecond, 2)); 
+    SmartDashboard.putNumber("DRIVE SPEED (m/s)", _robotSpeed); 
   }
 
   /**
@@ -218,6 +223,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
    */
   public Rotation2d getHeadingRaw() {
     return Rotation2d.fromDegrees(-Math.IEEEremainder(_gyro.getHeading(), 360));
-  }
+      }
+
+  
 
 }
