@@ -110,7 +110,7 @@ public class SwerveModule {
         double rotation_volts = -MathUtil.clamp(_rotationController.calculate(getAngle(), state.angle.getDegrees()), -1.5, 1.5);
 
         double drive_pid = _driveController.calculate(getDriveVelocity(), speed);
-        double drive_output = (speed / Constants.Speeds.SWERVE_DRIVE_MAX_SPEED) * Constants.Speeds.SWERVE_DRIVE_COEFF;
+        double drive_output = (speed / Constants.Speeds.SWERVE_DRIVE_MAX_SPEED);
         drive_output += drive_pid;
 
         rotate(rotation_volts / RobotController.getBatteryVoltage());

@@ -168,8 +168,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     _field.setRobotPose(_pose);
     SmartDashboard.putData("FIELD", _field);
 
-    _robotSpeed = Math.sqrt(Math.pow(getRobotRelativeSpeeds().vxMetersPerSecond, 2)  + Math.pow(getRobotRelativeSpeeds().vyMetersPerSecond, 2));
-    SmartDashboard.putNumber("DRIVE SPEED (m/s)", _robotSpeed);
+    _robotSpeed = Math.sqrt(Math.pow(getRobotRelativeSpeeds().vxMetersPerSecond, 2)  + Math.pow(getRobotRelativeSpeeds().vyMetersPerSecond, 2)); 
+
+    SmartDashboard.putNumber("ANGULAR SPEED", getRobotRelativeSpeeds().omegaRadiansPerSecond / Math.PI);
+    SmartDashboard.putNumber("DRIVE SPEED (m/s)", _robotSpeed); 
   }
 
   /**

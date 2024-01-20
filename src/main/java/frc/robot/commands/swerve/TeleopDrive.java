@@ -53,8 +53,8 @@ public class TeleopDrive extends Command {
 
     // drive the swerve chassis subsystem
     _swerveDrive.driveChassis(new ChassisSpeeds(
-      xSpeed * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED,
-      ySpeed * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED,
+      xSpeed * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
+      ySpeed * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
       rotationSpeed * Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED
     ));
   }
