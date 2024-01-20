@@ -22,7 +22,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private final RelativeEncoder _leftEncoder = _leftMotor.getEncoder();
 
-  private final PIDController _shooterController = new PIDController(Constants.Physical.SHOOTER_PID_KP, 0, 0); 
+  private final PIDController _shooterController = new PIDController(Constants.Physical.SHOOTER_PID_KP, 0, 0);
 
 
   /** Creates a new ShooterSubsystem. */
