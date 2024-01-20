@@ -40,12 +40,14 @@ public final class Constants {
   }
 
   public static class Speeds {
-    public static final double SWERVE_DRIVE_COEFF = 0.3;
+    public static final double SWERVE_DRIVE_COEFF = 1;
 
     public static final double SWERVE_PID_KP = 0.012;
 
     public static final double SWERVE_DRIVE_MAX_SPEED = 4.67; // TODO: Get this value
     public static final double SWERVE_DRIVE_MAX_ANGULAR_SPEED = Math.PI * 1; // Todo: Get this value
+
+    public static final double SHOOTER_MAX_SPEED = 1;
   }
 
   public static class Physical {
@@ -55,17 +57,23 @@ public final class Constants {
 
     public static final double SWERVE_DRIVE_GEAR_RATIO = 6.75;
     public static final double SWERVE_DRIVE_WHEEL_RADIUS = 0.05;
-    public static final double SWERVE_DRIVE_WHEEL_CIRCUMFERENCE =
-        2 * Math.PI * SWERVE_DRIVE_WHEEL_RADIUS;
+    public static final double SWERVE_DRIVE_WHEEL_CIRCUMFERENCE = 2 * Math.PI * SWERVE_DRIVE_WHEEL_RADIUS;
+
+    public static final double SHOOTER_GEAR_RATIO = 1.45;
+    public static final double SHOOTER_FLYWHEEL_RADIUS = 1; // TODO: FIND RADIUS
+    public static final double SHOOTER_FLYWHEEL_CIRCUMFERENCE = 2 * Math.PI * SHOOTER_FLYWHEEL_RADIUS;
+
 
     public static final double TALON_TICKS_PER_REVOLUTION = 2048;
 
-    public static final SwerveDriveKinematics SWERVE_KINEMATICS =
-        new SwerveDriveKinematics(
-            new Translation2d(0.292, 0.292),
-            new Translation2d(0.292, -0.292),
-            new Translation2d(-0.292, -0.292),
-            new Translation2d(-0.292, 0.292));
+    public static final SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(
+      new Translation2d(0.292, 0.292),
+      new Translation2d(0.292, -0.292),
+      new Translation2d(-0.292, -0.292),
+      new Translation2d(-0.292, 0.292)
+    );
+
+    public static final double SHOOTER_PID_KP = 0;
   }
 
   public static class Offsets {

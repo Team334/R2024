@@ -27,8 +27,6 @@ public class TalonFXConfig {
     TalonFXConfiguration config = new TalonFXConfiguration();
 
     falcon.getConfigurator().DefaultTimeoutSeconds = Constants.CAN.CAN_TIMEOUT;
-    // falcon.getConfigurator().apply(config); // FACTORY RESET
-
     falcon.getConfigurator().refresh(config);
 
         config.MotorOutput.DutyCycleNeutralDeadband = 0.01;
@@ -54,7 +52,7 @@ public class TalonFXConfig {
    * @param master - The master motor.
    * @param opposeMaster - Boolean for whether the follower motor inverted to the master.
    */
-  public static void configureDriveFollowerFalcon(
+  public static void configureFollowerFalcon(
       TalonFX falcon, TalonFX master, boolean opposeMaster) {
     configureFalcon(falcon, false);
     falcon.setControl(new Follower(master.getDeviceID(), opposeMaster));
