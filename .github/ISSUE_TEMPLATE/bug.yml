@@ -40,9 +40,9 @@ body:
       label: Operating System
       multiple: false
       options:
-        - label: Windows 10/11
-        - label: MacOS
-        - label: Linux
+        - Windows 10/11
+        - MacOS
+        - Linux
       default: 0
     validations:
       required: true
