@@ -49,12 +49,11 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    Command interruptSwerve = new WaitCommand(7);
-    interruptSwerve.addRequirements(_swerveDrive);
+    Command brakeSwerve = new BrakeSwerve(_swerveDrive, 3);
 
     NamedCommands.registerCommand("printHello", new PrintCommand("AUTON HELLO"));
     NamedCommands.registerCommand("waitCommand", new WaitCommand(3));
-    NamedCommands.registerCommand("interruptSwerve", interruptSwerve);
+    NamedCommands.registerCommand("brakeSwerve", brakeSwerve);
 
     _swerveDrive.setDefaultCommand(new TeleopDrive(
       _swerveDrive,
@@ -78,7 +77,7 @@ public class RobotContainer {
     _driveController.cross().onTrue(new ResetPose(_swerveDrive));
     _driveController.circle().whileTrue(new Shooter(_shooterSubsystem));
 
-    _driveController.square().whileTrue(new BrakeSwerve(_swerveDrive));
+    _driveController.square().whileTrue(new BrakeSwerve(_swerveDrive, 0));
   }
 
   /** @return The Command to schedule for auton. */
