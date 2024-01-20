@@ -29,6 +29,8 @@ public class SwerveModule {
 
     private final CANcoder _encoder;
 
+    
+
     /**
      * Represents a single swerve module built with talons for rotation and drive control, and a cancoder for angle.
      * @param driveMotorId CAN ID of drive motor.
@@ -120,5 +122,12 @@ public class SwerveModule {
      */
     public SwerveModuleState getState() {
         return new SwerveModuleState(getDriveVelocity(), Rotation2d.fromDegrees(getAngle()));
+    }
+
+    public TalonFX[] returnTalons(){
+        TalonFX[] fxes = new TalonFX[2];
+        fxes[0] = _driveMotor;
+        fxes[1] = _rotationMotor;
+        return fxes;
     }
 }

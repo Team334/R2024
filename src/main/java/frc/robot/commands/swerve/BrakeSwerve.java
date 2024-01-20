@@ -23,7 +23,7 @@ public class BrakeSwerve extends Command {
   /** Creates a new BrakeSwerve. */
   public BrakeSwerve(SwerveDriveSubsystem swerveDrive, double timeout) {
     _swerveDrive = swerveDrive;
-    
+
     if (timeout != 0) {
       _timeout = timeout;
     }
