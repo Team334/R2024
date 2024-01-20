@@ -137,7 +137,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Front Left Velocity", _frontLeft.getDriveVelocity());
     SmartDashboard.putNumber("Front Right Velocity", _frontRight.getDriveVelocity());
     SmartDashboard.putNumber("Back Left Velocity", _backLeft.getDriveVelocity());
-    SmartDashboard.putNumber("Back Right Velocity", _backRight.getDriveVelocity());
+    SmartDashboard.putNumber("Back Right Velocity", _backRight.getDriveVelociy());
 
 
     // Update the bot's pose
