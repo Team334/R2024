@@ -17,6 +17,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -59,6 +60,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   /** A boolean for whether the swerve is field oriented or not. */
   public boolean fieldOriented = false;
+
+  private final BuiltInAccelerometer _imu = new BuiltInAccelerometer();
 
   // Pose Estimator -> Has built in odometry and uses supplied vision measurements
   private final SwerveDrivePoseEstimator _estimator = new SwerveDrivePoseEstimator(
@@ -130,6 +133,12 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Back Left Angle", _backLeft.getAngle());
     SmartDashboard.putNumber("Back Right Angle", _backRight.getAngle());
 
+    // SmartDashboard.putNumber("IMU SPEED", _gyro.);
+    SmartDashboard.putNumber("Front Left Velocity", _frontLeft.getDriveVelocity());
+    SmartDashboard.putNumber("Front Right Velocity", _frontRight.getDriveVelocity());
+    SmartDashboard.putNumber("Back Left Velocity", _backLeft.getDriveVelocity());
+    SmartDashboard.putNumber("Back Right Velocity", _backRight.getDriveVelocity());
+
 
     // Update the bot's pose
     _pose = _estimator.update(getHeadingRaw(), new SwerveModulePosition[] {
@@ -150,6 +159,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("ANGULAR SPEED", getRobotRelativeSpeeds().omegaRadiansPerSecond / Math.PI);
     SmartDashboard.putNumber("DRIVE SPEED (m/s)", _robotSpeed); 
+
+    SmartDashboard.putNumber("Front Left Module Speed", _frontLeft.getDriveVelocity());
   }
 
   /**
