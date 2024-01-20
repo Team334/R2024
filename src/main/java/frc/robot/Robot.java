@@ -3,8 +3,6 @@
 
 package frc.robot;
 
-import com.ctre.phoenix6.Orchestra;
-import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -20,10 +18,8 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
-    /* Talon FXs to play music through.  
-    More complex music MIDIs will contain several tracks, requiring multiple instruments.  */
-
-
+  /* Talon FXs to play music through.
+  More complex music MIDIs will contain several tracks, requiring multiple instruments.  */
 
   /**
    * This function is run when the robot is first started up and should be used for any
