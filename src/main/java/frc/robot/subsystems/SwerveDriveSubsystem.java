@@ -15,7 +15,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
@@ -94,10 +93,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     Constants.Physical.SWERVE_KINEMATICS,
     getHeadingRaw(),
     new SwerveModulePosition[] {
-        _frontLeft.getPosition(),
-        _frontRight.getPosition(),
-        _backRight.getPosition(),
-        _backLeft.getPosition()
+      _frontLeft.getPosition(),
+      _frontRight.getPosition(),
+      _backRight.getPosition(),
+      _backLeft.getPosition()
     },
     new Pose2d(),
     VecBuilder.fill(0.008, 0.008, 0.0075),
@@ -181,13 +180,14 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     // Update the bot's pose
     _pose = _estimator.update(
-        getHeadingRaw(),
-        new SwerveModulePosition[] {
-            _frontLeft.getPosition(),
-            _frontRight.getPosition(),
-            _backRight.getPosition(),
-            _backLeft.getPosition()
-        });
+      getHeadingRaw(),
+      new SwerveModulePosition[] {
+        _frontLeft.getPosition(),
+        _frontRight.getPosition(),
+        _backRight.getPosition(),
+        _backLeft.getPosition()
+      }
+    );
 
     if (_visionSubsystem.isApriltagVisible()) {
       _estimator.addVisionMeasurement(_visionSubsystem.get_botpose(), Timer.getFPGATimestamp());
@@ -242,9 +242,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   /** Resets the pose estimator's heading of the drive to 0. */
   public void resetGyro() {
     Pose2d new_pose = new Pose2d(
-        _pose.getTranslation().getX(),
-        _pose.getTranslation().getY(),
-        Rotation2d.fromDegrees(0));
+      _pose.getTranslation().getX(),
+      _pose.getTranslation().getY(),
+      Rotation2d.fromDegrees(0)
+    );
 
     resetPose(new_pose);
   }
@@ -259,14 +260,15 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   /** Resets the pose estimator to the supplied new pose. */
   public void resetPose(Pose2d newPose) {
     _estimator.resetPosition(
-        getHeadingRaw(),
-        new SwerveModulePosition[] {
-            _frontLeft.getPosition(),
-            _frontRight.getPosition(),
-            _backRight.getPosition(),
-            _backLeft.getPosition()
-        },
-        newPose);
+      getHeadingRaw(),
+      new SwerveModulePosition[] {
+        _frontLeft.getPosition(),
+        _frontRight.getPosition(),
+        _backRight.getPosition(),
+        _backLeft.getPosition()
+      },
+      newPose
+    );
   }
 
   /** Get heading of the drive from the pose estimator. */
