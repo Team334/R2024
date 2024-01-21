@@ -21,15 +21,22 @@ public class BrakeSwerve extends Command {
   private Timer _timer = new Timer();
 
   /** Creates a new BrakeSwerve. */
-  public BrakeSwerve(SwerveDriveSubsystem swerveDrive, double timeout) {
+  public BrakeSwerve(SwerveDriveSubsystem swerveDrive) {
     _swerveDrive = swerveDrive;
 
-    if (timeout != 0) {
-      _timeout = timeout;
-    }
+    addRequirements(swerveDrive);
+  }
+
+  /**
+   * Creates a new BrakeSwerve.
+   * 
+   * @param timeout - (in seconds) Will keep the drive in brake position for this amount of time (must be >0).
+   */
+  public BrakeSwerve(SwerveDriveSubsystem swerveDrive, double timeout) {
+    _swerveDrive = swerveDrive;
+    _timeout = timeout;
 
     addRequirements(swerveDrive);
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.

@@ -32,6 +32,7 @@ public class RobotContainer {
   private final VisionSubsystem _visionSubsystem = new VisionSubsystem();
   private final SwerveDriveSubsystem _swerveDrive = new SwerveDriveSubsystem(_visionSubsystem);
   private final ShooterSubsystem _shooterSubsystem = new ShooterSubsystem();
+
   // controllers (for driver and operator)
   private final CommandPS4Controller _driveController =
       new CommandPS4Controller(Constants.Ports.DRIVER_CONTROLLER);
@@ -73,7 +74,7 @@ public class RobotContainer {
     _driveController.R1().onTrue(new ToggleSwerveOrient(_swerveDrive));
     _driveController.square().onTrue(new ResetPose(_swerveDrive));
     _driveController.circle().whileTrue(new Shooter(_shooterSubsystem));
-    _driveController.cross().whileTrue(new BrakeSwerve(_swerveDrive, 0));
+    _driveController.cross().whileTrue(new BrakeSwerve(_swerveDrive));
   }
 
   /**
