@@ -19,18 +19,21 @@ import frc.robot.Constants;
 public class TalonFXConfig {
   /**
    * Basic Falcon config, sets Falcon to factory defaults, sets encoder to 0, and sets Falcon
-   * deadband and sets Falcon to Brake neutral mode.
+   * deadband and sets Falcon to Coast neutral mode.
    *
    * @param falcon - The Falcon to config.
+   * 
+   * @return The configuration object applied to the Falcon. 
    */
   public static TalonFXConfiguration configureFalcon(TalonFX falcon, boolean invert) {
+    // TODO: will prob need to add the code to zero encoder
     TalonFXConfiguration config = new TalonFXConfiguration();
 
     falcon.getConfigurator().DefaultTimeoutSeconds = Constants.CAN.CAN_TIMEOUT;
     falcon.getConfigurator().refresh(config);
 
-        config.MotorOutput.DutyCycleNeutralDeadband = 0.01;
-        config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+    config.MotorOutput.DutyCycleNeutralDeadband = 0.01;
+    config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
     config.MotorOutput.Inverted =
         invert ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;

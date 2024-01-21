@@ -14,10 +14,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
  * @author Alex Reyes
  */
 public class VisionSubsystem extends SubsystemBase {
-  NetworkTableInstance inst = NetworkTableInstance.getDefault();
-  NetworkTable limelight = inst.getTable("limelight");
+  private final NetworkTableInstance _inst = NetworkTableInstance.getDefault();
+  private final NetworkTable _limelight = _inst.getTable("limelight");
 
-  private double[] botpose = new double[6];
+  private double[] _botpose = new double[6];
 
   /** Creates a new VisionSubsystem. */
   public VisionSubsystem() {}
@@ -33,12 +33,12 @@ public class VisionSubsystem extends SubsystemBase {
     // SmartDashboard.putData("Limelight Field", _field);
   }
 
-  public Pose2d getBotpose() {
-    botpose = limelight.getEntry("botpose_wpiblue").getDoubleArray(botpose);
+  public Pose2d get_botpose() {
+    _botpose = _limelight.getEntry("botpose_wpiblue").getDoubleArray(_botpose);
 
-    double botposeX = botpose[0];
-    double botposeY = botpose[1];
-    double botposeYaw = Math.toRadians(botpose[5]);
+    double botposeX = _botpose[0];
+    double botposeY = _botpose[1];
+    double botposeYaw = Math.toRadians(_botpose[5]);
 
     Rotation2d botposeRotation = new Rotation2d(botposeYaw);
     Pose2d botPose2D = new Pose2d(botposeX, botposeY, botposeRotation);
@@ -48,7 +48,7 @@ public class VisionSubsystem extends SubsystemBase {
   }
 
   public boolean isApriltagVisible() {
-    double tv = limelight.getEntry("tv").getDouble(0);
+    double tv = _limelight.getEntry("tv").getDouble(0);
     if (tv == 0) {
       return false;
     }

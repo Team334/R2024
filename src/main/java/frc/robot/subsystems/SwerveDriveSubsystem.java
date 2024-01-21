@@ -187,7 +187,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
             });
 
     if (_visionSubsystem.isApriltagVisible()) {
-      _estimator.addVisionMeasurement(_visionSubsystem.getBotpose(), Timer.getFPGATimestamp());
+      _estimator.addVisionMeasurement(_visionSubsystem.get_botpose(), Timer.getFPGATimestamp());
     }
 
     _field.setRobotPose(_pose);
