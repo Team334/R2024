@@ -46,14 +46,14 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   /** Get the velocity of the back wheel (left side) in m/s. */
-  public double getShooterVelocity(){
+  public double getShooterVelocity() {
     double neo_rps = _leftEncoder.getVelocity() / 60;
 
     return (neo_rps / Constants.Physical.SHOOTER_GEAR_RATIO) * Constants.Physical.SHOOTER_FLYWHEEL_CIRCUMFERENCE;
   }
 
   /** Set the velocity of the back wheels in m/s. */
-  public void setVelocity(double velocity){
+  public void setVelocity(double velocity) {
     double flywheel_output = (velocity / Constants.Speeds.SHOOTER_MAX_SPEED); // FEEDFORWARD (main output)
     double flywheel_pid = _shooterController.calculate(getShooterVelocity(), velocity); // PID for distrubances
 

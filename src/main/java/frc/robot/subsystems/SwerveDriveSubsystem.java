@@ -39,8 +39,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     Constants.CAN.ROT_FRONT_LEFT,
     Constants.CAN.ENC_FRONT_LEFT,
     Constants.Offsets.ENCODER_FRONT_LEFT,
-    .05,
-    0.15
+    Constants.PID.FRONT_LEFT_DRIVE_KP,
+    Constants.PID.FRONT_LEFT_ROTATE_KP
   );
 
   private final SwerveModule _frontRight = new SwerveModule(
@@ -48,8 +48,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     Constants.CAN.ROT_FRONT_RIGHT,
     Constants.CAN.ENC_FRONT_RIGHT,
     Constants.Offsets.ENCODER_FRONT_RIGHT,
-    .05,
-    0.17
+    Constants.PID.FRONT_RIGHT_DRIVE_KP,
+    Constants.PID.FRONT_RIGHT_ROTATE_KP
   );
 
   private final SwerveModule _backRight = new SwerveModule(
@@ -57,8 +57,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     Constants.CAN.ROT_BACK_RIGHT,
     Constants.CAN.ENC_BACK_RIGHT,
     Constants.Offsets.ENCODER_BACK_RIGHT,
-    .05,
-    0.18
+    Constants.PID.BACK_RIGHT_DRIVE_KP,
+    Constants.PID.BACK_RIGHT_ROTATE_KP
   );
   
   private final SwerveModule _backLeft = new SwerveModule(
@@ -66,8 +66,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     Constants.CAN.ROT_BACK_LEFT,
     Constants.CAN.ENC_BACK_LEFT,
     Constants.Offsets.ENCODER_BACK_LEFT,
-    .05,
-    0.17
+    Constants.PID.BACK_LEFT_DRIVE_KP,
+    Constants.PID.BACK_LEFT_ROTATE_KP
   );
 
   private final BNO055 _gyro = BNO055.getInstance(BNO055.opmode_t.OPERATION_MODE_IMUPLUS,
@@ -77,7 +77,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   private double _robotSpeed = 0;
 
-  Orchestra _orchestra = new Orchestra();
+  private final Orchestra _orchestra = new Orchestra();
   String song = "output.chrp";
 
   // estimated pose
@@ -118,24 +118,9 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   public SwerveDriveSubsystem(VisionSubsystem visionSubsystem) {
     _visionSubsystem = visionSubsystem;
 
-    SwerveModule[] modules = new SwerveModule[4];
-    modules[0] = _frontLeft;
-    modules[1] = _frontRight;
-    modules[2] = _backRight;
-    modules[3] = _backLeft;
-
-    // for (int i = 0; i < modules.length; i++) {
-    // for (int j = 0; j < 2; j++) {
-    // _orchestra.addInstrument(modules[i].returnTalons()[j]);
-    // }
-    // }
-
-    // _orchestra.loadMusic(song);
-
-    // _orchestra.play();
+    setupOrchestra();
 
     // pathplannerlib setup
-
     AutoBuilder.configureHolonomic(
       this::getPose,
       this::resetPose,
@@ -204,6 +189,24 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     // getRobotRelativeSpeeds().vxMetersPerSecond);
     // SmartDashboard.putNumber("ACTUAL Y SPEED",
     // getRobotRelativeSpeeds().vyMetersPerSecond);
+  }
+
+  // to setup talon orchestra
+  private void setupOrchestra() {
+    SwerveModule[] modules = new SwerveModule[4];
+    modules[0] = _frontLeft;
+    modules[1] = _frontRight;
+    modules[2] = _backRight;
+    modules[3] = _backLeft;
+
+    for (int i = 0; i < modules.length; i++) {
+      for (int j = 0; j < 2; j++) {
+        _orchestra.addInstrument(modules[i].returnTalons()[j]);
+      }
+    }
+
+    _orchestra.loadMusic(song);
+    _orchestra.play();
   }
 
   /**

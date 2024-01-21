@@ -71,7 +71,18 @@ public final class Constants {
   }
 
   public static class PID {
-    public static final double SWERVE_PID_KP = 0.012;
+    // TODO: Tune everything
+    public static final double FRONT_LEFT_DRIVE_KP = 0.05;
+    public static final double FRONT_RIGHT_DRIVE_KP = 0.05;
+    public static final double BACK_RIGHT_DRIVE_KP = 0.05;
+    public static final double BACK_LEFT_DRIVE_KP = 0.05;
+
+    public static final double FRONT_LEFT_ROTATE_KP = 0.15;
+    public static final double FRONT_RIGHT_ROTATE_KP = 0.17;
+    public static final double BACK_RIGHT_ROTATE_KP = 0.18;
+    public static final double BACK_LEFT_ROTATE_KP = 0.17;
+
+
     public static final double SHOOTER_PID_KP = 0;
   }
 
