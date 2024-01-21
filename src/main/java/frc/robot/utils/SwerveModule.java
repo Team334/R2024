@@ -106,7 +106,7 @@ public class SwerveModule {
   }
 
   /**
-   * Set the state of this module.
+   * Set the state of this module. This function must be called repeatedly for the state to be set.
    *
    * @see SwerveModuleState
    */
