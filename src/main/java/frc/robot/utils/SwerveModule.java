@@ -14,7 +14,6 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.RobotController;
 import frc.robot.Constants;
-import frc.robot.Robot;
 
 /**
  * @author Peter Gutkovich
@@ -124,17 +123,17 @@ public class SwerveModule {
             Constants.Speeds.SWERVE_DRIVE_MAX_SPEED);
 
     double rotation_volts =
-        -MathUtil.clamp(
+      -MathUtil.clamp(
             _rotationController.calculate(getAngle(), state.angle.getDegrees()), -1.5, 1.5);
 
-        double drive_pid = _driveController.calculate(getDriveVelocity(), speed);
-        // double drive_pid = 0;
-        double drive_output = (speed / Constants.Speeds.SWERVE_DRIVE_MAX_SPEED);
-        drive_output += drive_pid;
+    double drive_pid = _driveController.calculate(getDriveVelocity(), speed);
+    // double drive_pid = 0;
+    double drive_output = (speed / Constants.Speeds.SWERVE_DRIVE_MAX_SPEED);
+    drive_output += drive_pid;
 
-        rotate(rotation_volts / RobotController.getBatteryVoltage());
-        drive(drive_output);
-    }
+    rotate(rotation_volts / RobotController.getBatteryVoltage());
+    drive(drive_output);
+  }
 
   /**
    * Get the state of this module.
