@@ -15,10 +15,10 @@ import com.revrobotics.CANSparkBase.SoftLimitDirection;
 
 /** For configuring Neos (with CANSparkMax). */
 public class NeoConfig {
-    /** 
+    /**
      * Basic Neo (with CANSparkMax) config, sets Falcon to factory defaults, sets encoder to 0,
      * and sets Neo to Brake neutral mode.
-     * 
+     *
      * @param neo - The CANSparkMax (with Neo) to configure.
      * @param invert - Whether to invert the motor or not.
      */
@@ -31,7 +31,7 @@ public class NeoConfig {
 
     /**
      * Configure a follower of a master Neo motor.
-     * 
+     *
      * @param neo - The Neo (with CANSparkMax) to config.
      * @param master - The master motor.
      * @param opposeMaster - Whether to oppose the master or not.

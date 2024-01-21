@@ -22,8 +22,8 @@ public class TalonFXConfig {
    * deadband and sets Falcon to Coast neutral mode.
    *
    * @param falcon - The Falcon to config.
-   * 
-   * @return The configuration object applied to the Falcon. 
+   *
+   * @return The configuration object applied to the Falcon.
    */
   public static TalonFXConfiguration configureFalcon(TalonFX falcon, boolean invert) {
     // TODO: will prob need to add the code to zero encoder

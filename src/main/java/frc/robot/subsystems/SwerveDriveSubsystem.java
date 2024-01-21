@@ -35,41 +35,44 @@ import java.util.Optional;
  */
 public class SwerveDriveSubsystem extends SubsystemBase {
   // each swerve module
-  private final SwerveModule _frontLeft =
-      new SwerveModule(
-          Constants.CAN.DRIVE_FRONT_LEFT,
-          Constants.CAN.ROT_FRONT_LEFT,
-          Constants.CAN.ENC_FRONT_LEFT,
-          Constants.Offsets.ENCODER_FRONT_LEFT,
-          .05,
-          0.15);
-  private final SwerveModule _frontRight =
-      new SwerveModule(
-          Constants.CAN.DRIVE_FRONT_RIGHT,
-          Constants.CAN.ROT_FRONT_RIGHT,
-          Constants.CAN.ENC_FRONT_RIGHT,
-          Constants.Offsets.ENCODER_FRONT_RIGHT,
-          .05,
-          0.17);
-  private final SwerveModule _backRight =
-      new SwerveModule(
-          Constants.CAN.DRIVE_BACK_RIGHT,
-          Constants.CAN.ROT_BACK_RIGHT,
-          Constants.CAN.ENC_BACK_RIGHT,
-          Constants.Offsets.ENCODER_BACK_RIGHT,
-          .05,
-          0.18);
-  private final SwerveModule _backLeft =
-      new SwerveModule(
-          Constants.CAN.DRIVE_BACK_LEFT,
-          Constants.CAN.ROT_BACK_LEFT,
-          Constants.CAN.ENC_BACK_LEFT,
-          Constants.Offsets.ENCODER_BACK_LEFT,
-          .05,
-          0.17);
+  private final SwerveModule _frontLeft = new SwerveModule(
+    Constants.CAN.DRIVE_FRONT_LEFT,
+    Constants.CAN.ROT_FRONT_LEFT,
+    Constants.CAN.ENC_FRONT_LEFT,
+    Constants.Offsets.ENCODER_FRONT_LEFT,
+    .05,
+    0.15
+  );
 
-  private final BNO055 _gyro =
-      BNO055.getInstance(BNO055.opmode_t.OPERATION_MODE_IMUPLUS, BNO055.vector_type_t.VECTOR_EULER);
+  private final SwerveModule _frontRight = new SwerveModule(
+    Constants.CAN.DRIVE_FRONT_RIGHT,
+    Constants.CAN.ROT_FRONT_RIGHT,
+    Constants.CAN.ENC_FRONT_RIGHT,
+    Constants.Offsets.ENCODER_FRONT_RIGHT,
+    .05,
+    0.17
+  );
+
+  private final SwerveModule _backRight = new SwerveModule(
+    Constants.CAN.DRIVE_BACK_RIGHT,
+    Constants.CAN.ROT_BACK_RIGHT,
+    Constants.CAN.ENC_BACK_RIGHT,
+    Constants.Offsets.ENCODER_BACK_RIGHT,
+    .05,
+    0.18
+  );
+  
+  private final SwerveModule _backLeft = new SwerveModule(
+    Constants.CAN.DRIVE_BACK_LEFT,
+    Constants.CAN.ROT_BACK_LEFT,
+    Constants.CAN.ENC_BACK_LEFT,
+    Constants.Offsets.ENCODER_BACK_LEFT,
+    .05,
+    0.17
+  );
+
+  private final BNO055 _gyro = BNO055.getInstance(BNO055.opmode_t.OPERATION_MODE_IMUPLUS,
+      BNO055.vector_type_t.VECTOR_EULER);
 
   private VisionSubsystem _visionSubsystem;
 
@@ -86,22 +89,20 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   /** A boolean for whether the swerve is field oriented or not. */
   public boolean fieldOriented = false;
 
-  private final BuiltInAccelerometer _imu = new BuiltInAccelerometer();
-
   // Pose Estimator -> Has built in odometry and uses supplied vision measurements
-  private final SwerveDrivePoseEstimator _estimator =
-      new SwerveDrivePoseEstimator(
-          Constants.Physical.SWERVE_KINEMATICS,
-          getHeadingRaw(),
-          new SwerveModulePosition[] {
-            _frontLeft.getPosition(),
-            _frontRight.getPosition(),
-            _backRight.getPosition(),
-            _backLeft.getPosition()
-          },
-          new Pose2d(),
-          VecBuilder.fill(0.008, 0.008, 0.0075),
-          VecBuilder.fill(0.2, .2, .75));
+  private final SwerveDrivePoseEstimator _estimator = new SwerveDrivePoseEstimator(
+    Constants.Physical.SWERVE_KINEMATICS,
+    getHeadingRaw(),
+    new SwerveModulePosition[] {
+        _frontLeft.getPosition(),
+        _frontRight.getPosition(),
+        _backRight.getPosition(),
+        _backLeft.getPosition()
+    },
+    new Pose2d(),
+    VecBuilder.fill(0.008, 0.008, 0.0075),
+    VecBuilder.fill(0.2, .2, .75)
+  );
 
   /** Return the estimated pose of the swerve chassis. */
   public Pose2d getPose() {
@@ -125,9 +126,9 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     modules[3] = _backLeft;
 
     // for (int i = 0; i < modules.length; i++) {
-    //   for (int j = 0; j < 2; j++) {
-    //     _orchestra.addInstrument(modules[i].returnTalons()[j]);
-    //   }
+    // for (int j = 0; j < 2; j++) {
+    // _orchestra.addInstrument(modules[i].returnTalons()[j]);
+    // }
     // }
 
     // _orchestra.loadMusic(song);
@@ -135,26 +136,30 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     // _orchestra.play();
 
     // pathplannerlib setup
-    AutoBuilder.configureHolonomic(
-        this::getPose, 
-        this::resetPose,
-        this::getRobotRelativeSpeeds,
-        this::driveChassis,
-        new HolonomicPathFollowerConfig(
-            new PIDConstants(2.5, 0, 0),
-            new PIDConstants(2.8, 0, 0),
-            Constants.Speeds.SWERVE_DRIVE_MAX_SPEED,
-            Constants.Physical.SWERVE_DRIVE_BASE_RADIUS,
-            new ReplanningConfig()),
-        () -> {
-          Optional<Alliance> alliance = DriverStation.getAlliance();
 
-          if (alliance.isPresent()) {
-            return alliance.get() == DriverStation.Alliance.Red;
-          }
-          return false;
-        },
-        this);
+    AutoBuilder.configureHolonomic(
+      this::getPose,
+      this::resetPose,
+      this::getRobotRelativeSpeeds,
+      this::driveChassis,
+      new HolonomicPathFollowerConfig(
+        new PIDConstants(2.5, 0, 0),
+        new PIDConstants(2.8, 0, 0),
+        Constants.Speeds.SWERVE_DRIVE_MAX_SPEED,
+        Constants.Physical.SWERVE_DRIVE_BASE_RADIUS,
+        new ReplanningConfig()
+      ),
+      () -> {
+        Optional<Alliance> alliance = DriverStation.getAlliance();
+
+        if (alliance.isPresent()) {
+          return alliance.get() == DriverStation.Alliance.Red;
+        }
+        return false;
+      },
+
+      this
+    );
   }
 
   @Override
@@ -174,17 +179,15 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Back Left Velocity", _backLeft.getDriveVelocity());
     SmartDashboard.putNumber("Back Right Velocity", _backRight.getDriveVelocity());
 
-
     // Update the bot's pose
-    _pose =
-        _estimator.update(
-            getHeadingRaw(),
-            new SwerveModulePosition[] {
-              _frontLeft.getPosition(),
-              _frontRight.getPosition(),
-              _backRight.getPosition(),
-              _backLeft.getPosition()
-            });
+    _pose = _estimator.update(
+        getHeadingRaw(),
+        new SwerveModulePosition[] {
+            _frontLeft.getPosition(),
+            _frontRight.getPosition(),
+            _backRight.getPosition(),
+            _backLeft.getPosition()
+        });
 
     if (_visionSubsystem.isApriltagVisible()) {
       _estimator.addVisionMeasurement(_visionSubsystem.get_botpose(), Timer.getFPGATimestamp());
@@ -193,19 +196,22 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     _field.setRobotPose(_pose);
     SmartDashboard.putData("FIELD", _field);
 
-    _robotSpeed =
-        Math.sqrt(
-            Math.pow(getRobotRelativeSpeeds().vxMetersPerSecond, 2)
-                + Math.pow(getRobotRelativeSpeeds().vyMetersPerSecond, 2));
+    _robotSpeed = Math.sqrt(
+        Math.pow(getRobotRelativeSpeeds().vxMetersPerSecond, 2)
+            + Math.pow(getRobotRelativeSpeeds().vyMetersPerSecond, 2));
 
-    // SmartDashboard.putNumber("ACTUAL X SPEED", getRobotRelativeSpeeds().vxMetersPerSecond);
-    // SmartDashboard.putNumber("ACTUAL Y SPEED", getRobotRelativeSpeeds().vyMetersPerSecond);
+    // SmartDashboard.putNumber("ACTUAL X SPEED",
+    // getRobotRelativeSpeeds().vxMetersPerSecond);
+    // SmartDashboard.putNumber("ACTUAL Y SPEED",
+    // getRobotRelativeSpeeds().vyMetersPerSecond);
   }
 
   /**
    * Set the chassis speed of the swerve drive.
    *
-   * <p>Chassis speed will be treated as field oriented if the fieldOriented class attribute is set
+   * <p>
+   * Chassis speed will be treated as field oriented if the fieldOriented class
+   * attribute is set
    * to true, otherwise it will be robot-relative.
    *
    * @see ChassisSpeeds (wpilib chassis speeds class)
@@ -216,15 +222,15 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(chassisSpeeds, getHeading());
     }
 
-    SwerveModuleState[] moduleStates =
-        Constants.Physical.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds);
+    SwerveModuleState[] moduleStates = Constants.Physical.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds);
     setStates(moduleStates);
   }
 
   /**
    * Sets the state of each SwerveModule through an array.
    *
-   * <p>Order -> front left, front right, back right, back left
+   * <p>
+   * Order -> front left, front right, back right, back left
    */
   public void setStates(SwerveModuleState[] states) {
     _frontLeft.setState(states[0]);
@@ -235,11 +241,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   /** Resets the pose estimator's heading of the drive to 0. */
   public void resetGyro() {
-    Pose2d new_pose =
-        new Pose2d(
-            _pose.getTranslation().getX(),
-            _pose.getTranslation().getY(),
-            Rotation2d.fromDegrees(0));
+    Pose2d new_pose = new Pose2d(
+        _pose.getTranslation().getX(),
+        _pose.getTranslation().getY(),
+        Rotation2d.fromDegrees(0));
 
     resetPose(new_pose);
   }
@@ -256,10 +261,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     _estimator.resetPosition(
         getHeadingRaw(),
         new SwerveModulePosition[] {
-          _frontLeft.getPosition(),
-          _frontRight.getPosition(),
-          _backRight.getPosition(),
-          _backLeft.getPosition()
+            _frontLeft.getPosition(),
+            _frontRight.getPosition(),
+            _backRight.getPosition(),
+            _backLeft.getPosition()
         },
         newPose);
   }
