@@ -11,9 +11,9 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-public class ElevatorSubsystem extends SubsystemBase {
-  /** Creates a new ElevatorSubsystem. */
-  public ElevatorSubsystem() {}
+public class IntakeSubsystem extends SubsystemBase {
+  /** Creates a new IntakeSubsystem. */
+  public IntakeSubsystem() {}
 
   @Override
   public void periodic() {

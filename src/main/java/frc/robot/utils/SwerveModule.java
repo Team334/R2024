@@ -14,7 +14,6 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.RobotController;
 import frc.robot.Constants;
-import frc.robot.Robot;
 
 /**
  * @author Peter Gutkovich
@@ -33,12 +32,12 @@ public class SwerveModule {
    * Represents a single swerve module built with talons for rotation and drive control, and a
    * cancoder for angle.
    *
-   * @param driveMotorId CAN ID of drive motor.
-   * @param rotationMotorId CAN ID of rotation motor.
-   * @param encoderId CAN ID of cancoder.
-   * @param angleOffset Angle offset to add to the absolute cancoder.
-   * @param driveP kP for the drive controller.
-   * @param rotationP kP for the rotation controller.
+   * @param driveMotorId - CAN ID of drive motor.
+   * @param rotationMotorId - CAN ID of rotation motor.
+   * @param encoderId - CAN ID of cancoder.
+   * @param angleOffset - Angle offset to add to the absolute cancoder.
+   * @param driveP - kP for the drive controller.
+   * @param rotationP - kP for the rotation controller.
    */
   public SwerveModule(
       int driveMotorId,
@@ -107,7 +106,7 @@ public class SwerveModule {
   }
 
   /**
-   * Set the state of this module.
+   * Set the state of this module. This function must be called repeatedly for the state to be set.
    *
    * @see SwerveModuleState
    */
@@ -124,17 +123,17 @@ public class SwerveModule {
             Constants.Speeds.SWERVE_DRIVE_MAX_SPEED);
 
     double rotation_volts =
-        -MathUtil.clamp(
+      -MathUtil.clamp(
             _rotationController.calculate(getAngle(), state.angle.getDegrees()), -1.5, 1.5);
 
-        // double drive_pid = _driveController.calculate(getDriveVelocity(), speed);
-        double drive_pid = 0;
-        double drive_output = (speed / Constants.Speeds.SWERVE_DRIVE_MAX_SPEED);
-        drive_output += drive_pid;
+    double drive_pid = _driveController.calculate(getDriveVelocity(), speed);
+    // double drive_pid = 0;
+    double drive_output = (speed / Constants.Speeds.SWERVE_DRIVE_MAX_SPEED);
+    drive_output += drive_pid;
 
-        rotate(rotation_volts / RobotController.getBatteryVoltage());
-        drive(drive_output);
-    }
+    rotate(rotation_volts / RobotController.getBatteryVoltage());
+    drive(drive_output);
+  }
 
   /**
    * Get the state of this module.

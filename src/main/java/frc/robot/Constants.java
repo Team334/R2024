@@ -40,27 +40,25 @@ public final class Constants {
   }
 
   public static class Speeds {
-    public static final double SWERVE_DRIVE_COEFF = 1;
+    public static final double SWERVE_DRIVE_COEFF = 0.3;
 
     public static final double SWERVE_DRIVE_MAX_SPEED = 4.67; // TODO: Get this value
     public static final double SWERVE_DRIVE_MAX_ANGULAR_SPEED = Math.PI * 1; // Todo: Get this value
-    
-    public static final double SHOOTER_MAX_SPEED = 1; 
+
+    public static final double SHOOTER_MAX_SPEED = 1; // TODO: Get this
   }
 
   public static class Physical {
     // GEAR RATIOS ARE: DRIVEN GEAR TEETH / DRIVING GEAR TEETH
-
     public static final double SWERVE_DRIVE_BASE_RADIUS = 0.43;
 
     public static final double SWERVE_DRIVE_GEAR_RATIO = 6.75;
-    public static final double SWERVE_DRIVE_WHEEL_RADIUS = 0.1;
+    public static final double SWERVE_DRIVE_WHEEL_RADIUS = 0.05;
     public static final double SWERVE_DRIVE_WHEEL_CIRCUMFERENCE = 2 * Math.PI * SWERVE_DRIVE_WHEEL_RADIUS;
 
-    public static final double SHOOTER_GEAR_RATIO = 1.45;
+    public static final double SHOOTER_GEAR_RATIO = 1.45; // TODO: FIND THIS
     public static final double SHOOTER_FLYWHEEL_RADIUS = 1; // TODO: FIND RADIUS
     public static final double SHOOTER_FLYWHEEL_CIRCUMFERENCE = 2 * Math.PI * SHOOTER_FLYWHEEL_RADIUS;
-
 
     public static final double TALON_TICKS_PER_REVOLUTION = 2048;
 
@@ -70,6 +68,20 @@ public final class Constants {
       new Translation2d(-0.292, -0.292),
       new Translation2d(-0.292, 0.292)
     );
+  }
+
+  public static class PID {
+    // TODO: Tune everything
+    public static final double FRONT_LEFT_DRIVE_KP = 0.05;
+    public static final double FRONT_RIGHT_DRIVE_KP = 0.05;
+    public static final double BACK_RIGHT_DRIVE_KP = 0.05;
+    public static final double BACK_LEFT_DRIVE_KP = 0.05;
+
+    public static final double FRONT_LEFT_ROTATE_KP = 0.15;
+    public static final double FRONT_RIGHT_ROTATE_KP = 0.17;
+    public static final double BACK_RIGHT_ROTATE_KP = 0.18;
+    public static final double BACK_LEFT_ROTATE_KP = 0.17;
+
 
     public static final double SHOOTER_PID_KP = 0;
   }
