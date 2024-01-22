@@ -15,6 +15,9 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics.SwerveDriveWheelStates;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -82,6 +85,9 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   private Pose2d _pose = new Pose2d();
 
   private Field2d _field = new Field2d();
+
+  private final StructArrayPublisher<SwerveModuleState> _scopePublisher = NetworkTableInstance.getDefault().getStructArrayTopic(
+    "ScopeState", SwerveModuleState.struct).publish();
 
   /** A boolean for whether the swerve is field oriented or not. */
   public boolean fieldOriented = false;
@@ -193,6 +199,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     _field.setRobotPose(_pose);
     SmartDashboard.putData("FIELD", _field);
 
+    _scopePublisher.set(getStates());
+
     _robotSpeed =
         Math.sqrt(
             Math.pow(getRobotRelativeSpeeds().vxMetersPerSecond, 2)
@@ -234,6 +242,21 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     _frontRight.setState(states[1]);
     _backRight.setState(states[2]);
     _backLeft.setState(states[3]);
+  }
+
+  /** Get the state of each SwerveModule.
+   * 
+   * @return An array of each module state (order -> front left, front right, back right, back left)
+   */
+  public SwerveModuleState[] getStates() {
+    SwerveModuleState[] states = {
+      _frontLeft.getState(),
+      _frontRight.getState(),
+      _backRight.getState(),
+      _backLeft.getState()
+    };
+
+    return states;
   }
 
   /** Resets the pose estimator's heading of the drive to 0. */
