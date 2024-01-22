@@ -29,7 +29,7 @@ public class BrakeSwerve extends Command {
 
   /**
    * Creates a new BrakeSwerve.
-   * 
+   *
    * @param timeout - (in seconds) Will keep the drive in brake position for this amount of time (must be >0).
    */
   public BrakeSwerve(SwerveDriveSubsystem swerveDrive, double timeout) {

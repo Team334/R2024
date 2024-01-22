@@ -12,7 +12,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class ElevatorSubsystem extends SubsystemBase {
-  /** Creates a new ElevatorSubsystem. */
+  /** Creates a new ElevatorSubsystem . */
   public ElevatorSubsystem() {}
 
   @Override

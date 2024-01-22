@@ -64,7 +64,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     Constants.PID.BACK_RIGHT_DRIVE_KP,
     Constants.PID.BACK_RIGHT_ROTATE_KP
   );
-  
+
   private final SwerveModule _backLeft = new SwerveModule(
     Constants.CAN.DRIVE_BACK_LEFT,
     Constants.CAN.ROT_BACK_LEFT,
@@ -253,7 +253,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   }
 
   /** Get the state of each SwerveModule.
-   * 
+   *
    * @return An array of each module state (order -> front left, front right, back right, back left)
    */
   public SwerveModuleState[] getStates() {
