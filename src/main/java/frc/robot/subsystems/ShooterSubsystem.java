@@ -3,6 +3,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -23,6 +24,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private final RelativeEncoder _leftEncoder = _leftMotor.getEncoder();
 
+  private final ArmFeedforward _armFeed = new ArmFeedforward(0, 0, 0);
+
   private final PIDController _shooterController = new PIDController(Constants.PID.SHOOTER_PID_KP, 0, 0);
 
 
@@ -32,11 +35,11 @@ public class ShooterSubsystem extends SubsystemBase {
     NeoConfig.configureFollowerNeo(_rightMotor, _leftMotor, true);
   }
 
-  @Override
+  @Override 
   public void periodic() {
     // This method will be called once per scheduler run
+    _armFeed.calculate(0, 0);
   }
-
   public void spinMotors() {
     _leftMotor.set(1.0);
   }
@@ -60,4 +63,8 @@ public class ShooterSubsystem extends SubsystemBase {
     // a similar controller setup can be found in SwerveModule
     _leftMotor.set(flywheel_output + flywheel_pid);
   }
+
+
+
 }
+
