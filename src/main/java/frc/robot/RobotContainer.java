@@ -72,9 +72,9 @@ public class RobotContainer {
   // to configure button bindings
   private void configureBindings() {
     _driveController.R1().onTrue(new ToggleSwerveOrient(_swerveDrive));
-    _driveController.square().onTrue(new ResetPose(_swerveDrive));
+    // _driveController.square().onTrue(new ResetPose(_swerveDrive));
     _driveController.circle().whileTrue(new Shooter(_shooterSubsystem));
-    _driveController.cross().whileTrue(new BrakeSwerve(_swerveDrive));
+    // _driveController.cross().whileTrue(new BrakeSwerve(_swerveDrive));
   }
 
   /**

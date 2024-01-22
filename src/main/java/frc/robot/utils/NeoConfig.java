@@ -38,6 +38,6 @@ public class NeoConfig {
      */
     public static void configureFollowerNeo(CANSparkMax neo, CANSparkMax master, boolean opposeMaster) {
         configureNeo(neo, false);
-        neo.follow(master);
+        neo.follow(master, opposeMaster);
     }
 }
