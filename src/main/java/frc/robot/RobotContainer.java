@@ -6,9 +6,11 @@ package frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
@@ -72,9 +74,15 @@ public class RobotContainer {
   // to configure button bindings
   private void configureBindings() {
     _driveController.R1().onTrue(new ToggleSwerveOrient(_swerveDrive));
-    // _driveController.square().onTrue(new ResetPose(_swerveDrive));
+    _driveController.square().onTrue(new ResetPose(_swerveDrive));
     _driveController.circle().whileTrue(new Shooter(_shooterSubsystem));
-    // _driveController.cross().whileTrue(new BrakeSwerve(_swerveDrive));
+    _driveController.cross().whileTrue(new BrakeSwerve(_swerveDrive));
+
+    _driveController.triangle().whileTrue(
+      Commands.run(() -> {
+        _swerveDrive.driveChassis(new ChassisSpeeds(0.3, 0, 0));
+      }, _swerveDrive)
+    );
   }
 
   /**

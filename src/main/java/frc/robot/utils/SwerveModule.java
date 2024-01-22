@@ -13,6 +13,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
 /**
@@ -55,7 +56,7 @@ public class SwerveModule {
     encoderConfig.MagnetOffset = (angleOffset / 180) / 2;
 
     _encoder = new CANcoder(encoderId);
-    _encoder.getConfigurator().apply(encoderConfig);
+    // _encoder.getConfigurator().apply(encoderConfig);
 
     _driveController = new PIDController(driveP, 0, 0);
 
@@ -77,8 +78,8 @@ public class SwerveModule {
   }
 
   /** Get the absolute angle of the module (-180 to 180 degrees). */
-  public double getAngle() {
-    return _encoder.getAbsolutePosition().getValueAsDouble() * 2 * 180; // ctre update
+  public int getAngle() {
+    return Double.valueOf(_encoder.getAbsolutePosition().getValueAsDouble() * 2 * 180).intValue(); // ctre update
   }
 
   /** Get the velocity of the drive wheel (meters per second). */
@@ -115,6 +116,8 @@ public class SwerveModule {
     // rotation: pure pid control
     // velocity: feedforward control mainly along with pid control for small disturbances
 
+    SmartDashboard.putNumber("DESIRED ANGLE", state.angle.getDegrees());
+
     state = SwerveModuleState.optimize(state, new Rotation2d(Math.toRadians(getAngle())));
     double speed =
         MathUtil.clamp(
@@ -127,12 +130,11 @@ public class SwerveModule {
             _rotationController.calculate(getAngle(), state.angle.getDegrees()), -1.5, 1.5);
 
     double drive_pid = _driveController.calculate(getDriveVelocity(), speed);
-    // double drive_pid = 0;
     double drive_output = (speed / Constants.Speeds.SWERVE_DRIVE_MAX_SPEED);
-    drive_output += drive_pid;
 
-    rotate(rotation_volts / RobotController.getBatteryVoltage());
-    drive(drive_output);
+    rotate(-(rotation_volts / RobotController.getBatteryVoltage()));
+    // drive(drive_output + drive_pid);
+    // drive(-0.08);
   }
 
   /**

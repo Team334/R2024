@@ -125,7 +125,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   public SwerveDriveSubsystem(VisionSubsystem visionSubsystem) {
     _visionSubsystem = visionSubsystem;
 
-    setupOrchestra();
+    // setupOrchestra();
 
     // pathplannerlib setup
     AutoBuilder.configureHolonomic(
