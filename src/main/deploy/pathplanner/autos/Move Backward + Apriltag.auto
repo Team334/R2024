@@ -16,6 +16,18 @@
           "data": {
             "pathName": "Really Short Path pt.1"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "interruptSwerve"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Copy of Really Short Path pt.1"
+          }
         }
       ]
     }

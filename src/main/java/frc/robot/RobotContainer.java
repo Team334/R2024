@@ -50,11 +50,11 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    Command brakeSwerve = new BrakeSwerve(_swerveDrive, 3);
+    Command interruptSwerve = new BrakeSwerve(_swerveDrive, 3);
 
     NamedCommands.registerCommand("printHello", new PrintCommand("AUTON HELLO"));
     NamedCommands.registerCommand("waitCommand", new WaitCommand(3));
-    NamedCommands.registerCommand("brakeSwerve", brakeSwerve);
+    NamedCommands.registerCommand("interruptSwerve", interruptSwerve);
 
     _swerveDrive.setDefaultCommand(
         new TeleopDrive(

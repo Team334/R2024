@@ -143,7 +143,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       this::driveChassis,
       new HolonomicPathFollowerConfig(
         new PIDConstants(2.5, 0, 0),
-        new PIDConstants(2.8, 0, 0),
+        new PIDConstants(3.5, 0, 0),
         Constants.Speeds.SWERVE_DRIVE_MAX_SPEED,
         Constants.Physical.SWERVE_DRIVE_BASE_RADIUS,
         new ReplanningConfig()
