@@ -35,6 +35,7 @@ import java.util.Optional;
 public class SwerveDriveSubsystem extends SubsystemBase {
   // each swerve module
   private final SwerveModule _frontLeft = new SwerveModule(
+    "Front Left",
     Constants.CAN.DRIVE_FRONT_LEFT,
     Constants.CAN.ROT_FRONT_LEFT,
     Constants.CAN.ENC_FRONT_LEFT,
@@ -44,6 +45,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   );
 
   private final SwerveModule _frontRight = new SwerveModule(
+    "Front Right",
     Constants.CAN.DRIVE_FRONT_RIGHT,
     Constants.CAN.ROT_FRONT_RIGHT,
     Constants.CAN.ENC_FRONT_RIGHT,
@@ -53,6 +55,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   );
 
   private final SwerveModule _backRight = new SwerveModule(
+    "Back Right",
     Constants.CAN.DRIVE_BACK_RIGHT,
     Constants.CAN.ROT_BACK_RIGHT,
     Constants.CAN.ENC_BACK_RIGHT,
@@ -62,6 +65,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   );
 
   private final SwerveModule _backLeft = new SwerveModule(
+    "Back Left",
     Constants.CAN.DRIVE_BACK_LEFT,
     Constants.CAN.ROT_BACK_LEFT,
     Constants.CAN.ENC_BACK_LEFT,
@@ -151,16 +155,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Gyro", getHeading().getDegrees());
     SmartDashboard.putBoolean("Field Oriented", fieldOriented);
 
-    SmartDashboard.putNumber("Front Left Angle", _frontLeft.getAngle());
-    SmartDashboard.putNumber("Front Right Angle", _frontRight.getAngle());
-    SmartDashboard.putNumber("Back Left Angle", _backLeft.getAngle());
-    SmartDashboard.putNumber("Back Right Angle", _backRight.getAngle());
-
-    // SmartDashboard.putNumber("IMU SPEED", _gyro.);
-    SmartDashboard.putNumber("Front Left Velocity", _frontLeft.getDriveVelocity());
-    SmartDashboard.putNumber("Front Right Velocity", _frontRight.getDriveVelocity());
-    SmartDashboard.putNumber("Back Left Velocity", _backLeft.getDriveVelocity());
-    SmartDashboard.putNumber("Back Right Velocity", _backRight.getDriveVelocity());
+    _frontLeft.displayInfo();
+    _frontRight.displayInfo();
+    _backRight.displayInfo();
+    _backLeft.displayInfo();
 
     // Update the bot's pose
     _pose = _estimator.update(

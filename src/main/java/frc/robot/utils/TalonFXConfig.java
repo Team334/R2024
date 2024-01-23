@@ -33,7 +33,7 @@ public class TalonFXConfig {
     falcon.getConfigurator().refresh(config);
 
     config.MotorOutput.DutyCycleNeutralDeadband = 0.01;
-    config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+    config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
     config.MotorOutput.Inverted =
         invert ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;

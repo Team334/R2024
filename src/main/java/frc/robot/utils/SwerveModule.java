@@ -29,6 +29,8 @@ public class SwerveModule {
 
   private final CANcoder _encoder;
 
+  private final String _name;
+
   /**
    * Represents a single swerve module built with talons for rotation and drive control, and a
    * cancoder for angle.
@@ -41,6 +43,7 @@ public class SwerveModule {
    * @param rotationP - kP for the rotation controller.
    */
   public SwerveModule(
+      String name,
       int driveMotorId,
       int rotationMotorId,
       int encoderId,
@@ -59,6 +62,8 @@ public class SwerveModule {
     _encoder = new CANcoder(encoderId);
     // _encoder.getConfigurator().apply(encoderConfig);
 
+    _name = name;
+
     _driveController = new PIDController(driveP, 0, 0);
 
     _rotationController = new PIDController(rotationP, 0, 0);
@@ -66,6 +71,15 @@ public class SwerveModule {
 
     TalonFXConfig.configureFalcon(_driveMotor, false);
     TalonFXConfig.configureFalcon(_rotationMotor, true);
+  }
+
+  /**
+   * Display's this module's info on SmartDashboard.
+   */
+  public void displayInfo() {
+    SmartDashboard.putNumber(_name  + " Angle", getAngle());
+    SmartDashboard.putNumber(_name + " Velocity", getDriveVelocity());
+    SmartDashboard.putNumber(_name + " Current", _rotationMotor.getTorqueCurrent().getValueAsDouble());
   }
 
   /** Set the percentage output of the drive motor. */
@@ -126,14 +140,18 @@ public class SwerveModule {
       Constants.Speeds.SWERVE_DRIVE_MAX_SPEED
     );
 
-    double rotation_volts = MathUtil.clamp(_rotationController.calculate(getAngle(), state.angle.getDegrees()), -1.5, 1.5);
+    double rotation_pid = MathUtil.clamp(
+      _rotationController.calculate(getAngle(), state.angle.getDegrees()),
+      -0.150,
+      0.150
+    );
 
     double drive_pid = _driveController.calculate(getDriveVelocity(), speed);
     double drive_output = (speed / Constants.Speeds.SWERVE_DRIVE_MAX_SPEED);
 
-    rotate(rotation_volts / RobotController.getBatteryVoltage());
-    // drive(drive_output + drive_pid);
-    // drive(-0.08);
+    rotate(rotation_pid);
+    drive(drive_output + drive_pid);
+    // drive(0.08);
   }
 
   /**
