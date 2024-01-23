@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.9099007567375976,
-      "y": 6.998240302783657
+      "x": 1.86,
+      "y": 4.24
     },
     "rotation": 0
   },
@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Test Path"
+            "pathName": "Maze"
           }
         }
       ]
