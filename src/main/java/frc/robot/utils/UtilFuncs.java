@@ -3,7 +3,7 @@
 
 package frc.robot.utils;
 
-/** Any utility functions for anything. */
+/** Any utility functions are here. */
 public final class UtilFuncs {
   /**
    * Applies deadband to a certain value.

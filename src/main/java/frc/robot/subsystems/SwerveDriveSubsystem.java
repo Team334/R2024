@@ -15,10 +15,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics.SwerveDriveWheelStates;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.StructArrayPublisher;
-import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
@@ -89,9 +85,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   private Field2d _field = new Field2d();
 
-  private final StructArrayPublisher<SwerveModuleState> _scopePublisher = NetworkTableInstance.getDefault().getStructArrayTopic(
-    "ScopeState", SwerveModuleState.struct).publish();
-
   /** A boolean for whether the swerve is field oriented or not. */
   public boolean fieldOriented = false;
 
@@ -117,8 +110,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   /** Get the drive's chassis speeds (robot relative). */
   public ChassisSpeeds getRobotRelativeSpeeds() {
-    return Constants.Physical.SWERVE_KINEMATICS.toChassisSpeeds(
-        _frontLeft.getState(), _frontRight.getState(), _backRight.getState(), _backLeft.getState());
+    return Constants.Physical.SWERVE_KINEMATICS.toChassisSpeeds(getStates());
   }
 
   /** Creates a new SwerveDriveSubsystem. */
@@ -187,8 +179,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     _field.setRobotPose(_pose);
     SmartDashboard.putData("FIELD", _field);
-
-    _scopePublisher.set(getStates());
 
     _robotSpeed =
         Math.sqrt(

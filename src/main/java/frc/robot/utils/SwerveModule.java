@@ -50,10 +50,11 @@ public class SwerveModule {
     _driveMotor = new TalonFX(driveMotorId);
     _rotationMotor = new TalonFX(rotationMotorId);
 
+    // NO NEED FOR THIS CODE ANYMORE, FIGURED HOW TO DO OFFSETS IN PHOENIX TUNER
     // new stuff because CTRE update
-    MagnetSensorConfigs encoderConfig = new MagnetSensorConfigs();
-    encoderConfig.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
-    encoderConfig.MagnetOffset = (angleOffset / 180) / 2;
+    // MagnetSensorConfigs encoderConfig = new MagnetSensorConfigs();
+    // encoderConfig.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
+    // encoderConfig.MagnetOffset = (angleOffset / 180) / 2;
 
     _encoder = new CANcoder(encoderId);
     // _encoder.getConfigurator().apply(encoderConfig);
@@ -64,7 +65,7 @@ public class SwerveModule {
     _rotationController.enableContinuousInput(-180, 180);
 
     TalonFXConfig.configureFalcon(_driveMotor, false);
-    TalonFXConfig.configureFalcon(_rotationMotor, false);
+    TalonFXConfig.configureFalcon(_rotationMotor, true);
   }
 
   /** Set the percentage output of the drive motor. */
@@ -77,7 +78,7 @@ public class SwerveModule {
     _rotationMotor.set(speed);
   }
 
-  /** Get the absolute angle of the module (-180 to 180 degrees). */
+  /** Get the absolute angle of the module as an int (-180 to 180 degrees). */
   public int getAngle() {
     return Double.valueOf(_encoder.getAbsolutePosition().getValueAsDouble() * 2 * 180).intValue(); // ctre update
   }
@@ -119,20 +120,18 @@ public class SwerveModule {
     SmartDashboard.putNumber("DESIRED ANGLE", state.angle.getDegrees());
 
     state = SwerveModuleState.optimize(state, new Rotation2d(Math.toRadians(getAngle())));
-    double speed =
-        MathUtil.clamp(
-            state.speedMetersPerSecond,
-            -Constants.Speeds.SWERVE_DRIVE_MAX_SPEED,
-            Constants.Speeds.SWERVE_DRIVE_MAX_SPEED);
+    double speed = MathUtil.clamp(
+      state.speedMetersPerSecond,
+      -Constants.Speeds.SWERVE_DRIVE_MAX_SPEED,
+      Constants.Speeds.SWERVE_DRIVE_MAX_SPEED
+    );
 
-    double rotation_volts =
-      -MathUtil.clamp(
-            _rotationController.calculate(getAngle(), state.angle.getDegrees()), -1.5, 1.5);
+    double rotation_volts = MathUtil.clamp(_rotationController.calculate(getAngle(), state.angle.getDegrees()), -1.5, 1.5);
 
     double drive_pid = _driveController.calculate(getDriveVelocity(), speed);
     double drive_output = (speed / Constants.Speeds.SWERVE_DRIVE_MAX_SPEED);
 
-    rotate(-(rotation_volts / RobotController.getBatteryVoltage()));
+    rotate(rotation_volts / RobotController.getBatteryVoltage());
     // drive(drive_output + drive_pid);
     // drive(-0.08);
   }

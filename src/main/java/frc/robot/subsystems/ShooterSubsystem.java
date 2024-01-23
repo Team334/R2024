@@ -63,8 +63,5 @@ public class ShooterSubsystem extends SubsystemBase {
     // a similar controller setup can be found in SwerveModule
     _leftMotor.set(flywheel_output + flywheel_pid);
   }
-
-
-
 }
 
