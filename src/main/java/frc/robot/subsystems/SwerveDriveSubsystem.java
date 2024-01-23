@@ -15,6 +15,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
@@ -70,6 +72,14 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     Constants.PID.BACK_LEFT_ROTATE_KP
   );
 
+  SwerveModuleState[] states = new SwerveModuleState[] {
+    new SwerveModuleState(_frontLeft.getDriveVelocity(), Rotation2d.fromDegrees(_frontLeft.getAngle())),
+    new SwerveModuleState(_frontRight.getDriveVelocity(), Rotation2d.fromDegrees(_frontLeft.getAngle())),
+    new SwerveModuleState(_backRight.getDriveVelocity(), Rotation2d.fromDegrees(_frontLeft.getAngle())),
+    new SwerveModuleState(_backLeft.getDriveVelocity(), Rotation2d.fromDegrees(_frontLeft.getAngle()))
+  };
+
+
   private final BNO055 _gyro = BNO055.getInstance(BNO055.opmode_t.OPERATION_MODE_IMUPLUS,
       BNO055.vector_type_t.VECTOR_EULER);
 
@@ -87,6 +97,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   /** A boolean for whether the swerve is field oriented or not. */
   public boolean fieldOriented = false;
+  
+  StructArrayPublisher<SwerveModuleState> publisher = NetworkTableInstance.getDefault().getStructArrayTopic("MyStates", SwerveModuleState.struct).publish();
 
   // Pose Estimator -> Has built in odometry and uses supplied vision measurements
   private final SwerveDrivePoseEstimator _estimator = new SwerveDrivePoseEstimator(
@@ -147,6 +159,9 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+
+    publisher.set(states);
+
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Gyro", getHeading().getDegrees());
     SmartDashboard.putBoolean("Field Oriented", fieldOriented);
