@@ -69,8 +69,8 @@ public class BrakeSwerve extends Command {
   public boolean isFinished() {
     if (_timeout != 0) {
       return _timer.hasElapsed(_timeout);
+    } else {
+      return false;
     }
-
-    return false;
   }
 }

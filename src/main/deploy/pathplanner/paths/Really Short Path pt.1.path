@@ -16,11 +16,11 @@
     },
     {
       "anchor": {
-        "x": 5.543597372909033,
+        "x": 7.364275629452159,
         "y": 7.0
       },
       "prevControl": {
-        "x": 5.246483374111738,
+        "x": 7.067161630654864,
         "y": 7.0
       },
       "nextControl": null,
@@ -29,13 +29,25 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "End Slow Down ",
+      "minWaypointRelativePos": 0.7,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 4.67,
+        "maxAcceleration": 1.0,
+        "maxAngularVelocity": 180.0,
+        "maxAngularAcceleration": 180.0
+      }
+    }
+  ],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.67,
-    "maxAcceleration": 3.0,
+    "maxAcceleration": 2.5,
     "maxAngularVelocity": 180.0,
-    "maxAngularAcceleration": 720.0
+    "maxAngularAcceleration": 180.0
   },
   "goalEndState": {
     "velocity": 0,

@@ -4,9 +4,12 @@
 package frc.robot.utils;
 
 import com.ctre.phoenix6.configs.MagnetSensorConfigs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -131,8 +134,6 @@ public class SwerveModule {
     // rotation: pure pid control
     // velocity: feedforward control mainly along with pid control for small disturbances
 
-    SmartDashboard.putNumber("DESIRED ANGLE", state.angle.getDegrees());
-
     state = SwerveModuleState.optimize(state, new Rotation2d(Math.toRadians(getAngle())));
     double speed = MathUtil.clamp(
       state.speedMetersPerSecond,
@@ -147,10 +148,10 @@ public class SwerveModule {
     );
 
     double drive_pid = _driveController.calculate(getDriveVelocity(), speed);
-    double drive_output = (speed / Constants.Speeds.SWERVE_DRIVE_MAX_SPEED);
+    double drive_feedforward = (speed / Constants.Speeds.SWERVE_DRIVE_MAX_SPEED);
 
     rotate(rotation_pid);
-    drive(drive_output + drive_pid);
+    drive(drive_feedforward + drive_pid);
     // drive(0.08);
   }
 

@@ -41,8 +41,6 @@ public class TalonFXConfig {
     config.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
     config.SoftwareLimitSwitch.ReverseSoftLimitEnable = false;
 
-    // config.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
-
     falcon.getConfigurator().apply(config);
 
     return config;
