@@ -4,16 +4,26 @@
 
 package frc.robot.commands.shooter;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShooterSubsystem;
+
+
+/**
+ * @author Elvis Osmanov
+ * @author Harry Chen
+ */
 
 public class AngleShooter extends Command {
   /** Creates a new AngleShooter. */
   private ShooterSubsystem _shooter;
+  private DoubleSupplier _angle;
 
-  public AngleShooter(ShooterSubsystem shooter) {
+  public AngleShooter(ShooterSubsystem shooter, DoubleSupplier angle) {
     // Use addRequirements() here to declare subsystem dependencies.
     _shooter = shooter;
+    _angle = angle;
     addRequirements(_shooter);
   }
 
@@ -23,7 +33,9 @@ public class AngleShooter extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute(
+    
+  ) {}
 
   // Called once the command ends or is interrupted.
   @Override
