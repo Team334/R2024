@@ -38,6 +38,9 @@ public final class Constants {
     public static final int SHOOTER_LEFT = 13;
     public static final int SHOOTER_RIGHT = 14;
 
+    public static final int ELEVATOR_LEFT = 15; // TODO: Get right can ID's for elevator
+    public static final int ELEVATOR_RIGHT = 16;
+
     public static final int CAN_TIMEOUT = 10;
   }
 
@@ -62,12 +65,18 @@ public final class Constants {
     public static final double SHOOTER_FLYWHEEL_RADIUS = 1; // TODO: FIND RADIUS
     public static final double SHOOTER_FLYWHEEL_CIRCUMFERENCE = 2 * Math.PI * SHOOTER_FLYWHEEL_RADIUS;
 
+    public static final double ELEVATOR_GEAR_RATIO = 27;
+
     public static final SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(
       new Translation2d(0.292, 0.292),
       new Translation2d(0.292, -0.292),
       new Translation2d(-0.292, -0.292),
       new Translation2d(-0.292, 0.292)
     );
+  }
+
+  public static class FeedForward {
+    public static final double ELEVATOR_KG = 0.0; // TODO: Find Kg constant.
   }
 
   public static class PID {
@@ -86,6 +95,8 @@ public final class Constants {
     public static final PIDConstants PP_ROTATION = new PIDConstants(4, 0, 0.7);
 
     public static final double SHOOTER_FLYWHEEL_KP = 0;
+
+    public static final double ELEVATOR_KP = 0;
   }
 
   public static class Offsets {
