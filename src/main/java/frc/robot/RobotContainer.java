@@ -14,11 +14,13 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
+import frc.robot.commands.elevator.HoldElevator;
 import frc.robot.commands.shooter.Shooter;
 import frc.robot.commands.swerve.BrakeSwerve;
 import frc.robot.commands.swerve.ResetPose;
 import frc.robot.commands.swerve.TeleopDrive;
 import frc.robot.commands.swerve.ToggleSwerveOrient;
+import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
@@ -34,6 +36,7 @@ public class RobotContainer {
   private final VisionSubsystem _visionSubsystem = new VisionSubsystem();
   private final SwerveDriveSubsystem _swerveDrive = new SwerveDriveSubsystem(_visionSubsystem);
   private final ShooterSubsystem _shooterSubsystem = new ShooterSubsystem();
+  private final ElevatorSubsystem _elevatorSubsystem = new ElevatorSubsystem();
 
   // controllers (for driver and operator)
   private final CommandPS4Controller _driveController =
@@ -62,6 +65,8 @@ public class RobotContainer {
             () -> -_driveFilterLeftY.calculate(_driveController.getLeftY()),
             () -> -_driveFilterLeftX.calculate(_driveController.getLeftX()),
             () -> -_driveFilterRightX.calculate(_driveController.getRightX())));
+
+    _elevatorSubsystem.setDefaultCommand(new HoldElevator(_elevatorSubsystem));
 
     // configure trigger bindings
     configureBindings();
