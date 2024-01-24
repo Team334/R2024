@@ -81,10 +81,10 @@ public final class Constants {
 
   public static class PID {
     // TODO: Tune everything
-    public static final double FRONT_LEFT_DRIVE_KP = 0.05;
-    public static final double FRONT_RIGHT_DRIVE_KP = 0.05;
-    public static final double BACK_RIGHT_DRIVE_KP = 0.05;
-    public static final double BACK_LEFT_DRIVE_KP = 0.05;
+    public static final double FRONT_LEFT_DRIVE_KP = 0.1;
+    public static final double FRONT_RIGHT_DRIVE_KP = 0.1;
+    public static final double BACK_RIGHT_DRIVE_KP = 0.1;
+    public static final double BACK_LEFT_DRIVE_KP = 0.1;
 
     public static final double FRONT_LEFT_ROTATE_KP = 0.009;
     public static final double FRONT_RIGHT_ROTATE_KP = 0.009;
@@ -92,7 +92,7 @@ public final class Constants {
     public static final double BACK_LEFT_ROTATE_KP = 0.009;
 
     public static final PIDConstants PP_TRANSLATION = new PIDConstants(2.5, 0, 0);
-    public static final PIDConstants PP_ROTATION = new PIDConstants(3, 0, 0.25);
+    public static final PIDConstants PP_ROTATION = new PIDConstants(.9, 0, 0.25);
 
     public static final double SHOOTER_FLYWHEEL_KP = 0;
 
