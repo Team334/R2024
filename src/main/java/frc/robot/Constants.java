@@ -3,6 +3,8 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.util.PIDConstants;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 
@@ -60,8 +62,6 @@ public final class Constants {
     public static final double SHOOTER_FLYWHEEL_RADIUS = 1; // TODO: FIND RADIUS
     public static final double SHOOTER_FLYWHEEL_CIRCUMFERENCE = 2 * Math.PI * SHOOTER_FLYWHEEL_RADIUS;
 
-    public static final double TALON_TICKS_PER_REVOLUTION = 2048;
-
     public static final SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(
       new Translation2d(0.292, 0.292),
       new Translation2d(0.292, -0.292),
@@ -82,11 +82,14 @@ public final class Constants {
     public static final double BACK_RIGHT_ROTATE_KP = 0.009;
     public static final double BACK_LEFT_ROTATE_KP = 0.009;
 
+    public static final PIDConstants PP_TRANSLATION = new PIDConstants(2.5, 0, 0);
+    public static final PIDConstants PP_ROTATION = new PIDConstants(3.5, 0, 0);
 
-    public static final double SHOOTER_PID_KP = 0;
+    public static final double SHOOTER_FLYWHEEL_KP = 0;
   }
 
   public static class Offsets {
+    // these aren't used anymore because cancoders can be zeroed in phoenix tuner
     public static final double ENCODER_FRONT_LEFT = -93;
     public static final double ENCODER_FRONT_RIGHT = -58;
     public static final double ENCODER_BACK_RIGHT = 10;

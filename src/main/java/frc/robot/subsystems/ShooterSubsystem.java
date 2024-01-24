@@ -26,7 +26,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private final ArmFeedforward _armFeed = new ArmFeedforward(0, 0, 0);
 
-  private final PIDController _shooterController = new PIDController(Constants.PID.SHOOTER_PID_KP, 0, 0);
+  private final PIDController _shooterController = new PIDController(Constants.PID.SHOOTER_FLYWHEEL_KP, 0, 0);
 
 
   /** Creates a new ShooterSubsystem. */
