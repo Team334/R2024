@@ -41,7 +41,7 @@ public class ShooterSubsystem extends SubsystemBase {
     _armFeed.calculate(0, 0);
   }
   public void spinMotors() {
-    _leftMotor.set(1.0);
+    _leftMotor.set(-1.0);
   }
 
   public void stopMotors() {
