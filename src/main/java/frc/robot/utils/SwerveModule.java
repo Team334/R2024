@@ -3,19 +3,13 @@
 
 package frc.robot.utils;
 
-import com.ctre.phoenix6.configs.MagnetSensorConfigs;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
-import com.ctre.phoenix6.signals.NeutralModeValue;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
@@ -38,10 +32,10 @@ public class SwerveModule {
    * Represents a single swerve module built with talons for rotation and drive control, and a
    * cancoder for angle.
    *
+   * @param name - The name of this module.
    * @param driveMotorId - CAN ID of drive motor.
    * @param rotationMotorId - CAN ID of rotation motor.
    * @param encoderId - CAN ID of cancoder.
-   * @param angleOffset - Angle offset to add to the absolute cancoder.
    * @param driveP - kP for the drive controller.
    * @param rotationP - kP for the rotation controller.
    */
@@ -50,7 +44,6 @@ public class SwerveModule {
       int driveMotorId,
       int rotationMotorId,
       int encoderId,
-      double angleOffset,
       double driveP,
       double rotationP) {
     _driveMotor = new TalonFX(driveMotorId);
@@ -83,6 +76,18 @@ public class SwerveModule {
     SmartDashboard.putNumber(_name  + " Angle", getAngle());
     SmartDashboard.putNumber(_name + " Velocity", getDriveVelocity());
     SmartDashboard.putNumber(_name + " Current", _rotationMotor.getTorqueCurrent().getValueAsDouble());
+  }
+
+  /**
+   * Get the talons belonging to this module as an array.
+   * 
+   * @return [drive talon, rotation talon]
+   */
+  public TalonFX[] getTalons() {
+    TalonFX[] fxes = new TalonFX[2];
+    fxes[0] = _driveMotor;
+    fxes[1] = _rotationMotor;
+    return fxes;
   }
 
   /** Set the percentage output of the drive motor. */
@@ -135,6 +140,7 @@ public class SwerveModule {
     // velocity: feedforward control mainly along with pid control for small disturbances
 
     state = SwerveModuleState.optimize(state, new Rotation2d(Math.toRadians(getAngle())));
+
     double speed = MathUtil.clamp(
       state.speedMetersPerSecond,
       -Constants.Speeds.SWERVE_DRIVE_MAX_SPEED,
@@ -147,12 +153,11 @@ public class SwerveModule {
       0.150
     );
 
-    double drive_pid = _driveController.calculate(getDriveVelocity(), speed);
     double drive_feedforward = (speed / Constants.Speeds.SWERVE_DRIVE_MAX_SPEED);
+    double drive_pid = _driveController.calculate(getDriveVelocity(), speed);
 
     rotate(rotation_pid);
     drive(drive_feedforward + drive_pid);
-    // drive(0.08);
   }
 
   /**
@@ -162,12 +167,5 @@ public class SwerveModule {
    */
   public SwerveModuleState getState() {
     return new SwerveModuleState(getDriveVelocity(), Rotation2d.fromDegrees(getAngle()));
-  }
-
-  public TalonFX[] returnTalons() {
-    TalonFX[] fxes = new TalonFX[2];
-    fxes[0] = _driveMotor;
-    fxes[1] = _rotationMotor;
-    return fxes;
   }
 }

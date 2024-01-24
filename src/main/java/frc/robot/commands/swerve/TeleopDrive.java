@@ -54,11 +54,6 @@ public class TeleopDrive extends Command {
     double ySpeed = UtilFuncs.ApplyDeadband(_ySpeed.getAsDouble(), 0.1);
     double rotationSpeed = UtilFuncs.ApplyDeadband(_rotationSpeed.getAsDouble(), 0.1);
 
-
-    SmartDashboard.putNumber("JOYSTICK X SPEED", xSpeed * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF);
-    SmartDashboard.putNumber("JOYSTICK Y SPEED", ySpeed * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF);
-
-
     // drive the swerve chassis subsystem
     _swerveDrive.driveChassis(
       new ChassisSpeeds(

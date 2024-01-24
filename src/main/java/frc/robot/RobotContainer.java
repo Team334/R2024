@@ -46,7 +46,7 @@ public class RobotContainer {
   private final SlewRateLimiter _driveFilterRightY = new SlewRateLimiter(4);
 
   // sendable chooser for auton commands
-  private final SendableChooser<Command> autonChooser;
+  private final SendableChooser<Command> _autonChooser;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -66,9 +66,9 @@ public class RobotContainer {
     // configure trigger bindings
     configureBindings();
 
-    autonChooser = AutoBuilder.buildAutoChooser();
+    _autonChooser = AutoBuilder.buildAutoChooser();
 
-    SmartDashboard.putData("AUTON CHOOSER", autonChooser);
+    SmartDashboard.putData("AUTON CHOOSER", _autonChooser);
   }
 
   // to configure button bindings
@@ -78,6 +78,12 @@ public class RobotContainer {
     _driveController.circle().whileTrue(new Shooter(_shooterSubsystem));
     _driveController.cross().whileTrue(new BrakeSwerve(_swerveDrive));
 
+    // for testing raw percent output, is it straight?
+    _driveController.L1().onTrue(Commands.runOnce(() -> {
+      _swerveDrive.driveTest(0.1);
+    }, _swerveDrive));
+
+    // for testing velocity output (forward at 0.3 m/s), is it straight?
     _driveController.triangle().whileTrue(
       Commands.run(() -> {
         _swerveDrive.driveChassis(new ChassisSpeeds(0.3, 0, 0));
@@ -92,6 +98,6 @@ public class RobotContainer {
     _swerveDrive.fieldOriented =
         false; // make sure swerve is robot-relative for pathplanner to work
 
-    return autonChooser.getSelected();
+    return _autonChooser.getSelected();
   }
 }

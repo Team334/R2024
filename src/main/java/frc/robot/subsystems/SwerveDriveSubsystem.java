@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.Orchestra;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
-import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -41,7 +40,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     Constants.CAN.DRIVE_FRONT_LEFT,
     Constants.CAN.ROT_FRONT_LEFT,
     Constants.CAN.ENC_FRONT_LEFT,
-    Constants.Offsets.ENCODER_FRONT_LEFT,
     Constants.PID.FRONT_LEFT_DRIVE_KP,
     Constants.PID.FRONT_LEFT_ROTATE_KP
   );
@@ -51,7 +49,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     Constants.CAN.DRIVE_FRONT_RIGHT,
     Constants.CAN.ROT_FRONT_RIGHT,
     Constants.CAN.ENC_FRONT_RIGHT,
-    Constants.Offsets.ENCODER_FRONT_RIGHT,
     Constants.PID.FRONT_RIGHT_DRIVE_KP,
     Constants.PID.FRONT_RIGHT_ROTATE_KP
   );
@@ -61,7 +58,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     Constants.CAN.DRIVE_BACK_RIGHT,
     Constants.CAN.ROT_BACK_RIGHT,
     Constants.CAN.ENC_BACK_RIGHT,
-    Constants.Offsets.ENCODER_BACK_RIGHT,
     Constants.PID.BACK_RIGHT_DRIVE_KP,
     Constants.PID.BACK_RIGHT_ROTATE_KP
   );
@@ -71,7 +67,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     Constants.CAN.DRIVE_BACK_LEFT,
     Constants.CAN.ROT_BACK_LEFT,
     Constants.CAN.ENC_BACK_LEFT,
-    Constants.Offsets.ENCODER_BACK_LEFT,
     Constants.PID.BACK_LEFT_DRIVE_KP,
     Constants.PID.BACK_LEFT_ROTATE_KP
   );
@@ -142,8 +137,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       this::getRobotRelativeSpeeds,
       this::driveChassis,
       new HolonomicPathFollowerConfig(
-        new PIDConstants(2.5, 0, 0),
-        new PIDConstants(3.5, 0, 0),
+        Constants.PID.PP_TRANSLATION,
+        Constants.PID.PP_ROTATION,
         Constants.Speeds.SWERVE_DRIVE_MAX_SPEED,
         Constants.Physical.SWERVE_DRIVE_BASE_RADIUS,
         new ReplanningConfig()
@@ -214,7 +209,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     for (int i = 0; i < modules.length; i++) {
       for (int j = 0; j < 2; j++) {
-        _orchestra.addInstrument(modules[i].returnTalons()[j]);
+        _orchestra.addInstrument(modules[i].getTalons()[j]);
       }
     }
 
@@ -240,6 +235,16 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     SwerveModuleState[] moduleStates = Constants.Physical.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds);
     setStates(moduleStates);
+  }
+
+  /**
+   * Testing function that sets all the modules' drive motors to the desired percent output.
+   */
+  public void driveTest(double speed) {
+    _frontLeft.drive(speed);
+    _frontRight.drive(speed);
+    _backRight.drive(speed);
+    _backLeft.drive(speed);
   }
 
   /**

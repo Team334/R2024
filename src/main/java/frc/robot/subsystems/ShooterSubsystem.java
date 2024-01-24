@@ -26,7 +26,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private final ArmFeedforward _armFeed = new ArmFeedforward(0, 0, 0);
 
-  private final PIDController _shooterController = new PIDController(Constants.PID.SHOOTER_PID_KP, 0, 0);
+  private final PIDController _shooterController = new PIDController(Constants.PID.SHOOTER_FLYWHEEL_KP, 0, 0);
 
 
   /** Creates a new ShooterSubsystem. */
@@ -41,7 +41,7 @@ public class ShooterSubsystem extends SubsystemBase {
     _armFeed.calculate(0, 0);
   }
   public void spinMotors() {
-    _leftMotor.set(1.0);
+    _leftMotor.set(-1.0);
   }
 
   public void stopMotors() {
