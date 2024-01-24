@@ -27,6 +27,8 @@ import frc.robot.utils.BNO055;
 import frc.robot.utils.SwerveModule;
 import java.util.Optional;
 
+import javax.swing.text.html.Option;
+
 /**
  * @author Peter Gutkovich
  * @author Elvis Osmanov
@@ -110,8 +112,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       _backLeft.getPosition()
     },
     new Pose2d(),
-    VecBuilder.fill(0.008, 0.008, 0.0075),
-    VecBuilder.fill(0.2, .2, .75)
+    VecBuilder.fill(0.006, 0.006, 0.007),
+    VecBuilder.fill(0.7, .7, 1.7)
   );
 
   /** Return the estimated pose of the swerve chassis. */
@@ -182,10 +184,11 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     );
 
     if (_visionSubsystem.isApriltagVisible()) {
-      _estimator.addVisionMeasurement(_visionSubsystem.get_botpose(), Timer.getFPGATimestamp());
+      Optional<Pose2d> visionBotpose = _visionSubsystem.get_botpose();
+      if (visionBotpose.isPresent()) _estimator.addVisionMeasurement(_visionSubsystem.get_botpose().get(), Timer.getFPGATimestamp());
+      if (visionBotpose.isPresent()) _field.setRobotPose(visionBotpose.get());
     }
 
-    _field.setRobotPose(_pose);
     SmartDashboard.putData("FIELD", _field);
 
     _robotSpeed =

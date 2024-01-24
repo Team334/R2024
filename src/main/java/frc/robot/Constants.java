@@ -42,7 +42,7 @@ public final class Constants {
   }
 
   public static class Speeds {
-    public static final double SWERVE_DRIVE_COEFF = 0.35;
+    public static final double SWERVE_DRIVE_COEFF = 0.45;
 
     public static final double SWERVE_DRIVE_MAX_SPEED = 4.67; // TODO: Get this value
     public static final double SWERVE_DRIVE_MAX_ANGULAR_SPEED = Math.PI * 1; // Todo: Get this value
@@ -82,8 +82,8 @@ public final class Constants {
     public static final double BACK_RIGHT_ROTATE_KP = 0.009;
     public static final double BACK_LEFT_ROTATE_KP = 0.009;
 
-    public static final PIDConstants PP_TRANSLATION = new PIDConstants(2.5, 0, 0);
-    public static final PIDConstants PP_ROTATION = new PIDConstants(3.5, 0, 0);
+    public static final PIDConstants PP_TRANSLATION = new PIDConstants(2.5, 0, 0.5);
+    public static final PIDConstants PP_ROTATION = new PIDConstants(4, 0, 0.7);
 
     public static final double SHOOTER_FLYWHEEL_KP = 0;
   }

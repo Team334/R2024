@@ -3,9 +3,14 @@
 
 package frc.robot.subsystems;
 
+import java.util.Optional;
+
+import javax.swing.text.html.Option;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -17,7 +22,7 @@ public class VisionSubsystem extends SubsystemBase {
   private final NetworkTableInstance _inst = NetworkTableInstance.getDefault();
   private final NetworkTable _limelight = _inst.getTable("limelight");
 
-  private double[] _botpose = new double[6];
+  // private double[] _botpose = new double[6];
 
   /** Creates a new VisionSubsystem. */
   public VisionSubsystem() {}
@@ -33,18 +38,23 @@ public class VisionSubsystem extends SubsystemBase {
     // SmartDashboard.putData("Limelight Field", _field);
   }
 
-  public Pose2d get_botpose() {
-    _botpose = _limelight.getEntry("botpose_wpiblue").getDoubleArray(_botpose);
+  public Optional<Pose2d> get_botpose() {
+    NetworkTableEntry botpose_entry = _limelight.getEntry("botpose_wpiblue");
 
-    double botposeX = _botpose[0];
-    double botposeY = _botpose[1];
-    double botposeYaw = Math.toRadians(_botpose[5]);
+    if (!botpose_entry.exists()) {
+      return Optional.empty();
+    } else {
+      double[] botpose_array = botpose_entry.getDoubleArray(new double[6]);
 
-    Rotation2d botposeRotation = new Rotation2d(botposeYaw);
-    Pose2d botPose2D = new Pose2d(botposeX, botposeY, botposeRotation);
-    // System.out.println(botposeRotation);
+      double botposeX = botpose_array[0];
+      double botposeY = botpose_array[1];
+      double botposeYaw = Math.toRadians(botpose_array[5]);
+      Rotation2d botposeRotation = new Rotation2d(botposeYaw);
 
-    return botPose2D;
+      Pose2d botPose2D = new Pose2d(botposeX, botposeY, botposeRotation);
+    
+      return Optional.of(botPose2D);
+    }
   }
 
   public boolean isApriltagVisible() {
