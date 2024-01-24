@@ -1,0 +1,37 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.7712302091270848,
+      "y": 7.34029432022828
+    },
+    "rotation": 90.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ultra amp path pt.1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "interruptSwerve"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ultra amp path pt.2"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}
