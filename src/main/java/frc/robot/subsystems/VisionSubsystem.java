@@ -3,9 +3,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.List;
 import java.util.Optional;
-
-import javax.swing.text.html.Option;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -14,6 +13,13 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import org.json.*;
+import org.json.simple.JSONObject;
+
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 /**
  * @author Lucas Ou
  * @author Alex Reyes
@@ -21,6 +27,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class VisionSubsystem extends SubsystemBase {
   private final NetworkTableInstance _inst = NetworkTableInstance.getDefault();
   private final NetworkTable _limelight = _inst.getTable("limelight");
+
+  private final ObjectMapper _objectMapper = new ObjectMapper();
 
   // private double[] _botpose = new double[6];
 
@@ -32,6 +40,8 @@ public class VisionSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
 
     // SmartDashboard.putNumber("retrieved botpose", getBotpose().getTranslation().getX());
+
+    System.out.println(isApriltagVisible(6));
 
     // _field.setRobotPose(getBotpose());
 
@@ -66,5 +76,32 @@ public class VisionSubsystem extends SubsystemBase {
       return true;
     }
     return false;
+  }
+
+  public boolean isApriltagVisible(int ID) {
+    if (!isApriltagVisible()) return false;
+
+    String jsonString = _limelight.getEntry("json").getString("");
+
+    JsonNode tags;
+
+    try { tags = _objectMapper.readTree(jsonString).get("Results").get("Fiducial"); }
+    catch (Exception e) { throw new Error("IDKK"); }
+
+    for (JsonNode tag : tags) {
+      if (tag.get("fID").asInt() == ID) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  public double[] tagOffsets() {
+    double tx = _limelight.getEntry("tx").getDouble(0);
+    double ty = _limelight.getEntry("ty").getDouble(0);
+
+    double[] angles = {tx, ty};
+    return angles;
   }
 }

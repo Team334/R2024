@@ -7,13 +7,17 @@ import com.ctre.phoenix6.Orchestra;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.ReplanningConfig;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.trajectory.ExponentialProfile.Constraints;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.util.sendable.Sendable;
@@ -166,14 +170,11 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         new ReplanningConfig()
       ),
       () -> {
-        Optional<Alliance> alliance = DriverStation.getAlliance();
-
-        if (alliance.isPresent()) {
-          return alliance.get() == DriverStation.Alliance.Red;
+        if (UtilFuncs.getCurrentAlliance() == Alliance.Red) {
+          return true;
         }
         return false;
-      },
-
+      },        
       this
     );
   SmartDashboard.putData("Swerve Drive", new Sendable() {
@@ -370,5 +371,29 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   /** Get heading DIRECTLY from the BNO055 gyro as a Rotation2d. */
   public Rotation2d getHeadingRaw() {
     return Rotation2d.fromDegrees(-Math.IEEEremainder(_gyro.getHeading(), 360));
+  }
+
+  /** 
+   * Get the shooter's angle to the speaker hole using the drive's pose estimator.
+   */
+  public double shooterAngleToSpeaker() {
+    double xDifference = 1;
+    double yDifference = 1;
+
+    if (UtilFuncs.getCurrentAlliance() == Alliance.Red) {
+      xDifference = Constants.FieldConstants.aprilTagLayout.getTagPose(4).get().getX() - _pose.getX();
+      yDifference = Constants.FieldConstants.aprilTagLayout.getTagPose(4).get().getY() - _pose.getY();
+    }
+    else{
+      xDifference = Constants.FieldConstants.aprilTagLayout.getTagPose(7).get().getX() - _pose.getX();
+      yDifference = Constants.FieldConstants.aprilTagLayout.getTagPose(7).get().getY() - _pose.getY();
+    }
+
+    double distnaceToRobot = Math.sqrt(Math.pow(xDifference, 2) + Math.pow(yDifference, 2));
+    
+    double zDifference = Constants.FieldConstants.SPEAKER_HEIGHT  - Constants.Physical.SHOOTER_HEIGHT_STOWED;
+
+    double angle = Math.atan(zDifference/distnaceToRobot); 
+    return angle;
   }
 }
