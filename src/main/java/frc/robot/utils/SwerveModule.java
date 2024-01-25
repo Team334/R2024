@@ -62,6 +62,7 @@ public class SwerveModule {
     // encoderConfig.MagnetOffset = (angleOffset / 180) / 2;
 
     _encoder = new CANcoder(encoderId);
+    
     // _encoder.getConfigurator().apply(encoderConfig);
 
     _name = name;

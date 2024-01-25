@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
+import frc.robot.Constants.FieldConstants;
 import frc.robot.utils.BNO055;
 import frc.robot.utils.SwerveModule;
 import frc.robot.utils.UtilFuncs;
@@ -347,17 +348,17 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     double yDifference = 1;
 
     if (UtilFuncs.getCurrentAlliance() == Alliance.Red) {
-      xDifference = Constants.FieldConstants.aprilTagLayout.getTagPose(4).get().getX() - _pose.getX();
-      yDifference = Constants.FieldConstants.aprilTagLayout.getTagPose(4).get().getY() - _pose.getY();
+      xDifference = FieldConstants.APRILTAG_LAYOUT.getTagPose(FieldConstants.SPEAKER_TAG_RED).get().getX() - _pose.getX();
+      yDifference = FieldConstants.APRILTAG_LAYOUT.getTagPose(FieldConstants.SPEAKER_TAG_RED).get().getY() - _pose.getY();
     }
-    else{
-      xDifference = Constants.FieldConstants.aprilTagLayout.getTagPose(7).get().getX() - _pose.getX();
-      yDifference = Constants.FieldConstants.aprilTagLayout.getTagPose(7).get().getY() - _pose.getY();
+    else {
+      xDifference = FieldConstants.APRILTAG_LAYOUT.getTagPose(FieldConstants.SPEAKER_TAG_BLUE).get().getX() - _pose.getX();
+      yDifference = FieldConstants.APRILTAG_LAYOUT.getTagPose(FieldConstants.SPEAKER_TAG_BLUE).get().getY() - _pose.getY();
     }
 
     double distnaceToRobot = Math.sqrt(Math.pow(xDifference, 2) + Math.pow(yDifference, 2));
     
-    double zDifference = Constants.FieldConstants.SPEAKER_HEIGHT  - Constants.Physical.SHOOTER_HEIGHT_STOWED;
+    double zDifference = FieldConstants.SPEAKER_HEIGHT  - Constants.Physical.SHOOTER_HEIGHT_STOWED;
 
     double angle = Math.atan(zDifference/distnaceToRobot); 
     return angle;

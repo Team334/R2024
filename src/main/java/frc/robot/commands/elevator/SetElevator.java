@@ -21,7 +21,6 @@ public class SetElevator extends Command {
    */
   private final ElevatorSubsystem _elevator;
   private final DoubleSupplier _height;
-  private final PIDController _heightController = new PIDController(Constants.PID.ELEVATOR_KP, 0, 0);
 
   public SetElevator(ElevatorSubsystem elevator, DoubleSupplier height) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -32,26 +31,21 @@ public class SetElevator extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    _elevator.setMotor(_heightController.calculate(
-      _elevator.getCurrentHeight(), _height.getAsDouble()
-    ) + _elevator.elevatorFeed.calculate(0));
+    _elevator.setElevatorHeight(_height.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    _elevator.setMotor(0);
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return _heightController.atSetpoint();
+    return _elevator.atDesiredHeight();
   }
 }
