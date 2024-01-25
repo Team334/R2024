@@ -163,6 +163,8 @@ public class SwerveModule {
     double drive_feedforward = UtilFuncs.FromVolts(_driveFeedforward.calculate(speed));
     double drive_pid = _driveController.calculate(getDriveVelocity(), speed);
 
+    drive_pid = 0;
+
     rotate(rotation_pid);
     drive(drive_feedforward + drive_pid);
     // drive(0.08);
