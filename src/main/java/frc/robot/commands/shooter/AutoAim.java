@@ -41,6 +41,8 @@ public class AutoAim extends Command {
     }
 
     SmartDashboard.putNumber("ANGLE", shooterAngle);
+
+    _shooter.setAngle(shooterAngle);
   }
 
   // Called once the command ends or is interrupted.
