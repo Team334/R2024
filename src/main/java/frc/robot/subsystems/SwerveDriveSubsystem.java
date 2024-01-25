@@ -16,6 +16,8 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Units;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -174,6 +176,36 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
       this
     );
+  SmartDashboard.putData("Swerve Drive", new Sendable() {
+      @Override
+      public void initSendable(SendableBuilder builder) {
+        builder.setSmartDashboardType("SwerveDrive");
+
+        builder.addDoubleProperty("Front Left Angle", () -> _frontLeft.getAngle(), null);
+        builder.addDoubleProperty("Front Left Velocity", () -> _frontLeft.getDriveVelocity(), null);
+
+        builder.addDoubleProperty("Front Right Angle", () -> _frontRight.getAngle(), null);
+        builder.addDoubleProperty("Front Right Velocity", () -> _frontRight.getDriveVelocity(), null);
+
+        builder.addDoubleProperty("Back Left Angle", () -> _backLeft.getAngle(), null);
+        builder.addDoubleProperty("Back Left Velocity", () -> _backLeft.getDriveVelocity(), null);
+
+        builder.addDoubleProperty("Back Right Angle", () -> _backRight.getAngle(), null);
+        builder.addDoubleProperty("Back Right Velocity", () -> _backRight.getDriveVelocity(), null);
+
+        builder.addDoubleProperty("Robot Angle", () -> _pose.getRotation().getDegrees(), null);
+        builder.addDoubleProperty("Swerve Speed", () -> Constants.Speeds.SWERVE_DRIVE_COEFF, null);
+      }
+    });
+    SmartDashboard.putData("Gyro", new Sendable() {
+      @Override
+      public void initSendable(SendableBuilder builder) {
+        builder.setSmartDashboardType("Gyro");
+        builder.addDoubleProperty("Pose", () -> getHeading().getDegrees(), null);
+      }
+    });
+    
+
   }
 
   @Override
@@ -182,8 +214,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     publisher.set(states);
 
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Gyro", getHeading().getDegrees());
+    // SmartDashboard.putNumber("Gyro", getHeading().getDegrees());
     SmartDashboard.putBoolean("Field Oriented", fieldOriented);
+
+    
 
     _frontLeft.displayInfo();
     _frontRight.displayInfo();
