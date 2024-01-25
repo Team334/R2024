@@ -72,7 +72,7 @@ public final class Constants {
     public static final double SHOOTER_FLYWHEEL_CIRCUMFERENCE = 2 * Math.PI * SHOOTER_FLYWHEEL_RADIUS;
 
     public static final double ELEVATOR_GEAR_RATIO = 27;
-    
+
     public static final double SHOOTER_HEIGHT_STOWED = 0; //TODO: Get this value
 
     public static final SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(
@@ -131,7 +131,7 @@ public final class Constants {
     public static final AprilTagFieldLayout APRILTAG_LAYOUT = UtilFuncs.MakeField();
 
     public static final double SPEAKER_HEIGHT = .200;
-    
+
     public static final int SPEAKER_TAG_BLUE = 7;
     public static final int SPEAKER_TAG_RED = 4;
 

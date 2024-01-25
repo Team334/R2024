@@ -15,6 +15,7 @@ generatedFileExclude {
 
 modifiableFileExclude {
   \.png$
+  \.chrp$
 }
 
 licenseUpdateExclude {

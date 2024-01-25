@@ -109,7 +109,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   /** A boolean for whether the swerve is field oriented or not. */
   public boolean fieldOriented = false;
-  
+
   StructArrayPublisher<SwerveModuleState> publisher = NetworkTableInstance.getDefault().getStructArrayTopic("MyStates", SwerveModuleState.struct).publish();
 
   // private final SysIdRoutine _sysID = new SysIdRoutine(
@@ -175,7 +175,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
           return true;
         }
         return false;
-      },        
+      },
       this
     );
   SmartDashboard.putData("Swerve Drive", new Sendable() {
@@ -206,20 +206,19 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         builder.addDoubleProperty("Pose", () -> getHeading().getDegrees(), null);
       }
     });
-    
+
 
   }
 
   @Override
   public void periodic() {
-
     publisher.set(states);
 
     // This method will be called once per scheduler run
     // SmartDashboard.putNumber("Gyro", getHeading().getDegrees());
     SmartDashboard.putBoolean("Field Oriented", fieldOriented);
 
-    
+
 
     _frontLeft.displayInfo();
     _frontRight.displayInfo();
@@ -374,7 +373,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     return Rotation2d.fromDegrees(-Math.IEEEremainder(_gyro.getHeading(), 360));
   }
 
-  /** 
+  /**
    * Get the shooter's angle to the speaker hole using the drive's pose estimator.
    */
   public double shooterAngleToSpeaker() {
@@ -391,10 +390,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     }
 
     double distnaceToRobot = Math.sqrt(Math.pow(xDifference, 2) + Math.pow(yDifference, 2));
-    
+
     double zDifference = FieldConstants.SPEAKER_HEIGHT  - Constants.Physical.SHOOTER_HEIGHT_STOWED;
 
-    double angle = Math.atan(zDifference/distnaceToRobot); 
+    double angle = Math.atan(zDifference/distnaceToRobot);
     return angle;
   }
 }

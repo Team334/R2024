@@ -1,6 +1,5 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+/*                                  Team 334                                  */
+/* Copyright (c) 2024 Team 334. All Rights Reserved.                          */
 
 package frc.robot.commands.elevator;
 
@@ -16,7 +15,7 @@ import frc.robot.subsystems.ElevatorSubsystem;
 public class SetElevator extends Command {
   /**
    * Creates a new SetElevator.
-   * 
+   *
    * @param height The double supplier that returns the desired height of the elevator in meters.
    */
   private final ElevatorSubsystem _elevator;

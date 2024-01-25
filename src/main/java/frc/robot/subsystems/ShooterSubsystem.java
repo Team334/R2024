@@ -36,7 +36,7 @@ public class ShooterSubsystem extends SubsystemBase {
     NeoConfig.configureFollowerNeo(_rightMotor, _leftMotor, true);
   }
 
-  @Override 
+  @Override
   public void periodic() {
     // This method will be called once per scheduler run
   }
@@ -62,12 +62,10 @@ public class ShooterSubsystem extends SubsystemBase {
 
   /** Drives the angle motors at the desired percent output */
   public void driveAngle(double speed) {
-
   }
 
   /** Stops the angle motors completely, should be called with caution. */
   public void stopAngle() {
-
   }
 
   /** Get the velocity of the back wheel (left side) in m/s. */
@@ -96,4 +94,3 @@ public class ShooterSubsystem extends SubsystemBase {
     _leftMotor.set(0);
   }
 }
-

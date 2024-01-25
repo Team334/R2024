@@ -62,7 +62,7 @@ public class SwerveModule {
     // encoderConfig.MagnetOffset = (angleOffset / 180) / 2;
 
     _encoder = new CANcoder(encoderId);
-    
+
     // _encoder.getConfigurator().apply(encoderConfig);
 
     _name = name;
@@ -90,7 +90,7 @@ public class SwerveModule {
 
   /**
    * Get the talons belonging to this module as an array.
-   * 
+   *
    * @return [drive talon, rotation talon]
    */
   public TalonFX[] getTalons() {
