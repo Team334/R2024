@@ -2,20 +2,21 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.elevator;
+package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
-public class HoldElevator extends Command {
-  /** Creates a new HoldElevator. */
+public class HoldShooter extends Command {
+  private final ShooterSubsystem _shooter;
 
-  private ElevatorSubsystem _elevator;
-
-  public HoldElevator(ElevatorSubsystem elevator) {
+  /** Creates a new HoldShooter. */
+  public HoldShooter(ShooterSubsystem shooter) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(elevator);
-    _elevator = elevator;
+
+    _shooter = shooter;
+
+    addRequirements(shooter);
   }
 
   // Called when the command is initially scheduled.
@@ -25,7 +26,7 @@ public class HoldElevator extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    _elevator.setElevatorHeight(_elevator.getElevatorHeight()); // holds the elevator in place
+    _shooter.setAngle(_shooter.getAngle());
   }
 
   // Called once the command ends or is interrupted.

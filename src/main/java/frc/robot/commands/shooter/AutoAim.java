@@ -4,6 +4,7 @@
 
 package frc.robot.commands.shooter;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
@@ -30,7 +31,19 @@ public class AutoAim extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    double shooterAngle = 0;
+
+    if (_vision.isApriltagVisible()) {
+      shooterAngle = _vision.shooterAngleToSpeaker();
+    } else {
+      shooterAngle = _swerve.shooterAngleToSpeaker();
+    }
+
+    SmartDashboard.putNumber("ANGLE", shooterAngle);
+
+    _shooter.setAngle(shooterAngle);
+  }
 
   // Called once the command ends or is interrupted.
   @Override

@@ -128,13 +128,14 @@ public final class Constants {
   }
 
   public static class FieldConstants {
-    public static final AprilTagFieldLayout aprilTagLayout = UtilFuncs.MakeField();
+    public static final AprilTagFieldLayout APRILTAG_LAYOUT = UtilFuncs.MakeField();
 
     public static final double SPEAKER_HEIGHT = .200;
-      
-    public static final Pose2d speakerBlueAlliance =
-        new Pose2d(0.25, 5.5, Rotation2d.fromDegrees(180.0));
-    public static final Pose2d speakerRedAlliance =
-        new Pose2d(16.3, 5.5, Rotation2d.fromDegrees(0.0));
+    
+    public static final int SPEAKER_TAG_BLUE = 7;
+    public static final int SPEAKER_TAG_RED = 4;
+
+    public static final Pose2d SPEAKER_POSE_BLUE = new Pose2d(0.25, 5.5, Rotation2d.fromDegrees(180.0));
+    public static final Pose2d SPEAKER_POSE_RED = new Pose2d(16.3, 5.5, Rotation2d.fromDegrees(0.0));
   }
 }

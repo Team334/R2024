@@ -20,6 +20,8 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.ExponentialProfile.Constraints;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Units;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -30,6 +32,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
+import frc.robot.Constants.FieldConstants;
 import frc.robot.utils.BNO055;
 import frc.robot.utils.SwerveModule;
 import frc.robot.utils.UtilFuncs;
@@ -175,6 +178,36 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       },        
       this
     );
+  SmartDashboard.putData("Swerve Drive", new Sendable() {
+      @Override
+      public void initSendable(SendableBuilder builder) {
+        builder.setSmartDashboardType("SwerveDrive");
+
+        builder.addDoubleProperty("Front Left Angle", () -> _frontLeft.getAngle(), null);
+        builder.addDoubleProperty("Front Left Velocity", () -> _frontLeft.getDriveVelocity(), null);
+
+        builder.addDoubleProperty("Front Right Angle", () -> _frontRight.getAngle(), null);
+        builder.addDoubleProperty("Front Right Velocity", () -> _frontRight.getDriveVelocity(), null);
+
+        builder.addDoubleProperty("Back Left Angle", () -> _backLeft.getAngle(), null);
+        builder.addDoubleProperty("Back Left Velocity", () -> _backLeft.getDriveVelocity(), null);
+
+        builder.addDoubleProperty("Back Right Angle", () -> _backRight.getAngle(), null);
+        builder.addDoubleProperty("Back Right Velocity", () -> _backRight.getDriveVelocity(), null);
+
+        builder.addDoubleProperty("Robot Angle", () -> _pose.getRotation().getDegrees(), null);
+        builder.addDoubleProperty("Swerve Speed", () -> Constants.Speeds.SWERVE_DRIVE_COEFF, null);
+      }
+    });
+    SmartDashboard.putData("Gyro", new Sendable() {
+      @Override
+      public void initSendable(SendableBuilder builder) {
+        builder.setSmartDashboardType("Gyro");
+        builder.addDoubleProperty("Pose", () -> getHeading().getDegrees(), null);
+      }
+    });
+    
+
   }
 
   @Override
@@ -183,8 +216,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     publisher.set(states);
 
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Gyro", getHeading().getDegrees());
+    // SmartDashboard.putNumber("Gyro", getHeading().getDegrees());
     SmartDashboard.putBoolean("Field Oriented", fieldOriented);
+
+    
 
     _frontLeft.displayInfo();
     _frontRight.displayInfo();
@@ -347,17 +382,17 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     double yDifference = 1;
 
     if (UtilFuncs.getCurrentAlliance() == Alliance.Red) {
-      xDifference = Constants.FieldConstants.aprilTagLayout.getTagPose(4).get().getX() - _pose.getX();
-      yDifference = Constants.FieldConstants.aprilTagLayout.getTagPose(4).get().getY() - _pose.getY();
+      xDifference = FieldConstants.APRILTAG_LAYOUT.getTagPose(FieldConstants.SPEAKER_TAG_RED).get().getX() - _pose.getX();
+      yDifference = FieldConstants.APRILTAG_LAYOUT.getTagPose(FieldConstants.SPEAKER_TAG_RED).get().getY() - _pose.getY();
     }
-    else{
-      xDifference = Constants.FieldConstants.aprilTagLayout.getTagPose(7).get().getX() - _pose.getX();
-      yDifference = Constants.FieldConstants.aprilTagLayout.getTagPose(7).get().getY() - _pose.getY();
+    else {
+      xDifference = FieldConstants.APRILTAG_LAYOUT.getTagPose(FieldConstants.SPEAKER_TAG_BLUE).get().getX() - _pose.getX();
+      yDifference = FieldConstants.APRILTAG_LAYOUT.getTagPose(FieldConstants.SPEAKER_TAG_BLUE).get().getY() - _pose.getY();
     }
 
     double distnaceToRobot = Math.sqrt(Math.pow(xDifference, 2) + Math.pow(yDifference, 2));
     
-    double zDifference = Constants.FieldConstants.SPEAKER_HEIGHT  - Constants.Physical.SHOOTER_HEIGHT_STOWED;
+    double zDifference = FieldConstants.SPEAKER_HEIGHT  - Constants.Physical.SHOOTER_HEIGHT_STOWED;
 
     double angle = Math.atan(zDifference/distnaceToRobot); 
     return angle;

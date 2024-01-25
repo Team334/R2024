@@ -62,6 +62,7 @@ public class SwerveModule {
     // encoderConfig.MagnetOffset = (angleOffset / 180) / 2;
 
     _encoder = new CANcoder(encoderId);
+    
     // _encoder.getConfigurator().apply(encoderConfig);
 
     _name = name;
@@ -70,6 +71,9 @@ public class SwerveModule {
 
     _rotationController = new PIDController(rotationP, 0, 0);
     _rotationController.enableContinuousInput(-180, 180);
+
+    SmartDashboard.putData(_driveController);
+    SmartDashboard.putData(_rotationController);
 
     TalonFXConfig.configureFalcon(_driveMotor, false);
     TalonFXConfig.configureFalcon(_rotationMotor, true);
