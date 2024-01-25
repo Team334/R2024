@@ -11,10 +11,10 @@ import frc.robot.subsystems.ShooterSubsystem;
  * @author Cherine Soewingjo
  * @author Peleh Liu
  */
-public class Shooter extends Command {
+public class SpinShooter extends Command {
   private ShooterSubsystem _shooter;
 
-  public Shooter(ShooterSubsystem shooter) {
+  public SpinShooter(ShooterSubsystem shooter) {
     _shooter = shooter;
     addRequirements(_shooter);
   }
@@ -22,7 +22,7 @@ public class Shooter extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    _shooter.spinMotors();
+    _shooter.spinShooter();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -32,7 +32,7 @@ public class Shooter extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    _shooter.stopMotors();
+    _shooter.stopShooter();
   }
 
   // Returns true when the command should end.

@@ -15,7 +15,8 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import frc.robot.commands.elevator.HoldElevator;
-import frc.robot.commands.shooter.Shooter;
+import frc.robot.commands.shooter.HoldShooter;
+import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.commands.swerve.BrakeSwerve;
 import frc.robot.commands.swerve.ResetPose;
 import frc.robot.commands.swerve.TeleopDrive;
@@ -67,6 +68,7 @@ public class RobotContainer {
             () -> -_driveFilterRightX.calculate(_driveController.getRightX())));
 
     _elevatorSubsystem.setDefaultCommand(new HoldElevator(_elevatorSubsystem));
+    _shooterSubsystem.setDefaultCommand(new HoldShooter(_shooterSubsystem));
 
     // configure trigger bindings
     configureBindings();
@@ -80,7 +82,7 @@ public class RobotContainer {
   private void configureBindings() {
     _driveController.R1().onTrue(new ToggleSwerveOrient(_swerveDrive));
     _driveController.square().onTrue(new ResetPose(_swerveDrive));
-    _driveController.circle().whileTrue(new Shooter(_shooterSubsystem));
+    _driveController.circle().whileTrue(new SpinShooter(_shooterSubsystem));
     _driveController.cross().whileTrue(new BrakeSwerve(_swerveDrive));
 
     // for testing raw percent output, is it straight?

@@ -4,25 +4,19 @@
 
 package frc.robot.commands.shooter;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.SwerveDriveSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
 
-public class AutoAim extends Command {
+public class HoldShooter extends Command {
+  private final ShooterSubsystem _shooter;
 
-  private ShooterSubsystem _shooter;
-  private VisionSubsystem _vision;
-  private SwerveDriveSubsystem _swerve;
-
-  /** Creates a new AutoAim. */
-  public AutoAim(ShooterSubsystem shooter, VisionSubsystem vision, SwerveDriveSubsystem swerve) {
+  /** Creates a new HoldShooter. */
+  public HoldShooter(ShooterSubsystem shooter) {
     // Use addRequirements() here to declare subsystem dependencies.
+
     _shooter = shooter;
-    _vision = vision;
-    _swerve = swerve;
-    addRequirements(_shooter, _vision, _swerve);
+
+    addRequirements(shooter);
   }
 
   // Called when the command is initially scheduled.
@@ -32,15 +26,7 @@ public class AutoAim extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double shooterAngle = 0;
-
-    if (_vision.isApriltagVisible()) {
-      shooterAngle = _vision.shooterAngleToSpeaker();
-    } else {
-      shooterAngle = _swerve.shooterAngleToSpeaker();
-    }
-
-    SmartDashboard.putNumber("ANGLE", shooterAngle);
+    _shooter.setAngle(_shooter.getAngle());
   }
 
   // Called once the command ends or is interrupted.

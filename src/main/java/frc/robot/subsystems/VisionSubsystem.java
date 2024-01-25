@@ -3,7 +3,6 @@
 
 package frc.robot.subsystems;
 
-import java.util.List;
 import java.util.Optional;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -12,9 +11,6 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import org.json.simple.JSONObject;
-
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -96,11 +92,16 @@ public class VisionSubsystem extends SubsystemBase {
     return false;
   }
 
-  public double[] tagOffsets() {
+  public double[] tagAngleOffsets() {
     double tx = _limelight.getEntry("tx").getDouble(0);
     double ty = _limelight.getEntry("ty").getDouble(0);
 
     double[] angles = {tx, ty};
+
     return angles;
+  }
+
+  public double shooterAngleToSpeaker() {
+    return tagAngleOffsets()[0];
   }
 }

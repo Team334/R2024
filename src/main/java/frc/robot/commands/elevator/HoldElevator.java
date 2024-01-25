@@ -25,7 +25,7 @@ public class HoldElevator extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    _elevator.setMotor(_elevator.elevatorFeed.calculate(0));
+    _elevator.setElevatorHeight(_elevator.getElevatorHeight()); // holds the elevator in place
   }
 
   // Called once the command ends or is interrupted.
