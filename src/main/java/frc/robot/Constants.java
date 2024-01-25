@@ -45,7 +45,7 @@ public final class Constants {
   }
 
   public static class Speeds {
-    public static final double SWERVE_DRIVE_COEFF = 0.45;
+    public static final double SWERVE_DRIVE_COEFF = 0.3;
 
     public static final double SWERVE_DRIVE_MAX_SPEED = 4.67; // TODO: Get this value
     public static final double SWERVE_DRIVE_MAX_ANGULAR_SPEED = Math.PI * 1; // Todo: Get this value
@@ -83,10 +83,10 @@ public final class Constants {
     // TODO: Tune everything
 
     // TODO: bruh these don't work 😭
-    public static final double FRONT_LEFT_DRIVE_KP = 0.1;
-    public static final double FRONT_RIGHT_DRIVE_KP = 0.1;
-    public static final double BACK_RIGHT_DRIVE_KP = 0.1;
-    public static final double BACK_LEFT_DRIVE_KP = 0.1;
+    public static final double FRONT_LEFT_DRIVE_KP = 0.08;
+    public static final double FRONT_RIGHT_DRIVE_KP = 0.08;
+    public static final double BACK_RIGHT_DRIVE_KP = 0.08;
+    public static final double BACK_LEFT_DRIVE_KP = 0.08;
 
     public static final double FRONT_LEFT_ROTATE_KP = 0.009;
     public static final double FRONT_RIGHT_ROTATE_KP = 0.009;

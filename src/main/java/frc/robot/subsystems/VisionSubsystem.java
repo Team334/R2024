@@ -54,7 +54,7 @@ public class VisionSubsystem extends SubsystemBase {
       Pose2d botPose2D = new Pose2d(botposeX, botposeY, botposeRotation);
     
       return Optional.of(botPose2D);
-    }
+    } 
   }
 
   public boolean isApriltagVisible() {
