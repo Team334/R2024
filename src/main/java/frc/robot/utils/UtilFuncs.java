@@ -23,12 +23,12 @@ public final class UtilFuncs {
   }
 
   /**
-   * Control a motor controller with voltage by converting a voltage output into percent output.
+   * Control a motor controller with voltage by converting a voltage output into percent output with a scale factor.
    * 
    * @param volts The voltage output.
    * @return The percent output to set the controller to.
    */
   public static double FromVolts(double volts) {
-    return volts / RobotController.getBatteryVoltage();
+    return volts / 12.0;
   }
 }
