@@ -7,6 +7,7 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -23,6 +24,11 @@ public class SwerveModule {
 
   private final PIDController _driveController;
   private final PIDController _rotationController;
+
+  private final SimpleMotorFeedforward _driveFeedforward = new SimpleMotorFeedforward(
+    Constants.FeedForward.MODULE_DRIVE_KS,
+    Constants.FeedForward.MODULE_DRIVE_KV
+  );
 
   private final CANcoder _encoder;
 
@@ -153,7 +159,8 @@ public class SwerveModule {
       0.150
     );
 
-    double drive_feedforward = (speed / Constants.Speeds.SWERVE_DRIVE_MAX_SPEED);
+    // double drive_feedforward = (speed / Constants.Speeds.SWERVE_DRIVE_MAX_SPEED);
+    double drive_feedforward = UtilFuncs.FromVolts(_driveFeedforward.calculate(speed));
     double drive_pid = _driveController.calculate(getDriveVelocity(), speed);
 
     rotate(rotation_pid);
