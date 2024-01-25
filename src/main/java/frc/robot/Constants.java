@@ -7,6 +7,7 @@ import com.pathplanner.lib.util.PIDConstants;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -76,7 +77,10 @@ public final class Constants {
   }
 
   public static class FeedForward {
-    public static final double ELEVATOR_KG = 0.0; // TODO: Find Kg constant.
+    public static final double ELEVATOR_KG = 0.0; // TODO: Find Kg constants
+
+    public static final double MODULE_DRIVE_KS = 0.0;
+    public static final double MODULE_DRIVE_KV = 0.0;
   }
 
   public static class PID {

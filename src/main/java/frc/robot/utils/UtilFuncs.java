@@ -3,6 +3,8 @@
 
 package frc.robot.utils;
 
+import edu.wpi.first.wpilibj.RobotController;
+
 /** Any utility functions are here. */
 public final class UtilFuncs {
   /**
@@ -18,5 +20,15 @@ public final class UtilFuncs {
     }
 
     return 0;
+  }
+
+  /**
+   * Control a motor controller with voltage by converting a voltage output into percent output.
+   * 
+   * @param volts The voltage output.
+   * @return The percent output to set the controller to.
+   */
+  public static double FromVolts(double volts) {
+    return volts / RobotController.getBatteryVoltage();
   }
 }

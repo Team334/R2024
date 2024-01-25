@@ -14,6 +14,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.Units;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -22,12 +24,14 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.utils.BNO055;
 import frc.robot.utils.SwerveModule;
+import frc.robot.utils.UtilFuncs;
+
 import java.util.Optional;
 
-import javax.swing.text.html.Option;
 
 /**
  * @author Peter Gutkovich
@@ -100,6 +104,20 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   public boolean fieldOriented = false;
   
   StructArrayPublisher<SwerveModuleState> publisher = NetworkTableInstance.getDefault().getStructArrayTopic("MyStates", SwerveModuleState.struct).publish();
+
+  // private final SysIdRoutine _sysID = new SysIdRoutine(
+  //   new SysIdRoutine.Config(),
+  //   new SysIdRoutine.Mechanism(
+  //     (volts) -> {
+  //       driveTest(UtilFuncs.FromVolts(volts.in(Units.Volts)));
+  //     },
+  //     (log) -> {
+  //       new Measure()
+  //       // log.motor("Front Left").linearVelocity(_frontLeft.getDriveVelocity());
+  //     },
+  //     this
+  //   )
+  // );
 
   // Pose Estimator -> Has built in odometry and uses supplied vision measurements
   private final SwerveDrivePoseEstimator _estimator = new SwerveDrivePoseEstimator(
