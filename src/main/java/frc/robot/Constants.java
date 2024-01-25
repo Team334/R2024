@@ -86,26 +86,26 @@ public final class Constants {
   public static class FeedForward {
     public static final double ELEVATOR_KG = 0.0; // TODO: Find Kg constants
 
-    public static final double MODULE_DRIVE_KS = 0.0;
-    public static final double MODULE_DRIVE_KV = 0.0;
+    public static final double MODULE_DRIVE_KS = 0.32;
+    public static final double MODULE_DRIVE_KV = 2.15;
   }
 
   public static class PID {
     // TODO: Tune everything
 
     // TODO: bruh these don't work 😭
-    public static final double FRONT_LEFT_DRIVE_KP = 0.08;
-    public static final double FRONT_RIGHT_DRIVE_KP = 0.08;
-    public static final double BACK_RIGHT_DRIVE_KP = 0.08;
-    public static final double BACK_LEFT_DRIVE_KP = 0.08;
+    public static final double FRONT_LEFT_DRIVE_KP = 0.05;
+    public static final double FRONT_RIGHT_DRIVE_KP = 0.05;
+    public static final double BACK_RIGHT_DRIVE_KP = 0.05;
+    public static final double BACK_LEFT_DRIVE_KP = 0.05;
 
     public static final double FRONT_LEFT_ROTATE_KP = 0.009;
     public static final double FRONT_RIGHT_ROTATE_KP = 0.009;
     public static final double BACK_RIGHT_ROTATE_KP = 0.009;
     public static final double BACK_LEFT_ROTATE_KP = 0.009;
 
-    public static final PIDConstants PP_TRANSLATION = new PIDConstants(2.5, 0, 0);
-    public static final PIDConstants PP_ROTATION = new PIDConstants(.9, 0, 0.25);
+    public static final PIDConstants PP_TRANSLATION = new PIDConstants(3.695, 0, 0);
+    public static final PIDConstants PP_ROTATION = new PIDConstants(1.2302, 0, 0);
 
     public static final double SHOOTER_FLYWHEEL_KP = 0;
 
