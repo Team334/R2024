@@ -72,6 +72,7 @@ public class SwerveModule {
     _rotationController.enableContinuousInput(-180, 180);
 
     SmartDashboard.putData(_driveController);
+    SmartDashboard.putData(_rotationController);
 
     TalonFXConfig.configureFalcon(_driveMotor, false);
     TalonFXConfig.configureFalcon(_rotationMotor, true);
