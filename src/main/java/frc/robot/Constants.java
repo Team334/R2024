@@ -97,8 +97,8 @@ public final class Constants {
     public static final double BACK_RIGHT_ROTATE_KP = 0.009;
     public static final double BACK_LEFT_ROTATE_KP = 0.009;
 
-    public static final PIDConstants PP_TRANSLATION = new PIDConstants(3.67, 0, 0);
-    public static final PIDConstants PP_ROTATION = new PIDConstants(1.25, 0, 0);
+    public static final PIDConstants PP_TRANSLATION = new PIDConstants(3.695, 0, 0);
+    public static final PIDConstants PP_ROTATION = new PIDConstants(1.2302, 0, 0);
 
     public static final double SHOOTER_FLYWHEEL_KP = 0;
 
