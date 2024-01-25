@@ -5,9 +5,14 @@ package frc.robot;
 
 import com.pathplanner.lib.util.PIDConstants;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.utils.UtilFuncs;
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -67,6 +72,8 @@ public final class Constants {
     public static final double SHOOTER_FLYWHEEL_CIRCUMFERENCE = 2 * Math.PI * SHOOTER_FLYWHEEL_RADIUS;
 
     public static final double ELEVATOR_GEAR_RATIO = 27;
+    
+    public static final double SHOOTER_HEIGHT_STOWED = 0; //TODO: Get this value
 
     public static final SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(
       new Translation2d(0.292, 0.292),
@@ -111,9 +118,23 @@ public final class Constants {
     public static final double ENCODER_FRONT_RIGHT = -58;
     public static final double ENCODER_BACK_RIGHT = 10;
     public static final double ENCODER_BACK_LEFT = 43;
+
+    public static final double APRILTAG_SPEAKER_OFFSET = 0.565; // <- Below, but in Meters
+    // 200(approx height of spk opening) - 132(Height of AprTag) + 11.5(Center of AprTag) <- CM
   }
 
   public static class Ports {
     public static final int DRIVER_CONTROLLER = 0;
+  }
+
+  public static class FieldConstants {
+    public static final AprilTagFieldLayout aprilTagLayout = UtilFuncs.MakeField();
+
+    public static final double SPEAKER_HEIGHT = .200;
+      
+    public static final Pose2d speakerBlueAlliance =
+        new Pose2d(0.25, 5.5, Rotation2d.fromDegrees(180.0));
+    public static final Pose2d speakerRedAlliance =
+        new Pose2d(16.3, 5.5, Rotation2d.fromDegrees(0.0));
   }
 }
