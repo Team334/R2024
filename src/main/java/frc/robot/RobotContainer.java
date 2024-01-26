@@ -67,8 +67,8 @@ public class RobotContainer {
             () -> -_driveFilterLeftX.calculate(_driveController.getLeftX()),
             () -> -_driveFilterRightX.calculate(_driveController.getRightX())));
 
-    _elevatorSubsystem.setDefaultCommand(new HoldElevator(_elevatorSubsystem));
-    _shooterSubsystem.setDefaultCommand(new HoldShooter(_shooterSubsystem));
+    // _elevatorSubsystem.setDefaultCommand(new HoldElevator(_elevatorSubsystem));
+    // _shooterSubsystem.setDefaultCommand(new HoldShooter(_shooterSubsystem));
 
     // configure trigger bindings
     configureBindings();
