@@ -178,6 +178,15 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         },
         this);
     SmartDashboard.putData(
+    "Gyro",
+    new Sendable() {
+      @Override
+      public void initSendable(SendableBuilder builder) {
+        builder.setSmartDashboardType("Gyro");
+        builder.addDoubleProperty("Value", () -> getHeading().getDegrees(), null);
+      }
+    });
+    SmartDashboard.putData(
         "Swerve Drive",
         new Sendable() {
           @Override
@@ -205,17 +214,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
                 "Swerve Speed", () -> Constants.Speeds.SWERVE_DRIVE_COEFF, null);
           }
         });
-    SmartDashboard.putData(
-        "Gyro",
-        new Sendable() {
-          @Override
-          public void initSendable(SendableBuilder builder) {
-            builder.setSmartDashboardType("Gyro");
-            builder.addDoubleProperty("Pose", () -> getHeading().getDegrees(), null);
-          }
-        });
 
     SmartDashboard.putData("Swerve/Built-in Accelerometer", new BuiltInAccelerometer());
+
+
   }
 
   @Override
