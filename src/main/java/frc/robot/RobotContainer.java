@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import frc.robot.commands.elevator.HoldElevator;
+import frc.robot.commands.shooter.AutoAim;
 import frc.robot.commands.shooter.HoldShooter;
 import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.commands.swerve.BrakeSwerve;
@@ -25,6 +26,7 @@ import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.utils.UtilFuncs;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -35,7 +37,7 @@ import frc.robot.subsystems.VisionSubsystem;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final VisionSubsystem _visionSubsystem = new VisionSubsystem();
-  private final SwerveDriveSubsystem _swerveDrive = new SwerveDriveSubsystem(_visionSubsystem);
+  private final SwerveDriveSubsystem _swerveSubsystem = new SwerveDriveSubsystem(_visionSubsystem);
   private final ShooterSubsystem _shooterSubsystem = new ShooterSubsystem();
   private final ElevatorSubsystem _elevatorSubsystem = new ElevatorSubsystem();
 
@@ -54,18 +56,27 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    Command interruptSwerve = new BrakeSwerve(_swerveDrive, 3);
+    Command interruptSwerve = new BrakeSwerve(_swerveSubsystem, 3);
 
     NamedCommands.registerCommand("printHello", new PrintCommand("AUTON HELLO"));
     NamedCommands.registerCommand("waitCommand", new WaitCommand(3));
     NamedCommands.registerCommand("interruptSwerve", interruptSwerve);
 
-    _swerveDrive.setDefaultCommand(
-        new TeleopDrive(
-            _swerveDrive,
-            () -> -_driveFilterLeftY.calculate(_driveController.getLeftY()),
-            () -> -_driveFilterLeftX.calculate(_driveController.getLeftX()),
-            () -> -_driveFilterRightX.calculate(_driveController.getRightX())));
+    _swerveSubsystem.setDefaultCommand(
+      // new TeleopDrive(
+      //   _swerveDrive,
+      //   () -> UtilFuncs.ApplyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
+      //   () -> UtilFuncs.ApplyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1),
+      //   () -> UtilFuncs.ApplyDeadband(-_driveFilterRightX.calculate(_driveController.getRightX()), 0.1)
+      // )
+      new AutoAim(
+        _shooterSubsystem,
+        _visionSubsystem,
+        _swerveSubsystem,
+        () -> UtilFuncs.ApplyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
+        () -> UtilFuncs.ApplyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1)
+      )
+    );
 
     // _elevatorSubsystem.setDefaultCommand(new HoldElevator(_elevatorSubsystem));
     // _shooterSubsystem.setDefaultCommand(new HoldShooter(_shooterSubsystem));
@@ -80,10 +91,10 @@ public class RobotContainer {
 
   // to configure button bindings
   private void configureBindings() {
-    _driveController.R1().onTrue(new ToggleSwerveOrient(_swerveDrive));
-    _driveController.square().onTrue(new ResetPose(_swerveDrive));
+    _driveController.R1().onTrue(new ToggleSwerveOrient(_swerveSubsystem));
+    _driveController.square().onTrue(new ResetPose(_swerveSubsystem));
     _driveController.circle().whileTrue(new SpinShooter(_shooterSubsystem));
-    _driveController.cross().whileTrue(new BrakeSwerve(_swerveDrive));
+    _driveController.cross().whileTrue(new BrakeSwerve(_swerveSubsystem));
 
     // for testing raw percent output, is it straight?
     _driveController
@@ -91,9 +102,9 @@ public class RobotContainer {
         .onTrue(
             Commands.runOnce(
                 () -> {
-                  _swerveDrive.driveTest(0.1);
+                  _swerveSubsystem.driveTest(0.1);
                 },
-                _swerveDrive));
+                _swerveSubsystem));
 
     // for testing velocity output (forward at 0.3 m/s), is it straight?
     _driveController
@@ -101,16 +112,16 @@ public class RobotContainer {
         .whileTrue(
             Commands.run(
                 () -> {
-                  _swerveDrive.driveChassis(new ChassisSpeeds(0.3, 0, 0));
+                  _swerveSubsystem.driveChassis(new ChassisSpeeds(0.3, 0, 0));
                 },
-                _swerveDrive));
+                _swerveSubsystem));
   }
 
   /**
    * @return The Command to schedule for auton.
    */
   public Command getAutonCommand() {
-    _swerveDrive.fieldOriented =
+    _swerveSubsystem.fieldOriented =
         false; // make sure swerve is robot-relative for pathplanner to work
 
     return _autonChooser.getSelected();

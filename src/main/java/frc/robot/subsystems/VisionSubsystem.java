@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.utils.LimelightHelper;
@@ -36,6 +37,16 @@ public class VisionSubsystem extends SubsystemBase {
     // _field.setRobotPose(getBotpose());
 
     // SmartDashboard.putData("Limelight Field", _field);
+  }
+
+  /**
+   * Returns the latency from the last time data was sent from the limelight. This should be used in the pose estimator.
+   */
+  public double getLatency() {
+    double tl = _limelight.getEntry("tl").getDouble(0);
+    double cl = _limelight.getEntry("cl").getDouble(0);
+
+    return Timer.getFPGATimestamp() - (tl/1000.0) - (cl/1000.0);
   }
 
   /**
@@ -117,7 +128,7 @@ public class VisionSubsystem extends SubsystemBase {
    * 
    * @return [tx, ty] or null.
    */
-  public double[] shooterAnglesToSpeaker() {
+  public double[] anglesToSpeaker() {
     return tagAngleOffsets(Constants.FIELD_CONSTANTS.SPEAKER_TAG);
   }
 }

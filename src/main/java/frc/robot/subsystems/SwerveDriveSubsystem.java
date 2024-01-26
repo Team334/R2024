@@ -252,10 +252,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     if (_visionSubsystem.isApriltagVisible()) {
       Optional<Pose2d> visionBotpose = _visionSubsystem.getBotpose();
-      if (visionBotpose.isPresent())
-        _estimator.addVisionMeasurement(
-            _visionSubsystem.getBotpose().get(), Timer.getFPGATimestamp());
-      if (visionBotpose.isPresent()) _field.setRobotPose(visionBotpose.get());
+      if (visionBotpose.isPresent()) {
+        _estimator.addVisionMeasurement(_visionSubsystem.getBotpose().get(), _visionSubsystem.getLatency());
+        _field.setRobotPose(_estimator.getEstimatedPosition());
+      }
     }
 
     SmartDashboard.putData("FIELD", _field);
@@ -288,6 +288,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     _orchestra.loadMusic(song);
     _orchestra.play();
+  }
+
+  public void setChassisSpeeds(ChassisSpeeds chassisSpeeds) {
+    
   }
 
   /**
@@ -384,7 +388,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   }
 
   /** Get the shooter's angle to the speaker hole using the drive's pose estimator. */
-  public double shooterAngleToSpeaker() {
+  public double[] anglesToSpeaker() {
     int tagID = Constants.FIELD_CONSTANTS.SPEAKER_TAG;
     Pose3d tagPose = Constants.FIELD_CONSTANTS.APRILTAG_LAYOUT.getTagPose(tagID).get();
 
@@ -395,7 +399,16 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     double zDifference = FieldConstants.SPEAKER_HEIGHT - Constants.Physical.SHOOTER_HEIGHT_STOWED;
 
-    double angle = Math.atan(zDifference / distanceToRobot);
-    return Math.toDegrees(angle);
+    double angleY = Math.atan(zDifference / distanceToRobot);
+
+
+    Rotation2d currentRotation = getHeading();
+    double rotateDifference = Math.atan((getPose().getY() - Constants.FIELD_CONSTANTS.SPEAKER_POSE.getY()) / (getPose().getX() - Constants.FIELD_CONSTANTS.SPEAKER_POSE.getX()));
+
+    double angleX = currentRotation.getDegrees() - rotateDifference;
+
+    double[] angles = {angleX, angleY};
+
+    return angles;
   }
 }
