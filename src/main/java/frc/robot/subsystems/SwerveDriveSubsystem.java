@@ -10,6 +10,7 @@ import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -382,8 +383,11 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   /** Get the shooter's angle to the speaker hole using the drive's pose estimator. */
   public double shooterAngleToSpeaker() {
-    double xDifference = Constants.FIELD_CONSTANTS.APRILTAG_LAYOUT.getTagPose(FieldConstants.SPEAKER_TAG_RED).get().getX() - _pose.getX();
-    double yDifference = Constants.FIELD_CONSTANTS.APRILTAG_LAYOUT.getTagPose(FieldConstants.SPEAKER_TAG_RED).get().getY() - _pose.getY();
+    int tagID = Constants.FIELD_CONSTANTS.SPEAKER_TAG;
+    Pose3d tagPose = Constants.FIELD_CONSTANTS.APRILTAG_LAYOUT.getTagPose(tagID).get();
+
+    double xDifference = tagPose.getX() - _pose.getX();
+    double yDifference = tagPose.getY() - _pose.getY();
 
     double distanceToRobot = Math.sqrt(Math.pow(xDifference, 2) + Math.pow(yDifference, 2));
 
