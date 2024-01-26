@@ -199,7 +199,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
             builder.addDoubleProperty(
                 "Back Right Velocity", () -> _backRight.getDriveVelocity(), null);
 
-            builder.addDoubleProperty("Robot Angle", () -> _pose.getRotation().getDegrees(), null);
+            builder.addDoubleProperty("Robot Angle", () -> getHeading().getDegrees(), null);
             builder.addDoubleProperty(
                 "Swerve Speed", () -> Constants.Speeds.SWERVE_DRIVE_COEFF, null);
           }
@@ -266,6 +266,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     // getRobotRelativeSpeeds().vxMetersPerSecond);
     // SmartDashboard.putNumber("ACTUAL Y SPEED",
     // getRobotRelativeSpeeds().vyMetersPerSecond);
+    SmartDashboard.putNumber("Robot Speed", _robotSpeed);
   }
 
   // to setup talon orchestra
