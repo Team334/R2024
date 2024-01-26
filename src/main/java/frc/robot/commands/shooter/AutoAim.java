@@ -20,7 +20,7 @@ public class AutoAim extends Command {
     _shooter = shooter;
     _vision = vision;
     _swerve = swerve;
-    addRequirements(_shooter, _vision, _swerve);
+    addRequirements(_shooter, _vision); // not adding swerve as a requirement to prevent interrupting default command
   }
 
   // Called when the command is initially scheduled.

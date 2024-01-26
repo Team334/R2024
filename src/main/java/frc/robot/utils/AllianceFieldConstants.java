@@ -9,6 +9,10 @@ import frc.robot.Constants;
 
 /** Dynamic field constants that at the start of the match are set based on the alliance color. */
 public class AllianceFieldConstants {
+    /** 
+     * The field layout. 
+     * @see AprilTagFieldLayout 
+     */
     public final AprilTagFieldLayout APRILTAG_LAYOUT = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
 
     /** The speaker's tag ID. */
