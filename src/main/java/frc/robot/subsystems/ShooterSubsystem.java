@@ -61,7 +61,9 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   /** Drives the angle motors at the desired percent output */
-  public void driveAngle(double speed) {}
+  public void driveAngle(double speed) {
+    _leftMotor.set(speed);
+  }
 
   /** Stops the angle motors completely, should be called with caution. */
   public void stopAngle() {}
