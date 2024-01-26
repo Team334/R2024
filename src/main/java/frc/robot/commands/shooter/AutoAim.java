@@ -5,6 +5,7 @@ package frc.robot.commands.shooter;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -24,7 +25,7 @@ public class AutoAim extends Command {
   private DoubleSupplier _ySpeed;
 
   private PIDController _headingController = new PIDController(
-    Constants.PID.PP_ROTATION.kP,
+    0.05,
     0,
     0
   );
@@ -46,6 +47,7 @@ public class AutoAim extends Command {
     _ySpeed = ySpeed;
 
     _headingController.setTolerance(2);
+    _headingController.enableContinuousInput(-180, 180);
 
     addRequirements(_shooter, _vision, _swerve);
   }
@@ -66,29 +68,39 @@ public class AutoAim extends Command {
 
     double[] visionAngles = _vision.anglesToSpeaker();
 
-    if (_vision.isApriltagVisible() && visionAngles != null) {
-      desiredShooterAngle = visionAngles[1];
-      desiredSwerveHeading = visionAngles[0];
+    // if (_vision.isApriltagVisible() && visionAngles != null) {
+    //   desiredShooterAngle = visionAngles[1];
+    //   desiredSwerveHeading = visionAngles[0];
 
-      SmartDashboard.putNumberArray("VISION ANGLES", visionAngles);
+    //   SmartDashboard.putNumberArray("VISION ANGLES", visionAngles);
 
-    } else {
-      desiredShooterAngle = _swerve.anglesToSpeaker()[1];
-      desiredSwerveHeading = _swerve.anglesToSpeaker()[0];
-    }
+    // } else {
+    //   desiredShooterAngle = _swerve.anglesToSpeaker()[1];
+    //   desiredSwerveHeading = _swerve.anglesToSpeaker()[0];
+    // }
 
-    desiredSwerveHeading -= currentSwerveHeading;
+    // desiredSwerveHeading -= currentSwerveHeading;
 
-    _shooter.setAngle(desiredShooterAngle);
+    // SmartDashboard.putNumber("DESIRED HEADING 360", desiredSwerveHeading);
 
-    SmartDashboard.putNumber("DESIRED HEADING", desiredSwerveHeading);
+    // desiredSwerveHeading = MathUtil.angleModulus(Math.toRadians(desiredSwerveHeading));
+    // desiredSwerveHeading = Math.toDegrees(desiredSwerveHeading);
+
+    // _shooter.setAngle(desiredShooterAngle);
+
+    // SmartDashboard.putNumber("DESIRED HEADING", desiredSwerveHeading);
+
+    desiredSwerveHeading = _swerve.anglesToSpeaker()[0];
 
     _swerve.driveChassis(
       new ChassisSpeeds(
         _xSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
         _ySpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
-        // _headingController.calculate(currentSwerveHeading, desiredSwerveHeading),
-        0
+        MathUtil.clamp(
+          _headingController.calculate(currentSwerveHeading, desiredSwerveHeading),
+          -Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED,
+          Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED
+        )
       )
     );
   }

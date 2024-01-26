@@ -12,6 +12,7 @@ import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -226,6 +227,9 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   public void periodic() {
     publisher.set(states);
 
+    SmartDashboard.putNumber("Gyro 180/-180", getHeading().getDegrees());
+    anglesToSpeaker();
+
     // This method will be called once per scheduler run
     // SmartDashboard.putNumber("Gyro", getHeading().getDegrees());
     SmartDashboard.putBoolean("Field Oriented", fieldOriented);
@@ -358,7 +362,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     resetPose(new_pose);
   }
-
+  
   /** Resets pose estimator's translation of the drive to (0, 0). */
   public void resetTranslation() {
     Pose2d new_pose = new Pose2d(0, 0, _pose.getRotation());
@@ -391,31 +395,46 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   /** Get the shooter's angle to the speaker hole using the drive's pose estimator. */
   public double[] anglesToSpeaker() {
-    int tagID = Constants.FIELD_CONSTANTS.SPEAKER_TAG;
-    Pose3d tagPose = Constants.FIELD_CONSTANTS.APRILTAG_LAYOUT.getTagPose(tagID).get();
+    // int tagID = Constants.FIELD_CONSTANTS.SPEAKER_TAG;
+    // Pose3d tagPose = Constants.FIELD_CONSTANTS.APRILTAG_LAYOUT.getTagPose(tagID).get();
 
-    double xDifference = tagPose.getX() - _pose.getX();
-    double yDifference = tagPose.getY() - _pose.getY();
+    // Translation2d tagTranslation = new Translation2d(tagPose.getX(), tagPose.getY());
+    // Translation2d botTranslation = _pose.getTranslation();
 
-    double distanceToRobot = Math.sqrt(Math.pow(xDifference, 2) + Math.pow(yDifference, 2));
+    // Rotation2d moveAngle = tagTranslation.minus(botTranslation).getAngle();
 
-    double zDifference = FieldConstants.SPEAKER_HEIGHT - Constants.Physical.SHOOTER_HEIGHT_STOWED;
+    // double[] a = {1, 2};
 
-    double angleY = Math.atan(zDifference / distanceToRobot);
+    // SmartDashboard.putNumber("MOVE ANGLE", moveAngle.getDegrees());
+
+    double[] a = {1, 2};
+
+    return a;
+
+    // double xDifference = tagPose.getX() - _pose.getX();
+    // double yDifference = tagPose.getY() - _pose.getY();
+
+    // Constants.FIELD_CONSTANTS.SPEAKER_POSE.minus(new Pose2d());
+
+    // double distanceToRobot = Math.sqrt(Math.pow(xDifference, 2) + Math.pow(yDifference, 2));
+
+    // double zDifference = FieldConstants.SPEAKER_HEIGHT - Constants.Physical.SHOOTER_HEIGHT_STOWED;
+
+    // double angleY = Math.atan(zDifference / distanceToRobot);
 
 
-    Rotation2d currentRotation = getHeading();
-    double angleX = 0;
+    // Rotation2d currentRotation = getHeading();
+    // double angleX = 0;
 
-    if (getPose().getY() > Constants.FIELD_CONSTANTS.SPEAKER_POSE.getY()){
-      angleX = -currentRotation.getDegrees() + Math.atan((getPose().getY() - Constants.FIELD_CONSTANTS.SPEAKER_POSE.getY()) / (getPose().getX() - Constants.FIELD_CONSTANTS.SPEAKER_POSE.getX()));
-    }
-    else{
-      angleX = -currentRotation.getDegrees() - Math.atan((Constants.FIELD_CONSTANTS.SPEAKER_POSE.getY() - getPose().getY()) / (getPose().getX() - Constants.FIELD_CONSTANTS.SPEAKER_POSE.getX()));
-    }
+    // if (getPose().getY() > Constants.FIELD_CONSTANTS.SPEAKER_POSE.getY()){
+    //   angleX = -currentRotation.getDegrees() + Math.atan((getPose().getY() - Constants.FIELD_CONSTANTS.SPEAKER_POSE.getY()) / (getPose().getX() - Constants.FIELD_CONSTANTS.SPEAKER_POSE.getX()));
+    // }
+    // else{
+    //   angleX = -currentRotation.getDegrees() - Math.atan((Constants.FIELD_CONSTANTS.SPEAKER_POSE.getY() - getPose().getY()) / (getPose().getX() - Constants.FIELD_CONSTANTS.SPEAKER_POSE.getX()));
+    // }
     
-    double[] angles = {angleX, angleY};
+    // double[] angles = {angleX, angleY};
 
-    return angles;
+    // return angles;
   }
 }
