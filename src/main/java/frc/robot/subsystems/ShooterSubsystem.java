@@ -30,7 +30,7 @@ public class ShooterSubsystem extends SubsystemBase {
       new PIDController(getAngle(), getVelocity(), getAngle());
 
   private final PIDController _shooterController =
-      new PIDController(Constants.PID.SHOOTER_FLYWHEEL_KP, 0, 0);
+      new PIDController(Constants.PID.SHOOTER_FLYWHEEL_KP, 1, 0);
 
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
@@ -72,8 +72,14 @@ public class ShooterSubsystem extends SubsystemBase {
   public double getVelocity() {
     double neo_rps = _leftEncoder.getVelocity() / 60;
 
-    return (neo_rps / Constants.Physical.SHOOTER_GEAR_RATIO)
+    double number = (neo_rps / Constants.Physical.SHOOTER_GEAR_RATIO)
         * Constants.Physical.SHOOTER_FLYWHEEL_CIRCUMFERENCE;
+
+    if (number < 0){
+      number = 0;
+    }
+    
+    return number;
   }
 
   /** Set the velocity of the back wheels in m/s. */
