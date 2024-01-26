@@ -8,6 +8,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -207,7 +208,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       }
     });
 
-
+    SmartDashboard.putData("Swerve/Built-in Accelerometer", new BuiltInAccelerometer());  
   }
 
   @Override
