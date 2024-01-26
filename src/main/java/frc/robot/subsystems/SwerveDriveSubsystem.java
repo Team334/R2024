@@ -405,10 +405,15 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
 
     Rotation2d currentRotation = getHeading();
-    double rotateDifference = Math.atan((getPose().getY() - Constants.FIELD_CONSTANTS.SPEAKER_POSE.getY()) / (getPose().getX() - Constants.FIELD_CONSTANTS.SPEAKER_POSE.getX()));
+    double angleX = 0;
 
-    double angleX = currentRotation.getDegrees() - rotateDifference;
-
+    if (getPose().getY() > Constants.FIELD_CONSTANTS.SPEAKER_POSE.getY()){
+      angleX = -currentRotation.getDegrees() + Math.atan((getPose().getY() - Constants.FIELD_CONSTANTS.SPEAKER_POSE.getY()) / (getPose().getX() - Constants.FIELD_CONSTANTS.SPEAKER_POSE.getX()));
+    }
+    else{
+      angleX = -currentRotation.getDegrees() - Math.atan((Constants.FIELD_CONSTANTS.SPEAKER_POSE.getY() - getPose().getY()) / (getPose().getX() - Constants.FIELD_CONSTANTS.SPEAKER_POSE.getX()));
+    }
+    
     double[] angles = {angleX, angleY};
 
     return angles;
