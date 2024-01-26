@@ -14,6 +14,7 @@ The code consists of Java using GradleRIO, WPIlib, Limelight, etc. Our robot use
 | REV Robotics | https://docs.revrobotics.com/docs/ |
 | FRC Driver Station (NI FRC Game tools) | https://www.ni.com/en/support/downloads/drivers/download.frc-game-tools.html |
 | Pathplanner | https://pathplanner.dev/home.html |
+| Elastic Dashboard | https://github.com/Gold872/elastic-dashboard |
 
 ## Contributing
 First of all, thank you for taking your time to look over the code and trying making this code better. There are guidelines when contributing be sure to read [CONTRIBUTING.md](https://github.com/Team334/R2024/blob/main/.github/CONTRIBUTING.md)

@@ -86,16 +86,24 @@ public class RobotContainer {
     _driveController.cross().whileTrue(new BrakeSwerve(_swerveDrive));
 
     // for testing raw percent output, is it straight?
-    _driveController.L1().onTrue(Commands.runOnce(() -> {
-      _swerveDrive.driveTest(0.1);
-    }, _swerveDrive));
+    _driveController
+        .L1()
+        .onTrue(
+            Commands.runOnce(
+                () -> {
+                  _swerveDrive.driveTest(0.1);
+                },
+                _swerveDrive));
 
     // for testing velocity output (forward at 0.3 m/s), is it straight?
-    _driveController.triangle().whileTrue(
-      Commands.run(() -> {
-        _swerveDrive.driveChassis(new ChassisSpeeds(0.3, 0, 0));
-      }, _swerveDrive)
-    );
+    _driveController
+        .triangle()
+        .whileTrue(
+            Commands.run(
+                () -> {
+                  _swerveDrive.driveChassis(new ChassisSpeeds(0.3, 0, 0));
+                },
+                _swerveDrive));
   }
 
   /**

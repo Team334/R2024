@@ -25,10 +25,9 @@ public class SwerveModule {
   private final PIDController _driveController;
   private final PIDController _rotationController;
 
-  private final SimpleMotorFeedforward _driveFeedforward = new SimpleMotorFeedforward(
-    Constants.FeedForward.MODULE_DRIVE_KS,
-    Constants.FeedForward.MODULE_DRIVE_KV
-  );
+  private final SimpleMotorFeedforward _driveFeedforward =
+      new SimpleMotorFeedforward(
+          Constants.FeedForward.MODULE_DRIVE_KS, Constants.FeedForward.MODULE_DRIVE_KV);
 
   private final CANcoder _encoder;
 
@@ -62,7 +61,7 @@ public class SwerveModule {
     // encoderConfig.MagnetOffset = (angleOffset / 180) / 2;
 
     _encoder = new CANcoder(encoderId);
-    
+
     // _encoder.getConfigurator().apply(encoderConfig);
 
     _name = name;
@@ -79,18 +78,17 @@ public class SwerveModule {
     TalonFXConfig.configureFalcon(_rotationMotor, true);
   }
 
-  /**
-   * Display's this module's info on SmartDashboard.
-   */
+  /** Display's this module's info on SmartDashboard. */
   public void displayInfo() {
-    SmartDashboard.putNumber(_name  + " Angle", getAngle());
+    SmartDashboard.putNumber(_name + " Angle", getAngle());
     SmartDashboard.putNumber(_name + " Velocity", getDriveVelocity());
-    SmartDashboard.putNumber(_name + " Current", _rotationMotor.getTorqueCurrent().getValueAsDouble());
+    SmartDashboard.putNumber(
+        _name + " Current", _rotationMotor.getTorqueCurrent().getValueAsDouble());
   }
 
   /**
    * Get the talons belonging to this module as an array.
-   * 
+   *
    * @return [drive talon, rotation talon]
    */
   public TalonFX[] getTalons() {
@@ -112,7 +110,8 @@ public class SwerveModule {
 
   /** Get the absolute angle of the module as an int (-180 to 180 degrees). */
   public int getAngle() {
-    return Double.valueOf(_encoder.getAbsolutePosition().getValueAsDouble() * 2 * 180).intValue(); // ctre update
+    return Double.valueOf(_encoder.getAbsolutePosition().getValueAsDouble() * 2 * 180)
+        .intValue(); // ctre update
   }
 
   /** Get the velocity of the drive wheel (meters per second). */
@@ -151,17 +150,15 @@ public class SwerveModule {
 
     state = SwerveModuleState.optimize(state, new Rotation2d(Math.toRadians(getAngle())));
 
-    double speed = MathUtil.clamp(
-      state.speedMetersPerSecond,
-      -Constants.Speeds.SWERVE_DRIVE_MAX_SPEED,
-      Constants.Speeds.SWERVE_DRIVE_MAX_SPEED
-    );
+    double speed =
+        MathUtil.clamp(
+            state.speedMetersPerSecond,
+            -Constants.Speeds.SWERVE_DRIVE_MAX_SPEED,
+            Constants.Speeds.SWERVE_DRIVE_MAX_SPEED);
 
-    double rotation_pid = MathUtil.clamp(
-      _rotationController.calculate(getAngle(), state.angle.getDegrees()),
-      -0.150,
-      0.150
-    );
+    double rotation_pid =
+        MathUtil.clamp(
+            _rotationController.calculate(getAngle(), state.angle.getDegrees()), -0.150, 0.150);
 
     // double drive_feedforward = (speed / Constants.Speeds.SWERVE_DRIVE_MAX_SPEED);
     double drive_feedforward = UtilFuncs.FromVolts(_driveFeedforward.calculate(speed));

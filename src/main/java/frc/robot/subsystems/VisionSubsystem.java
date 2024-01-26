@@ -3,27 +3,22 @@
 
 package frc.robot.subsystems;
 
-import java.util.Optional;
-
+import com.fasterxml.jackson.databind.JsonNode;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.utils.LimelightHelper;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Optional;
 
 /**
  * @author Lucas Ou
  * @author Alex Reyes
  */
 public class VisionSubsystem extends SubsystemBase {
-  private final NetworkTableInstance _inst = NetworkTableInstance.getDefault();
-  private final NetworkTable _limelight = _inst.getTable("limelight");
-
-  private final ObjectMapper _objectMapper = new ObjectMapper();
+  private final LimelightHelper _limelight = LimelightHelper.getInstance();
 
   // private double[] _botpose = new double[6];
 
@@ -36,14 +31,21 @@ public class VisionSubsystem extends SubsystemBase {
 
     // SmartDashboard.putNumber("retrieved botpose", getBotpose().getTranslation().getX());
 
-    System.out.println(isApriltagVisible(6));
+    // System.out.println(isApriltagVisible(6));
 
     // _field.setRobotPose(getBotpose());
 
     // SmartDashboard.putData("Limelight Field", _field);
   }
 
-  public Optional<Pose2d> get_botpose() {
+  /**
+   * Returns the "wpiblue" botpose of the robot from the limelight.
+   * 
+   * @return An Optional of Pose2d which is necessary if no value is found from the limelight.
+   * 
+   * @see Optional
+   */
+  public Optional<Pose2d> getBotpose() {
     NetworkTableEntry botpose_entry = _limelight.getEntry("botpose_wpiblue");
 
     if (!botpose_entry.exists()) {
@@ -57,51 +59,65 @@ public class VisionSubsystem extends SubsystemBase {
       Rotation2d botposeRotation = new Rotation2d(botposeYaw);
 
       Pose2d botPose2D = new Pose2d(botposeX, botposeY, botposeRotation);
-    
+
       return Optional.of(botPose2D);
-    } 
+    }
   }
 
+  /**
+   * Return a boolean for whether a tag is seen.
+   */
   public boolean isApriltagVisible() {
     double tv = _limelight.getEntry("tv").getDouble(0);
+
     if (tv == 0) {
       return false;
     }
+
     if (tv == 1) {
       return true;
     }
+
     return false;
   }
 
+  /**
+   * Return a boolean for whether the desired tag is seen.
+   * 
+   * @param ID The id of the desired tag.
+   */
   public boolean isApriltagVisible(int ID) {
     if (!isApriltagVisible()) return false;
 
-    String jsonString = _limelight.getEntry("json").getString("");
-
-    JsonNode tags;
-
-    try { tags = _objectMapper.readTree(jsonString).get("Results").get("Fiducial"); }
-    catch (Exception e) { throw new Error("IDKK"); }
-
-    for (JsonNode tag : tags) {
-      if (tag.get("fID").asInt() == ID) {
-        return true;
-      }
-    }
-
-    return false;
+    return _limelight.getTag(ID) != null;
   }
 
-  public double[] tagAngleOffsets() {
-    double tx = _limelight.getEntry("tx").getDouble(0);
-    double ty = _limelight.getEntry("ty").getDouble(0);
+  /**
+   * Return tx and ty angle offsets from a desired tag.
+   * 
+   * @param ID The id of the desired tag.
+   * 
+   * @return A double array [tx, ty]. Null is returned if no tags are visible at all.
+   */
+  public double[] tagAngleOffsets(int ID) {
+    if (!isApriltagVisible(ID)) return null;
+    
+    JsonNode tag = _limelight.getTag(ID);
+
+    double tx = tag.get("tx").asDouble();
+    double ty = tag.get("ty").asDouble();
 
     double[] angles = {tx, ty};
 
     return angles;
   }
 
-  public double shooterAngleToSpeaker() {
-    return tagAngleOffsets()[0];
+  /**
+   * The tag angle offsets to the tag on the speaker (automatically knows which tag to check).
+   * 
+   * @return [tx, ty] or null.
+   */
+  public double[] shooterAnglesToSpeaker() {
+    return tagAngleOffsets(Constants.FIELD_CONSTANTS.SPEAKER_TAG);
   }
 }
