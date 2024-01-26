@@ -36,7 +36,7 @@ public class VisionSubsystem extends SubsystemBase {
 
     // SmartDashboard.putNumber("retrieved botpose", getBotpose().getTranslation().getX());
 
-    System.out.println(isApriltagVisible(6));
+    // System.out.println(isApriltagVisible(6));
 
     // _field.setRobotPose(getBotpose());
 

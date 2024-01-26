@@ -4,7 +4,15 @@
       "/FMSInfo": "FMSInfo",
       "/SmartDashboard/AUTON CHOOSER": "String Chooser",
       "/SmartDashboard/FIELD": "Field2d",
-      "/SmartDashboard/Gyro": "Gyro"
+      "/SmartDashboard/Gyro": "Gyro",
+      "/SmartDashboard/PIDController[1]": "PIDController",
+      "/SmartDashboard/PIDController[2]": "PIDController",
+      "/SmartDashboard/PIDController[3]": "PIDController",
+      "/SmartDashboard/PIDController[4]": "PIDController",
+      "/SmartDashboard/PIDController[5]": "PIDController",
+      "/SmartDashboard/PIDController[6]": "PIDController",
+      "/SmartDashboard/PIDController[7]": "PIDController",
+      "/SmartDashboard/PIDController[8]": "PIDController"
     }
   },
   "NetworkTables Info": {
