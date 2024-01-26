@@ -8,12 +8,14 @@ import frc.robot.subsystems.ShooterSubsystem;
 
 public class HoldShooter extends Command {
   private final ShooterSubsystem _shooter;
+  private final double _maintainAngle;
 
   /** Creates a new HoldShooter. */
   public HoldShooter(ShooterSubsystem shooter) {
     // Use addRequirements() here to declare subsystem dependencies.
 
     _shooter = shooter;
+    _maintainAngle = shooter.getAngle();
 
     addRequirements(shooter);
   }
@@ -25,7 +27,7 @@ public class HoldShooter extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    _shooter.setAngle(_shooter.getAngle());
+    _shooter.setAngle(_maintainAngle);
   }
 
   // Called once the command ends or is interrupted.

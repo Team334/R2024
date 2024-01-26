@@ -394,6 +394,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     double zDifference = FieldConstants.SPEAKER_HEIGHT - Constants.Physical.SHOOTER_HEIGHT_STOWED;
 
     double angle = Math.atan(zDifference / distanceToRobot);
-    return angle;
+    return Math.toDegrees(angle);
   }
 }
