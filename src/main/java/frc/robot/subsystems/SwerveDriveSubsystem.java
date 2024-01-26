@@ -7,6 +7,8 @@ import com.ctre.phoenix6.Orchestra;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.ReplanningConfig;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -395,6 +397,28 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   /** Get the shooter's angle to the speaker hole using the drive's pose estimator. */
   public double[] anglesToSpeaker() {
+    int tagID = Constants.FIELD_CONSTANTS.SPEAKER_TAG;
+    Pose3d tagPose = Constants.FIELD_CONSTANTS.APRILTAG_LAYOUT.getTagPose(tagID).get();
+
+    Translation2d tagTranslation = new Translation2d(tagPose.getX(), tagPose.getY());
+    Translation2d botTranslation = _pose.getTranslation();
+
+    double desiredHeading = MathUtil.inputModulus(
+      tagTranslation.minus(botTranslation).getAngle().getDegrees(),
+      -180,
+      180
+    );
+
+    double xAngleToSpeaker = desiredHeading - _pose.getRotation().getDegrees();
+    double yAngleToSpeaker = 0;
+
+    double[] angles = {
+      xAngleToSpeaker,
+      yAngleToSpeaker
+    };
+
+    return angles;
+
     // int tagID = Constants.FIELD_CONSTANTS.SPEAKER_TAG;
     // Pose3d tagPose = Constants.FIELD_CONSTANTS.APRILTAG_LAYOUT.getTagPose(tagID).get();
 
@@ -406,10 +430,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     // double[] a = {1, 2};
 
     // SmartDashboard.putNumber("MOVE ANGLE", moveAngle.getDegrees());
-
-    double[] a = {1, 2};
-
-    return a;
 
     // double xDifference = tagPose.getX() - _pose.getX();
     // double yDifference = tagPose.getY() - _pose.getY();
