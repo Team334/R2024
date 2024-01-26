@@ -3,17 +3,15 @@
 
 package frc.robot.subsystems;
 
-import java.util.Optional;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Optional;
 
 /**
  * @author Lucas Ou
@@ -80,8 +78,11 @@ public class VisionSubsystem extends SubsystemBase {
 
     JsonNode tags;
 
-    try { tags = _objectMapper.readTree(jsonString).get("Results").get("Fiducial"); }
-    catch (Exception e) { throw new Error("IDKK"); }
+    try {
+      tags = _objectMapper.readTree(jsonString).get("Results").get("Fiducial");
+    } catch (Exception e) {
+      throw new Error("IDKK");
+    }
 
     for (JsonNode tag : tags) {
       if (tag.get("fID").asInt() == ID) {

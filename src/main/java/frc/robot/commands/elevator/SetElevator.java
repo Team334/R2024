@@ -3,14 +3,9 @@
 
 package frc.robot.commands.elevator;
 
-import java.util.function.DoubleSupplier;
-import java.util.function.Supplier;
-
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
-import frc.robot.Constants.PID;
 import frc.robot.subsystems.ElevatorSubsystem;
+import java.util.function.DoubleSupplier;
 
 public class SetElevator extends Command {
   /**
@@ -19,6 +14,7 @@ public class SetElevator extends Command {
    * @param height The double supplier that returns the desired height of the elevator in meters.
    */
   private final ElevatorSubsystem _elevator;
+
   private final DoubleSupplier _height;
 
   public SetElevator(ElevatorSubsystem elevator, DoubleSupplier height) {

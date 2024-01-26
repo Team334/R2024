@@ -8,7 +8,6 @@ import frc.robot.subsystems.ElevatorSubsystem;
 
 public class HoldElevator extends Command {
   /** Creates a new HoldElevator. */
-
   private ElevatorSubsystem _elevator;
 
   public HoldElevator(ElevatorSubsystem elevator) {

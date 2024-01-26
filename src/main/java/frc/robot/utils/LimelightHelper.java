@@ -3,19 +3,17 @@
 
 package frc.robot.utils;
 
-/**
- * Singleton class that helps retrieve limelight info from network tables.
- */
+/** Singleton class that helps retrieve limelight info from network tables. */
 public class LimelightHelper {
-    private static LimelightHelper _instance;
+  private static LimelightHelper _instance;
 
-    public final static LimelightHelper getInstance() {
-        if (_instance == null) {
-            _instance = new LimelightHelper();
-        }
-
-        return _instance;
+  public static final LimelightHelper getInstance() {
+    if (_instance == null) {
+      _instance = new LimelightHelper();
     }
 
-    private LimelightHelper() {}
+    return _instance;
+  }
+
+  private LimelightHelper() {}
 }

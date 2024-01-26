@@ -22,7 +22,6 @@ public class TalonFXConfig {
    * deadband and sets Falcon to Coast neutral mode.
    *
    * @param falcon - The Falcon to config.
-   *
    * @return The configuration object applied to the Falcon.
    */
   public static TalonFXConfiguration configureFalcon(TalonFX falcon, boolean invert) {
@@ -53,8 +52,7 @@ public class TalonFXConfig {
    * @param master - The master motor.
    * @param opposeMaster - Boolean for whether the follower motor inverted to the master.
    */
-  public static void configureFollowerFalcon(
-      TalonFX falcon, TalonFX master, boolean opposeMaster) {
+  public static void configureFollowerFalcon(TalonFX falcon, TalonFX master, boolean opposeMaster) {
     configureFalcon(falcon, false);
     falcon.setControl(new Follower(master.getDeviceID(), opposeMaster));
   }
