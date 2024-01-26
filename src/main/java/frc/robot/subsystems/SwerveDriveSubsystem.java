@@ -170,7 +170,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
             Constants.Physical.SWERVE_DRIVE_BASE_RADIUS,
             new ReplanningConfig()),
         () -> {
-          if (UtilFuncs.getCurrentAlliance() == Alliance.Red) {
+          if (UtilFuncs.GetCurrentAlliance() == Alliance.Red) {
             return true;
           }
           return false;
@@ -248,10 +248,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
             });
 
     if (_visionSubsystem.isApriltagVisible()) {
-      Optional<Pose2d> visionBotpose = _visionSubsystem.get_botpose();
+      Optional<Pose2d> visionBotpose = _visionSubsystem.getBotpose();
       if (visionBotpose.isPresent())
         _estimator.addVisionMeasurement(
-            _visionSubsystem.get_botpose().get(), Timer.getFPGATimestamp());
+            _visionSubsystem.getBotpose().get(), Timer.getFPGATimestamp());
       if (visionBotpose.isPresent()) _field.setRobotPose(visionBotpose.get());
     }
 
@@ -381,30 +381,14 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   /** Get the shooter's angle to the speaker hole using the drive's pose estimator. */
   public double shooterAngleToSpeaker() {
-    double xDifference = 1;
-    double yDifference = 1;
+    double xDifference = Constants.FIELD_CONSTANTS.APRILTAG_LAYOUT.getTagPose(FieldConstants.SPEAKER_TAG_RED).get().getX() - _pose.getX();
+    double yDifference = Constants.FIELD_CONSTANTS.APRILTAG_LAYOUT.getTagPose(FieldConstants.SPEAKER_TAG_RED).get().getY() - _pose.getY();
 
-    if (UtilFuncs.getCurrentAlliance() == Alliance.Red) {
-      xDifference =
-          FieldConstants.APRILTAG_LAYOUT.getTagPose(FieldConstants.SPEAKER_TAG_RED).get().getX()
-              - _pose.getX();
-      yDifference =
-          FieldConstants.APRILTAG_LAYOUT.getTagPose(FieldConstants.SPEAKER_TAG_RED).get().getY()
-              - _pose.getY();
-    } else {
-      xDifference =
-          FieldConstants.APRILTAG_LAYOUT.getTagPose(FieldConstants.SPEAKER_TAG_BLUE).get().getX()
-              - _pose.getX();
-      yDifference =
-          FieldConstants.APRILTAG_LAYOUT.getTagPose(FieldConstants.SPEAKER_TAG_BLUE).get().getY()
-              - _pose.getY();
-    }
-
-    double distnaceToRobot = Math.sqrt(Math.pow(xDifference, 2) + Math.pow(yDifference, 2));
+    double distanceToRobot = Math.sqrt(Math.pow(xDifference, 2) + Math.pow(yDifference, 2));
 
     double zDifference = FieldConstants.SPEAKER_HEIGHT - Constants.Physical.SHOOTER_HEIGHT_STOWED;
 
-    double angle = Math.atan(zDifference / distnaceToRobot);
+    double angle = Math.atan(zDifference / distanceToRobot);
     return angle;
   }
 }

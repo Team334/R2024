@@ -33,7 +33,7 @@ public class AutoAim extends Command {
     double shooterAngle = 0;
 
     if (_vision.isApriltagVisible()) {
-      shooterAngle = _vision.shooterAngleToSpeaker();
+      shooterAngle = _vision.shooterAnglesToSpeaker()[0]; // tx
     } else {
       shooterAngle = _swerve.shooterAngleToSpeaker();
     }

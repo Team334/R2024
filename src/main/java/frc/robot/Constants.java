@@ -9,6 +9,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import frc.robot.utils.AllianceFieldConstants;
 import frc.robot.utils.UtilFuncs;
 
 /**
@@ -126,17 +127,17 @@ public final class Constants {
     public static final int DRIVER_CONTROLLER = 0;
   }
 
-  public static class FieldConstants {
-    public static final AprilTagFieldLayout APRILTAG_LAYOUT = UtilFuncs.MakeField();
+  /** Field constants that are dynamically set up for the match's alliance color. */
+  public static final AllianceFieldConstants FIELD_CONSTANTS = new AllianceFieldConstants();
 
+  // static field constants
+  public static class FieldConstants {
     public static final double SPEAKER_HEIGHT = .200;
 
     public static final int SPEAKER_TAG_BLUE = 7;
     public static final int SPEAKER_TAG_RED = 4;
 
-    public static final Pose2d SPEAKER_POSE_BLUE =
-        new Pose2d(0.25, 5.5, Rotation2d.fromDegrees(180.0));
-    public static final Pose2d SPEAKER_POSE_RED =
-        new Pose2d(16.3, 5.5, Rotation2d.fromDegrees(0.0));
+    public static final Pose2d SPEAKER_POSE_BLUE = new Pose2d(0.25, 5.5, Rotation2d.fromDegrees(180.0));
+    public static final Pose2d SPEAKER_POSE_RED = new Pose2d(16.3, 5.5, Rotation2d.fromDegrees(0.0));
   }
 }
