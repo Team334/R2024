@@ -45,7 +45,7 @@ public class LimelightHelper {
    * @see JsonNode
    */
   public JsonNode getTags() {
-    String jsonString = _limelight.getEntry("json").getString("");
+    String jsonString = getEntry("json").getString("");
 
     JsonNode tags;
 
