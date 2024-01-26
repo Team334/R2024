@@ -156,6 +156,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   public SwerveDriveSubsystem(VisionSubsystem visionSubsystem) {
     _visionSubsystem = visionSubsystem;
 
+    resetPose(_visionSubsystem.getBotpose().get());
+
     // setupOrchestra();
 
     // pathplannerlib setup

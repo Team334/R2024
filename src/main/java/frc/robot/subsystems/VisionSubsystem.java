@@ -100,7 +100,7 @@ public class VisionSubsystem extends SubsystemBase {
   public boolean isApriltagVisible(int ID) {
     if (!isApriltagVisible()) return false;
 
-    return _limelight.getTag(ID) != null;
+    return (_limelight.getTag(ID) != null);
   }
 
   /**

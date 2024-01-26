@@ -62,24 +62,33 @@ public class AutoAim extends Command {
 
     double currentSwerveHeading = _swerve.getHeading().getDegrees();
 
-    if (_vision.isApriltagVisible()) {
-      desiredShooterAngle = _vision.anglesToSpeaker()[1]; // ty
-      desiredSwerveHeading = _vision.anglesToSpeaker()[0];
+    SmartDashboard.putBoolean("VISIBLE TAG", _vision.isApriltagVisible());
+
+    double[] visionAngles = _vision.anglesToSpeaker();
+
+    if (_vision.isApriltagVisible() && visionAngles != null) {
+      desiredShooterAngle = visionAngles[1];
+      desiredSwerveHeading = visionAngles[0];
+
+      SmartDashboard.putNumberArray("VISION ANGLES", visionAngles);
 
     } else {
       desiredShooterAngle = _swerve.anglesToSpeaker()[1];
       desiredSwerveHeading = _swerve.anglesToSpeaker()[0];
     }
 
-    desiredSwerveHeading += currentSwerveHeading;
+    desiredSwerveHeading -= currentSwerveHeading;
 
     _shooter.setAngle(desiredShooterAngle);
+
+    SmartDashboard.putNumber("DESIRED HEADING", desiredSwerveHeading);
 
     _swerve.driveChassis(
       new ChassisSpeeds(
         _xSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
         _ySpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
-        _headingController.calculate(currentSwerveHeading, desiredSwerveHeading)
+        // _headingController.calculate(currentSwerveHeading, desiredSwerveHeading),
+        0
       )
     );
   }
