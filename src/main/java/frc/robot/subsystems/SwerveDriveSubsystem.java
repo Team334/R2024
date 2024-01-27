@@ -103,9 +103,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   private final Orchestra _orchestra = new Orchestra();
   String song = "output.chrp";
 
-  // estimated pose
-  private Pose2d _pose = new Pose2d();
-
   private Field2d _field = new Field2d();
 
   /** A boolean for whether the swerve is field oriented or not. */
@@ -147,7 +144,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   /** Return the estimated pose of the swerve chassis. */
   public Pose2d getPose() {
-    return _pose;
+    return _estimator.getEstimatedPosition();
   }
 
   /** Get the drive's chassis speeds (robot relative). */
@@ -159,7 +156,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   public SwerveDriveSubsystem(VisionSubsystem visionSubsystem) {
     _visionSubsystem = visionSubsystem;
 
-    resetPose(_visionSubsystem.getBotpose().get());
+    resetPose(_visionSubsystem.getBotpose().get()); // for testing
 
     // setupOrchestra();
 
@@ -230,7 +227,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     publisher.set(states);
 
     SmartDashboard.putNumber("Gyro 180/-180", getHeading().getDegrees());
-    anglesToSpeaker();
+
+    System.out.println(speakerAngles()[0]);
 
     // This method will be called once per scheduler run
     // SmartDashboard.putNumber("Gyro", getHeading().getDegrees());
@@ -248,15 +246,15 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     _backLeft.displayInfo();
 
     // Update the bot's pose
-    _pose =
-        _estimator.update(
-            getHeadingRaw(),
-            new SwerveModulePosition[] {
-              _frontLeft.getPosition(),
-              _frontRight.getPosition(),
-              _backRight.getPosition(),
-              _backLeft.getPosition()
-            });
+    _estimator.update(
+      getHeadingRaw(),
+      new SwerveModulePosition[] {
+        _frontLeft.getPosition(),
+        _frontRight.getPosition(),
+        _backRight.getPosition(),
+        _backLeft.getPosition()
+      }
+    );
 
     if (_visionSubsystem.isApriltagVisible()) {
       Optional<Pose2d> visionBotpose = _visionSubsystem.getBotpose();
@@ -356,10 +354,11 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   /** Resets the pose estimator's heading of the drive to 0. */
   public void resetGyro() {
+    Pose2d current_pose = getPose();
     Pose2d new_pose =
         new Pose2d(
-            _pose.getTranslation().getX(),
-            _pose.getTranslation().getY(),
+            current_pose.getTranslation().getX(),
+            current_pose.getTranslation().getY(),
             Rotation2d.fromDegrees(0));
 
     resetPose(new_pose);
@@ -367,7 +366,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   
   /** Resets pose estimator's translation of the drive to (0, 0). */
   public void resetTranslation() {
-    Pose2d new_pose = new Pose2d(0, 0, _pose.getRotation());
+    Pose2d new_pose = new Pose2d(0, 0, getPose().getRotation());
 
     resetPose(new_pose);
   }
@@ -395,29 +394,36 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     return Rotation2d.fromDegrees(-Math.IEEEremainder(_gyro.getHeading(), 360));
   }
 
-  /** Get the shooter's angle to the speaker hole using the drive's pose estimator. */
-  public double[] anglesToSpeaker() {
+  /** 
+   * Get the setpoint x and y angles for the drive/shooter for auto-aim.
+   * 
+   * @return [xSpeakerAngle, ySpeakerAngle] 
+   */
+  public double[] speakerAngles() {
+    double xSpeakerAngle;
+    double ySpeakerAngle;
+
     int tagID = Constants.FIELD_CONSTANTS.SPEAKER_TAG;
     Pose3d tagPose = Constants.FIELD_CONSTANTS.APRILTAG_LAYOUT.getTagPose(tagID).get();
 
     Translation2d tagTranslation = new Translation2d(tagPose.getX(), tagPose.getY());
-    Translation2d botTranslation = _pose.getTranslation();
+    Translation2d botTranslation = getPose().getTranslation();
 
-    double desiredHeading = MathUtil.inputModulus(
-      tagTranslation.minus(botTranslation).getAngle().getDegrees(),
-      -180,
-      180
-    );
+    Translation2d distanceVec = tagTranslation.minus(botTranslation);
 
-    double xAngleToSpeaker = desiredHeading - _pose.getRotation().getDegrees();
-    double yAngleToSpeaker = 0;
+    xSpeakerAngle = MathUtil.inputModulus(distanceVec.getAngle().getDegrees(), -180, 180);
+
+    double zDifference = FieldConstants.SPEAKER_HEIGHT - Constants.Physical.SHOOTER_HEIGHT_STOWED; // TODO: move to Constants?
+    ySpeakerAngle = Math.atan(zDifference / distanceVec.getNorm());
 
     double[] angles = {
-      xAngleToSpeaker,
-      yAngleToSpeaker
+      xSpeakerAngle,
+      ySpeakerAngle
     };
 
     return angles;
+
+    // OLD CODE BELOW
 
     // int tagID = Constants.FIELD_CONSTANTS.SPEAKER_TAG;
     // Pose3d tagPose = Constants.FIELD_CONSTANTS.APRILTAG_LAYOUT.getTagPose(tagID).get();

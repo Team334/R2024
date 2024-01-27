@@ -59,14 +59,16 @@ public class AutoAim extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double desiredShooterAngle = 0;
-    double desiredSwerveHeading = 0;
+    // TODO: Vision or Pose estimator only?
 
-    double currentSwerveHeading = _swerve.getHeading().getDegrees();
+    // double desiredShooterAngle = 0;
+    // double desiredSwerveHeading = 0;
 
-    SmartDashboard.putBoolean("VISIBLE TAG", _vision.isApriltagVisible());
+    // double currentSwerveHeading = _swerve.getHeading().getDegrees();
 
-    double[] visionAngles = _vision.anglesToSpeaker();
+    // SmartDashboard.putBoolean("VISIBLE TAG", _vision.isApriltagVisible());
+
+    // double[] visionAngles = _vision.anglesToSpeaker();
 
     // if (_vision.isApriltagVisible() && visionAngles != null) {
     //   desiredShooterAngle = visionAngles[1];
@@ -90,19 +92,19 @@ public class AutoAim extends Command {
 
     // SmartDashboard.putNumber("DESIRED HEADING", desiredSwerveHeading);
 
-    desiredSwerveHeading = _swerve.anglesToSpeaker()[0];
+    // desiredSwerveHeading = _swerve.speakerAngles()[0];
 
-    _swerve.driveChassis(
-      new ChassisSpeeds(
-        _xSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
-        _ySpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
-        MathUtil.clamp(
-          _headingController.calculate(currentSwerveHeading, desiredSwerveHeading),
-          -Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED,
-          Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED
-        )
-      )
-    );
+    // _swerve.driveChassis(
+    //   new ChassisSpeeds(
+    //     _xSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
+    //     _ySpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
+    //     MathUtil.clamp(
+    //       _headingController.calculate(currentSwerveHeading, desiredSwerveHeading),
+    //       -Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED,
+    //       Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED
+    //     )
+    //   )
+    // );
   }
 
   // Called once the command ends or is interrupted.
