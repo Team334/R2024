@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import frc.robot.Constants;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.utils.BNO055;
@@ -45,60 +46,59 @@ import java.util.Optional;
  */
 public class SwerveDriveSubsystem extends SubsystemBase {
   // each swerve module
-  private final SwerveModule _frontLeft =
-      new SwerveModule(
-          "Front Left",
-          Constants.CAN.DRIVE_FRONT_LEFT,
-          Constants.CAN.ROT_FRONT_LEFT,
-          Constants.CAN.ENC_FRONT_LEFT,
-          Constants.PID.FRONT_LEFT_DRIVE_KP,
-          Constants.PID.FRONT_LEFT_ROTATE_KP);
+  private final SwerveModule _frontLeft = new SwerveModule(
+      "Front Left",
+      Constants.CAN.DRIVE_FRONT_LEFT,
+      Constants.CAN.ROT_FRONT_LEFT,
+      Constants.CAN.ENC_FRONT_LEFT,
+      Constants.PID.FRONT_LEFT_DRIVE_KP,
+      Constants.PID.FRONT_LEFT_ROTATE_KP);
 
-  private final SwerveModule _frontRight =
-      new SwerveModule(
-          "Front Right",
-          Constants.CAN.DRIVE_FRONT_RIGHT,
-          Constants.CAN.ROT_FRONT_RIGHT,
-          Constants.CAN.ENC_FRONT_RIGHT,
-          Constants.PID.FRONT_RIGHT_DRIVE_KP,
-          Constants.PID.FRONT_RIGHT_ROTATE_KP);
+  private final SwerveModule _frontRight = new SwerveModule(
+      "Front Right",
+      Constants.CAN.DRIVE_FRONT_RIGHT,
+      Constants.CAN.ROT_FRONT_RIGHT,
+      Constants.CAN.ENC_FRONT_RIGHT,
+      Constants.PID.FRONT_RIGHT_DRIVE_KP,
+      Constants.PID.FRONT_RIGHT_ROTATE_KP);
 
-  private final SwerveModule _backRight =
-      new SwerveModule(
-          "Back Right",
-          Constants.CAN.DRIVE_BACK_RIGHT,
-          Constants.CAN.ROT_BACK_RIGHT,
-          Constants.CAN.ENC_BACK_RIGHT,
-          Constants.PID.BACK_RIGHT_DRIVE_KP,
-          Constants.PID.BACK_RIGHT_ROTATE_KP);
+  private final SwerveModule _backRight = new SwerveModule(
+      "Back Right",
+      Constants.CAN.DRIVE_BACK_RIGHT,
+      Constants.CAN.ROT_BACK_RIGHT,
+      Constants.CAN.ENC_BACK_RIGHT,
+      Constants.PID.BACK_RIGHT_DRIVE_KP,
+      Constants.PID.BACK_RIGHT_ROTATE_KP);
 
-  private final SwerveModule _backLeft =
-      new SwerveModule(
-          "Back Left",
-          Constants.CAN.DRIVE_BACK_LEFT,
-          Constants.CAN.ROT_BACK_LEFT,
-          Constants.CAN.ENC_BACK_LEFT,
-          Constants.PID.BACK_LEFT_DRIVE_KP,
-          Constants.PID.BACK_LEFT_ROTATE_KP);
+  private final SwerveModule _backLeft = new SwerveModule(
+      "Back Left",
+      Constants.CAN.DRIVE_BACK_LEFT,
+      Constants.CAN.ROT_BACK_LEFT,
+      Constants.CAN.ENC_BACK_LEFT,
+      Constants.PID.BACK_LEFT_DRIVE_KP,
+      Constants.PID.BACK_LEFT_ROTATE_KP);
 
-  SwerveModuleState[] states =
-      new SwerveModuleState[] {
-        new SwerveModuleState(
-            _frontLeft.getDriveVelocity(), Rotation2d.fromDegrees(_frontLeft.getAngle())),
-        new SwerveModuleState(
-            _frontRight.getDriveVelocity(), Rotation2d.fromDegrees(_frontLeft.getAngle())),
-        new SwerveModuleState(
-            _backRight.getDriveVelocity(), Rotation2d.fromDegrees(_frontLeft.getAngle())),
-        new SwerveModuleState(
-            _backLeft.getDriveVelocity(), Rotation2d.fromDegrees(_frontLeft.getAngle()))
-      };
+  SwerveModuleState[] states = new SwerveModuleState[] {
+      new SwerveModuleState(
+          _frontLeft.getDriveVelocity(), Rotation2d.fromDegrees(_frontLeft.getAngle())),
+      new SwerveModuleState(
+          _frontRight.getDriveVelocity(), Rotation2d.fromDegrees(_frontLeft.getAngle())),
+      new SwerveModuleState(
+          _backRight.getDriveVelocity(), Rotation2d.fromDegrees(_frontLeft.getAngle())),
+      new SwerveModuleState(
+          _backLeft.getDriveVelocity(), Rotation2d.fromDegrees(_frontLeft.getAngle()))
+  };
 
-  private final BNO055 _gyro =
-      BNO055.getInstance(BNO055.opmode_t.OPERATION_MODE_IMUPLUS, BNO055.vector_type_t.VECTOR_EULER);
+  private final BNO055 _gyro = BNO055.getInstance(BNO055.opmode_t.OPERATION_MODE_IMUPLUS,
+      BNO055.vector_type_t.VECTOR_EULER);
 
   private VisionSubsystem _visionSubsystem;
 
   private double _robotSpeed = 0;
+
+  Translation2d _pivotPoint = new Translation2d(0, 0); 
+
+  public final CommandPS4Controller _driveController = new CommandPS4Controller(Constants.Ports.DRIVER_CONTROLLER);
 
   private final Orchestra _orchestra = new Orchestra();
   String song = "output.chrp";
@@ -108,39 +108,37 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   /** A boolean for whether the swerve is field oriented or not. */
   public boolean fieldOriented = false;
 
-  StructArrayPublisher<SwerveModuleState> publisher =
-      NetworkTableInstance.getDefault()
-          .getStructArrayTopic("MyStates", SwerveModuleState.struct)
-          .publish();
+  StructArrayPublisher<SwerveModuleState> publisher = NetworkTableInstance.getDefault()
+      .getStructArrayTopic("MyStates", SwerveModuleState.struct)
+      .publish();
 
   // private final SysIdRoutine _sysID = new SysIdRoutine(
-  //   new SysIdRoutine.Config(),
-  //   new SysIdRoutine.Mechanism(
-  //     (volts) -> {
-  //       driveTest(UtilFuncs.FromVolts(volts.in(Units.Volts)));
-  //     },
-  //     (log) -> {
-  //       new Measure()
-  //       // log.motor("Front Left").linearVelocity(_frontLeft.getDriveVelocity());
-  //     },
-  //     this
-  //   )
+  // new SysIdRoutine.Config(),
+  // new SysIdRoutine.Mechanism(
+  // (volts) -> {
+  // driveTest(UtilFuncs.FromVolts(volts.in(Units.Volts)));
+  // },
+  // (log) -> {
+  // new Measure()
+  // // log.motor("Front Left").linearVelocity(_frontLeft.getDriveVelocity());
+  // },
+  // this
+  // )
   // );
 
   // Pose Estimator -> Has built in odometry and uses supplied vision measurements
-  private final SwerveDrivePoseEstimator _estimator =
-      new SwerveDrivePoseEstimator(
-          Constants.Physical.SWERVE_KINEMATICS,
-          getHeadingRaw(),
-          new SwerveModulePosition[] {
-            _frontLeft.getPosition(),
-            _frontRight.getPosition(),
-            _backRight.getPosition(),
-            _backLeft.getPosition()
-          },
-          new Pose2d(),
-          VecBuilder.fill(0.006, 0.006, 0.007),
-          VecBuilder.fill(0.7, .7, 1.7));
+  private final SwerveDrivePoseEstimator _estimator = new SwerveDrivePoseEstimator(
+      Constants.Physical.SWERVE_KINEMATICS,
+      getHeadingRaw(),
+      new SwerveModulePosition[] {
+          _frontLeft.getPosition(),
+          _frontRight.getPosition(),
+          _backRight.getPosition(),
+          _backLeft.getPosition()
+      },
+      new Pose2d(),
+      VecBuilder.fill(0.006, 0.006, 0.007),
+      VecBuilder.fill(0.7, .7, 1.7));
 
   /** Return the estimated pose of the swerve chassis. */
   public Pose2d getPose() {
@@ -180,14 +178,14 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         },
         this);
     SmartDashboard.putData(
-    "Gyro",
-    new Sendable() {
-      @Override
-      public void initSendable(SendableBuilder builder) {
-        builder.setSmartDashboardType("Gyro");
-        builder.addDoubleProperty("Value", () -> getHeading().getDegrees(), null);
-      }
-    });
+        "Gyro",
+        new Sendable() {
+          @Override
+          public void initSendable(SendableBuilder builder) {
+            builder.setSmartDashboardType("Gyro");
+            builder.addDoubleProperty("Value", () -> getHeading().getDegrees(), null);
+          }
+        });
     SmartDashboard.putData(
         "Swerve Drive",
         new Sendable() {
@@ -217,17 +215,16 @@ public class SwerveDriveSubsystem extends SubsystemBase {
           }
         });
     // SmartDashboard.putData(
-    //     "Gyro",
-    //     new Sendable() {
-    //       @Override
-    //       public void initSendable(SendableBuilder builder) {
-    //         builder.setSmartDashboardType("Gyro");
-    //         builder.addDoubleProperty("Value", () -> getHeading().getDegrees(), null);
-    //       }
-    //     });
+    // "Gyro",
+    // new Sendable() {
+    // @Override
+    // public void initSendable(SendableBuilder builder) {
+    // builder.setSmartDashboardType("Gyro");
+    // builder.addDoubleProperty("Value", () -> getHeading().getDegrees(), null);
+    // }
+    // });
 
     SmartDashboard.putData("Swerve/Built-in Accelerometer", new BuiltInAccelerometer());
-
 
   }
 
@@ -256,14 +253,13 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     // Update the bot's pose
     _estimator.update(
-      getHeadingRaw(),
-      new SwerveModulePosition[] {
-        _frontLeft.getPosition(),
-        _frontRight.getPosition(),
-        _backRight.getPosition(),
-        _backLeft.getPosition()
-      }
-    );
+        getHeadingRaw(),
+        new SwerveModulePosition[] {
+            _frontLeft.getPosition(),
+            _frontRight.getPosition(),
+            _backRight.getPosition(),
+            _backLeft.getPosition()
+        });
 
     if (_visionSubsystem.isApriltagVisible()) {
       Optional<Pose2d> visionBotpose = _visionSubsystem.getBotpose();
@@ -275,10 +271,9 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     _field.setRobotPose(getPose());
     SmartDashboard.putData("FIELD", _field);
 
-    _robotSpeed =
-        Math.sqrt(
-            Math.pow(getRobotRelativeSpeeds().vxMetersPerSecond, 2)
-                + Math.pow(getRobotRelativeSpeeds().vyMetersPerSecond, 2));
+    _robotSpeed = Math.sqrt(
+        Math.pow(getRobotRelativeSpeeds().vxMetersPerSecond, 2)
+            + Math.pow(getRobotRelativeSpeeds().vyMetersPerSecond, 2));
 
     // SmartDashboard.putNumber("ACTUAL X SPEED",
     // getRobotRelativeSpeeds().vxMetersPerSecond);
@@ -306,13 +301,15 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   }
 
   public void setChassisSpeeds(ChassisSpeeds chassisSpeeds) {
-    
+
   }
 
   /**
    * Set the chassis speed of the swerve drive.
    *
-   * <p>Chassis speed will be treated as field oriented if the fieldOriented class attribute is set
+   * <p>
+   * Chassis speed will be treated as field oriented if the fieldOriented class
+   * attribute is set
    * to true, otherwise it will be robot-relative.
    *
    * @see ChassisSpeeds (wpilib chassis speeds class)
@@ -323,12 +320,16 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(chassisSpeeds, getHeading());
     }
 
-    SwerveModuleState[] moduleStates =
-        Constants.Physical.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds);
+    SwerveModuleState[] moduleStates = Constants.Physical.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds, _pivotPoint);
+
     setStates(moduleStates);
   }
 
-  /** Testing function that sets all the modules' drive motors to the desired percent output. */
+
+  /**
+   * Testing function that sets all the modules' drive motors to the desired
+   * percent output.
+   */
   public void driveTest(double speed) {
     _frontLeft.drive(speed);
     _frontRight.drive(speed);
@@ -339,7 +340,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   /**
    * Sets the state of each SwerveModule through an array.
    *
-   * <p>Order -> front left, front right, back right, back left
+   * <p>
+   * Order -> front left, front right, back right, back left
    */
   public void setStates(SwerveModuleState[] states) {
     _frontLeft.setState(states[0]);
@@ -351,11 +353,12 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   /**
    * Get the state of each SwerveModule.
    *
-   * @return An array of each module state (order -> front left, front right, back right, back left)
+   * @return An array of each module state (order -> front left, front right, back
+   *         right, back left)
    */
   public SwerveModuleState[] getStates() {
     SwerveModuleState[] states = {
-      _frontLeft.getState(), _frontRight.getState(), _backRight.getState(), _backLeft.getState()
+        _frontLeft.getState(), _frontRight.getState(), _backRight.getState(), _backLeft.getState()
     };
 
     return states;
@@ -364,15 +367,14 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   /** Resets the pose estimator's heading of the drive to 0. */
   public void resetGyro() {
     Pose2d current_pose = getPose();
-    Pose2d new_pose =
-        new Pose2d(
-            current_pose.getTranslation().getX(),
-            current_pose.getTranslation().getY(),
-            Rotation2d.fromDegrees(0));
+    Pose2d new_pose = new Pose2d(
+        current_pose.getTranslation().getX(),
+        current_pose.getTranslation().getY(),
+        Rotation2d.fromDegrees(0));
 
     resetPose(new_pose);
   }
-  
+
   /** Resets pose estimator's translation of the drive to (0, 0). */
   public void resetTranslation() {
     Pose2d new_pose = new Pose2d(0, 0, getPose().getRotation());
@@ -385,10 +387,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     _estimator.resetPosition(
         getHeadingRaw(),
         new SwerveModulePosition[] {
-          _frontLeft.getPosition(),
-          _frontRight.getPosition(),
-          _backRight.getPosition(),
-          _backLeft.getPosition()
+            _frontLeft.getPosition(),
+            _frontRight.getPosition(),
+            _backRight.getPosition(),
+            _backLeft.getPosition()
         },
         newPose);
   }
@@ -403,10 +405,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     return Rotation2d.fromDegrees(-Math.IEEEremainder(_gyro.getHeading(), 360));
   }
 
-  /** 
+  /**
    * Get the setpoint x and y angles for the drive/shooter for auto-aim.
    * 
-   * @return [xSpeakerAngle, ySpeakerAngle] 
+   * @return [xSpeakerAngle, ySpeakerAngle]
    */
   public double[] speakerAngles() {
     double xSpeakerAngle;
@@ -422,12 +424,13 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     xSpeakerAngle = MathUtil.inputModulus(distanceVec.getAngle().getDegrees(), -180, 180);
 
-    double zDifference = FieldConstants.SPEAKER_HEIGHT - Constants.Physical.SHOOTER_HEIGHT_STOWED; // TODO: move to Constants?
+    double zDifference = FieldConstants.SPEAKER_HEIGHT - Constants.Physical.SHOOTER_HEIGHT_STOWED; // TODO: move to
+                                                                                                   // Constants?
     ySpeakerAngle = Math.toDegrees(Math.atan(zDifference / distanceVec.getNorm()));
 
     double[] angles = {
-      xSpeakerAngle,
-      ySpeakerAngle
+        xSpeakerAngle,
+        ySpeakerAngle
     };
 
     return angles;
@@ -435,9 +438,11 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     // OLD CODE BELOW
 
     // int tagID = Constants.FIELD_CONSTANTS.SPEAKER_TAG;
-    // Pose3d tagPose = Constants.FIELD_CONSTANTS.APRILTAG_LAYOUT.getTagPose(tagID).get();
+    // Pose3d tagPose =
+    // Constants.FIELD_CONSTANTS.APRILTAG_LAYOUT.getTagPose(tagID).get();
 
-    // Translation2d tagTranslation = new Translation2d(tagPose.getX(), tagPose.getY());
+    // Translation2d tagTranslation = new Translation2d(tagPose.getX(),
+    // tagPose.getY());
     // Translation2d botTranslation = _pose.getTranslation();
 
     // Rotation2d moveAngle = tagTranslation.minus(botTranslation).getAngle();
@@ -451,25 +456,38 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     // Constants.FIELD_CONSTANTS.SPEAKER_POSE.minus(new Pose2d());
 
-    // double distanceToRobot = Math.sqrt(Math.pow(xDifference, 2) + Math.pow(yDifference, 2));
+    // double distanceToRobot = Math.sqrt(Math.pow(xDifference, 2) +
+    // Math.pow(yDifference, 2));
 
-    // double zDifference = FieldConstants.SPEAKER_HEIGHT - Constants.Physical.SHOOTER_HEIGHT_STOWED;
+    // double zDifference = FieldConstants.SPEAKER_HEIGHT -
+    // Constants.Physical.SHOOTER_HEIGHT_STOWED;
 
     // double angleY = Math.atan(zDifference / distanceToRobot);
-
 
     // Rotation2d currentRotation = getHeading();
     // double angleX = 0;
 
     // if (getPose().getY() > Constants.FIELD_CONSTANTS.SPEAKER_POSE.getY()){
-    //   angleX = -currentRotation.getDegrees() + Math.atan((getPose().getY() - Constants.FIELD_CONSTANTS.SPEAKER_POSE.getY()) / (getPose().getX() - Constants.FIELD_CONSTANTS.SPEAKER_POSE.getX()));
+    // angleX = -currentRotation.getDegrees() + Math.atan((getPose().getY() -
+    // Constants.FIELD_CONSTANTS.SPEAKER_POSE.getY()) / (getPose().getX() -
+    // Constants.FIELD_CONSTANTS.SPEAKER_POSE.getX()));
     // }
     // else{
-    //   angleX = -currentRotation.getDegrees() - Math.atan((Constants.FIELD_CONSTANTS.SPEAKER_POSE.getY() - getPose().getY()) / (getPose().getX() - Constants.FIELD_CONSTANTS.SPEAKER_POSE.getX()));
+    // angleX = -currentRotation.getDegrees() -
+    // Math.atan((Constants.FIELD_CONSTANTS.SPEAKER_POSE.getY() - getPose().getY())
+    // / (getPose().getX() - Constants.FIELD_CONSTANTS.SPEAKER_POSE.getX()));
     // }
-    
+
     // double[] angles = {angleX, angleY};
 
     // return angles;
+  }
+
+  public void pivotMotor(Translation2d pivotPoint) {
+    _pivotPoint = pivotPoint;
+  }
+
+  public void resetPivot(){
+    _pivotPoint = new Translation2d(0, 0);
   }
 }

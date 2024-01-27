@@ -22,6 +22,7 @@ import frc.robot.commands.shooter.AutoAim;
 import frc.robot.commands.shooter.HoldShooter;
 import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.commands.swerve.BrakeSwerve;
+import frc.robot.commands.swerve.PivotMotor;
 import frc.robot.commands.swerve.ResetPose;
 import frc.robot.commands.swerve.TeleopDrive;
 import frc.robot.commands.swerve.ToggleSwerveOrient;
@@ -106,6 +107,14 @@ public class RobotContainer {
         () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1)
       )
     );
+    _driveController.L2().whileTrue(new PivotMotor(_swerveSubsystem, true,  
+    () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
+    () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1), 
+    () -> UtilFuncs.ApplyDeadband(-_driveFilterRightX.calculate(_driveController.getRightX()), 0.1)));
+    _driveController.R2().whileTrue(new PivotMotor(_swerveSubsystem, false,  
+    () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
+    () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1), 
+    () -> UtilFuncs.ApplyDeadband(-_driveFilterRightX.calculate(_driveController.getRightX()), 0.1)));
 
     // for testing velocity output (forward at 0.3 m/s), is it straight?
     _driveController
