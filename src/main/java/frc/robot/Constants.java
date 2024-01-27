@@ -72,7 +72,7 @@ public final class Constants {
     public static final double SHOOTER_FLYWHEEL_CIRCUMFERENCE =
         2 * Math.PI * SHOOTER_FLYWHEEL_RADIUS;
 
-    public static final double ELEVATOR_GEAR_RATIO = 27;
+    public static final double ELEVATOR_GEAR_RATIO = 100; //TODO: fixed but they might change it
 
     public static final double SHOOTER_HEIGHT_STOWED = 0; // TODO: Get this value
 
