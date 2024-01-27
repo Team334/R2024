@@ -50,23 +50,14 @@ public class TeleopDrive extends Command {
   @Override
   public void execute() {
     // apply controller deadband
-    double xSpeed = UtilFuncs.ApplyDeadband(_xSpeed.getAsDouble(), 0.1);
-    double ySpeed = UtilFuncs.ApplyDeadband(_ySpeed.getAsDouble(), 0.1);
-    double rotationSpeed = UtilFuncs.ApplyDeadband(_rotationSpeed.getAsDouble(), 0.1);
-
-    SmartDashboard.putNumber(
-        "DESIRED X SPEED",
-        xSpeed * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF);
-    SmartDashboard.putNumber(
-        "DESIRED Y SPEED",
-        ySpeed * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF);
-
     // drive the swerve chassis subsystem
     _swerveDrive.driveChassis(
-        new ChassisSpeeds(
-            xSpeed * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
-            ySpeed * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
-            rotationSpeed * Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED));
+      new ChassisSpeeds(
+        _xSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
+        _ySpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
+        _rotationSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED
+      )
+    );
   }
 
   // Called once the command ends or is interrupted.

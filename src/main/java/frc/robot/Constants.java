@@ -72,7 +72,7 @@ public final class Constants {
     public static final double SHOOTER_FLYWHEEL_CIRCUMFERENCE =
         2 * Math.PI * SHOOTER_FLYWHEEL_RADIUS;
 
-    public static final double ELEVATOR_GEAR_RATIO = 27; //TODO: THEY CHANGED THE GEARBOX SO THE GEAR RATIO IS DIFFERENT!!
+    public static final double ELEVATOR_GEAR_RATIO = 100; //TODO: fixed but they might change it
 
     public static final double SHOOTER_HEIGHT_STOWED = 0; // TODO: Get this value
 
@@ -106,7 +106,7 @@ public final class Constants {
     public static final double BACK_LEFT_ROTATE_KP = 0.009;
 
     public static final PIDConstants PP_TRANSLATION = new PIDConstants(3.69, 0, 0);
-    public static final PIDConstants PP_ROTATION = new PIDConstants(1.21893, 0, 0);
+    public static final PIDConstants PP_ROTATION = new PIDConstants(1.21993, 0, 0);
 
     public static final double SHOOTER_FLYWHEEL_KP = 0;
 

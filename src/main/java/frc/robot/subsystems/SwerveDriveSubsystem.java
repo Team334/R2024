@@ -7,11 +7,14 @@ import com.ctre.phoenix6.Orchestra;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.ReplanningConfig;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -100,9 +103,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   private final Orchestra _orchestra = new Orchestra();
   String song = "output.chrp";
 
-  // estimated pose
-  private Pose2d _pose = new Pose2d();
-
   private Field2d _field = new Field2d();
 
   /** A boolean for whether the swerve is field oriented or not. */
@@ -144,7 +144,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   /** Return the estimated pose of the swerve chassis. */
   public Pose2d getPose() {
-    return _pose;
+    return _estimator.getEstimatedPosition();
   }
 
   /** Get the drive's chassis speeds (robot relative). */
@@ -155,6 +155,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   /** Creates a new SwerveDriveSubsystem. */
   public SwerveDriveSubsystem(VisionSubsystem visionSubsystem) {
     _visionSubsystem = visionSubsystem;
+
+    resetPose(_visionSubsystem.getBotpose().get()); // for testing
 
     // setupOrchestra();
 
@@ -177,6 +179,15 @@ public class SwerveDriveSubsystem extends SubsystemBase {
           return false;
         },
         this);
+    SmartDashboard.putData(
+    "Gyro",
+    new Sendable() {
+      @Override
+      public void initSendable(SendableBuilder builder) {
+        builder.setSmartDashboardType("Gyro");
+        builder.addDoubleProperty("Value", () -> getHeading().getDegrees(), null);
+      }
+    });
     SmartDashboard.putData(
         "Swerve Drive",
         new Sendable() {
@@ -211,16 +222,22 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     //       @Override
     //       public void initSendable(SendableBuilder builder) {
     //         builder.setSmartDashboardType("Gyro");
-    //         builder.addDoubleProperty("Pose", () -> getHeading().getDegrees(), null);
+    //         builder.addDoubleProperty("Value", () -> getHeading().getDegrees(), null);
     //       }
     //     });
 
     SmartDashboard.putData("Swerve/Built-in Accelerometer", new BuiltInAccelerometer());
+
+
   }
 
   @Override
   public void periodic() {
     publisher.set(states);
+
+    SmartDashboard.putNumber("Gyro 180/-180", getHeading().getDegrees());
+
+    System.out.println(speakerAngles()[0]);
 
     // This method will be called once per scheduler run
     // SmartDashboard.putNumber("Gyro", getHeading().getDegrees());
@@ -238,22 +255,22 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     _backLeft.displayInfo();
 
     // Update the bot's pose
-    _pose =
-        _estimator.update(
-            getHeadingRaw(),
-            new SwerveModulePosition[] {
-              _frontLeft.getPosition(),
-              _frontRight.getPosition(),
-              _backRight.getPosition(),
-              _backLeft.getPosition()
-            });
+    _estimator.update(
+      getHeadingRaw(),
+      new SwerveModulePosition[] {
+        _frontLeft.getPosition(),
+        _frontRight.getPosition(),
+        _backRight.getPosition(),
+        _backLeft.getPosition()
+      }
+    );
 
     if (_visionSubsystem.isApriltagVisible()) {
       Optional<Pose2d> visionBotpose = _visionSubsystem.getBotpose();
-      if (visionBotpose.isPresent())
-        _estimator.addVisionMeasurement(
-            _visionSubsystem.getBotpose().get(), Timer.getFPGATimestamp());
-      if (visionBotpose.isPresent()) _field.setRobotPose(visionBotpose.get());
+      if (visionBotpose.isPresent()) {
+        _estimator.addVisionMeasurement(_visionSubsystem.getBotpose().get(), _visionSubsystem.getLatency());
+        _field.setRobotPose(_estimator.getEstimatedPosition());
+      }
     }
 
     SmartDashboard.putData("FIELD", _field);
@@ -286,6 +303,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     _orchestra.loadMusic(song);
     _orchestra.play();
+  }
+
+  public void setChassisSpeeds(ChassisSpeeds chassisSpeeds) {
+    
   }
 
   /**
@@ -342,18 +363,19 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   /** Resets the pose estimator's heading of the drive to 0. */
   public void resetGyro() {
+    Pose2d current_pose = getPose();
     Pose2d new_pose =
         new Pose2d(
-            _pose.getTranslation().getX(),
-            _pose.getTranslation().getY(),
+            current_pose.getTranslation().getX(),
+            current_pose.getTranslation().getY(),
             Rotation2d.fromDegrees(0));
 
     resetPose(new_pose);
   }
-
+  
   /** Resets pose estimator's translation of the drive to (0, 0). */
   public void resetTranslation() {
-    Pose2d new_pose = new Pose2d(0, 0, _pose.getRotation());
+    Pose2d new_pose = new Pose2d(0, 0, getPose().getRotation());
 
     resetPose(new_pose);
   }
@@ -381,19 +403,73 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     return Rotation2d.fromDegrees(-Math.IEEEremainder(_gyro.getHeading(), 360));
   }
 
-  /** Get the shooter's angle to the speaker hole using the drive's pose estimator. */
-  public double shooterAngleToSpeaker() {
+  /** 
+   * Get the setpoint x and y angles for the drive/shooter for auto-aim.
+   * 
+   * @return [xSpeakerAngle, ySpeakerAngle] 
+   */
+  public double[] speakerAngles() {
+    double xSpeakerAngle;
+    double ySpeakerAngle;
+
     int tagID = Constants.FIELD_CONSTANTS.SPEAKER_TAG;
     Pose3d tagPose = Constants.FIELD_CONSTANTS.APRILTAG_LAYOUT.getTagPose(tagID).get();
 
-    double xDifference = tagPose.getX() - _pose.getX();
-    double yDifference = tagPose.getY() - _pose.getY();
+    Translation2d tagTranslation = new Translation2d(tagPose.getX(), tagPose.getY());
+    Translation2d botTranslation = getPose().getTranslation();
 
-    double distanceToRobot = Math.sqrt(Math.pow(xDifference, 2) + Math.pow(yDifference, 2));
+    Translation2d distanceVec = tagTranslation.minus(botTranslation);
 
-    double zDifference = FieldConstants.SPEAKER_HEIGHT - Constants.Physical.SHOOTER_HEIGHT_STOWED;
+    xSpeakerAngle = MathUtil.inputModulus(distanceVec.getAngle().getDegrees(), -180, 180);
 
-    double angle = Math.atan(zDifference / distanceToRobot);
-    return Math.toDegrees(angle);
+    double zDifference = FieldConstants.SPEAKER_HEIGHT - Constants.Physical.SHOOTER_HEIGHT_STOWED; // TODO: move to Constants?
+    ySpeakerAngle = Math.atan(zDifference / distanceVec.getNorm());
+
+    double[] angles = {
+      xSpeakerAngle,
+      ySpeakerAngle
+    };
+
+    return angles;
+
+    // OLD CODE BELOW
+
+    // int tagID = Constants.FIELD_CONSTANTS.SPEAKER_TAG;
+    // Pose3d tagPose = Constants.FIELD_CONSTANTS.APRILTAG_LAYOUT.getTagPose(tagID).get();
+
+    // Translation2d tagTranslation = new Translation2d(tagPose.getX(), tagPose.getY());
+    // Translation2d botTranslation = _pose.getTranslation();
+
+    // Rotation2d moveAngle = tagTranslation.minus(botTranslation).getAngle();
+
+    // double[] a = {1, 2};
+
+    // SmartDashboard.putNumber("MOVE ANGLE", moveAngle.getDegrees());
+
+    // double xDifference = tagPose.getX() - _pose.getX();
+    // double yDifference = tagPose.getY() - _pose.getY();
+
+    // Constants.FIELD_CONSTANTS.SPEAKER_POSE.minus(new Pose2d());
+
+    // double distanceToRobot = Math.sqrt(Math.pow(xDifference, 2) + Math.pow(yDifference, 2));
+
+    // double zDifference = FieldConstants.SPEAKER_HEIGHT - Constants.Physical.SHOOTER_HEIGHT_STOWED;
+
+    // double angleY = Math.atan(zDifference / distanceToRobot);
+
+
+    // Rotation2d currentRotation = getHeading();
+    // double angleX = 0;
+
+    // if (getPose().getY() > Constants.FIELD_CONSTANTS.SPEAKER_POSE.getY()){
+    //   angleX = -currentRotation.getDegrees() + Math.atan((getPose().getY() - Constants.FIELD_CONSTANTS.SPEAKER_POSE.getY()) / (getPose().getX() - Constants.FIELD_CONSTANTS.SPEAKER_POSE.getX()));
+    // }
+    // else{
+    //   angleX = -currentRotation.getDegrees() - Math.atan((Constants.FIELD_CONSTANTS.SPEAKER_POSE.getY() - getPose().getY()) / (getPose().getX() - Constants.FIELD_CONSTANTS.SPEAKER_POSE.getX()));
+    // }
+    
+    // double[] angles = {angleX, angleY};
+
+    // return angles;
   }
 }
