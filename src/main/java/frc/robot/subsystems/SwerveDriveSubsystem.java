@@ -305,10 +305,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     _orchestra.play();
   }
 
-  public void setChassisSpeeds(ChassisSpeeds chassisSpeeds) {
-    
-  }
-
   /**
    * Set the chassis speed of the swerve drive.
    *
