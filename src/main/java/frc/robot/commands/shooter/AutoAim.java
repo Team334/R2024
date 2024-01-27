@@ -25,9 +25,9 @@ public class AutoAim extends Command {
   private DoubleSupplier _ySpeed;
 
   private PIDController _headingController = new PIDController(
-    0.05,
+    0.045,
     0,
-    0
+    0.001
   );
 
   /** Creates a new AutoAim. */
@@ -94,17 +94,29 @@ public class AutoAim extends Command {
 
     // desiredSwerveHeading = _swerve.speakerAngles()[0];
 
-    // _swerve.driveChassis(
-    //   new ChassisSpeeds(
-    //     _xSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
-    //     _ySpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
-    //     MathUtil.clamp(
-    //       _headingController.calculate(currentSwerveHeading, desiredSwerveHeading),
-    //       -Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED,
-    //       Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED
-    //     )
-    //   )
-    // );
+    double currentSwerveHeading = _swerve.getHeading().getDegrees();
+    double desiredSwerveHeading = _swerve.speakerAngles()[0];
+
+    SmartDashboard.putNumber("DESIRED SWERVE HEADING", desiredSwerveHeading);
+    SmartDashboard.putNumber("SHOOTER ANGLE", _swerve.speakerAngles()[1]);
+
+    double rotationVelocity = MathUtil.clamp(
+      _headingController.calculate(currentSwerveHeading, desiredSwerveHeading),
+      -Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED * 2,
+      Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED * 2
+    );
+
+    if (_headingController.atSetpoint()) {
+      rotationVelocity = 0;
+    }
+
+    _swerve.driveChassis(
+      new ChassisSpeeds(
+        _xSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
+        _ySpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
+        rotationVelocity
+      )
+    );
   }
 
   // Called once the command ends or is interrupted.

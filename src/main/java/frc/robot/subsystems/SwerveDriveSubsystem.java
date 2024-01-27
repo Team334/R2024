@@ -156,7 +156,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   public SwerveDriveSubsystem(VisionSubsystem visionSubsystem) {
     _visionSubsystem = visionSubsystem;
 
-    resetPose(_visionSubsystem.getBotpose().get()); // for testing
+    // resetPose(_visionSubsystem.getBotpose().get()); // for testing
 
     // setupOrchestra();
 
@@ -228,7 +228,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("Gyro 180/-180", getHeading().getDegrees());
 
-    System.out.println(speakerAngles()[0]);
+    // System.out.println(speakerAngles()[0]);
 
     // This method will be called once per scheduler run
     // SmartDashboard.putNumber("Gyro", getHeading().getDegrees());
@@ -260,10 +260,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       Optional<Pose2d> visionBotpose = _visionSubsystem.getBotpose();
       if (visionBotpose.isPresent()) {
         _estimator.addVisionMeasurement(_visionSubsystem.getBotpose().get(), _visionSubsystem.getLatency());
-        _field.setRobotPose(_estimator.getEstimatedPosition());
       }
     }
 
+    _field.setRobotPose(getPose());
     SmartDashboard.putData("FIELD", _field);
 
     _robotSpeed =
@@ -414,7 +414,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     xSpeakerAngle = MathUtil.inputModulus(distanceVec.getAngle().getDegrees(), -180, 180);
 
     double zDifference = FieldConstants.SPEAKER_HEIGHT - Constants.Physical.SHOOTER_HEIGHT_STOWED; // TODO: move to Constants?
-    ySpeakerAngle = Math.atan(zDifference / distanceVec.getNorm());
+    ySpeakerAngle = Math.toDegrees(Math.atan(zDifference / distanceVec.getNorm()));
 
     double[] angles = {
       xSpeakerAngle,
