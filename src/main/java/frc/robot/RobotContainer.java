@@ -68,9 +68,9 @@ public class RobotContainer {
     _swerveSubsystem.setDefaultCommand(
       new TeleopDrive(
         _swerveSubsystem,
-        () -> UtilFuncs.ApplyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
-        () -> UtilFuncs.ApplyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1),
-        () -> UtilFuncs.ApplyDeadband(-_driveFilterRightX.calculate(_driveController.getRightX()), 0.1)
+        () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
+        () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1),
+        () -> MathUtil.applyDeadband(-_driveFilterRightX.calculate(_driveController.getRightX()), 0.1)
       )
     //   new AutoAim(
     //     _shooterSubsystem,
