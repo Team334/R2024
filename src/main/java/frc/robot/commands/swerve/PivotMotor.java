@@ -1,6 +1,5 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+/*                                  Team 334                                  */
+/* Copyright (c) 2024 Team 334. All Rights Reserved.                          */
 
 package frc.robot.commands.swerve;
 
@@ -41,51 +40,76 @@ public class PivotMotor extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-  double currentRotation = _swerveDrive.getHeading().getDegrees();
+    double currentRotation = _swerveDrive.getHeading().getDegrees();
 
-  Translation2d _frontLeft = new Translation2d(0.292, 0.292);
-  Translation2d _frontRight = new Translation2d(0.292, -0.292);
-  Translation2d _backRight = new Translation2d(-0.292, -0.292);
-  Translation2d _backLeft = new Translation2d(-0.292, 0.292);
+    Translation2d _frontLeft = new Translation2d(0.292, 0.292);
+    Translation2d _frontRight = new Translation2d(0.292, -0.292);
+    Translation2d _backRight = new Translation2d(-0.292, -0.292);
+    Translation2d _backLeft = new Translation2d(-0.292, 0.292);
 
-  // If we are backwards
-  // if (_swerveDrive._driveController.getLeftY() < 0){
-  //   currentRotation += 180;
-  //   _left = !_left;
-  // }
-  
-  if (_left){
-    if (currentRotation >= 0 && currentRotation < 90){
-      _pivotPoint = _frontLeft;
+    // If we are backwards
+    // if (_swerveDrive._driveController.getLeftY() < 0){
+    //   currentRotation += 180;
+    //   _left = !_left;
+    // }
+
+    // NEW - JERRY
+    int rotationOffset = _left ? 0 : 180;
+    int quadrant = ((int) currentRotation + rotationOffset) / 90 % 4;
+
+    switch (quadrant) {
+        case 0:
+            _pivotPoint = _left ? _frontLeft : _frontRight;
+            break;
+        case 1:
+            _pivotPoint = _left ? _frontRight : _backRight;
+            break;
+        case 2:
+            _pivotPoint = _left ? _backRight : _backLeft;
+            break;
+        case 3:
+            _pivotPoint = _left ? _backLeft : _frontLeft;
+            break;
     }
-    else if (currentRotation >= 90 && currentRotation < 180){
-      _pivotPoint = _frontRight;
-    }
-    else if (currentRotation >= 180 && currentRotation < 270){
-      _pivotPoint = _backRight;
-    }
-    else{
-      _pivotPoint = _backLeft;
-    }
-  }
-  else{
-    if (currentRotation >= 0 && currentRotation < 90){
-      _pivotPoint = _frontRight;
-    }
-    else if (currentRotation >= 90 && currentRotation < 180){
-      _pivotPoint = _backRight;
-    }
-    else if (currentRotation >= 180 && currentRotation < 270){
-      _pivotPoint = _backLeft;
-    }
-    else{
-      _pivotPoint = _frontLeft;
-    }
-  }
-  _swerveDrive.pivotMotor(_pivotPoint);
+
+    _swerveDrive.pivotMotor(_pivotPoint);
+
+    // ORIGINAL
+    //
+    // if (_left){
+    //   if (currentRotation >= 0 && currentRotation < 90){
+    //     _pivotPoint = _frontLeft;
+    //   }
+    //   else if (currentRotation >= 90 && currentRotation < 180){
+    //     _pivotPoint = _frontRight;
+    //   }
+    //   else if (currentRotation >= 180 && currentRotation < 270){
+    //     _pivotPoint = _backRight;
+    //   }
+    //   else{
+    //     _pivotPoint = _backLeft;
+    //   }
+    // }
+    // else{
+    //   if (currentRotation >= 0 && currentRotation < 90){
+    //     _pivotPoint = _frontRight;
+    //   }
+    //   else if (currentRotation >= 90 && currentRotation < 180){
+    //     _pivotPoint = _backRight;
+    //   }
+    //   else if (currentRotation >= 180 && currentRotation < 270){
+    //     _pivotPoint = _backLeft;
+    //   }
+    //   else{
+    //     _pivotPoint = _frontLeft;
+    //   }
+    // }
+    // _swerveDrive.pivotMotor(_pivotPoint);
+    // }
+
+    // Called every time the scheduler runs while the command is scheduled.
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
   _swerveDrive.driveChassis(
