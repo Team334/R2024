@@ -7,7 +7,6 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -25,9 +24,9 @@ public class AutoAim extends Command {
   private DoubleSupplier _ySpeed;
 
   private PIDController _headingController = new PIDController(
-    0.045,
+    Constants.PID.SWERVE_HEADING_KP,
     0,
-    0.001
+    Constants.PID.SWERVE_HEADING_KD
   );
 
   /** Creates a new AutoAim. */

@@ -109,6 +109,9 @@ public final class Constants {
     public static final double SHOOTER_FLYWHEEL_KP = 0;
 
     public static final double ELEVATOR_KP = 0;
+
+    public static final double SWERVE_HEADING_KP = 0.045;
+    public static final double SWERVE_HEADING_KD = 0.001;
   }
 
   public static class Offsets {
