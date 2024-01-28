@@ -70,7 +70,7 @@ public final class Constants {
     public static final double SHOOTER_FLYWHEEL_CIRCUMFERENCE =
         2 * Math.PI * SHOOTER_FLYWHEEL_RADIUS;
 
-    public static final double ELEVATOR_GEAR_RATIO = 100; //TODO: fixed but they might change it
+    public static final double ELEVATOR_GEAR_RATIO = 100; // TODO: fixed but they might change it
 
     public static final double SHOOTER_HEIGHT_STOWED = 0; // TODO: Get this value
 
@@ -139,7 +139,9 @@ public final class Constants {
     public static final int SPEAKER_TAG_BLUE = 7;
     public static final int SPEAKER_TAG_RED = 4;
 
-    public static final Pose3d SPEAKER_POSE_BLUE = new Pose3d(0.25, 5.5, SPEAKER_HEIGHT, new Rotation3d(0, 0, 180));
-    public static final Pose3d SPEAKER_POSE_RED = new Pose3d(16.3, 5.5, SPEAKER_HEIGHT, new Rotation3d(0, 0, 0));
+    public static final Pose3d SPEAKER_POSE_BLUE =
+        new Pose3d(0.25, 5.5, SPEAKER_HEIGHT, new Rotation3d(0, 0, 180));
+    public static final Pose3d SPEAKER_POSE_RED =
+        new Pose3d(16.3, 5.5, SPEAKER_HEIGHT, new Rotation3d(0, 0, 0));
   }
 }

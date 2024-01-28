@@ -72,10 +72,11 @@ public class ShooterSubsystem extends SubsystemBase {
   public double getVelocity() {
     double neo_rps = _leftEncoder.getVelocity() / 60;
 
-    double number = (neo_rps / Constants.Physical.SHOOTER_GEAR_RATIO)
-        * Constants.Physical.SHOOTER_FLYWHEEL_CIRCUMFERENCE;
+    double number =
+        (neo_rps / Constants.Physical.SHOOTER_GEAR_RATIO)
+            * Constants.Physical.SHOOTER_FLYWHEEL_CIRCUMFERENCE;
 
-    if (number < 0){
+    if (number < 0) {
       number = 0;
     }
 

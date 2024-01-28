@@ -3,8 +3,6 @@
 
 package frc.robot.commands.shooter;
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -14,6 +12,7 @@ import frc.robot.Constants;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
+import java.util.function.DoubleSupplier;
 
 public class AutoAim extends Command {
   private ShooterSubsystem _shooter;
@@ -23,20 +22,16 @@ public class AutoAim extends Command {
   private DoubleSupplier _xSpeed;
   private DoubleSupplier _ySpeed;
 
-  private PIDController _headingController = new PIDController(
-    Constants.PID.SWERVE_HEADING_KP,
-    0,
-    Constants.PID.SWERVE_HEADING_KD
-  );
+  private PIDController _headingController =
+      new PIDController(Constants.PID.SWERVE_HEADING_KP, 0, Constants.PID.SWERVE_HEADING_KD);
 
   /** Creates a new AutoAim. */
   public AutoAim(
-    ShooterSubsystem shooter,
-    VisionSubsystem vision,
-    SwerveDriveSubsystem swerve,
-    DoubleSupplier xSpeed,
-    DoubleSupplier ySpeed
-  ) {
+      ShooterSubsystem shooter,
+      VisionSubsystem vision,
+      SwerveDriveSubsystem swerve,
+      DoubleSupplier xSpeed,
+      DoubleSupplier ySpeed) {
     // Use addRequirements() here to declare subsystem dependencies.
     _shooter = shooter;
     _vision = vision;
@@ -99,23 +94,25 @@ public class AutoAim extends Command {
     SmartDashboard.putNumber("DESIRED SWERVE HEADING", desiredSwerveHeading);
     SmartDashboard.putNumber("SHOOTER ANGLE", _swerve.speakerAngles()[1]);
 
-    double rotationVelocity = MathUtil.clamp(
-      _headingController.calculate(currentSwerveHeading, desiredSwerveHeading),
-      -Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED * 2,
-      Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED * 2
-    );
+    double rotationVelocity =
+        MathUtil.clamp(
+            _headingController.calculate(currentSwerveHeading, desiredSwerveHeading),
+            -Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED * 2,
+            Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED * 2);
 
     if (_headingController.atSetpoint()) {
       rotationVelocity = 0;
     }
 
     _swerve.driveChassis(
-      new ChassisSpeeds(
-        _xSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
-        _ySpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
-        rotationVelocity
-      )
-    );
+        new ChassisSpeeds(
+            _xSpeed.getAsDouble()
+                * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED
+                * Constants.Speeds.SWERVE_DRIVE_COEFF,
+            _ySpeed.getAsDouble()
+                * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED
+                * Constants.Speeds.SWERVE_DRIVE_COEFF,
+            rotationVelocity));
   }
 
   // Called once the command ends or is interrupted.

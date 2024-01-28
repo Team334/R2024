@@ -5,7 +5,6 @@ package frc.robot.utils;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -62,13 +61,12 @@ public class LimelightHelper {
    * Returns a JsonNode containing info of a tag.
    *
    * @param ID The ID of the tag to look for.
-   *
    * @see JsonNode
    */
   public JsonNode getTag(int ID) {
     JsonNode tags = getTags();
 
-    for (JsonNode tag: tags) {
+    for (JsonNode tag : tags) {
       if (tag.get("fID").asInt() == ID) {
         return tag;
       }
