@@ -26,12 +26,10 @@ import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Constants.FieldConstants;
 import frc.robot.utils.BNO055;
 import frc.robot.utils.SwerveModule;
 import frc.robot.utils.UtilFuncs;
@@ -408,17 +406,16 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     double xSpeakerAngle;
     double ySpeakerAngle;
 
-    int tagID = Constants.FIELD_CONSTANTS.SPEAKER_TAG;
-    Pose3d tagPose = Constants.FIELD_CONSTANTS.APRILTAG_LAYOUT.getTagPose(tagID).get();
+    Pose3d speakerPose = Constants.FIELD_CONSTANTS.SPEAKER_POSE;
 
-    Translation2d tagTranslation = new Translation2d(tagPose.getX(), tagPose.getY());
+    Translation2d speakerTranslation = new Translation2d(speakerPose.getX(), speakerPose.getY());
     Translation2d botTranslation = getPose().getTranslation();
 
-    Translation2d distanceVec = tagTranslation.minus(botTranslation);
+    Translation2d distanceVec = speakerTranslation.minus(botTranslation);
 
     xSpeakerAngle = MathUtil.inputModulus(distanceVec.getAngle().getDegrees(), -180, 180);
 
-    double zDifference = FieldConstants.SPEAKER_HEIGHT - Constants.Physical.SHOOTER_HEIGHT_STOWED; // TODO: move to Constants?
+    double zDifference = speakerPose.getZ() - Constants.Physical.SHOOTER_HEIGHT_STOWED; // TODO: move to Constants?
     ySpeakerAngle = Math.toDegrees(Math.atan(zDifference / distanceVec.getNorm()));
 
     double[] angles = {

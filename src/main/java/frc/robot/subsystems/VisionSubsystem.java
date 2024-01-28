@@ -9,7 +9,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.utils.LimelightHelper;
 
 import java.util.Optional;
@@ -121,14 +120,5 @@ public class VisionSubsystem extends SubsystemBase {
     double[] angles = {tx, ty};
 
     return angles;
-  }
-
-  /**
-   * The tag angle offsets to the tag on the speaker (automatically knows which tag to check).
-   * 
-   * @return [tx, ty] or null.
-   */
-  public double[] anglesToSpeaker() {
-    return tagAngleOffsets(Constants.FIELD_CONSTANTS.SPEAKER_TAG);
   }
 }

@@ -8,7 +8,6 @@ import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -17,9 +16,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
-import frc.robot.commands.elevator.HoldElevator;
 import frc.robot.commands.shooter.AutoAim;
-import frc.robot.commands.shooter.HoldShooter;
 import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.commands.swerve.BrakeSwerve;
 import frc.robot.commands.swerve.ResetPose;
@@ -29,7 +26,6 @@ import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
-import frc.robot.utils.UtilFuncs;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a

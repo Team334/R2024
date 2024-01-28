@@ -4,13 +4,11 @@
 package frc.robot;
 
 import com.pathplanner.lib.util.PIDConstants;
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import frc.robot.utils.AllianceFieldConstants;
-import frc.robot.utils.UtilFuncs;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -133,12 +131,12 @@ public final class Constants {
 
   // static field constants
   public static class FieldConstants {
-    public static final double SPEAKER_HEIGHT = .200;
+    public static final double SPEAKER_HEIGHT = 2;
 
     public static final int SPEAKER_TAG_BLUE = 7;
     public static final int SPEAKER_TAG_RED = 4;
 
-    public static final Pose2d SPEAKER_POSE_BLUE = new Pose2d(0.25, 5.5, Rotation2d.fromDegrees(180.0));
-    public static final Pose2d SPEAKER_POSE_RED = new Pose2d(16.3, 5.5, Rotation2d.fromDegrees(0.0));
+    public static final Pose3d SPEAKER_POSE_BLUE = new Pose3d(0.25, 5.5, SPEAKER_HEIGHT, new Rotation3d(0, 0, 180));
+    public static final Pose3d SPEAKER_POSE_RED = new Pose3d(16.3, 5.5, SPEAKER_HEIGHT, new Rotation3d(0, 0, 0));
   }
 }
