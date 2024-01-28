@@ -78,7 +78,7 @@ public class ShooterSubsystem extends SubsystemBase {
     if (number < 0){
       number = 0;
     }
-    
+
     return number;
   }
 

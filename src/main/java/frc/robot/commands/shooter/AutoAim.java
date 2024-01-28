@@ -31,8 +31,8 @@ public class AutoAim extends Command {
 
   /** Creates a new AutoAim. */
   public AutoAim(
-    ShooterSubsystem shooter, 
-    VisionSubsystem vision, 
+    ShooterSubsystem shooter,
+    VisionSubsystem vision,
     SwerveDriveSubsystem swerve,
     DoubleSupplier xSpeed,
     DoubleSupplier ySpeed

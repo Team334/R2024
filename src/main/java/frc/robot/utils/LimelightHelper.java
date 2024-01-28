@@ -32,7 +32,7 @@ public class LimelightHelper {
 
   /**
    * Returns a NetworkTableEntry from the limelight network table.
-   * 
+   *
    * @param name The name of the entry.
    */
   public NetworkTableEntry getEntry(String name) {
@@ -41,7 +41,7 @@ public class LimelightHelper {
 
   /**
    * Returns a JsonNode array containing found tags and their info.
-   * 
+   *
    * @see JsonNode
    */
   public JsonNode getTags() {
@@ -60,9 +60,9 @@ public class LimelightHelper {
 
   /**
    * Returns a JsonNode containing info of a tag.
-   * 
+   *
    * @param ID The ID of the tag to look for.
-   * 
+   *
    * @see JsonNode
    */
   public JsonNode getTag(int ID) {

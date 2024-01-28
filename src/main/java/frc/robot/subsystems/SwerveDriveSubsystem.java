@@ -366,7 +366,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     resetPose(new_pose);
   }
-  
+
   /** Resets pose estimator's translation of the drive to (0, 0). */
   public void resetTranslation() {
     Pose2d new_pose = new Pose2d(0, 0, getPose().getRotation());
@@ -397,10 +397,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     return Rotation2d.fromDegrees(-Math.IEEEremainder(_gyro.getHeading(), 360));
   }
 
-  /** 
+  /**
    * Get the setpoint x and y angles for the drive/shooter for auto-aim.
-   * 
-   * @return [xSpeakerAngle, ySpeakerAngle] 
+   *
+   * @return [xSpeakerAngle, ySpeakerAngle]
    */
   public double[] speakerAngles() {
     double xSpeakerAngle;
@@ -460,7 +460,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     // else{
     //   angleX = -currentRotation.getDegrees() - Math.atan((Constants.FIELD_CONSTANTS.SPEAKER_POSE.getY() - getPose().getY()) / (getPose().getX() - Constants.FIELD_CONSTANTS.SPEAKER_POSE.getX()));
     // }
-    
+
     // double[] angles = {angleX, angleY};
 
     // return angles;

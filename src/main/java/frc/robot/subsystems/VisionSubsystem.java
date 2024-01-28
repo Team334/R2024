@@ -50,9 +50,9 @@ public class VisionSubsystem extends SubsystemBase {
 
   /**
    * Returns the "wpiblue" botpose of the robot from the limelight.
-   * 
+   *
    * @return An Optional of Pose2d which is necessary if no value is found from the limelight.
-   * 
+   *
    * @see Optional
    */
   public Optional<Pose2d> getBotpose() {
@@ -93,7 +93,7 @@ public class VisionSubsystem extends SubsystemBase {
 
   /**
    * Return a boolean for whether the desired tag is seen.
-   * 
+   *
    * @param ID The id of the desired tag.
    */
   public boolean isApriltagVisible(int ID) {
@@ -104,14 +104,14 @@ public class VisionSubsystem extends SubsystemBase {
 
   /**
    * Return tx and ty angle offsets from a desired tag.
-   * 
+   *
    * @param ID The id of the desired tag.
-   * 
+   *
    * @return A double array [tx, ty]. Null is returned if no tags are visible at all.
    */
   public double[] tagAngleOffsets(int ID) {
     if (!isApriltagVisible(ID)) return null;
-    
+
     JsonNode tag = _limelight.getTag(ID);
 
     double tx = tag.get("tx").asDouble();
