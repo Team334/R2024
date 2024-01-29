@@ -19,7 +19,7 @@ public class LEDStrip extends SubsystemBase {
   private int _ledNumber;
 
   private int _hue; // For rainbow
-  private int _firstPixel; // For rainbow
+  private int _firstPixelHue; // For rainbow
 
   // Current counter will be how we manage time of our blinking pattern
   // 1 = 20ms if command is put in a periodic func.
@@ -58,15 +58,15 @@ public class LEDStrip extends SubsystemBase {
   public void rainbow() {
     for (var i = 0; i < _ledBuffer.getLength(); i++) {
       // Get the distance of the rainbow between two pixels. (180 / _ledBuffer.getLength())
-      // Times the number of pixels from the first pixel.
-      _hue = ((_firstPixel + i) * (180 / _ledBuffer.getLength())) % 180;
+      // Times the index of current pixel. (i)
+      // Plus the hue of the first pixel.
+      // ^This will get us the "moved" hue for the current pixel^
+      _hue = (_firstPixelHue + (i * (180 / _ledBuffer.getLength()))) % 180;
       _ledBuffer.setHSV(i, _hue, 255, 255);
     }
-
-    ++_firstPixel;
-    if (_firstPixel > _ledBuffer.getLength() - 1) {
-      _firstPixel = 0;
-    }
+    
+    _firstPixelHue += 3;
+    _firstPixelHue %= 180;
   }
 
   public void blink(int[] color, int timeBetween) {
