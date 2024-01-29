@@ -7,7 +7,6 @@ import com.ctre.phoenix6.Orchestra;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.ReplanningConfig;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -26,13 +25,11 @@ import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import frc.robot.Constants;
-import frc.robot.Constants.FieldConstants;
 import frc.robot.utils.BNO055;
 import frc.robot.utils.SwerveModule;
 import frc.robot.utils.UtilFuncs;
@@ -225,7 +222,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     // });
 
     SmartDashboard.putData("Swerve/Built-in Accelerometer", new BuiltInAccelerometer());
-
   }
 
   @Override
@@ -264,7 +260,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     if (_visionSubsystem.isApriltagVisible()) {
       Optional<Pose2d> visionBotpose = _visionSubsystem.getBotpose();
       if (visionBotpose.isPresent()) {
-        _estimator.addVisionMeasurement(_visionSubsystem.getBotpose().get(), _visionSubsystem.getLatency());
+        _estimator.addVisionMeasurement(
+            _visionSubsystem.getBotpose().get(), _visionSubsystem.getLatency());
       }
     }
 
@@ -300,11 +297,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     _orchestra.play();
   }
 
-  public void setChassisSpeeds(ChassisSpeeds chassisSpeeds) {
-
-  }
-
-  /**
+  public void setChassisSpeeds(ChassisSpeeds chassisSpeeds) {    
+   /**
    * Set the chassis speed of the swerve drive.
    *
    * <p>
@@ -314,7 +308,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
    *
    * @see ChassisSpeeds (wpilib chassis speeds class)
    */
-  public void driveChassis(ChassisSpeeds chassisSpeeds) {
+   // public void driveChassis(ChassisSpeeds chassisSpeeds) {
+  
     // IMPORTANT: X-axis and Y-axis are flipped (based on wpilib coord system)
     if (fieldOriented) {
       chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(chassisSpeeds, getHeading());
@@ -406,8 +401,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   }
 
   /**
-   * Get the setpoint x and y angles for the drive/shooter for auto-aim.
-   * 
+   * Get the setpoint x and y angles for the drive/shooter for auto-aim. 
+   *
    * @return [xSpeakerAngle, ySpeakerAngle]
    */
   public double[] speakerAngles() {
