@@ -66,7 +66,7 @@ public class AutoAim extends Command {
 
     _runOnce = true;
   }
-  
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
