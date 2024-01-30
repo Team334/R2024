@@ -72,7 +72,7 @@ public class PivotMotor extends Command {
             break;
     }
 
-    _swerveDrive.pivotMotor(_pivotPoint);
+    // _swerveDrive.pivotMotor(_pivotPoint);
 
     // ORIGINAL
     //
@@ -124,7 +124,7 @@ public class PivotMotor extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    _swerveDrive.resetPivot();
+    // _swerveDrive.resetPivot();
   }
 
   // Returns true when the command should end.

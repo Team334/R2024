@@ -60,7 +60,9 @@ public class RobotContainer {
     NamedCommands.registerCommand("printHello", new PrintCommand("AUTON HELLO"));
     NamedCommands.registerCommand("waitCommand", new WaitCommand(3));
     NamedCommands.registerCommand("interruptSwerve", interruptSwerve);
-
+    NamedCommands.registerCommand("interruptSwerve", new BrakeSwerve(_swerveSubsystem, 3));
+    NamedCommands.registerCommand("speakerAim", new AutoAim(_shooterSubsystem, _visionSubsystem, _swerveSubsystem));
+    
     _swerveSubsystem.setDefaultCommand(
       new TeleopDrive(
         _swerveSubsystem,
