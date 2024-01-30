@@ -14,6 +14,11 @@ import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import java.util.function.DoubleSupplier;
 
+/**
+ * @author Elvis Osmanov
+ * @author Peter Gutkovich
+ * @author Cherine Soewingjo
+ */
 public class AutoAim extends Command {
   private ShooterSubsystem _shooter;
   private VisionSubsystem _vision;
