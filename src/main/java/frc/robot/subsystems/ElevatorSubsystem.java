@@ -11,6 +11,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.utils.NeoConfig;
 
+/**
+ * @author Peter Gutkovich
+ */
 public class ElevatorSubsystem extends SubsystemBase {
   private final CANSparkMax _leftMotor =
       new CANSparkMax(Constants.CAN.ELEVATOR_LEFT, MotorType.kBrushless);
@@ -42,9 +45,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   /** Sets the height of the elevator in meters. MUST be called repeatedly. */
   public void setElevatorHeight(double heightMeters) {
-    driveElevator(
-        _heightController.calculate(getElevatorHeight(), heightMeters)
-            + _elevatorFeed.calculate(0));
+    driveElevator(_heightController.calculate(getElevatorHeight(), heightMeters));
   }
 
   /** Get the height of the elevator in meters. */
@@ -52,13 +53,13 @@ public class ElevatorSubsystem extends SubsystemBase {
     return 0.00;
   }
 
-  /** Drives the elevator at a desired percent output. */
+  /** Drives the elevator at a desired percent output (feedforward is included). */
   public void driveElevator(double speed) {
-    _leftMotor.set(speed);
+    _leftMotor.set(_elevatorFeed.calculate(0) + speed);
   }
 
-  /** Stops the elevator motors completely, should be called with caution. */
+  /** Stops elevator movement. */
   public void stopElevator() {
-    _leftMotor.set(0);
+    driveElevator(0);
   }
 }

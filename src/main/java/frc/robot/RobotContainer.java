@@ -8,7 +8,6 @@ import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -17,11 +16,10 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
-import frc.robot.commands.elevator.HoldElevator;
 import frc.robot.commands.shooter.AutoAim;
-import frc.robot.commands.shooter.HoldShooter;
 import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.commands.swerve.BrakeSwerve;
+import frc.robot.commands.swerve.PivotMotor;
 import frc.robot.commands.swerve.ResetPose;
 import frc.robot.commands.swerve.TeleopDrive;
 import frc.robot.commands.swerve.ToggleSwerveOrient;
@@ -29,8 +27,6 @@ import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
-import frc.robot.utils.UtilFuncs;
-
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -68,9 +64,9 @@ public class RobotContainer {
     _swerveSubsystem.setDefaultCommand(
       new TeleopDrive(
         _swerveSubsystem,
-        () -> UtilFuncs.ApplyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
-        () -> UtilFuncs.ApplyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1),
-        () -> UtilFuncs.ApplyDeadband(-_driveFilterRightX.calculate(_driveController.getRightX()), 0.1)
+        () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
+        () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1),
+        () -> MathUtil.applyDeadband(-_driveFilterRightX.calculate(_driveController.getRightX()), 0.1)
       )
     //   new AutoAim(
     //     _shooterSubsystem,
@@ -108,6 +104,8 @@ public class RobotContainer {
     );
 
     // for testing velocity output (forward at 0.3 m/s), is it straight?
+    // ...
+
     _driveController
         .triangle()
         .whileTrue(
@@ -116,6 +114,14 @@ public class RobotContainer {
                   _swerveSubsystem.driveChassis(new ChassisSpeeds(0.3, 0, 0));
                 },
                 _swerveSubsystem));
+    _driveController.L2().whileTrue(new PivotMotor(_swerveSubsystem, true,  
+      () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
+      () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1), 
+      () -> MathUtil.applyDeadband(-_driveFilterRightX.calculate(_driveController.getRightX()), 0.1)));
+    _driveController.R2().whileTrue(new PivotMotor(_swerveSubsystem, false,  
+      () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
+      () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1), 
+      () -> MathUtil.applyDeadband(-_driveFilterRightX.calculate(_driveController.getRightX()), 0.1)));
   }
 
   /**
