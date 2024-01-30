@@ -422,7 +422,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     Pose3d tagPose = Constants.FIELD_CONSTANTS.APRILTAG_LAYOUT.getTagPose(tagID).get(); // NEEDS FIX
 
-    Translation2d tagTranslation = new Translation2d(tagPose.getX(), tagPose.getY()); 
+    Translation2d tagTranslation = new Translation2d(tagPose.getX(), tagPose.getY());
     Translation2d botTranslation = getPose().getTranslation();
 
     Translation2d distanceVec = tagTranslation.minus(botTranslation);
