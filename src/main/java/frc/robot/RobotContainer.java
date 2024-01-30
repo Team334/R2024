@@ -122,6 +122,16 @@ public class RobotContainer {
                   _swerveSubsystem.driveChassis(new ChassisSpeeds(0.3, 0, 0));
                 },
                 _swerveSubsystem));
+    _driveController.L2().whileTrue(new PivotMotor(_swerveSubsystem, true,  
+      () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
+      () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1), 
+      () -> MathUtil.applyDeadband(-_driveFilterRightX.calculate(_driveController.getRightX()), 0.1)));
+    _driveController.R2().whileTrue(new PivotMotor(_swerveSubsystem, false,  
+      () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
+      () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1), 
+      () -> MathUtil.applyDeadband(-_driveFilterRightX.calculate(_driveController.getRightX()), 0.1)));
+  }
+
   }
 
   /**
