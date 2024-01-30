@@ -48,7 +48,7 @@ public class LEDStrip extends SubsystemBase {
 
   public void setColor(int[] color) {
     // For every pixel in RGB format!!!
-    for (var i = 0; i < _ledBuffer.getLength(); i++) {
+    for (int i = 0; i < _ledBuffer.getLength(); i++) {
       _ledBuffer.setRGB(i, color[0], color[1], color[2]);
     }
 
@@ -56,7 +56,7 @@ public class LEDStrip extends SubsystemBase {
   }
 
   public void rainbow() {
-    for (var i = 0; i < _ledBuffer.getLength(); i++) {
+    for (int i = 0; i < _ledBuffer.getLength(); i++) {
       // Get the distance of the rainbow between two pixels. (180 / _ledBuffer.getLength())
       // Times the index of current pixel. (i)
       // Plus the hue of the first pixel.
@@ -69,20 +69,20 @@ public class LEDStrip extends SubsystemBase {
     _firstPixelHue %= 180;
   }
 
-  public void blink(int[] color, int timeBetween) {
+  public void blink(int[] firstColor, int[] secondColor, int timeBetween) {
     if (_currentCounter > timeBetween) {
       if (!_colorOn) {
         // If LEDs are not on...
         // Set them on to given color
-        for (var i = 0; i < _ledBuffer.getLength(); i++) {
-          _ledBuffer.setRGB(i, color[0], color[1], color[2]);
+        for (int i = 0; i < _ledBuffer.getLength(); i++) {
+          _ledBuffer.setRGB(i, firstColor[0], firstColor[1], firstColor[2]);
         }
         _ledStrip.setData(_ledBuffer);
       } else {
         // If LEDs are on...
         // Set them off
-        for (var i = 0; i < _ledBuffer.getLength(); i++) {
-          _ledBuffer.setRGB(i, 0, 0, 0);
+        for (int i = 0; i < _ledBuffer.getLength(); i++) {
+          _ledBuffer.setRGB(i, secondColor[0], secondColor[1], secondColor[2]);
         }
         _ledStrip.setData(_ledBuffer);
       }
@@ -92,9 +92,22 @@ public class LEDStrip extends SubsystemBase {
     }
   }
 
+  public void onePixelTest() {
+    _ledBuffer.setRGB(0, 252, 186, 3);
+    _ledStrip.setData(_ledBuffer);
+  }
+
+  public void colorTest(int[] color) {
+    // For every pixel
+    for (var i = 0; i < _ledBuffer.getLength(); i++) {
+      _ledBuffer.setRGB(i, color[0], color[1], color[2]);
+    }
+
+    _ledStrip.setData(_ledBuffer);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    rainbow(); // TESTING ONLY
   }
 }
