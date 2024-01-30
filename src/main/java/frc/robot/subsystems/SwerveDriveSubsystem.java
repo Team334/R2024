@@ -97,6 +97,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   private double _robotSpeed = 0;
 
+  Translation2d _pivotPoint = new Translation2d(0, 0);
+
   private final Orchestra _orchestra = new Orchestra();
   String song = "output.chrp";
 
@@ -314,8 +316,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(chassisSpeeds, getHeading());
     }
 
-    SwerveModuleState[] moduleStates =
-        Constants.Physical.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds);
+    SwerveModuleState[] moduleStates = Constants.Physical.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds, _pivotPoint);
     setStates(moduleStates);
   }
 
@@ -463,5 +464,13 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     // double[] angles = {angleX, angleY};
 
     // return angles;
+  }
+
+  public void pivotMotor(Translation2d pivotPoint) {
+    _pivotPoint = pivotPoint;
+  }
+
+  public void resetPivot(){
+    _pivotPoint = new Translation2d(0, 0);
   }
 }

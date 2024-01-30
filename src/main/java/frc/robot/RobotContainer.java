@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import frc.robot.commands.shooter.AutoAim;
 import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.commands.swerve.BrakeSwerve;
+import frc.robot.commands.swerve.PivotMotor;
 import frc.robot.commands.swerve.ResetPose;
 import frc.robot.commands.swerve.TeleopDrive;
 import frc.robot.commands.swerve.ToggleSwerveOrient;
@@ -123,6 +124,16 @@ public class RobotContainer {
                   _swerveSubsystem.driveChassis(new ChassisSpeeds(0.3, 0, 0));
                 },
                 _swerveSubsystem));
+
+    _driveController.L2().whileTrue(new PivotMotor(_swerveSubsystem, true,  
+      () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
+      () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1), 
+      () -> MathUtil.applyDeadband(-_driveFilterRightX.calculate(_driveController.getRightX()), 0.1), () -> -_driveController.getLeftY()));
+
+    _driveController.R2().whileTrue(new PivotMotor(_swerveSubsystem, false,  
+      () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
+      () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1), 
+      () -> MathUtil.applyDeadband(-_driveFilterRightX.calculate(_driveController.getRightX()), 0.1), () -> -_driveController.getLeftY()));
   }
 
   /**
