@@ -5,6 +5,7 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -19,6 +20,7 @@ import frc.robot.commands.shooter.AutoAim;
 import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.commands.swerve.BrakeSwerve;
 import frc.robot.commands.swerve.PivotMotor;
+import frc.robot.commands.swerve.PivotMotor;
 import frc.robot.commands.swerve.ResetPose;
 import frc.robot.commands.swerve.TeleopDrive;
 import frc.robot.commands.swerve.ToggleSwerveOrient;
@@ -26,7 +28,6 @@ import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
-
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -60,29 +61,24 @@ public class RobotContainer {
     NamedCommands.registerCommand("printHello", new PrintCommand("AUTON HELLO"));
     NamedCommands.registerCommand("waitCommand", new WaitCommand(3));
     NamedCommands.registerCommand("interruptSwerve", interruptSwerve);
-
+    NamedCommands.registerCommand("interruptSwerve", new BrakeSwerve(_swerveSubsystem, 3));
+    NamedCommands.registerCommand("speakerAim", new AutoAim(_shooterSubsystem, _visionSubsystem, _swerveSubsystem));
+    
     _swerveSubsystem.setDefaultCommand(
-        new TeleopDrive(
-            _swerveSubsystem,
-            () ->
-                MathUtil.applyDeadband(
-                    -_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
-            () ->
-                MathUtil.applyDeadband(
-                    -_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1),
-            () ->
-                MathUtil.applyDeadband(
-                    -_driveFilterRightX.calculate(_driveController.getRightX()), 0.1))
-        //   new AutoAim(
-        //     _shooterSubsystem,
-        //     _visionSubsystem,
-        //     _swerveSubsystem,
-        //     () ->
-        // MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
-        //     () ->
-        // MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1)
-        //   )
-        );
+      new TeleopDrive(
+        _swerveSubsystem,
+        () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
+        () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1),
+        () -> MathUtil.applyDeadband(-_driveFilterRightX.calculate(_driveController.getRightX()), 0.1)
+      )
+    //   new AutoAim(
+    //     _shooterSubsystem,
+    //     _visionSubsystem,
+    //     _swerveSubsystem,
+    //     () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
+    //     () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1)
+    //   )
+    );
 
     // _elevatorSubsystem.setDefaultCommand(new HoldElevator(_elevatorSubsystem));
     // _shooterSubsystem.setDefaultCommand(new HoldShooter(_shooterSubsystem));
@@ -101,21 +97,18 @@ public class RobotContainer {
     _driveController.square().onTrue(new ResetPose(_swerveSubsystem));
     _driveController.circle().whileTrue(new SpinShooter(_shooterSubsystem));
     _driveController.cross().whileTrue(new BrakeSwerve(_swerveSubsystem));
-    _driveController
-        .L1()
-        .whileTrue(
-            new AutoAim(
-                _shooterSubsystem,
-                _visionSubsystem,
-                _swerveSubsystem,
-                () ->
-                    MathUtil.applyDeadband(
-                        -_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
-                () ->
-                    MathUtil.applyDeadband(
-                        -_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1)));
+    _driveController.L1().whileTrue(new AutoAim(
+        _shooterSubsystem,
+        _visionSubsystem,
+        _swerveSubsystem,
+        () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
+        () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1)
+      )
+    );
 
     // for testing velocity output (forward at 0.3 m/s), is it straight?
+    // ...
+
     _driveController
         .triangle()
         .whileTrue(

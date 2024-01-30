@@ -11,6 +11,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.utils.NeoConfig;
 
+/**
+ * @author Peter Gutkovich
+ */
 public class ElevatorSubsystem extends SubsystemBase {
   private final CANSparkMax _leftMotor =
       new CANSparkMax(Constants.CAN.ELEVATOR_LEFT, MotorType.kBrushless);

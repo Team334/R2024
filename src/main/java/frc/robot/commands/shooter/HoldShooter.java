@@ -6,6 +6,9 @@ package frc.robot.commands.shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShooterSubsystem;
 
+/**
+ * @author Peter Gutkovich
+ */
 public class HoldShooter extends Command {
   private final ShooterSubsystem _shooter;
 

@@ -14,13 +14,23 @@ import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import java.util.function.DoubleSupplier;
 
+/**
+ * @author Elvis Osmanov
+ * @author Peter Gutkovich
+ * @author Cherine Soewingjo
+ */
 public class AutoAim extends Command {
-  private ShooterSubsystem _shooter;
-  private VisionSubsystem _vision;
-  private SwerveDriveSubsystem _swerve;
+  private final ShooterSubsystem _shooter;
+  private final VisionSubsystem _vision;
+  private final SwerveDriveSubsystem _swerve;
 
-  private DoubleSupplier _xSpeed;
-  private DoubleSupplier _ySpeed;
+  private final DoubleSupplier _xSpeed;
+  private final DoubleSupplier _ySpeed;
+
+  private boolean _reachedSwerveHeading;
+  private boolean _reachedShooterAngle;
+
+  private boolean _runOnce = false;
 
   private PIDController _headingController =
       new PIDController(Constants.PID.SWERVE_HEADING_KP, 0, Constants.PID.SWERVE_HEADING_KD);
@@ -46,9 +56,23 @@ public class AutoAim extends Command {
     addRequirements(_shooter, _vision, _swerve);
   }
 
+  /** Creates an auton AutoAim that ends when it reaches the first setpoints. */
+  public AutoAim(
+    ShooterSubsystem shooter,
+    VisionSubsystem vision,
+    SwerveDriveSubsystem swerve
+  ) {
+    this(shooter, vision, swerve, () -> 0, () -> 0);
+
+    _runOnce = true;
+  }
+  
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    _reachedSwerveHeading = false;
+    _reachedShooterAngle = false;
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -94,25 +118,28 @@ public class AutoAim extends Command {
     SmartDashboard.putNumber("DESIRED SWERVE HEADING", desiredSwerveHeading);
     SmartDashboard.putNumber("SHOOTER ANGLE", _swerve.speakerAngles()[1]);
 
-    double rotationVelocity =
-        MathUtil.clamp(
-            _headingController.calculate(currentSwerveHeading, desiredSwerveHeading),
-            -Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED * 2,
-            Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED * 2);
+    double rotationVelocity = MathUtil.clamp(
+      _headingController.calculate(currentSwerveHeading, desiredSwerveHeading),
+      -Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED * 2,
+      Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED * 2
+    );
 
-    if (_headingController.atSetpoint()) {
-      rotationVelocity = 0;
-    }
+    _reachedSwerveHeading = _headingController.atSetpoint();
+    _reachedShooterAngle = true; // TODO: make this actually use the shooter
+
+    if (_reachedSwerveHeading) rotationVelocity = 0; // to prevent oscillation
 
     _swerve.driveChassis(
-        new ChassisSpeeds(
-            _xSpeed.getAsDouble()
-                * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED
-                * Constants.Speeds.SWERVE_DRIVE_COEFF,
-            _ySpeed.getAsDouble()
-                * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED
-                * Constants.Speeds.SWERVE_DRIVE_COEFF,
-            rotationVelocity));
+      new ChassisSpeeds(
+        _xSpeed.getAsDouble()
+        * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED
+        * Constants.Speeds.SWERVE_DRIVE_COEFF,
+        _ySpeed.getAsDouble()
+            * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED
+            * Constants.Speeds.SWERVE_DRIVE_COEFF,
+        rotationVelocity
+      )
+    );
   }
 
   // Called once the command ends or is interrupted.
@@ -122,6 +149,6 @@ public class AutoAim extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return _runOnce && _reachedSwerveHeading && _reachedShooterAngle;
   }
 }

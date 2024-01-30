@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.7712302091270848,
-      "y": 7.34029432022828
+      "x": 1.1897383794767595,
+      "y": 5.394680503646721
     },
-    "rotation": 90.0
+    "rotation": 180.0
   },
   "command": {
     "type": "sequential",
@@ -14,19 +14,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "ultra amp path pt.1"
+            "pathName": "shooter test"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "interruptSwerve"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "ultra amp path pt.2"
+            "name": "speakerAim"
           }
         }
       ]
