@@ -96,7 +96,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   private double _robotSpeed = 0;
 
-  Translation2d _pivotPoint = new Translation2d(0, 0); 
+  Translation2d _pivotPoint = new Translation2d(0, 0);
 
   public final CommandPS4Controller _driveController = new CommandPS4Controller(Constants.Ports.DRIVER_CONTROLLER);
 
@@ -301,7 +301,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   }
 
   public void setChassisSpeeds(ChassisSpeeds chassisSpeeds) {
-
   }
 
   /**
@@ -407,17 +406,23 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   /**
    * Get the setpoint x and y angles for the drive/shooter for auto-aim.
-   * 
+   *
    * @return [xSpeakerAngle, ySpeakerAngle]
    */
   public double[] speakerAngles() {
     double xSpeakerAngle;
     double ySpeakerAngle;
+    int tagID;
 
-    int tagID = Constants.FIELD_CONSTANTS.SPEAKER_TAG;
-    Pose3d tagPose = Constants.FIELD_CONSTANTS.APRILTAG_LAYOUT.getTagPose(tagID).get();
+    if (UtilFuncs.GetCurrentAlliance() == Alliance.Red) {
+      tagID = Constants.FieldConstants.SPEAKER_TAG_RED;
+    } else {
+      tagID = Constants.FieldConstants.SPEAKER_TAG_BLUE;
+    }
 
-    Translation2d tagTranslation = new Translation2d(tagPose.getX(), tagPose.getY());
+    Pose3d tagPose = Constants.FIELD_CONSTANTS.APRILTAG_LAYOUT.getTagPose(tagID).get(); // NEEDS FIX
+
+    Translation2d tagTranslation = new Translation2d(tagPose.getX(), tagPose.getY()); 
     Translation2d botTranslation = getPose().getTranslation();
 
     Translation2d distanceVec = tagTranslation.minus(botTranslation);
