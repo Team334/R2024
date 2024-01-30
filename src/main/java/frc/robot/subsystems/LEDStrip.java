@@ -6,13 +6,9 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
-import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
-import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
-import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.util.Color8Bit;
 
-
+// https://www.chiefdelphi.com/t/programming-leds-with-roborio-but-leds-stuck/377176/8 ?
 public class LEDStrip extends SubsystemBase {
   private AddressableLED _ledStrip;
   private AddressableLEDBuffer _ledBuffer;
@@ -26,13 +22,6 @@ public class LEDStrip extends SubsystemBase {
   private int _currentCounter = 0;
   // colorOn used to control blinking.
   private boolean _colorOn = false;
-  
-  // FOR SIM TESTING ONLY \/ \/ \/
-  private Mechanism2d leds;
-  private MechanismLigament2d bufferLeds;
-  private int[] blinkColor = {0, 215, 255};
-  Color8Bit theColor;
-  // FOR SIM TESTING ONLY /\ /\ /\
 
   /** Creates a new LEDStrip. */
   public LEDStrip(int port, int ledNumber) {
@@ -95,6 +84,7 @@ public class LEDStrip extends SubsystemBase {
   public void onePixelTest() {
     _ledBuffer.setRGB(0, 252, 186, 3);
     _ledStrip.setData(_ledBuffer);
+    _ledStrip.start();
   }
 
   public void colorTest(int[] color) {
