@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-// https://www.chiefdelphi.com/t/programming-leds-with-roborio-but-leds-stuck/377176/8 ?
 public class LEDStrip extends SubsystemBase {
   private AddressableLED _ledStrip;
   private AddressableLEDBuffer _ledBuffer;
@@ -53,6 +52,7 @@ public class LEDStrip extends SubsystemBase {
       _hue = (_firstPixelHue + (i * (180 / _ledBuffer.getLength()))) % 180;
       _ledBuffer.setHSV(i, _hue, 255, 255);
     }
+    _ledStrip.setData(_ledBuffer);
     
     _firstPixelHue += 3;
     _firstPixelHue %= 180;
@@ -67,6 +67,7 @@ public class LEDStrip extends SubsystemBase {
           _ledBuffer.setRGB(i, firstColor[0], firstColor[1], firstColor[2]);
         }
         _ledStrip.setData(_ledBuffer);
+        _colorOn = true;
       } else {
         // If LEDs are on...
         // Set them off
@@ -74,26 +75,12 @@ public class LEDStrip extends SubsystemBase {
           _ledBuffer.setRGB(i, secondColor[0], secondColor[1], secondColor[2]);
         }
         _ledStrip.setData(_ledBuffer);
+        _colorOn = false;
       }
       _currentCounter = 0;
     } else {
       ++_currentCounter;
     }
-  }
-
-  public void onePixelTest() {
-    _ledBuffer.setRGB(0, 252, 186, 3);
-    _ledStrip.setData(_ledBuffer);
-    _ledStrip.start();
-  }
-
-  public void colorTest(int[] color) {
-    // For every pixel
-    for (var i = 0; i < _ledBuffer.getLength(); i++) {
-      _ledBuffer.setRGB(i, color[0], color[1], color[2]);
-    }
-
-    _ledStrip.setData(_ledBuffer);
   }
 
   @Override

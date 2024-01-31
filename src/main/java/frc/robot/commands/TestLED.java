@@ -4,13 +4,14 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.LEDStrip;
 
 public class TestLED extends Command {
   private LEDStrip _leds;
   private int[] f = {0, 0, 0};
-  private int[] s = {252, 186, 3};
+  private int[] s = {255, 17, 0};
 
   /** Creates a new TestLED. */
   public TestLED(LEDStrip leds) {
@@ -26,7 +27,7 @@ public class TestLED extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    _leds.colorTest(s);
+    _leds.rainbow();
   }
 
   // Called once the command ends or is interrupted.
