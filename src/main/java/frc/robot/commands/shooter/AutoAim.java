@@ -9,6 +9,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.subsystems.LEDStrip;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
@@ -23,6 +24,7 @@ public class AutoAim extends Command {
   private final ShooterSubsystem _shooter;
   private final VisionSubsystem _vision;
   private final SwerveDriveSubsystem _swerve;
+  private final LEDStrip _leds;
 
   private final DoubleSupplier _xSpeed;
   private final DoubleSupplier _ySpeed;
@@ -37,28 +39,30 @@ public class AutoAim extends Command {
 
   /** Creates a new AutoAim. */
   public AutoAim(
+      LEDStrip leds,
       ShooterSubsystem shooter,
       VisionSubsystem vision,
       SwerveDriveSubsystem swerve,
       DoubleSupplier xSpeed,
       DoubleSupplier ySpeed) {
     // Use addRequirements() here to declare subsystem dependencies.
+    _leds = leds;
     _shooter = shooter;
     _vision = vision;
     _swerve = swerve;
 
     _xSpeed = xSpeed;
     _ySpeed = ySpeed;
-
+  
     _headingController.setTolerance(2);
     _headingController.enableContinuousInput(-180, 180);
 
-    addRequirements(_shooter, _vision, _swerve);
+    addRequirements(_shooter, _vision, _swerve, _leds);
   }
 
   /** Creates an auton AutoAim that ends when it reaches the first setpoints. */
-  public AutoAim(ShooterSubsystem shooter, VisionSubsystem vision, SwerveDriveSubsystem swerve) {
-    this(shooter, vision, swerve, () -> 0, () -> 0);
+  public AutoAim(LEDStrip leds, ShooterSubsystem shooter, VisionSubsystem vision, SwerveDriveSubsystem swerve) {
+    this(leds, shooter, vision, swerve, () -> 0, () -> 0);
 
     _runOnce = true;
   }
@@ -125,6 +129,12 @@ public class AutoAim extends Command {
 
     if (_reachedSwerveHeading) rotationVelocity = 0; // to prevent oscillation
 
+    if (_reachedSwerveHeading && _reachedShooterAngle) {
+      _leds.setColor(Constants.LEDColors.greenLEDs);
+    } else {
+      _leds.blink(Constants.LEDColors.redLEDs, Constants.LEDColors.nothingLEDs, 25);
+    }
+    
     _swerve.driveChassis(
         new ChassisSpeeds(
             _xSpeed.getAsDouble()

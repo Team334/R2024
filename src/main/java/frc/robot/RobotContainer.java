@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
-import frc.robot.commands.TestLED;
+import frc.robot.commands.DefaultLED;
 import frc.robot.commands.elevator.HoldElevator;
 import frc.robot.commands.shooter.AutoAim;
 import frc.robot.commands.shooter.SpinShooter;
@@ -42,7 +42,7 @@ public class RobotContainer {
   private final SwerveDriveSubsystem _swerveSubsystem = new SwerveDriveSubsystem(_visionSubsystem);
   private final ShooterSubsystem _shooterSubsystem = new ShooterSubsystem();
   private final ElevatorSubsystem _elevatorSubsystem = new ElevatorSubsystem();
-  private final LEDStrip _leds = new LEDStrip(9, 14);
+  private final LEDStrip _leds = new LEDStrip(Constants.Ports.LEDS, 14);
 
   // controllers (for driver and operator)
   private final CommandPS4Controller _driveController =
@@ -66,10 +66,11 @@ public class RobotContainer {
     NamedCommands.registerCommand("interruptSwerve", interruptSwerve);
     NamedCommands.registerCommand("interruptSwerve", new BrakeSwerve(_swerveSubsystem, 3));
     NamedCommands.registerCommand(
-        "speakerAim", new AutoAim(_shooterSubsystem, _visionSubsystem, _swerveSubsystem));
+        "speakerAim", new AutoAim(_leds, _shooterSubsystem, _visionSubsystem, _swerveSubsystem));
 
     _swerveSubsystem.setDefaultCommand(
         new TeleopDrive(
+            _leds,
             _swerveSubsystem,
             () ->
                 MathUtil.applyDeadband(
@@ -80,18 +81,9 @@ public class RobotContainer {
             () ->
                 MathUtil.applyDeadband(
                     -_driveFilterRightX.calculate(_driveController.getRightX()), 0.1))
-        //   new AutoAim(
-        //     _shooterSubsystem,
-        //     _visionSubsystem,
-        //     _swerveSubsystem,
-        //     () ->
-        // MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
-        //     () ->
-        // MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1)
-        //   )
         );
 
-    _leds.setDefaultCommand(new TestLED(_leds));
+    _leds.setDefaultCommand(new DefaultLED(_leds));
 
     // _elevatorSubsystem.setDefaultCommand(new HoldElevator(_elevatorSubsystem));
     // _shooterSubsystem.setDefaultCommand(new HoldShooter(_shooterSubsystem));
@@ -114,6 +106,7 @@ public class RobotContainer {
         .L1()
         .whileTrue(
             new AutoAim(
+                _leds,
                 _shooterSubsystem,
                 _visionSubsystem,
                 _swerveSubsystem,

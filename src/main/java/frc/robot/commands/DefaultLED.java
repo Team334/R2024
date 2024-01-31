@@ -4,17 +4,17 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.LEDStrip;
+import frc.robot.utils.UtilFuncs;
 
-public class TestLED extends Command {
+public class DefaultLED extends Command {
   private LEDStrip _leds;
-  private int[] f = {0, 0, 0};
-  private int[] s = {255, 17, 0};
 
   /** Creates a new TestLED. */
-  public TestLED(LEDStrip leds) {
+  public DefaultLED(LEDStrip leds) {
     // Use addRequirements() here to declare subsystem dependencies.
     _leds = leds;
     addRequirements(_leds);
@@ -27,9 +27,7 @@ public class TestLED extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    _leds.rainbow();
-    // _leds.blink(f, s, 25);
-    // _leds.setColor(s);
+    _leds.setColor(Constants.LEDColors.ALLIANCE_RGB);
   }
 
   // Called once the command ends or is interrupted.
