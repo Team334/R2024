@@ -9,9 +9,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.utils.LimelightHelper;
-
 import java.util.Optional;
 
 /**
@@ -40,20 +38,20 @@ public class VisionSubsystem extends SubsystemBase {
   }
 
   /**
-   * Returns the latency from the last time data was sent from the limelight. This should be used in the pose estimator.
+   * Returns the latency from the last time data was sent from the limelight. This should be used in
+   * the pose estimator.
    */
   public double getLatency() {
     double tl = _limelight.getEntry("tl").getDouble(0);
     double cl = _limelight.getEntry("cl").getDouble(0);
 
-    return Timer.getFPGATimestamp() - (tl/1000.0) - (cl/1000.0);
+    return Timer.getFPGATimestamp() - (tl / 1000.0) - (cl / 1000.0);
   }
 
   /**
    * Returns the "wpiblue" botpose of the robot from the limelight.
-   * 
+   *
    * @return An Optional of Pose2d which is necessary if no value is found from the limelight.
-   * 
    * @see Optional
    */
   public Optional<Pose2d> getBotpose() {
@@ -75,9 +73,7 @@ public class VisionSubsystem extends SubsystemBase {
     }
   }
 
-  /**
-   * Return a boolean for whether a tag is seen.
-   */
+  /** Return a boolean for whether a tag is seen. */
   public boolean isApriltagVisible() {
     double tv = _limelight.getEntry("tv").getDouble(0);
 
@@ -94,7 +90,7 @@ public class VisionSubsystem extends SubsystemBase {
 
   /**
    * Return a boolean for whether the desired tag is seen.
-   * 
+   *
    * @param ID The id of the desired tag.
    */
   public boolean isApriltagVisible(int ID) {
@@ -105,14 +101,13 @@ public class VisionSubsystem extends SubsystemBase {
 
   /**
    * Return tx and ty angle offsets from a desired tag.
-   * 
+   *
    * @param ID The id of the desired tag.
-   * 
    * @return A double array [tx, ty]. Null is returned if no tags are visible at all.
    */
   public double[] tagAngleOffsets(int ID) {
     if (!isApriltagVisible(ID)) return null;
-    
+
     JsonNode tag = _limelight.getTag(ID);
 
     double tx = tag.get("tx").asDouble();
@@ -121,14 +116,5 @@ public class VisionSubsystem extends SubsystemBase {
     double[] angles = {tx, ty};
 
     return angles;
-  }
-
-  /**
-   * The tag angle offsets to the tag on the speaker (automatically knows which tag to check).
-   * 
-   * @return [tx, ty] or null.
-   */
-  public double[] anglesToSpeaker() {
-    return tagAngleOffsets(Constants.FIELD_CONSTANTS.SPEAKER_TAG);
   }
 }

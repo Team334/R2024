@@ -50,9 +50,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   /** Set the angle of the shooter in degrees. MUST be called repeatedly. */
   public void setAngle(double angleDegrees) {
-    driveAngle(
-        _angleFeed.calculate(Math.toRadians(getAngle()), 0)
-            + _angleController.calculate(getAngle(), angleDegrees));
+    driveAngle(_angleController.calculate(getAngle(), angleDegrees));
   }
 
   /** Get the angle of the shooter in degrees. */
@@ -60,25 +58,28 @@ public class ShooterSubsystem extends SubsystemBase {
     return 0;
   }
 
-  /** Drives the angle motors at the desired percent output */
+  /** Drives the angle motors at the desired percent output (feedforward is included). */
   public void driveAngle(double speed) {
-    _leftMotor.set(speed);
+    _leftMotor.set(_angleFeed.calculate(Math.toRadians(getAngle()), 0) + speed);
   }
 
-  /** Stops the angle motors completely, should be called with caution. */
-  public void stopAngle() {}
+  /** Stops the shooter's angular movement. */
+  public void stopAngle() {
+    driveAngle(0);
+  }
 
   /** Get the velocity of the back wheel (left side) in m/s. */
   public double getVelocity() {
     double neo_rps = _leftEncoder.getVelocity() / 60;
 
-    double number = (neo_rps / Constants.Physical.SHOOTER_GEAR_RATIO)
-        * Constants.Physical.SHOOTER_FLYWHEEL_CIRCUMFERENCE;
+    double number =
+        (neo_rps / Constants.Physical.SHOOTER_GEAR_RATIO)
+            * Constants.Physical.SHOOTER_FLYWHEEL_CIRCUMFERENCE;
 
-    if (number < 0){
+    if (number < 0) {
       number = 0;
     }
-    
+
     return number;
   }
 
