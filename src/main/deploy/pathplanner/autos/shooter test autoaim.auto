@@ -22,6 +22,12 @@
           "data": {
             "name": "speakerAim"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "shooter test pt2"
+          }
         }
       ]
     }
