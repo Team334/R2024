@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
+import frc.robot.commands.TestLED;
+import frc.robot.commands.elevator.HoldElevator;
 import frc.robot.commands.shooter.AutoAim;
 import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.commands.swerve.BrakeSwerve;
@@ -23,6 +25,7 @@ import frc.robot.commands.swerve.ResetPose;
 import frc.robot.commands.swerve.TeleopDrive;
 import frc.robot.commands.swerve.ToggleSwerveOrient;
 import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.LEDStrip;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
@@ -39,6 +42,7 @@ public class RobotContainer {
   private final SwerveDriveSubsystem _swerveSubsystem = new SwerveDriveSubsystem(_visionSubsystem);
   private final ShooterSubsystem _shooterSubsystem = new ShooterSubsystem();
   private final ElevatorSubsystem _elevatorSubsystem = new ElevatorSubsystem();
+  private final LEDStrip _leds = new LEDStrip(9, 14);
 
   // controllers (for driver and operator)
   private final CommandPS4Controller _driveController =
@@ -86,6 +90,8 @@ public class RobotContainer {
         // MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1)
         //   )
         );
+
+    _leds.setDefaultCommand(new TestLED(_leds));
 
     // _elevatorSubsystem.setDefaultCommand(new HoldElevator(_elevatorSubsystem));
     // _shooterSubsystem.setDefaultCommand(new HoldShooter(_shooterSubsystem));
