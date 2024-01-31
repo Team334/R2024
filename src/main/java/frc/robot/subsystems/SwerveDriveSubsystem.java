@@ -316,7 +316,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(chassisSpeeds, getHeading());
     }
 
-    SwerveModuleState[] moduleStates = Constants.Physical.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds, _pivotPoint);
+    SwerveModuleState[] moduleStates =
+        Constants.Physical.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds, _pivotPoint);
     setStates(moduleStates);
   }
 
@@ -470,7 +471,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     _pivotPoint = pivotPoint;
   }
 
-  public void resetPivot(){
+  public void resetPivot() {
     _pivotPoint = new Translation2d(0, 0);
   }
 }

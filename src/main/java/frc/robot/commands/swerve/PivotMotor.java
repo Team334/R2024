@@ -3,13 +3,12 @@
 
 package frc.robot.commands.swerve;
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.SwerveDriveSubsystem;
+import java.util.function.DoubleSupplier;
 
 public class PivotMotor extends Command {
   private final SwerveDriveSubsystem _swerveDrive;
@@ -24,8 +23,13 @@ public class PivotMotor extends Command {
   private Translation2d _pivotPoint = new Translation2d(0, 0);
 
   /** Creates a new PivotMotor. */
-  public PivotMotor(SwerveDriveSubsystem swerveDrive, boolean left, DoubleSupplier xSpeed, DoubleSupplier ySpeed,
-      DoubleSupplier rotationSpeed, DoubleSupplier forward) {
+  public PivotMotor(
+      SwerveDriveSubsystem swerveDrive,
+      boolean left,
+      DoubleSupplier xSpeed,
+      DoubleSupplier ySpeed,
+      DoubleSupplier rotationSpeed,
+      DoubleSupplier forward) {
     // Use addRequirements() here to declare subsystem dependencies.
     _swerveDrive = swerveDrive;
     _left = left;
@@ -50,13 +54,13 @@ public class PivotMotor extends Command {
     Translation2d _backLeft = new Translation2d(-0.292, 0.292);
 
     // If we are backwards
-    if (_forward.getAsDouble() < 0){
+    if (_forward.getAsDouble() < 0) {
       currentRotation += 180;
       _left = !_left;
     }
 
     // NEW - JERRY
-    int quadrant = ((int)currentRotation + 45) / 90 % 4;
+    int quadrant = ((int) currentRotation + 45) / 90 % 4;
 
     // Debug a
     SmartDashboard.putNumber("Quadrant", quadrant);
@@ -64,18 +68,18 @@ public class PivotMotor extends Command {
     SmartDashboard.putNumber("Foward", _forward.getAsDouble());
 
     switch (quadrant) {
-        case 0:
-            _pivotPoint = _left ? _frontLeft : _frontRight;
-            break;
-        case 1:
-            _pivotPoint = _left ? _frontRight : _backRight;
-            break;
-        case 2:
-            _pivotPoint = _left ? _backRight : _backLeft;
-            break;
-        case 3:
-            _pivotPoint = _left ? _backLeft : _frontLeft;
-            break;
+      case 0:
+        _pivotPoint = _left ? _frontLeft : _frontRight;
+        break;
+      case 1:
+        _pivotPoint = _left ? _frontRight : _backRight;
+        break;
+      case 2:
+        _pivotPoint = _left ? _backRight : _backLeft;
+        break;
+      case 3:
+        _pivotPoint = _left ? _backLeft : _frontLeft;
+        break;
     }
 
     _swerveDrive.pivotMotor(_pivotPoint);
@@ -118,13 +122,15 @@ public class PivotMotor extends Command {
 
   @Override
   public void execute() {
-  // _swerveDrive.driveChassis(
-  //     new ChassisSpeeds(
-  //       _xSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
-  //       _ySpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
-  //       _rotationSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED
-  //     )
-  //   );
+    // _swerveDrive.driveChassis(
+    //     new ChassisSpeeds(
+    //       _xSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED *
+    // Constants.Speeds.SWERVE_DRIVE_COEFF,
+    //       _ySpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED *
+    // Constants.Speeds.SWERVE_DRIVE_COEFF,
+    //       _rotationSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED
+    //     )
+    //   );
   }
 
   // Called once the command ends or is interrupted.

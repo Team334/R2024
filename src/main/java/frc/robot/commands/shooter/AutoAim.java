@@ -57,11 +57,7 @@ public class AutoAim extends Command {
   }
 
   /** Creates an auton AutoAim that ends when it reaches the first setpoints. */
-  public AutoAim(
-    ShooterSubsystem shooter,
-    VisionSubsystem vision,
-    SwerveDriveSubsystem swerve
-  ) {
+  public AutoAim(ShooterSubsystem shooter, VisionSubsystem vision, SwerveDriveSubsystem swerve) {
     this(shooter, vision, swerve, () -> 0, () -> 0);
 
     _runOnce = true;
@@ -118,11 +114,11 @@ public class AutoAim extends Command {
     SmartDashboard.putNumber("DESIRED SWERVE HEADING", desiredSwerveHeading);
     SmartDashboard.putNumber("SHOOTER ANGLE", _swerve.speakerAngles()[1]);
 
-    double rotationVelocity = MathUtil.clamp(
-      _headingController.calculate(currentSwerveHeading, desiredSwerveHeading),
-      -Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED * 2,
-      Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED * 2
-    );
+    double rotationVelocity =
+        MathUtil.clamp(
+            _headingController.calculate(currentSwerveHeading, desiredSwerveHeading),
+            -Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED * 2,
+            Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED * 2);
 
     _reachedSwerveHeading = _headingController.atSetpoint();
     _reachedShooterAngle = true; // TODO: make this actually use the shooter
@@ -130,16 +126,14 @@ public class AutoAim extends Command {
     if (_reachedSwerveHeading) rotationVelocity = 0; // to prevent oscillation
 
     _swerve.driveChassis(
-      new ChassisSpeeds(
-        _xSpeed.getAsDouble()
-        * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED
-        * Constants.Speeds.SWERVE_DRIVE_COEFF,
-        _ySpeed.getAsDouble()
-            * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED
-            * Constants.Speeds.SWERVE_DRIVE_COEFF,
-        rotationVelocity
-      )
-    );
+        new ChassisSpeeds(
+            _xSpeed.getAsDouble()
+                * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED
+                * Constants.Speeds.SWERVE_DRIVE_COEFF,
+            _ySpeed.getAsDouble()
+                * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED
+                * Constants.Speeds.SWERVE_DRIVE_COEFF,
+            rotationVelocity));
   }
 
   // Called once the command ends or is interrupted.
