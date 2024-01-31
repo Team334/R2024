@@ -28,6 +28,8 @@ public class TestLED extends Command {
   @Override
   public void execute() {
     _leds.rainbow();
+    // _leds.blink(f, s, 25);
+    // _leds.setColor(s);
   }
 
   // Called once the command ends or is interrupted.

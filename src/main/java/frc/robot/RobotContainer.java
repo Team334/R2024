@@ -42,7 +42,7 @@ public class RobotContainer {
   private final SwerveDriveSubsystem _swerveSubsystem = new SwerveDriveSubsystem(_visionSubsystem);
   private final ShooterSubsystem _shooterSubsystem = new ShooterSubsystem();
   private final ElevatorSubsystem _elevatorSubsystem = new ElevatorSubsystem();
-  private final LEDStrip _leds = new LEDStrip(9, 20);
+  private final LEDStrip _leds = new LEDStrip(9, 14);
 
   // controllers (for driver and operator)
   private final CommandPS4Controller _driveController =
