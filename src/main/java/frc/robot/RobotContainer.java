@@ -83,7 +83,7 @@ public class RobotContainer {
                     -_driveFilterRightX.calculate(_driveController.getRightX()), 0.1))
         );
 
-    _leds.setDefaultCommand(new DefaultLED(_leds));
+    // _leds.setDefaultCommand(new DefaultLED(_leds));
 
     // _elevatorSubsystem.setDefaultCommand(new HoldElevator(_elevatorSubsystem));
     // _shooterSubsystem.setDefaultCommand(new HoldShooter(_shooterSubsystem));
@@ -135,15 +135,6 @@ public class RobotContainer {
             new PivotMotor(
                 _swerveSubsystem,
                 true,
-                () ->
-                    MathUtil.applyDeadband(
-                        -_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
-                () ->
-                    MathUtil.applyDeadband(
-                        -_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1),
-                () ->
-                    MathUtil.applyDeadband(
-                        -_driveFilterRightX.calculate(_driveController.getRightX()), 0.1),
                 () -> -_driveController.getLeftY()));
 
     _driveController
@@ -152,15 +143,6 @@ public class RobotContainer {
             new PivotMotor(
                 _swerveSubsystem,
                 false,
-                () ->
-                    MathUtil.applyDeadband(
-                        -_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
-                () ->
-                    MathUtil.applyDeadband(
-                        -_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1),
-                () ->
-                    MathUtil.applyDeadband(
-                        -_driveFilterRightX.calculate(_driveController.getRightX()), 0.1),
                 () -> -_driveController.getLeftY()));
   }
 

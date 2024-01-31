@@ -14,10 +14,6 @@ public class PivotMotor extends Command {
   private final SwerveDriveSubsystem _swerveDrive;
   private boolean _left;
 
-  private DoubleSupplier _xSpeed;
-  private DoubleSupplier _ySpeed;
-  private DoubleSupplier _rotationSpeed;
-
   private DoubleSupplier _forward;
 
   private Translation2d _pivotPoint = new Translation2d(0, 0);
@@ -26,21 +22,12 @@ public class PivotMotor extends Command {
   public PivotMotor(
       SwerveDriveSubsystem swerveDrive,
       boolean left,
-      DoubleSupplier xSpeed,
-      DoubleSupplier ySpeed,
-      DoubleSupplier rotationSpeed,
       DoubleSupplier forward) {
     // Use addRequirements() here to declare subsystem dependencies.
     _swerveDrive = swerveDrive;
     _left = left;
 
-    _xSpeed = xSpeed;
-    _ySpeed = ySpeed;
-    _rotationSpeed = rotationSpeed;
-
     _forward = forward;
-
-    // addRequirements(swerveDrive);
   }
 
   // Called when the command is initially scheduled.
@@ -59,77 +46,82 @@ public class PivotMotor extends Command {
       _left = !_left;
     }
 
+    if (currentRotation >= 330) currentRotation = 0;
+
     // // NEW - JERRY
-    // int quadrant = ((int) currentRotation) / 90 % 4;
+    int quadrant = ((int) currentRotation) / 45 % 8;
 
     // // Debug a
-    // SmartDashboard.putNumber("Quadrant", quadrant);
-    // SmartDashboard.putNumber("Current Rotation", currentRotation);
-    // SmartDashboard.putNumber("Foward", _forward.getAsDouble());
+    SmartDashboard.putNumber("Quadrant", quadrant);
+    SmartDashboard.putNumber("Current Rotation", currentRotation);
+    SmartDashboard.putNumber("Foward", _forward.getAsDouble());
 
-    // switch (quadrant) {
-    //   case 0:
-    //     _pivotPoint = _left ? _frontLeft : _frontRight;
-    //     break;
-    //   case 1:
-    //     _pivotPoint = _left ? _frontRight : _backRight;
-    //     break;
-    //   case 2:
-    //     _pivotPoint = _left ? _backRight : _backLeft;
-    //     break;
-    //   case 3:
-    //     _pivotPoint = _left ? _backLeft : _frontLeft;
-    //     break;
-    // }
+    switch (quadrant) {
+      case 0:
+        _pivotPoint = _left ? _frontLeft : _frontRight;
+        break;
+      case 1:
+        _pivotPoint = _frontRight;
+        break;
+      case 2:
+        _pivotPoint = _left ? _frontRight : _backRight;
+        break;
+      case 3:
+        _pivotPoint = _backRight;
+        break;
+      case 4:
+        _pivotPoint = _left ? _backRight : _backLeft;
+        break;
+      case 5:
+        _pivotPoint = _backLeft;
+        break;
+      case 6:
+        _pivotPoint = _left ? _backLeft : _frontLeft;
+        break;
+      case 7:
+        _pivotPoint = _frontLeft;
+        break;
+    }
 
     // _swerveDrive.pivotMotor(_pivotPoint);
 
     // ORIGINAL
     
-    if (_left){
-      if ((currentRotation >= 315 && currentRotation <= 360) || (currentRotation >= 0 && currentRotation < 90)){
-        _pivotPoint = _frontLeft;
-      }
-      else if (currentRotation >= 90 && currentRotation < 180){
-        _pivotPoint = _frontRight;
-      }
-      else if (currentRotation >= 180 && currentRotation < 270){
-        _pivotPoint = _backRight;
-      }
-      else{
-        _pivotPoint = _backLeft;
-      }
-    }
-    else{
-     if ((currentRotation >= 315 && currentRotation <= 360) || (currentRotation >= 0 && currentRotation < 45)){
-        _pivotPoint = _frontRight;
-      }
-      else if (currentRotation >= 45 && currentRotation < 135){
-        _pivotPoint = _backRight;
-      }
-      else if (currentRotation >= 135 && currentRotation < 225){
-        _pivotPoint = _backLeft;
-      }
-      else{
-        _pivotPoint = _frontLeft;
-      }
-    }
-    _swerveDrive.pivotMotor(_pivotPoint);
+    // if (_left){
+    //   if ((currentRotation >= 315 && currentRotation <= 360) || (currentRotation >= 0 && currentRotation < 90)){
+    //     _pivotPoint = _frontLeft;
+    //   }
+    //   else if (currentRotation >= 90 && currentRotation < 180){
+    //     _pivotPoint = _frontRight;
+    //   }
+    //   else if (currentRotation >= 180 && currentRotation < 270){
+    //     _pivotPoint = _backRight;
+    //   }
+    //   else{
+    //     _pivotPoint = _backLeft;
+    //   }
+    // }
+    // else{
+    //  if ((currentRotation >= 315 && currentRotation <= 360) || (currentRotation >= 0 && currentRotation < 45)){
+    //     _pivotPoint = _frontRight;
+    //   }
+    //   else if (currentRotation >= 45 && currentRotation < 135){
+    //     _pivotPoint = _backRight;
+    //   }
+    //   else if (currentRotation >= 135 && currentRotation < 225){
+    //     _pivotPoint = _backLeft;
+    //   }
+    //   else{
+    //     _pivotPoint = _frontLeft;
+    //   }
+    // }
+    // _swerveDrive.pivotMotor(_pivotPoint);
 
     // Called every time the scheduler runs while the command is scheduled.
   }
 
   @Override
   public void execute() {
-    // _swerveDrive.driveChassis(
-    //     new ChassisSpeeds(
-    //       _xSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED *
-    // Constants.Speeds.SWERVE_DRIVE_COEFF,
-    //       _ySpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED *
-    // Constants.Speeds.SWERVE_DRIVE_COEFF,
-    //       _rotationSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED
-    //     )
-    //   );
   }
 
   // Called once the command ends or is interrupted.
