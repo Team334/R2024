@@ -8,7 +8,9 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.utils.AllianceFieldConstants;
+import frc.robot.utils.UtilFuncs;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -127,6 +129,7 @@ public final class Constants {
 
   public static class Ports {
     public static final int DRIVER_CONTROLLER = 0;
+    public static final int LEDS = 0; //pwm port
   }
 
   /** Field constants that are dynamically set up for the match's alliance color. */
@@ -143,5 +146,15 @@ public final class Constants {
         new Pose3d(0.25, 5.5, SPEAKER_HEIGHT, new Rotation3d(0, 0, 180));
     public static final Pose3d SPEAKER_POSE_RED =
         new Pose3d(16.3, 5.5, SPEAKER_HEIGHT, new Rotation3d(0, 0, 0));
+  }
+
+  public static class LEDColors {
+    public static final int[] nothingLEDs = {0, 0, 0};
+    public static final int[] greenLEDs = {0, 255, 0};
+    public static final int[] orangeLEDs = {255, 175, 0};
+
+    public static final int[] blueLEDs = {0, 0, 255};
+    public static final int[] redLEDs = {255, 0, 0};
+    public static final int[] ALLIANCE_RGB = UtilFuncs.GetCurrentAlliance() == Alliance.Red ? redLEDs : blueLEDs;
   }
 }
