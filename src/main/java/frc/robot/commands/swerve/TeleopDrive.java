@@ -4,12 +4,10 @@
 package frc.robot.commands.swerve;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.LEDStrip;
 import frc.robot.subsystems.SwerveDriveSubsystem;
-import frc.robot.utils.UtilFuncs;
 import java.util.function.DoubleSupplier;
 
 /**
@@ -55,12 +53,14 @@ public class TeleopDrive extends Command {
     // apply controller deadband
     // drive the swerve chassis subsystem
     _swerveDrive.driveChassis(
-      new ChassisSpeeds(
-        _xSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
-        _ySpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
-        _rotationSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED
-      )
-    );
+        new ChassisSpeeds(
+            _xSpeed.getAsDouble()
+                * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED
+                * Constants.Speeds.SWERVE_DRIVE_COEFF,
+            _ySpeed.getAsDouble()
+                * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED
+                * Constants.Speeds.SWERVE_DRIVE_COEFF,
+            _rotationSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED));
   }
 
   // Called once the command ends or is interrupted.

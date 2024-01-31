@@ -8,14 +8,12 @@ import frc.robot.subsystems.ElevatorSubsystem;
 
 public class HoldElevator extends Command {
   private final ElevatorSubsystem _elevator;
-  private final double _maintainHeight;
 
   /** Creates a new HoldElevator. */
   public HoldElevator(ElevatorSubsystem elevator) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(elevator);
     _elevator = elevator;
-    _maintainHeight = elevator.getElevatorHeight();
   }
 
   // Called when the command is initially scheduled.
@@ -25,7 +23,7 @@ public class HoldElevator extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    _elevator.setElevatorHeight(_maintainHeight); // holds the elevator in place
+    _elevator.setElevatorHeight(0); // holds the elevator in place at the bottom
   }
 
   // Called once the command ends or is interrupted.
