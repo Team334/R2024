@@ -54,10 +54,10 @@ public class PivotMotor extends Command {
     Translation2d _backLeft = new Translation2d(-0.292, 0.292);
 
     // If we are backwards
-    // if (_forward.getAsDouble() < 0) {
-    //   currentRotation += 180;
-    //   _left = !_left;
-    // }
+    if (_forward.getAsDouble() < 0) {
+      currentRotation += 180;
+      _left = !_left;
+    }
 
     // // NEW - JERRY
     // int quadrant = ((int) currentRotation) / 90 % 4;
