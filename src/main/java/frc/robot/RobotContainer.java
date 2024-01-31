@@ -133,6 +133,7 @@ public class RobotContainer {
         .L2()
         .whileTrue(
             new PivotMotor(
+                _leds,
                 _swerveSubsystem,
                 true,
                 () -> -_driveController.getLeftY()));
@@ -141,6 +142,7 @@ public class RobotContainer {
         .R2()
         .whileTrue(
             new PivotMotor(
+                _leds,
                 _swerveSubsystem,
                 false,
                 () -> -_driveController.getLeftY()));
