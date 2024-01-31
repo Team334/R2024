@@ -33,6 +33,7 @@ public class TeleopDrive extends Command {
       DoubleSupplier xSpeed,
       DoubleSupplier ySpeed,
       DoubleSupplier rotationSpeed) {
+    
     _leds = leds;
     _swerveDrive = swerveDrive;
 
@@ -43,19 +44,18 @@ public class TeleopDrive extends Command {
 
         
     // Use addRequirements() here to declare subsystem dependencies.\
-    addRequirements(swerveDrive, _leds);
+    addRequirements(swerveDrive, leds);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
+    _leds.setColor(Constants.LEDColors.ALLIANCE_RGB);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // _leds.setColor();
     // apply controller deadband
     // drive the swerve chassis subsystem
     _swerveDrive.driveChassis(

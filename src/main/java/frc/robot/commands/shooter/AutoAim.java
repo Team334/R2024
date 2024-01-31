@@ -132,7 +132,6 @@ public class AutoAim extends Command {
     if (_reachedSwerveHeading && _reachedShooterAngle) {
       _leds.setColor(Constants.LEDColors.greenLEDs);
     } else {
-      // System.out.println("NOT REACHED");
       _leds.blink(Constants.LEDColors.redLEDs, Constants.LEDColors.nothingLEDs, 5);
     }
     
