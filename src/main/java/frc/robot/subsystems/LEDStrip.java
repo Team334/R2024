@@ -19,6 +19,9 @@ public class LEDStrip extends SubsystemBase {
   private int _hue; // For rainbow
   private int _firstPixelHue; // For rainbow
 
+  private int _value; // For moving pixel pattern.
+  private int _firstPixelValue; // For moving pixel pattern.
+
   // Current counter will be how we manage time of our blinking pattern
   // 1 = 20ms if command is put in a periodic func.
   private int _currentCounter = 0;
@@ -86,8 +89,33 @@ public class LEDStrip extends SubsystemBase {
     }
   }
 
+  public void outwardPixels(int[] color, int speed, boolean isOut) {
+    // IDEA: Pixels move outward beginning from middle.
+  }
+
+  public void movingPixels(int hueHSV) {
+    // IDEA: Pixels move right to left or left to right.
+    for (int i = 0; i < _ledBuffer.getLength(); i++) {
+      if ((i-_firstPixelHue) % 3 == 0) {
+        _value = 85;
+      } else if ((i-_firstPixelHue) % 3 == 1) {
+        _value = 85;
+      } else {
+        _value = 255;
+      }
+      _ledBuffer.setHSV(i, hueHSV, 255, _value);
+    }
+    _ledStrip.setData(_ledBuffer);
+    
+    _firstPixelValue += 1;
+    if (_firstPixelHue == 2) {
+      _firstPixelHue = 0;
+    }
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    this.movingPixels(44);
   }
 }
