@@ -152,6 +152,7 @@ public final class Constants {
     public static final int[] nothingLEDs = {0, 0, 0};
     public static final int[] greenLEDs = {0, 255, 0};
     public static final int[] orangeLEDs = {255, 175, 0};
+    public static final int[] yellowLEDs = {255, 255, 0};
 
     public static final int[] blueLEDs = {0, 0, 255};
     public static final int[] redLEDs = {255, 0, 0};

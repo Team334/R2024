@@ -3,14 +3,19 @@
 
 package frc.robot.commands.swerve;
 
+import edu.wpi.first.hal.simulation.ConstBufferCallback;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
+import frc.robot.subsystems.LEDStrip;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import java.util.function.DoubleSupplier;
 
 public class PivotMotor extends Command {
+  private final LEDStrip _leds;
+
   private final SwerveDriveSubsystem _swerveDrive;
   private boolean _left;
 
@@ -20,10 +25,13 @@ public class PivotMotor extends Command {
 
   /** Creates a new PivotMotor. */
   public PivotMotor(
+      LEDStrip leds,
       SwerveDriveSubsystem swerveDrive,
       boolean left,
       DoubleSupplier forward) {
     // Use addRequirements() here to declare subsystem dependencies.
+    _leds = leds;
+
     _swerveDrive = swerveDrive;
     _left = left;
 
@@ -122,6 +130,7 @@ public class PivotMotor extends Command {
 
   @Override
   public void execute() {
+    _leds.setColor(Constants.LEDColors.orangeLEDs);
   }
 
   // Called once the command ends or is interrupted.
