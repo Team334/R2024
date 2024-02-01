@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 /**
  * @author Lucas Ou
  */
-public class LEDStrip extends SubsystemBase {
+public class LEDSubsystem extends SubsystemBase {
   private AddressableLED _ledStrip;
   private AddressableLEDBuffer _ledBuffer;
   private int _ledNumber;
@@ -28,8 +28,8 @@ public class LEDStrip extends SubsystemBase {
   // colorOn used to control blinking.
   private boolean _colorOn = false;
 
-  /** Creates a new LEDStrip. */
-  public LEDStrip(int port, int ledNumber) {
+  /** Creates a new LEDSubsystem. */
+  public LEDSubsystem(int port, int ledNumber) {
     _ledNumber = ledNumber;
 
     _ledStrip = new AddressableLED(port);

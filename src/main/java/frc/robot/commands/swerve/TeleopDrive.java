@@ -6,7 +6,7 @@ package frc.robot.commands.swerve;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.subsystems.LEDStrip;
+import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import java.util.function.DoubleSupplier;
 
@@ -24,18 +24,18 @@ public class TeleopDrive extends Command {
 
   private final DoubleSupplier _rotationSpeed;
 
-  private final LEDStrip _leds;
+  private final LEDSubsystem _leds;
 
   /** Creates a new TeleopDrive. */
   public TeleopDrive(
-      LEDStrip leds,
       SwerveDriveSubsystem swerveDrive,
+      LEDSubsystem leds,
       DoubleSupplier xSpeed,
       DoubleSupplier ySpeed,
       DoubleSupplier rotationSpeed) {
     
-    _leds = leds;
     _swerveDrive = swerveDrive;
+    _leds = leds;
 
     _xSpeed = xSpeed;
     _ySpeed = ySpeed;

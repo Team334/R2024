@@ -9,7 +9,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.subsystems.LEDStrip;
+import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
@@ -24,7 +24,7 @@ public class AutoAim extends Command {
   private final ShooterSubsystem _shooter;
   private final VisionSubsystem _vision;
   private final SwerveDriveSubsystem _swerve;
-  private final LEDStrip _leds;
+  private final LEDSubsystem _leds;
 
   private final DoubleSupplier _xSpeed;
   private final DoubleSupplier _ySpeed;
@@ -39,8 +39,8 @@ public class AutoAim extends Command {
 
   /** Creates a new AutoAim. */
   public AutoAim(
-      LEDStrip leds,
       ShooterSubsystem shooter,
+      LEDSubsystem leds,
       VisionSubsystem vision,
       SwerveDriveSubsystem swerve,
       DoubleSupplier xSpeed,
@@ -61,8 +61,8 @@ public class AutoAim extends Command {
   }
 
   /** Creates an auton AutoAim that ends when it reaches the first setpoints. */
-  public AutoAim(LEDStrip leds, ShooterSubsystem shooter, VisionSubsystem vision, SwerveDriveSubsystem swerve) {
-    this(leds, shooter, vision, swerve, () -> 0, () -> 0);
+  public AutoAim(LEDSubsystem leds, ShooterSubsystem shooter, VisionSubsystem vision, SwerveDriveSubsystem swerve) {
+    this(shooter, leds, vision, swerve, () -> 0, () -> 0);
 
     _runOnce = true;
   }
@@ -130,9 +130,9 @@ public class AutoAim extends Command {
     if (_reachedSwerveHeading) rotationVelocity = 0; // to prevent oscillation
 
     if (_reachedSwerveHeading && _reachedShooterAngle) {
-      _leds.setColor(Constants.LEDColors.greenLEDs);
+      _leds.setColor(Constants.LEDColors.GREEN);
     } else {
-      _leds.blink(Constants.LEDColors.yellowLEDs, Constants.LEDColors.nothingLEDs, 25);
+      _leds.blink(Constants.LEDColors.YELLOW, Constants.LEDColors.NOTHING, 25);
     }
     
     _swerve.driveChassis(

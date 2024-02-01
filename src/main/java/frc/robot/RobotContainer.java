@@ -15,8 +15,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
-import frc.robot.commands.DefaultLED;
 import frc.robot.commands.elevator.HoldElevator;
+import frc.robot.commands.leds.DefaultLED;
 import frc.robot.commands.shooter.AutoAim;
 import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.commands.swerve.BrakeSwerve;
@@ -25,7 +25,7 @@ import frc.robot.commands.swerve.ResetPose;
 import frc.robot.commands.swerve.TeleopDrive;
 import frc.robot.commands.swerve.ToggleSwerveOrient;
 import frc.robot.subsystems.ElevatorSubsystem;
-import frc.robot.subsystems.LEDStrip;
+import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
@@ -42,7 +42,7 @@ public class RobotContainer {
   private final SwerveDriveSubsystem _swerveSubsystem = new SwerveDriveSubsystem(_visionSubsystem);
   private final ShooterSubsystem _shooterSubsystem = new ShooterSubsystem();
   private final ElevatorSubsystem _elevatorSubsystem = new ElevatorSubsystem();
-  private final LEDStrip _leds = new LEDStrip(Constants.Ports.LEDS, 14);
+  private final LEDSubsystem _ledSubsystem = new LEDSubsystem(Constants.Ports.LEDS, 14);
 
   // controllers (for driver and operator)
   private final CommandPS4Controller _driveController =
@@ -59,19 +59,16 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    Command interruptSwerve = new BrakeSwerve(_swerveSubsystem, 3);
-
+    // TODO: should switch to regsiterCommands for more neatness
     NamedCommands.registerCommand("printHello", new PrintCommand("AUTON HELLO"));
     NamedCommands.registerCommand("waitCommand", new WaitCommand(3));
-    NamedCommands.registerCommand("interruptSwerve", interruptSwerve);
     NamedCommands.registerCommand("interruptSwerve", new BrakeSwerve(_swerveSubsystem, 3));
-    NamedCommands.registerCommand(
-        "speakerAim", new AutoAim(_leds, _shooterSubsystem, _visionSubsystem, _swerveSubsystem));
+    NamedCommands.registerCommand("speakerAim", new AutoAim(_ledSubsystem, _shooterSubsystem, _visionSubsystem, _swerveSubsystem));
 
     _swerveSubsystem.setDefaultCommand(
         new TeleopDrive(
-            _leds,
             _swerveSubsystem,
+            _ledSubsystem,
             () ->
                 MathUtil.applyDeadband(
                     -_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
@@ -80,10 +77,11 @@ public class RobotContainer {
                     -_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1),
             () ->
                 MathUtil.applyDeadband(
-                    -_driveFilterRightX.calculate(_driveController.getRightX()), 0.1))
-        );
+                    -_driveFilterRightX.calculate(_driveController.getRightX()), 0.1)
+        )
+    );
 
-    // _leds.setDefaultCommand(new DefaultLED(_leds));
+    // _ledSubsystem.setDefaultCommand(new DefaultLED(_ledSubsystem));
 
     // _elevatorSubsystem.setDefaultCommand(new HoldElevator(_elevatorSubsystem));
     // _shooterSubsystem.setDefaultCommand(new HoldShooter(_shooterSubsystem));
@@ -106,8 +104,8 @@ public class RobotContainer {
         .L1()
         .whileTrue(
             new AutoAim(
-                _leds,
                 _shooterSubsystem,
+                _ledSubsystem,
                 _visionSubsystem,
                 _swerveSubsystem,
                 () ->
@@ -133,7 +131,7 @@ public class RobotContainer {
         .L2()
         .whileTrue(
             new PivotMotor(
-                _leds,
+                _ledSubsystem,
                 _swerveSubsystem,
                 true,
                 () -> -_driveController.getLeftY()));
@@ -142,7 +140,7 @@ public class RobotContainer {
         .R2()
         .whileTrue(
             new PivotMotor(
-                _leds,
+                _ledSubsystem,
                 _swerveSubsystem,
                 false,
                 () -> -_driveController.getLeftY()));

@@ -149,13 +149,13 @@ public final class Constants {
   }
 
   public static class LEDColors {
-    public static final int[] nothingLEDs = {0, 0, 0};
-    public static final int[] greenLEDs = {0, 255, 0};
-    public static final int[] orangeLEDs = {255, 175, 0};
-    public static final int[] yellowLEDs = {255, 255, 0};
-
-    public static final int[] blueLEDs = {0, 0, 255};
-    public static final int[] redLEDs = {255, 0, 0};
-    public static final int[] ALLIANCE_RGB = UtilFuncs.GetCurrentAlliance() == Alliance.Red ? redLEDs : blueLEDs;
+    public static final int[] NOTHING = {0, 0, 0};
+    public static final int[] GREEN = {0, 255, 0};
+    public static final int[] ORANGE = {255, 175, 0};
+    public static final int[] YELLOW = {255, 255, 0};
+    public static final int[] BLUE = {0, 0, 255};
+    public static final int[] RED = {255, 0, 0};
+    
+    public static final int[] ALLIANCE_RGB = UtilFuncs.GetCurrentAlliance() == Alliance.Red ? RED : BLUE;
   }
 }
