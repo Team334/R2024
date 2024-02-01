@@ -59,7 +59,7 @@ public class LEDSubsystem extends SubsystemBase {
       _ledBuffer.setHSV(i, _hue, 255, 255);
     }
     _ledStrip.setData(_ledBuffer);
-    
+
     _firstPixelHue += 3;
     _firstPixelHue %= 180;
   }
@@ -96,9 +96,9 @@ public class LEDSubsystem extends SubsystemBase {
   public void movingPixels(int hueHSV) {
     // IDEA: Pixels move right to left or left to right.
     for (int i = 0; i < _ledBuffer.getLength(); i++) {
-      if ((i-_firstPixelHue) % 3 == 0) {
+      if ((i - _firstPixelHue) % 3 == 0) {
         _value = 85;
-      } else if ((i-_firstPixelHue) % 3 == 1) {
+      } else if ((i - _firstPixelHue) % 3 == 1) {
         _value = 85;
       } else {
         _value = 255;
@@ -106,7 +106,7 @@ public class LEDSubsystem extends SubsystemBase {
       _ledBuffer.setHSV(i, hueHSV, 255, _value);
     }
     _ledStrip.setData(_ledBuffer);
-    
+
     _firstPixelValue += 1;
     if (_firstPixelHue == 2) {
       _firstPixelHue = 0;

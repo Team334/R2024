@@ -3,7 +3,6 @@
 
 package frc.robot.commands.swerve;
 
-import edu.wpi.first.hal.simulation.ConstBufferCallback;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -25,10 +24,7 @@ public class PivotMotor extends Command {
 
   /** Creates a new PivotMotor. */
   public PivotMotor(
-      LEDSubsystem leds,
-      SwerveDriveSubsystem swerveDrive,
-      boolean left,
-      DoubleSupplier forward) {
+      LEDSubsystem leds, SwerveDriveSubsystem swerveDrive, boolean left, DoubleSupplier forward) {
     // Use addRequirements() here to declare subsystem dependencies.
     _leds = leds;
 
@@ -94,9 +90,10 @@ public class PivotMotor extends Command {
     // _swerveDrive.pivotMotor(_pivotPoint);
 
     // ORIGINAL
-    
+
     // if (_left){
-    //   if ((currentRotation >= 315 && currentRotation <= 360) || (currentRotation >= 0 && currentRotation < 90)){
+    //   if ((currentRotation >= 315 && currentRotation <= 360) || (currentRotation >= 0 &&
+    // currentRotation < 90)){
     //     _pivotPoint = _frontLeft;
     //   }
     //   else if (currentRotation >= 90 && currentRotation < 180){
@@ -110,7 +107,8 @@ public class PivotMotor extends Command {
     //   }
     // }
     // else{
-    //  if ((currentRotation >= 315 && currentRotation <= 360) || (currentRotation >= 0 && currentRotation < 45)){
+    //  if ((currentRotation >= 315 && currentRotation <= 360) || (currentRotation >= 0 &&
+    // currentRotation < 45)){
     //     _pivotPoint = _frontRight;
     //   }
     //   else if (currentRotation >= 45 && currentRotation < 135){

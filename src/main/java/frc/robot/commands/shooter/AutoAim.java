@@ -53,7 +53,7 @@ public class AutoAim extends Command {
 
     _xSpeed = xSpeed;
     _ySpeed = ySpeed;
-  
+
     _headingController.setTolerance(2);
     _headingController.enableContinuousInput(-180, 180);
 
@@ -61,7 +61,11 @@ public class AutoAim extends Command {
   }
 
   /** Creates an auton AutoAim that ends when it reaches the first setpoints. */
-  public AutoAim(LEDSubsystem leds, ShooterSubsystem shooter, VisionSubsystem vision, SwerveDriveSubsystem swerve) {
+  public AutoAim(
+      LEDSubsystem leds,
+      ShooterSubsystem shooter,
+      VisionSubsystem vision,
+      SwerveDriveSubsystem swerve) {
     this(shooter, leds, vision, swerve, () -> 0, () -> 0);
 
     _runOnce = true;
@@ -134,7 +138,7 @@ public class AutoAim extends Command {
     } else {
       _leds.blink(Constants.LEDColors.YELLOW, Constants.LEDColors.NOTHING, 25);
     }
-    
+
     _swerve.driveChassis(
         new ChassisSpeeds(
             _xSpeed.getAsDouble()

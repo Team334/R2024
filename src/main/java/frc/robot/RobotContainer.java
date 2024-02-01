@@ -15,8 +15,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
-import frc.robot.commands.elevator.HoldElevator;
-import frc.robot.commands.leds.DefaultLED;
 import frc.robot.commands.shooter.AutoAim;
 import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.commands.swerve.BrakeSwerve;
@@ -63,7 +61,9 @@ public class RobotContainer {
     NamedCommands.registerCommand("printHello", new PrintCommand("AUTON HELLO"));
     NamedCommands.registerCommand("waitCommand", new WaitCommand(3));
     NamedCommands.registerCommand("interruptSwerve", new BrakeSwerve(_swerveSubsystem, 3));
-    NamedCommands.registerCommand("speakerAim", new AutoAim(_ledSubsystem, _shooterSubsystem, _visionSubsystem, _swerveSubsystem));
+    NamedCommands.registerCommand(
+        "speakerAim",
+        new AutoAim(_ledSubsystem, _shooterSubsystem, _visionSubsystem, _swerveSubsystem));
 
     _swerveSubsystem.setDefaultCommand(
         new TeleopDrive(
@@ -77,9 +77,7 @@ public class RobotContainer {
                     -_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1),
             () ->
                 MathUtil.applyDeadband(
-                    -_driveFilterRightX.calculate(_driveController.getRightX()), 0.1)
-        )
-    );
+                    -_driveFilterRightX.calculate(_driveController.getRightX()), 0.1)));
 
     // _ledSubsystem.setDefaultCommand(new DefaultLED(_ledSubsystem));
 
@@ -131,19 +129,13 @@ public class RobotContainer {
         .L2()
         .whileTrue(
             new PivotMotor(
-                _ledSubsystem,
-                _swerveSubsystem,
-                true,
-                () -> -_driveController.getLeftY()));
+                _ledSubsystem, _swerveSubsystem, true, () -> -_driveController.getLeftY()));
 
     _driveController
         .R2()
         .whileTrue(
             new PivotMotor(
-                _ledSubsystem,
-                _swerveSubsystem,
-                false,
-                () -> -_driveController.getLeftY()));
+                _ledSubsystem, _swerveSubsystem, false, () -> -_driveController.getLeftY()));
   }
 
   /**

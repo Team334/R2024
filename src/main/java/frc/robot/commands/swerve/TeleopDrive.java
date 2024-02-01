@@ -33,7 +33,7 @@ public class TeleopDrive extends Command {
       DoubleSupplier xSpeed,
       DoubleSupplier ySpeed,
       DoubleSupplier rotationSpeed) {
-    
+
     _swerveDrive = swerveDrive;
     _leds = leds;
 
@@ -42,7 +42,6 @@ public class TeleopDrive extends Command {
 
     _rotationSpeed = rotationSpeed;
 
-        
     // Use addRequirements() here to declare subsystem dependencies.\
     addRequirements(swerveDrive, leds);
   }

@@ -129,7 +129,7 @@ public final class Constants {
 
   public static class Ports {
     public static final int DRIVER_CONTROLLER = 0;
-    public static final int LEDS = 0; //pwm port
+    public static final int LEDS = 0; // pwm port
   }
 
   /** Field constants that are dynamically set up for the match's alliance color. */
@@ -155,7 +155,8 @@ public final class Constants {
     public static final int[] YELLOW = {255, 255, 0};
     public static final int[] BLUE = {0, 0, 255};
     public static final int[] RED = {255, 0, 0};
-    
-    public static final int[] ALLIANCE_RGB = UtilFuncs.GetCurrentAlliance() == Alliance.Red ? RED : BLUE;
+
+    public static final int[] ALLIANCE_RGB =
+        UtilFuncs.GetCurrentAlliance() == Alliance.Red ? RED : BLUE;
   }
 }
