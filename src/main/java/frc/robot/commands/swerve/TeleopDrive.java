@@ -23,14 +23,11 @@ public class TeleopDrive extends Command {
 
   private final DoubleSupplier _rotationSpeed;
 
-  private final LEDSubsystem _leds;
-
   /** Creates a new TeleopDrive. */
-  public TeleopDrive(SwerveDriveSubsystem swerveDrive, LEDSubsystem leds, DoubleSupplier xSpeed,
+  public TeleopDrive(SwerveDriveSubsystem swerveDrive, DoubleSupplier xSpeed,
       DoubleSupplier ySpeed, DoubleSupplier rotationSpeed) {
 
     _swerveDrive = swerveDrive;
-    _leds = leds;
 
     _xSpeed = xSpeed;
     _ySpeed = ySpeed;
@@ -38,13 +35,12 @@ public class TeleopDrive extends Command {
     _rotationSpeed = rotationSpeed;
 
     // Use addRequirements() here to declare subsystem dependencies.\
-    addRequirements(swerveDrive, leds);
+    addRequirements(swerveDrive);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    _leds.setColor(Constants.LEDColors.ALLIANCE_RGB);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

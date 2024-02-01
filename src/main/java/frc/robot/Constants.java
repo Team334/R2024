@@ -152,6 +152,6 @@ public final class Constants {
     public static final int[] BLUE = {0, 0, 255};
     public static final int[] RED = {255, 0, 0};
 
-    public static final int[] ALLIANCE_RGB = UtilFuncs.GetCurrentAlliance() == Alliance.Red ? RED : BLUE;
+    public static final int[] ALLIANCE_RGB = UtilFuncs.GetAlliance() == Alliance.Red ? RED : BLUE;
   }
 }

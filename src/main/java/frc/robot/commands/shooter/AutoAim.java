@@ -51,6 +51,11 @@ public class AutoAim extends Command {
     _headingController.setTolerance(2);
     _headingController.enableContinuousInput(-180, 180);
 
+    SmartDashboard.putBoolean("BRUH", false);
+    SmartDashboard.putNumber("VEL", 0);
+    SmartDashboard.putNumber("DESIRED SWERVE HEADING", 0);
+    SmartDashboard.putNumber("CALCULATED", 0);
+
     addRequirements(_shooter, _vision, _swerve, _leds);
   }
 
@@ -66,47 +71,14 @@ public class AutoAim extends Command {
   public void initialize() {
     _reachedSwerveHeading = false;
     _reachedShooterAngle = false;
+
+    SmartDashboard.putBoolean("BRUH", true);
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // TODO: Vision or Pose estimator only?
-
-    // double desiredShooterAngle = 0;
-    // double desiredSwerveHeading = 0;
-
-    // double currentSwerveHeading = _swerve.getHeading().getDegrees();
-
-    // SmartDashboard.putBoolean("VISIBLE TAG", _vision.isApriltagVisible());
-
-    // double[] visionAngles = _vision.anglesToSpeaker();
-
-    // if (_vision.isApriltagVisible() && visionAngles != null) {
-    // desiredShooterAngle = visionAngles[1];
-    // desiredSwerveHeading = visionAngles[0];
-
-    // SmartDashboard.putNumberArray("VISION ANGLES", visionAngles);
-
-    // } else {
-    // desiredShooterAngle = _swerve.anglesToSpeaker()[1];
-    // desiredSwerveHeading = _swerve.anglesToSpeaker()[0];
-    // }
-
-    // desiredSwerveHeading -= currentSwerveHeading;
-
-    // SmartDashboard.putNumber("DESIRED HEADING 360", desiredSwerveHeading);
-
-    // desiredSwerveHeading =
-    // MathUtil.angleModulus(Math.toRadians(desiredSwerveHeading));
-    // desiredSwerveHeading = Math.toDegrees(desiredSwerveHeading);
-
-    // _shooter.setAngle(desiredShooterAngle);
-
-    // SmartDashboard.putNumber("DESIRED HEADING", desiredSwerveHeading);
-
-    // desiredSwerveHeading = _swerve.speakerAngles()[0];
-
     double currentSwerveHeading = _swerve.getHeading().getDegrees();
     double desiredSwerveHeading = _swerve.speakerAngles()[0];
 
@@ -117,6 +89,8 @@ public class AutoAim extends Command {
         _headingController.calculate(currentSwerveHeading, desiredSwerveHeading),
         -Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED * 2,
         Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED * 2);
+
+    SmartDashboard.putNumber("VEL", rotationVelocity);
 
     _reachedSwerveHeading = _headingController.atSetpoint();
     _reachedShooterAngle = true; // TODO: make this actually use the shooter
@@ -139,6 +113,7 @@ public class AutoAim extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    SmartDashboard.putBoolean("BRUH", false);
   }
 
   // Returns true when the command should end.

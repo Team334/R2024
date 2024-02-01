@@ -27,7 +27,7 @@ public class AllianceFieldConstants {
   public AllianceFieldConstants() {
     APRILTAG_LAYOUT.setOrigin(OriginPosition.kBlueAllianceWallRightSide);
 
-    Alliance alliance = UtilFuncs.GetCurrentAlliance();
+    Alliance alliance = UtilFuncs.GetAlliance();
 
     if (alliance == Alliance.Blue) {
       SPEAKER_POSE = Constants.FieldConstants.SPEAKER_POSE_BLUE;

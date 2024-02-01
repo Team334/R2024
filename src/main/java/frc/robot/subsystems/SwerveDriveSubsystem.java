@@ -102,7 +102,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       Constants.Physical.SWERVE_KINEMATICS, getHeadingRaw(),
       new SwerveModulePosition[]{_frontLeft.getPosition(), _frontRight.getPosition(), _backRight.getPosition(),
           _backLeft.getPosition()},
-      new Pose2d(), VecBuilder.fill(0.006, 0.006, 0.007), VecBuilder.fill(0.7, .7, 1.7));
+      new Pose2d(), VecBuilder.fill(0.006, 0.006, 0.007), VecBuilder.fill(0.5, 0.5, 1.3));
 
   /** Return the estimated pose of the swerve chassis. */
   public Pose2d getPose() {
@@ -128,7 +128,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
             Constants.Speeds.SWERVE_DRIVE_MAX_SPEED, Constants.Physical.SWERVE_DRIVE_BASE_RADIUS,
             new ReplanningConfig()),
         () -> {
-          if (UtilFuncs.GetCurrentAlliance() == Alliance.Red) {
+          if (UtilFuncs.GetAlliance() == Alliance.Red) {
             return true;
           }
           return false;
@@ -198,7 +198,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     if (_visionSubsystem.isApriltagVisible()) {
       Optional<Pose2d> visionBotpose = _visionSubsystem.getBotpose();
       if (visionBotpose.isPresent()) {
-        _estimator.addVisionMeasurement(_visionSubsystem.getBotpose().get(), _visionSubsystem.getLatency());
+        _estimator.addVisionMeasurement(visionBotpose.get(), _visionSubsystem.getLatency());
       }
     }
 
@@ -328,13 +328,18 @@ public class SwerveDriveSubsystem extends SubsystemBase {
    * @return [xSpeakerAngle, ySpeakerAngle]
    */
   public double[] speakerAngles() {
+    
+
     double xSpeakerAngle;
     double ySpeakerAngle;
 
+    
     Pose3d speakerPose = Constants.FIELD_CONSTANTS.SPEAKER_POSE;
 
     Translation2d speakerTranslation = new Translation2d(speakerPose.getX(), speakerPose.getY());
     Translation2d botTranslation = getPose().getTranslation();
+
+    
 
     Translation2d distanceVec = speakerTranslation.minus(botTranslation);
 

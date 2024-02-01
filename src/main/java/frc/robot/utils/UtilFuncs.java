@@ -21,10 +21,9 @@ public final class UtilFuncs {
   }
 
   /**
-   * The current alliance for the match from DS. If no value is successfully
-   * retrieved, null is returned.
+   * The alliance for the match and DOES NOT CHANGE (same from the start). 
    */
-  public static DriverStation.Alliance GetCurrentAlliance() {
+  public static DriverStation.Alliance GetAlliance() {
     Optional<Alliance> alliance = DriverStation.getAlliance();
     if (alliance.isPresent()) {
       return alliance.get();

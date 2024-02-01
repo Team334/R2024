@@ -86,7 +86,7 @@ public class PivotMotor extends Command {
         break;
     }
 
-    // _swerveDrive.pivotMotor(_pivotPoint);
+    _swerveDrive.pivotMotor(_pivotPoint);
 
     // ORIGINAL
 
