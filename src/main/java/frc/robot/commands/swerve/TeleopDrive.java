@@ -1,14 +1,13 @@
-/*                                  Team 334                                  */
-/*               Copyright (c) 2024 Team 334. All Rights Reserved.            */
-
+/* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot.commands.swerve;
+
+import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
-import java.util.function.DoubleSupplier;
 
 /**
  * Drive the swerve chassis based on teleop joystick input
@@ -27,12 +26,8 @@ public class TeleopDrive extends Command {
   private final LEDSubsystem _leds;
 
   /** Creates a new TeleopDrive. */
-  public TeleopDrive(
-      SwerveDriveSubsystem swerveDrive,
-      LEDSubsystem leds,
-      DoubleSupplier xSpeed,
-      DoubleSupplier ySpeed,
-      DoubleSupplier rotationSpeed) {
+  public TeleopDrive(SwerveDriveSubsystem swerveDrive, LEDSubsystem leds, DoubleSupplier xSpeed,
+      DoubleSupplier ySpeed, DoubleSupplier rotationSpeed) {
 
     _swerveDrive = swerveDrive;
     _leds = leds;
@@ -57,20 +52,16 @@ public class TeleopDrive extends Command {
   public void execute() {
     // apply controller deadband
     // drive the swerve chassis subsystem
-    _swerveDrive.driveChassis(
-        new ChassisSpeeds(
-            _xSpeed.getAsDouble()
-                * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED
-                * Constants.Speeds.SWERVE_DRIVE_COEFF,
-            _ySpeed.getAsDouble()
-                * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED
-                * Constants.Speeds.SWERVE_DRIVE_COEFF,
-            _rotationSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED));
+    _swerveDrive.driveChassis(new ChassisSpeeds(
+        _xSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
+        _ySpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
+        _rotationSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED));
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override

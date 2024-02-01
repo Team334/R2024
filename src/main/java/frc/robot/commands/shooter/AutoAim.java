@@ -1,7 +1,7 @@
-/*                                  Team 334                                  */
-/*               Copyright (c) 2024 Team 334. All Rights Reserved.            */
-
+/* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot.commands.shooter;
+
+import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
@@ -13,7 +13,6 @@ import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
-import java.util.function.DoubleSupplier;
 
 /**
  * @author Elvis Osmanov
@@ -34,17 +33,12 @@ public class AutoAim extends Command {
 
   private boolean _runOnce = false;
 
-  private PIDController _headingController =
-      new PIDController(Constants.PID.SWERVE_HEADING_KP, 0, Constants.PID.SWERVE_HEADING_KD);
+  private PIDController _headingController = new PIDController(Constants.PID.SWERVE_HEADING_KP, 0,
+      Constants.PID.SWERVE_HEADING_KD);
 
   /** Creates a new AutoAim. */
-  public AutoAim(
-      ShooterSubsystem shooter,
-      LEDSubsystem leds,
-      VisionSubsystem vision,
-      SwerveDriveSubsystem swerve,
-      DoubleSupplier xSpeed,
-      DoubleSupplier ySpeed) {
+  public AutoAim(ShooterSubsystem shooter, LEDSubsystem leds, VisionSubsystem vision, SwerveDriveSubsystem swerve,
+      DoubleSupplier xSpeed, DoubleSupplier ySpeed) {
     // Use addRequirements() here to declare subsystem dependencies.
     _leds = leds;
     _shooter = shooter;
@@ -61,11 +55,7 @@ public class AutoAim extends Command {
   }
 
   /** Creates an auton AutoAim that ends when it reaches the first setpoints. */
-  public AutoAim(
-      LEDSubsystem leds,
-      ShooterSubsystem shooter,
-      VisionSubsystem vision,
-      SwerveDriveSubsystem swerve) {
+  public AutoAim(LEDSubsystem leds, ShooterSubsystem shooter, VisionSubsystem vision, SwerveDriveSubsystem swerve) {
     this(shooter, leds, vision, swerve, () -> 0, () -> 0);
 
     _runOnce = true;
@@ -93,21 +83,22 @@ public class AutoAim extends Command {
     // double[] visionAngles = _vision.anglesToSpeaker();
 
     // if (_vision.isApriltagVisible() && visionAngles != null) {
-    //   desiredShooterAngle = visionAngles[1];
-    //   desiredSwerveHeading = visionAngles[0];
+    // desiredShooterAngle = visionAngles[1];
+    // desiredSwerveHeading = visionAngles[0];
 
-    //   SmartDashboard.putNumberArray("VISION ANGLES", visionAngles);
+    // SmartDashboard.putNumberArray("VISION ANGLES", visionAngles);
 
     // } else {
-    //   desiredShooterAngle = _swerve.anglesToSpeaker()[1];
-    //   desiredSwerveHeading = _swerve.anglesToSpeaker()[0];
+    // desiredShooterAngle = _swerve.anglesToSpeaker()[1];
+    // desiredSwerveHeading = _swerve.anglesToSpeaker()[0];
     // }
 
     // desiredSwerveHeading -= currentSwerveHeading;
 
     // SmartDashboard.putNumber("DESIRED HEADING 360", desiredSwerveHeading);
 
-    // desiredSwerveHeading = MathUtil.angleModulus(Math.toRadians(desiredSwerveHeading));
+    // desiredSwerveHeading =
+    // MathUtil.angleModulus(Math.toRadians(desiredSwerveHeading));
     // desiredSwerveHeading = Math.toDegrees(desiredSwerveHeading);
 
     // _shooter.setAngle(desiredShooterAngle);
@@ -122,16 +113,16 @@ public class AutoAim extends Command {
     SmartDashboard.putNumber("DESIRED SWERVE HEADING", desiredSwerveHeading);
     SmartDashboard.putNumber("SHOOTER ANGLE", _swerve.speakerAngles()[1]);
 
-    double rotationVelocity =
-        MathUtil.clamp(
-            _headingController.calculate(currentSwerveHeading, desiredSwerveHeading),
-            -Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED * 2,
-            Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED * 2);
+    double rotationVelocity = MathUtil.clamp(
+        _headingController.calculate(currentSwerveHeading, desiredSwerveHeading),
+        -Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED * 2,
+        Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED * 2);
 
     _reachedSwerveHeading = _headingController.atSetpoint();
     _reachedShooterAngle = true; // TODO: make this actually use the shooter
 
-    if (_reachedSwerveHeading) rotationVelocity = 0; // to prevent oscillation
+    if (_reachedSwerveHeading)
+      rotationVelocity = 0; // to prevent oscillation
 
     if (_reachedSwerveHeading && _reachedShooterAngle) {
       _leds.setColor(Constants.LEDColors.GREEN);
@@ -139,20 +130,16 @@ public class AutoAim extends Command {
       _leds.blink(Constants.LEDColors.YELLOW, Constants.LEDColors.NOTHING, 25);
     }
 
-    _swerve.driveChassis(
-        new ChassisSpeeds(
-            _xSpeed.getAsDouble()
-                * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED
-                * Constants.Speeds.SWERVE_DRIVE_COEFF,
-            _ySpeed.getAsDouble()
-                * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED
-                * Constants.Speeds.SWERVE_DRIVE_COEFF,
-            rotationVelocity));
+    _swerve.driveChassis(new ChassisSpeeds(
+        _xSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
+        _ySpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
+        rotationVelocity));
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override

@@ -1,6 +1,4 @@
-/*                                  Team 334                                  */
-/*               Copyright (c) 2024 Team 334. All Rights Reserved.            */
-
+/* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot.commands.swerve;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -10,7 +8,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
 /**
- * Creates a natural brake on the swerve drive by facing the modules so they form an "X" shape.
+ * Creates a natural brake on the swerve drive by facing the modules so they
+ * form an "X" shape.
  *
  * @author Peter Gutkovich
  */
@@ -30,8 +29,9 @@ public class BrakeSwerve extends Command {
   /**
    * Creates a new BrakeSwerve.
    *
-   * @param timeout - (in seconds) Will keep the drive in brake position for this amount of time
-   *     (must be >0).
+   * @param timeout
+   *            - (in seconds) Will keep the drive in brake position for this
+   *            amount of time (must be >0).
    */
   public BrakeSwerve(SwerveDriveSubsystem swerveDrive, double timeout) {
     _swerveDrive = swerveDrive;
@@ -49,12 +49,10 @@ public class BrakeSwerve extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SwerveModuleState[] states = {
-      new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
-      new SwerveModuleState(0, Rotation2d.fromDegrees(-45)),
-      new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
-      new SwerveModuleState(0, Rotation2d.fromDegrees(-45))
-    };
+    SwerveModuleState[] states = {new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
+        new SwerveModuleState(0, Rotation2d.fromDegrees(-45)),
+        new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
+        new SwerveModuleState(0, Rotation2d.fromDegrees(-45))};
 
     _swerveDrive.setStates(states);
   }

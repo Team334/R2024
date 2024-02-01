@@ -1,6 +1,4 @@
-/*                                  Team 334                                  */
-/*               Copyright (c) 2024 Team 334. All Rights Reserved.            */
-
+/* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot.utils;
 
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -25,31 +23,31 @@ public class SwerveModule {
   private final PIDController _driveController;
   private final PIDController _rotationController;
 
-  private final SimpleMotorFeedforward _driveFeedforward =
-      new SimpleMotorFeedforward(
-          Constants.FeedForward.MODULE_DRIVE_KS, Constants.FeedForward.MODULE_DRIVE_KV);
+  private final SimpleMotorFeedforward _driveFeedforward = new SimpleMotorFeedforward(
+      Constants.FeedForward.MODULE_DRIVE_KS, Constants.FeedForward.MODULE_DRIVE_KV);
 
   private final CANcoder _encoder;
 
   private final String _name;
 
   /**
-   * Represents a single swerve module built with talons for rotation and drive control, and a
-   * cancoder for angle.
+   * Represents a single swerve module built with talons for rotation and drive
+   * control, and a cancoder for angle.
    *
-   * @param name - The name of this module.
-   * @param driveMotorId - CAN ID of drive motor.
-   * @param rotationMotorId - CAN ID of rotation motor.
-   * @param encoderId - CAN ID of cancoder.
-   * @param driveP - kP for the drive controller.
-   * @param rotationP - kP for the rotation controller.
+   * @param name
+   *            - The name of this module.
+   * @param driveMotorId
+   *            - CAN ID of drive motor.
+   * @param rotationMotorId
+   *            - CAN ID of rotation motor.
+   * @param encoderId
+   *            - CAN ID of cancoder.
+   * @param driveP
+   *            - kP for the drive controller.
+   * @param rotationP
+   *            - kP for the rotation controller.
    */
-  public SwerveModule(
-      String name,
-      int driveMotorId,
-      int rotationMotorId,
-      int encoderId,
-      double driveP,
+  public SwerveModule(String name, int driveMotorId, int rotationMotorId, int encoderId, double driveP,
       double rotationP) {
     _driveMotor = new TalonFX(driveMotorId);
     _rotationMotor = new TalonFX(rotationMotorId);
@@ -57,7 +55,8 @@ public class SwerveModule {
     // NO NEED FOR THIS CODE ANYMORE, FIGURED HOW TO DO OFFSETS IN PHOENIX TUNER
     // new stuff because CTRE update
     // MagnetSensorConfigs encoderConfig = new MagnetSensorConfigs();
-    // encoderConfig.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
+    // encoderConfig.AbsoluteSensorRange =
+    // AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
     // encoderConfig.MagnetOffset = (angleOffset / 180) / 2;
 
     _encoder = new CANcoder(encoderId);
@@ -82,8 +81,7 @@ public class SwerveModule {
   public void displayInfo() {
     SmartDashboard.putNumber(_name + " Angle", getAngle());
     SmartDashboard.putNumber(_name + " Velocity", getDriveVelocity());
-    SmartDashboard.putNumber(
-        _name + " Current", _rotationMotor.getTorqueCurrent().getValueAsDouble());
+    SmartDashboard.putNumber(_name + " Current", _rotationMotor.getTorqueCurrent().getValueAsDouble());
   }
 
   /**
@@ -110,15 +108,16 @@ public class SwerveModule {
 
   /** Get the absolute angle of the module as an int (-180 to 180 degrees). */
   public int getAngle() {
-    return Double.valueOf(_encoder.getAbsolutePosition().getValueAsDouble() * 2 * 180)
-        .intValue(); // ctre update
+    return Double.valueOf(_encoder.getAbsolutePosition().getValueAsDouble() * 2 * 180).intValue(); // ctre update
   }
 
   /** Get the velocity of the drive wheel (meters per second). */
   public double getDriveVelocity() {
     double talon_rps = _driveMotor.getRotorVelocity().getValueAsDouble(); // ctre update
 
-    // return the speed of the drive wheel itself (talon rps times gear ratio time wheel size) in
+    // return the speed of the drive wheel itself (talon rps times gear ratio time
+    // wheel size)
+    // in
     // m/s
     return (talon_rps / Constants.Physical.SWERVE_DRIVE_GEAR_RATIO)
         * Constants.Physical.SWERVE_DRIVE_WHEEL_CIRCUMFERENCE;
@@ -131,34 +130,31 @@ public class SwerveModule {
    */
   public SwerveModulePosition getPosition() {
     double talon_rotations = _driveMotor.getPosition().getValueAsDouble();
-    double distance =
-        (talon_rotations / Constants.Physical.SWERVE_DRIVE_GEAR_RATIO)
-            * Constants.Physical.SWERVE_DRIVE_WHEEL_CIRCUMFERENCE;
+    double distance = (talon_rotations / Constants.Physical.SWERVE_DRIVE_GEAR_RATIO)
+        * Constants.Physical.SWERVE_DRIVE_WHEEL_CIRCUMFERENCE;
 
     return new SwerveModulePosition(distance, Rotation2d.fromDegrees(getAngle()));
   }
 
   /**
-   * Set the state of this module. This function must be called repeatedly for the state to be set.
+   * Set the state of this module. This function must be called repeatedly for the
+   * state to be set.
    *
    * @see SwerveModuleState
    */
   public void setState(SwerveModuleState state) {
     // current system for setting the state of a module
     // rotation: pure pid control
-    // velocity: feedforward control mainly along with pid control for small disturbances
+    // velocity: feedforward control mainly along with pid control for small
+    // disturbances
 
     state = SwerveModuleState.optimize(state, new Rotation2d(Math.toRadians(getAngle())));
 
-    double speed =
-        MathUtil.clamp(
-            state.speedMetersPerSecond,
-            -Constants.Speeds.SWERVE_DRIVE_MAX_SPEED,
-            Constants.Speeds.SWERVE_DRIVE_MAX_SPEED);
+    double speed = MathUtil.clamp(state.speedMetersPerSecond, -Constants.Speeds.SWERVE_DRIVE_MAX_SPEED,
+        Constants.Speeds.SWERVE_DRIVE_MAX_SPEED);
 
-    double rotation_pid =
-        MathUtil.clamp(
-            _rotationController.calculate(getAngle(), state.angle.getDegrees()), -0.150, 0.150);
+    double rotation_pid = MathUtil.clamp(_rotationController.calculate(getAngle(), state.angle.getDegrees()),
+        -0.150, 0.150);
 
     // double drive_feedforward = (speed / Constants.Speeds.SWERVE_DRIVE_MAX_SPEED);
     double drive_feedforward = UtilFuncs.FromVolts(_driveFeedforward.calculate(speed));

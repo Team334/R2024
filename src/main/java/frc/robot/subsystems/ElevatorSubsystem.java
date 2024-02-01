@@ -1,6 +1,4 @@
-/*                                  Team 334                                  */
-/*               Copyright (c) 2024 Team 334. All Rights Reserved.            */
-
+/* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -11,19 +9,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.utils.NeoConfig;
 
-/**
- * @author Peter Gutkovich
- */
+/** @author Peter Gutkovich */
 public class ElevatorSubsystem extends SubsystemBase {
-  private final CANSparkMax _leftMotor =
-      new CANSparkMax(Constants.CAN.ELEVATOR_LEFT, MotorType.kBrushless);
-  private final CANSparkMax _rightMotor =
-      new CANSparkMax(Constants.CAN.ELEVATOR_RIGHT, MotorType.kBrushless);
+  private final CANSparkMax _leftMotor = new CANSparkMax(Constants.CAN.ELEVATOR_LEFT, MotorType.kBrushless);
+  private final CANSparkMax _rightMotor = new CANSparkMax(Constants.CAN.ELEVATOR_RIGHT, MotorType.kBrushless);
 
-  private final ElevatorFeedforward _elevatorFeed =
-      new ElevatorFeedforward(0, Constants.FeedForward.ELEVATOR_KG, 0);
-  private final PIDController _heightController =
-      new PIDController(Constants.PID.ELEVATOR_KP, 0, 0);
+  private final ElevatorFeedforward _elevatorFeed = new ElevatorFeedforward(0, Constants.FeedForward.ELEVATOR_KG, 0);
+  private final PIDController _heightController = new PIDController(Constants.PID.ELEVATOR_KP, 0, 0);
 
   /** Creates a new ElevatorSubsystem . */
   public ElevatorSubsystem() {
@@ -53,7 +45,9 @@ public class ElevatorSubsystem extends SubsystemBase {
     return 0.00;
   }
 
-  /** Drives the elevator at a desired percent output (feedforward is included). */
+  /**
+   * Drives the elevator at a desired percent output (feedforward is included).
+   */
   public void driveElevator(double speed) {
     _leftMotor.set(_elevatorFeed.calculate(0) + speed);
   }

@@ -1,6 +1,4 @@
-/*                                  Team 334                                  */
-/*               Copyright (c) 2024 Team 334. All Rights Reserved.            */
-
+/* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -29,10 +27,11 @@ import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and trigger mappings) should be declared here.
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a "declarative" paradigm, very little robot logic should
+ * actually be handled in the {@link Robot} periodic methods (other than the
+ * scheduler calls). Instead, the structure of the robot (including subsystems,
+ * commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
@@ -43,8 +42,7 @@ public class RobotContainer {
   private final LEDSubsystem _ledSubsystem = new LEDSubsystem(Constants.Ports.LEDS, 14);
 
   // controllers (for driver and operator)
-  private final CommandPS4Controller _driveController =
-      new CommandPS4Controller(Constants.Ports.DRIVER_CONTROLLER);
+  private final CommandPS4Controller _driveController = new CommandPS4Controller(Constants.Ports.DRIVER_CONTROLLER);
 
   // slew rate limiters applied to joysticks
   private final SlewRateLimiter _driveFilterLeftX = new SlewRateLimiter(4);
@@ -55,29 +53,21 @@ public class RobotContainer {
   // sendable chooser for auton commands
   private final SendableChooser<Command> _autonChooser;
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   */
   public RobotContainer() {
     // TODO: should switch to regsiterCommands for more neatness
     NamedCommands.registerCommand("printHello", new PrintCommand("AUTON HELLO"));
     NamedCommands.registerCommand("waitCommand", new WaitCommand(3));
     NamedCommands.registerCommand("interruptSwerve", new BrakeSwerve(_swerveSubsystem, 3));
-    NamedCommands.registerCommand(
-        "speakerAim",
+    NamedCommands.registerCommand("speakerAim",
         new AutoAim(_ledSubsystem, _shooterSubsystem, _visionSubsystem, _swerveSubsystem));
 
-    _swerveSubsystem.setDefaultCommand(
-        new TeleopDrive(
-            _swerveSubsystem,
-            _ledSubsystem,
-            () ->
-                MathUtil.applyDeadband(
-                    -_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
-            () ->
-                MathUtil.applyDeadband(
-                    -_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1),
-            () ->
-                MathUtil.applyDeadband(
-                    -_driveFilterRightX.calculate(_driveController.getRightX()), 0.1)));
+    _swerveSubsystem.setDefaultCommand(new TeleopDrive(_swerveSubsystem, _ledSubsystem,
+        () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
+        () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1),
+        () -> MathUtil.applyDeadband(-_driveFilterRightX.calculate(_driveController.getRightX()), 0.1)));
 
     // _ledSubsystem.setDefaultCommand(new DefaultLED(_ledSubsystem));
 
@@ -98,52 +88,28 @@ public class RobotContainer {
     _driveController.square().onTrue(new ResetPose(_swerveSubsystem));
     _driveController.circle().whileTrue(new SpinShooter(_shooterSubsystem));
     _driveController.cross().whileTrue(new BrakeSwerve(_swerveSubsystem));
-    _driveController
-        .L1()
-        .whileTrue(
-            new AutoAim(
-                _shooterSubsystem,
-                _ledSubsystem,
-                _visionSubsystem,
-                _swerveSubsystem,
-                () ->
-                    MathUtil.applyDeadband(
-                        -_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
-                () ->
-                    MathUtil.applyDeadband(
-                        -_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1)));
+    _driveController.L1()
+        .whileTrue(new AutoAim(_shooterSubsystem, _ledSubsystem, _visionSubsystem, _swerveSubsystem,
+            () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
+            () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1)));
 
     // for testing velocity output (forward at 0.3 m/s), is it straight?
     // ...
 
-    _driveController
-        .triangle()
-        .whileTrue(
-            Commands.run(
-                () -> {
-                  _swerveSubsystem.driveChassis(new ChassisSpeeds(0.3, 0, 0));
-                },
-                _swerveSubsystem));
+    _driveController.triangle().whileTrue(Commands.run(() -> {
+      _swerveSubsystem.driveChassis(new ChassisSpeeds(0.3, 0, 0));
+    }, _swerveSubsystem));
 
-    _driveController
-        .L2()
-        .whileTrue(
-            new PivotMotor(
-                _ledSubsystem, _swerveSubsystem, true, () -> -_driveController.getLeftY()));
+    _driveController.L2()
+        .whileTrue(new PivotMotor(_ledSubsystem, _swerveSubsystem, true, () -> -_driveController.getLeftY()));
 
-    _driveController
-        .R2()
-        .whileTrue(
-            new PivotMotor(
-                _ledSubsystem, _swerveSubsystem, false, () -> -_driveController.getLeftY()));
+    _driveController.R2()
+        .whileTrue(new PivotMotor(_ledSubsystem, _swerveSubsystem, false, () -> -_driveController.getLeftY()));
   }
 
-  /**
-   * @return The Command to schedule for auton.
-   */
+  /** @return The Command to schedule for auton. */
   public Command getAutonCommand() {
-    _swerveSubsystem.fieldOriented =
-        false; // make sure swerve is robot-relative for pathplanner to work
+    _swerveSubsystem.fieldOriented = false; // make sure swerve is robot-relative for pathplanner to work
 
     return _autonChooser.getSelected();
   }

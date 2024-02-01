@@ -1,6 +1,4 @@
-/*                                  Team 334                                  */
-/*               Copyright (c) 2024 Team 334. All Rights Reserved.            */
-
+/* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot.utils;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -18,10 +16,11 @@ import frc.robot.Constants;
 /** For configuring Falcons. */
 public class TalonFXConfig {
   /**
-   * Basic Falcon config, sets Falcon to factory defaults, sets encoder to 0, and sets Falcon
-   * deadband and sets Falcon to Coast neutral mode.
+   * Basic Falcon config, sets Falcon to factory defaults, sets encoder to 0, and
+   * sets Falcon deadband and sets Falcon to Coast neutral mode.
    *
-   * @param falcon - The Falcon to config.
+   * @param falcon
+   *            - The Falcon to config.
    * @return The configuration object applied to the Falcon.
    */
   public static TalonFXConfiguration configureFalcon(TalonFX falcon, boolean invert) {
@@ -34,8 +33,9 @@ public class TalonFXConfig {
     config.MotorOutput.DutyCycleNeutralDeadband = 0.01;
     config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
-    config.MotorOutput.Inverted =
-        invert ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
+    config.MotorOutput.Inverted = invert
+        ? InvertedValue.Clockwise_Positive
+        : InvertedValue.CounterClockwise_Positive;
 
     config.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
     config.SoftwareLimitSwitch.ReverseSoftLimitEnable = false;
@@ -48,9 +48,12 @@ public class TalonFXConfig {
   /**
    * Configure a follower of a master Falcon motor.
    *
-   * @param falcon - The follower motor to config.
-   * @param master - The master motor.
-   * @param opposeMaster - Boolean for whether the follower motor inverted to the master.
+   * @param falcon
+   *            - The follower motor to config.
+   * @param master
+   *            - The master motor.
+   * @param opposeMaster
+   *            - Boolean for whether the follower motor inverted to the master.
    */
   public static void configureFollowerFalcon(TalonFX falcon, TalonFX master, boolean opposeMaster) {
     configureFalcon(falcon, false);

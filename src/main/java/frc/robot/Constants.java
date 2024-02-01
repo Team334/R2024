@@ -1,6 +1,4 @@
-/*                                  Team 334                                  */
-/*               Copyright (c) 2024 Team 334. All Rights Reserved.            */
-
+/* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot;
 
 import com.pathplanner.lib.util.PIDConstants;
@@ -13,12 +11,14 @@ import frc.robot.utils.AllianceFieldConstants;
 import frc.robot.utils.UtilFuncs;
 
 /**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants. This class should not be used for any other purpose. All constants should be declared
- * globally (i.e. public static). Do not put anything functional in this class.
+ * The Constants class provides a convenient place for teams to hold robot-wide
+ * numerical or boolean constants. This class should not be used for any other
+ * purpose. All constants should be declared globally (i.e. public static). Do
+ * not put anything functional in this class.
  *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
- * constants are needed, to reduce verbosity.
+ * <p>
+ * It is advised to statically import this class (or one of its inner classes)
+ * wherever the constants are needed, to reduce verbosity.
  */
 public final class Constants {
   public static class CAN {
@@ -64,24 +64,19 @@ public final class Constants {
 
     public static final double SWERVE_DRIVE_GEAR_RATIO = 6.75;
     public static final double SWERVE_DRIVE_WHEEL_RADIUS = 0.05;
-    public static final double SWERVE_DRIVE_WHEEL_CIRCUMFERENCE =
-        2 * Math.PI * SWERVE_DRIVE_WHEEL_RADIUS;
+    public static final double SWERVE_DRIVE_WHEEL_CIRCUMFERENCE = 2 * Math.PI * SWERVE_DRIVE_WHEEL_RADIUS;
 
     public static final double SHOOTER_GEAR_RATIO = 1.45; // TODO: FIND THIS
     public static final double SHOOTER_FLYWHEEL_RADIUS = 1; // TODO: FIND RADIUS
-    public static final double SHOOTER_FLYWHEEL_CIRCUMFERENCE =
-        2 * Math.PI * SHOOTER_FLYWHEEL_RADIUS;
+    public static final double SHOOTER_FLYWHEEL_CIRCUMFERENCE = 2 * Math.PI * SHOOTER_FLYWHEEL_RADIUS;
 
     public static final double ELEVATOR_GEAR_RATIO = 100; // TODO: fixed but they might change it
 
     public static final double SHOOTER_HEIGHT_STOWED = 0; // TODO: Get this value
 
-    public static final SwerveDriveKinematics SWERVE_KINEMATICS =
-        new SwerveDriveKinematics(
-            new Translation2d(0.292, 0.292),
-            new Translation2d(0.292, -0.292),
-            new Translation2d(-0.292, -0.292),
-            new Translation2d(-0.292, 0.292));
+    public static final SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(
+        new Translation2d(0.292, 0.292), new Translation2d(0.292, -0.292), new Translation2d(-0.292, -0.292),
+        new Translation2d(-0.292, 0.292));
   }
 
   public static class FeedForward {
@@ -124,7 +119,8 @@ public final class Constants {
     public static final double ENCODER_BACK_LEFT = 43;
 
     public static final double APRILTAG_SPEAKER_OFFSET = 0.565; // <- Below, but in Meters
-    // 200(approx height of spk opening) - 132(Height of AprTag) + 11.5(Center of AprTag) <- CM
+    // 200(approx height of spk opening) - 132(Height of AprTag) + 11.5(Center of
+    // AprTag) <- CM
   }
 
   public static class Ports {
@@ -132,7 +128,9 @@ public final class Constants {
     public static final int LEDS = 0; // pwm port
   }
 
-  /** Field constants that are dynamically set up for the match's alliance color. */
+  /**
+   * Field constants that are dynamically set up for the match's alliance color.
+   */
   public static final AllianceFieldConstants FIELD_CONSTANTS = new AllianceFieldConstants();
 
   // static field constants
@@ -142,10 +140,8 @@ public final class Constants {
     public static final int SPEAKER_TAG_BLUE = 7;
     public static final int SPEAKER_TAG_RED = 4;
 
-    public static final Pose3d SPEAKER_POSE_BLUE =
-        new Pose3d(0.25, 5.5, SPEAKER_HEIGHT, new Rotation3d(0, 0, 180));
-    public static final Pose3d SPEAKER_POSE_RED =
-        new Pose3d(16.3, 5.5, SPEAKER_HEIGHT, new Rotation3d(0, 0, 0));
+    public static final Pose3d SPEAKER_POSE_BLUE = new Pose3d(0.25, 5.5, SPEAKER_HEIGHT, new Rotation3d(0, 0, 180));
+    public static final Pose3d SPEAKER_POSE_RED = new Pose3d(16.3, 5.5, SPEAKER_HEIGHT, new Rotation3d(0, 0, 0));
   }
 
   public static class LEDColors {
@@ -156,7 +152,6 @@ public final class Constants {
     public static final int[] BLUE = {0, 0, 255};
     public static final int[] RED = {255, 0, 0};
 
-    public static final int[] ALLIANCE_RGB =
-        UtilFuncs.GetCurrentAlliance() == Alliance.Red ? RED : BLUE;
+    public static final int[] ALLIANCE_RGB = UtilFuncs.GetCurrentAlliance() == Alliance.Red ? RED : BLUE;
   }
 }

@@ -1,7 +1,7 @@
-/*                                  Team 334                                  */
-/*               Copyright (c) 2024 Team 334. All Rights Reserved.            */
-
+/* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot.subsystems;
+
+import java.util.Optional;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -10,7 +10,6 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.LimelightHelper;
-import java.util.Optional;
 
 /**
  * @author Lucas Ou
@@ -22,13 +21,15 @@ public class VisionSubsystem extends SubsystemBase {
   // private double[] _botpose = new double[6];
 
   /** Creates a new VisionSubsystem. */
-  public VisionSubsystem() {}
+  public VisionSubsystem() {
+  }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
 
-    // SmartDashboard.putNumber("retrieved botpose", getBotpose().getTranslation().getX());
+    // SmartDashboard.putNumber("retrieved botpose",
+    // getBotpose().getTranslation().getX());
 
     // System.out.println(isApriltagVisible(6));
 
@@ -38,8 +39,8 @@ public class VisionSubsystem extends SubsystemBase {
   }
 
   /**
-   * Returns the latency from the last time data was sent from the limelight. This should be used in
-   * the pose estimator.
+   * Returns the latency from the last time data was sent from the limelight. This
+   * should be used in the pose estimator.
    */
   public double getLatency() {
     double tl = _limelight.getEntry("tl").getDouble(0);
@@ -51,7 +52,8 @@ public class VisionSubsystem extends SubsystemBase {
   /**
    * Returns the "wpiblue" botpose of the robot from the limelight.
    *
-   * @return An Optional of Pose2d which is necessary if no value is found from the limelight.
+   * @return An Optional of Pose2d which is necessary if no value is found from
+   *         the limelight.
    * @see Optional
    */
   public Optional<Pose2d> getBotpose() {
@@ -91,10 +93,12 @@ public class VisionSubsystem extends SubsystemBase {
   /**
    * Return a boolean for whether the desired tag is seen.
    *
-   * @param ID The id of the desired tag.
+   * @param ID
+   *            The id of the desired tag.
    */
   public boolean isApriltagVisible(int ID) {
-    if (!isApriltagVisible()) return false;
+    if (!isApriltagVisible())
+      return false;
 
     return _limelight.getTag(ID) != null;
   }
@@ -102,11 +106,14 @@ public class VisionSubsystem extends SubsystemBase {
   /**
    * Return tx and ty angle offsets from a desired tag.
    *
-   * @param ID The id of the desired tag.
-   * @return A double array [tx, ty]. Null is returned if no tags are visible at all.
+   * @param ID
+   *            The id of the desired tag.
+   * @return A double array [tx, ty]. Null is returned if no tags are visible at
+   *         all.
    */
   public double[] tagAngleOffsets(int ID) {
-    if (!isApriltagVisible(ID)) return null;
+    if (!isApriltagVisible(ID))
+      return null;
 
     JsonNode tag = _limelight.getTag(ID);
 

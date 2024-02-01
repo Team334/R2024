@@ -1,6 +1,4 @@
-/*                                  Team 334                                  */
-/*               Copyright (c) 2024 Team 334. All Rights Reserved.            */
-
+/* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -18,19 +16,15 @@ import frc.robot.utils.NeoConfig;
  * @author Cherine Soewingjo
  */
 public class ShooterSubsystem extends SubsystemBase {
-  private final CANSparkMax _leftMotor =
-      new CANSparkMax(Constants.CAN.SHOOTER_LEFT, MotorType.kBrushless);
-  private final CANSparkMax _rightMotor =
-      new CANSparkMax(Constants.CAN.SHOOTER_RIGHT, MotorType.kBrushless);
+  private final CANSparkMax _leftMotor = new CANSparkMax(Constants.CAN.SHOOTER_LEFT, MotorType.kBrushless);
+  private final CANSparkMax _rightMotor = new CANSparkMax(Constants.CAN.SHOOTER_RIGHT, MotorType.kBrushless);
 
   private final RelativeEncoder _leftEncoder = _leftMotor.getEncoder();
 
   private final ArmFeedforward _angleFeed = new ArmFeedforward(0, 0, 0);
-  private final PIDController _angleController =
-      new PIDController(getAngle(), getVelocity(), getAngle());
+  private final PIDController _angleController = new PIDController(getAngle(), getVelocity(), getAngle());
 
-  private final PIDController _shooterController =
-      new PIDController(Constants.PID.SHOOTER_FLYWHEEL_KP, 1, 0);
+  private final PIDController _shooterController = new PIDController(Constants.PID.SHOOTER_FLYWHEEL_KP, 1, 0);
 
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
@@ -58,7 +52,10 @@ public class ShooterSubsystem extends SubsystemBase {
     return 0;
   }
 
-  /** Drives the angle motors at the desired percent output (feedforward is included). */
+  /**
+   * Drives the angle motors at the desired percent output (feedforward is
+   * included).
+   */
   public void driveAngle(double speed) {
     _leftMotor.set(_angleFeed.calculate(Math.toRadians(getAngle()), 0) + speed);
   }
@@ -72,9 +69,8 @@ public class ShooterSubsystem extends SubsystemBase {
   public double getVelocity() {
     double neo_rps = _leftEncoder.getVelocity() / 60;
 
-    double number =
-        (neo_rps / Constants.Physical.SHOOTER_GEAR_RATIO)
-            * Constants.Physical.SHOOTER_FLYWHEEL_CIRCUMFERENCE;
+    double number = (neo_rps / Constants.Physical.SHOOTER_GEAR_RATIO)
+        * Constants.Physical.SHOOTER_FLYWHEEL_CIRCUMFERENCE;
 
     if (number < 0) {
       number = 0;
@@ -85,10 +81,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
   /** Set the velocity of the back wheels in m/s. */
   public void setVelocity(double velocity) {
-    double flywheel_output =
-        (velocity / Constants.Speeds.SHOOTER_MAX_SPEED); // FEEDFORWARD (main output)
-    double flywheel_pid =
-        _shooterController.calculate(getVelocity(), velocity); // PID for distrubances
+    double flywheel_output = (velocity / Constants.Speeds.SHOOTER_MAX_SPEED); // FEEDFORWARD (main output)
+    double flywheel_pid = _shooterController.calculate(getVelocity(), velocity); // PID for distrubances
 
     // a similar controller setup can be found in SwerveModule
     _leftMotor.set(flywheel_output + flywheel_pid);

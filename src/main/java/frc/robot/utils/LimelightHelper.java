@@ -1,6 +1,4 @@
-/*                                  Team 334                                  */
-/*               Copyright (c) 2024 Team 334. All Rights Reserved.            */
-
+/* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot.utils;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -27,12 +25,14 @@ public class LimelightHelper {
 
   private final ObjectMapper _objectMapper = new ObjectMapper();
 
-  private LimelightHelper() {} // private constructor makes this a singleton
+  private LimelightHelper() {
+  } // private constructor makes this a singleton
 
   /**
    * Returns a NetworkTableEntry from the limelight network table.
    *
-   * @param name The name of the entry.
+   * @param name
+   *            The name of the entry.
    */
   public NetworkTableEntry getEntry(String name) {
     return _limelight.getEntry(name);
@@ -60,7 +60,8 @@ public class LimelightHelper {
   /**
    * Returns a JsonNode containing info of a tag.
    *
-   * @param ID The ID of the tag to look for.
+   * @param ID
+   *            The ID of the tag to look for.
    * @see JsonNode
    */
   public JsonNode getTag(int ID) {

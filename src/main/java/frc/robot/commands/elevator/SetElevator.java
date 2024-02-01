@@ -1,17 +1,18 @@
-/*                                  Team 334                                  */
-/*               Copyright (c) 2024 Team 334. All Rights Reserved.            */
-
+/* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot.commands.elevator;
+
+import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ElevatorSubsystem;
-import java.util.function.DoubleSupplier;
 
 public class SetElevator extends Command {
   /**
    * Creates a new SetElevator.
    *
-   * @param height The double supplier that returns the desired height of the elevator in meters.
+   * @param height
+   *            The double supplier that returns the desired height of the
+   *            elevator in meters.
    */
   private final ElevatorSubsystem _elevator;
 
@@ -26,7 +27,8 @@ public class SetElevator extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override

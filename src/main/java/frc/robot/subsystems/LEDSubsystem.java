@@ -1,15 +1,11 @@
-/*                                  Team 334                                  */
-/*               Copyright (c) 2024 Team 334. All Rights Reserved.            */
-
+/* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-/**
- * @author Lucas Ou
- */
+/** @author Lucas Ou */
 public class LEDSubsystem extends SubsystemBase {
   private AddressableLED _ledStrip;
   private AddressableLEDBuffer _ledBuffer;
@@ -50,7 +46,8 @@ public class LEDSubsystem extends SubsystemBase {
 
   public void rainbow() {
     for (int i = 0; i < _ledBuffer.getLength(); i++) {
-      // Get the distance of the rainbow between two pixels. (180 / _ledBuffer.getLength())
+      // Get the distance of the rainbow between two pixels. (180 /
+      // _ledBuffer.getLength())
       // Times the index of current pixel. (i)
       // Plus the hue of the first pixel.
       // ^This will get us the "moved" hue for the current pixel^
