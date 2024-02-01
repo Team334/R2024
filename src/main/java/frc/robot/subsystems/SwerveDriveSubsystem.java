@@ -1,5 +1,5 @@
 /*                                  Team 334                                  */
-/* Copyright (c) 2024 Team 334. All Rights Reserved.                          */
+/*               Copyright (c) 2024 Team 334. All Rights Reserved.            */
 
 package frc.robot.subsystems;
 
@@ -193,23 +193,18 @@ public class SwerveDriveSubsystem extends SubsystemBase {
           @Override
           public void initSendable(SendableBuilder builder) {
             builder.setSmartDashboardType("SwerveDrive");
-
             builder.addDoubleProperty("Front Left Angle", () -> _frontLeft.getAngle(), null);
             builder.addDoubleProperty(
                 "Front Left Velocity", () -> _frontLeft.getDriveVelocity(), null);
-
             builder.addDoubleProperty("Front Right Angle", () -> _frontRight.getAngle(), null);
             builder.addDoubleProperty(
                 "Front Right Velocity", () -> _frontRight.getDriveVelocity(), null);
-
             builder.addDoubleProperty("Back Left Angle", () -> _backLeft.getAngle(), null);
             builder.addDoubleProperty(
                 "Back Left Velocity", () -> _backLeft.getDriveVelocity(), null);
-
             builder.addDoubleProperty("Back Right Angle", () -> _backRight.getAngle(), null);
             builder.addDoubleProperty(
                 "Back Right Velocity", () -> _backRight.getDriveVelocity(), null);
-
             builder.addDoubleProperty("Robot Angle", () -> getHeading().getDegrees(), null);
             builder.addDoubleProperty(
                 "Swerve Speed", () -> Constants.Speeds.SWERVE_DRIVE_COEFF, null);

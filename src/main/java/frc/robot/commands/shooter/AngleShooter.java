@@ -1,5 +1,5 @@
 /*                                  Team 334                                  */
-/* Copyright (c) 2024 Team 334. All Rights Reserved.                          */
+/*               Copyright (c) 2024 Team 334. All Rights Reserved.            */
 
 package frc.robot.commands.shooter;
 
