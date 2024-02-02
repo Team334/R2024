@@ -98,9 +98,9 @@ public class LEDSubsystem extends SubsystemBase {
     // IDEA: Pixels move right to left or left to right.
     for (int i = 0; i < _ledBuffer.getLength(); i++) {
       if ((i - _firstPixelHue) % 3 == 0) {
-        _value = 85;
+        _value = 0;
       } else if ((i - _firstPixelHue) % 3 == 1) {
-        _value = 85;
+        _value = 15;
       } else {
         _value = 255;
       }
@@ -147,6 +147,6 @@ public class LEDSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    
+
   }
 }
