@@ -61,7 +61,7 @@ public class RobotContainer {
     // TODO: should switch to regsiterCommands for more neatness
     NamedCommands.registerCommand("printHello", new PrintCommand("AUTON HELLO"));
     NamedCommands.registerCommand("waitCommand", new WaitCommand(3));
-    NamedCommands.registerCommand("interruptSwerve", new BrakeSwerve(_swerveSubsystem, 3));
+    NamedCommands.registerCommand("interruptSwerve", new BrakeSwerve(_swerveSubsystem, _ledSubsystem));
     NamedCommands.registerCommand("speakerAim",
         new AutoAim(_ledSubsystem, _shooterSubsystem, _visionSubsystem, _swerveSubsystem));
 
@@ -88,7 +88,7 @@ public class RobotContainer {
     _driveController.R1().onTrue(new ToggleSwerveOrient(_swerveSubsystem));
     _driveController.square().onTrue(new ResetPose(_swerveSubsystem));
     _driveController.circle().whileTrue(new SpinShooter(_shooterSubsystem));
-    _driveController.cross().whileTrue(new BrakeSwerve(_swerveSubsystem));
+    _driveController.cross().whileTrue(new BrakeSwerve(_swerveSubsystem, _ledSubsystem));
     _driveController.L1()
         .whileTrue(new AutoAim(_shooterSubsystem, _ledSubsystem, _visionSubsystem, _swerveSubsystem,
             () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
