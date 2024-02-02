@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 
 /** @author Lucas Ou */
 public class LEDSubsystem extends SubsystemBase {
@@ -114,7 +113,7 @@ public class LEDSubsystem extends SubsystemBase {
     }
   }
 
-  // timeBetween will now be in seconds 
+  // timeBetween will now be in seconds
   public void blinkTimerTest(int[] firstColor, int[] secondColor, int timeBetween) {
     if (_ledTimer.get() > timeBetween) {
       if (!_colorOn) {

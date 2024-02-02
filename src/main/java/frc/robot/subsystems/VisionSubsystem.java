@@ -17,7 +17,7 @@ import frc.robot.utils.helpers.LimelightHelper;
  */
 public class VisionSubsystem extends SubsystemBase {
   private final LimelightHelper _limelight = LimelightHelper.getInstance();
-  
+
   // private double[] _botpose = new double[6];
 
   /** Creates a new VisionSubsystem. */

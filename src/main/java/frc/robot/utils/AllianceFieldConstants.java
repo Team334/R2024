@@ -1,9 +1,6 @@
 /* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot.utils;
 
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
-import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Constants;
