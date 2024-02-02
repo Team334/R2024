@@ -60,7 +60,7 @@ public class BrakeSwerve extends Command {
         new SwerveModuleState(0, Rotation2d.fromDegrees(-45))};
 
     _swerveDrive.setStates(states);
-    _leds.blink(Constants.LEDColors.RED, Constants.LEDColors.NOTHING, 3);
+    _leds.blinkTimerTest(Constants.LEDColors.RED, Constants.LEDColors.NOTHING, 3);
   }
 
   // Called once the command ends or is interrupted.

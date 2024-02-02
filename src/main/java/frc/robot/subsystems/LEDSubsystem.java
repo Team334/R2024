@@ -3,7 +3,9 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 /** @author Lucas Ou */
 public class LEDSubsystem extends SubsystemBase {
@@ -22,6 +24,9 @@ public class LEDSubsystem extends SubsystemBase {
   private int _currentCounter = 0;
   // colorOn used to control blinking.
   private boolean _colorOn = false;
+
+  // For blinkingTimerTest
+  private Timer _ledTimer = new Timer();
 
   /** Creates a new LEDSubsystem. */
   public LEDSubsystem(int port, int ledNumber) {
@@ -106,6 +111,36 @@ public class LEDSubsystem extends SubsystemBase {
     _firstPixelValue += 1;
     if (_firstPixelHue == 2) {
       _firstPixelHue = 0;
+    }
+  }
+
+  // timeBetween will now be in seconds 
+  public void blinkTimerTest(int[] firstColor, int[] secondColor, int timeBetween) {
+    if (_ledTimer.get() > timeBetween) {
+      if (!_colorOn) {
+        // If LEDs are not on...
+        // Set them on to given color
+        for (int i = 0; i < _ledBuffer.getLength(); i++) {
+          _ledBuffer.setRGB(i, firstColor[0], firstColor[1], firstColor[2]);
+        }
+        _ledStrip.setData(_ledBuffer);
+        _colorOn = true;
+        _ledTimer.reset();
+        _ledTimer.start();
+      } else {
+        // If LEDs are on...
+        // Set them off
+        for (int i = 0; i < _ledBuffer.getLength(); i++) {
+          _ledBuffer.setRGB(i, secondColor[0], secondColor[1], secondColor[2]);
+        }
+        _ledStrip.setData(_ledBuffer);
+        _colorOn = false;
+        _ledTimer.reset();
+        _ledTimer.start();
+      }
+      _currentCounter = 0;
+    } else {
+      ++_currentCounter;
     }
   }
 
