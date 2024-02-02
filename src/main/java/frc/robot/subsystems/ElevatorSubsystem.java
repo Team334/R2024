@@ -15,7 +15,11 @@ public class ElevatorSubsystem extends SubsystemBase {
   private final CANSparkMax _rightMotor = new CANSparkMax(Constants.CAN.ELEVATOR_RIGHT, MotorType.kBrushless);
 
   private final ElevatorFeedforward _elevatorFeed = new ElevatorFeedforward(0, Constants.FeedForward.ELEVATOR_KG, 0);
+  private final ElevatorFeedforward _climbFeed = new ElevatorFeedforward(0, 0, 0); // TODO: Get this value
+
   private final PIDController _heightController = new PIDController(Constants.PID.ELEVATOR_KP, 0, 0);
+
+  private boolean _usingElevatorFeed = true;
 
   /** Creates a new ElevatorSubsystem . */
   public ElevatorSubsystem() {
@@ -49,11 +53,16 @@ public class ElevatorSubsystem extends SubsystemBase {
    * Drives the elevator at a desired percent output (feedforward is included).
    */
   public void driveElevator(double speed) {
-    _leftMotor.set(_elevatorFeed.calculate(0) + speed);
+    if (_usingElevatorFeed) _leftMotor.set(_elevatorFeed.calculate(0) + speed);
+    else _leftMotor.set(_climbFeed.calculate(0) + speed);
   }
 
   /** Stops elevator movement. */
   public void stopElevator() {
     driveElevator(0);
+  }
+
+  public void changeElevatorFeed(){
+    _usingElevatorFeed = !_usingElevatorFeed;
   }
 }
