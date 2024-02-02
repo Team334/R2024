@@ -1,10 +1,12 @@
 /* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.utils.AllianceFieldConstants;
+import frc.robot.utils.helpers.AllianceHelper;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -29,14 +31,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    // for alliance management
+    // FIRST THING THAT HAPPENS
+    addPeriodic(() -> AllianceHelper.getInstance().updateAlliance(DriverStation.getAlliance()), 0.5);
+
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-
-    // TODO: figure out a new alliance management system
-    AllianceFieldConstants test1 = Constants.FIELD_CONSTANTS;
-    int[] test2 = Constants.LEDColors.ALLIANCE_RGB;
   }
 
   /**

@@ -1,5 +1,5 @@
 /* Copyright (C) 2024 Team 334. All Rights Reserved.*/
-package frc.robot.utils;
+package frc.robot.utils.configs;
 
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;

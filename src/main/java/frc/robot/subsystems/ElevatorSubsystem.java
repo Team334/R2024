@@ -7,7 +7,7 @@ import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.utils.NeoConfig;
+import frc.robot.utils.configs.NeoConfig;
 
 /** @author Peter Gutkovich */
 public class ElevatorSubsystem extends SubsystemBase {

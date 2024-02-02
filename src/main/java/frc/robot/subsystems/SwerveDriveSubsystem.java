@@ -102,7 +102,9 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       Constants.Physical.SWERVE_KINEMATICS, getHeadingRaw(),
       new SwerveModulePosition[]{_frontLeft.getPosition(), _frontRight.getPosition(), _backRight.getPosition(),
           _backLeft.getPosition()},
-      new Pose2d(), VecBuilder.fill(0.006, 0.006, 0.007), VecBuilder.fill(0.5, 0.5, 1.3));
+      new Pose2d());
+
+      //VecBuilder.fill(0.006, 0.006, 0.007), VecBuilder.fill(0.5, 0.5, 1.3)
 
   /** Return the estimated pose of the swerve chassis. */
   public Pose2d getPose() {
@@ -328,18 +330,14 @@ public class SwerveDriveSubsystem extends SubsystemBase {
    * @return [xSpeakerAngle, ySpeakerAngle]
    */
   public double[] speakerAngles() {
-    
 
     double xSpeakerAngle;
     double ySpeakerAngle;
 
-    
     Pose3d speakerPose = Constants.FIELD_CONSTANTS.SPEAKER_POSE;
 
     Translation2d speakerTranslation = new Translation2d(speakerPose.getX(), speakerPose.getY());
     Translation2d botTranslation = getPose().getTranslation();
-
-    
 
     Translation2d distanceVec = speakerTranslation.minus(botTranslation);
 
