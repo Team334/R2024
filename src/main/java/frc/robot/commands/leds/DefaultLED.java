@@ -18,7 +18,8 @@ public class DefaultLED extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    _leds.setColor(Constants.LEDColors.ALLIANCE_RGB);
+    // _leds.setColor(Constants.LEDColors.ALLIANCE_RGB);
+    _leds.movingPixels(44); // TESTING ONLY!!!!!!!!
   }
 
   // Called every time the scheduler runs while the command is scheduled.

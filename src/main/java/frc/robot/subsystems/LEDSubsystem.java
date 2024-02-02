@@ -109,8 +109,8 @@ public class LEDSubsystem extends SubsystemBase {
     _ledStrip.setData(_ledBuffer);
 
     _firstPixelValue += 1;
-    if (_firstPixelHue == 2) {
-      _firstPixelHue = 0;
+    if (_firstPixelValue == 2) {
+      _firstPixelValue = 0;
     }
   }
 
@@ -147,5 +147,6 @@ public class LEDSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    
   }
 }
