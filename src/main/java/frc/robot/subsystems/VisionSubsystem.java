@@ -9,7 +9,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.utils.LimelightHelper;
+import frc.robot.utils.helpers.LimelightHelper;
 
 /**
  * @author Lucas Ou

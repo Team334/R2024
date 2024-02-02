@@ -1,10 +1,8 @@
 /* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot.utils;
 
-import java.util.Optional;
-
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.utils.helpers.AllianceHelper;
 
 /** Any utility functions are here. */
 public final class UtilFuncs {
@@ -21,14 +19,15 @@ public final class UtilFuncs {
   }
 
   /**
-   * The alliance for the match and DOES NOT CHANGE (same from the start).
+   * The alliance for the match (shortcut for AllianceHelper).
    */
-  public static DriverStation.Alliance GetAlliance() {
-    Optional<Alliance> alliance = DriverStation.getAlliance();
-    if (alliance.isPresent()) {
-      return alliance.get();
-    }
+  public static Alliance GetAlliance() {
+    // Optional<Alliance> alliance = DriverStation.getAlliance();
+    // if (alliance.isPresent()) {
+    //   return alliance.get();
+    // }
 
-    return null;
+    // return null;
+    return AllianceHelper.getInstance().getAlliance(); 
   }
 }
