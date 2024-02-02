@@ -13,20 +13,11 @@ import frc.robot.Constants;
  * alliance color.
  */
 public class AllianceFieldConstants {
-  /**
-   * The field layout.
-   *
-   * @see AprilTagFieldLayout
-   */
-  public final AprilTagFieldLayout APRILTAG_LAYOUT = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
-
   /** The speaker's 3d pose. */
   public final Pose3d SPEAKER_POSE;
 
   /** Creates a new AllianceFieldConstants. */
   public AllianceFieldConstants() {
-    APRILTAG_LAYOUT.setOrigin(OriginPosition.kBlueAllianceWallRightSide);
-
     Alliance alliance = UtilFuncs.GetAlliance();
 
     if (alliance == Alliance.Blue) {

@@ -102,7 +102,9 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       Constants.Physical.SWERVE_KINEMATICS, getHeadingRaw(),
       new SwerveModulePosition[]{_frontLeft.getPosition(), _frontRight.getPosition(), _backRight.getPosition(),
           _backLeft.getPosition()},
-      new Pose2d(), VecBuilder.fill(0.006, 0.006, 0.007), VecBuilder.fill(0.5, 0.5, 1.3));
+      new Pose2d());
+
+      //VecBuilder.fill(0.006, 0.006, 0.007), VecBuilder.fill(0.5, 0.5, 1.3)
 
   /** Return the estimated pose of the swerve chassis. */
   public Pose2d getPose() {

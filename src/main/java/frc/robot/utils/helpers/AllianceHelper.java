@@ -10,7 +10,7 @@ public class AllianceHelper {
 
     /** Get the single instance of the AllianceHelper. */
     public static AllianceHelper getInstance() {
-        if (_instance != null) {
+        if (_instance == null) {
             _instance = new AllianceHelper();
         }
 
