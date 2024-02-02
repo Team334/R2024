@@ -73,7 +73,7 @@ public class AutoAim extends Command {
     _reachedShooterAngle = false;
 
     SmartDashboard.putBoolean("BRUH", true);
-    
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.

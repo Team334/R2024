@@ -6,7 +6,6 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
 /**
@@ -24,8 +23,8 @@ public class TeleopDrive extends Command {
   private final DoubleSupplier _rotationSpeed;
 
   /** Creates a new TeleopDrive. */
-  public TeleopDrive(SwerveDriveSubsystem swerveDrive, DoubleSupplier xSpeed,
-      DoubleSupplier ySpeed, DoubleSupplier rotationSpeed) {
+  public TeleopDrive(SwerveDriveSubsystem swerveDrive, DoubleSupplier xSpeed, DoubleSupplier ySpeed,
+      DoubleSupplier rotationSpeed) {
 
     _swerveDrive = swerveDrive;
 

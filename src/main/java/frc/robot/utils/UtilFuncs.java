@@ -21,7 +21,7 @@ public final class UtilFuncs {
   }
 
   /**
-   * The alliance for the match and DOES NOT CHANGE (same from the start). 
+   * The alliance for the match and DOES NOT CHANGE (same from the start).
    */
   public static DriverStation.Alliance GetAlliance() {
     Optional<Alliance> alliance = DriverStation.getAlliance();

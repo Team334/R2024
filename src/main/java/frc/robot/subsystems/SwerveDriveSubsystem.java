@@ -328,18 +328,14 @@ public class SwerveDriveSubsystem extends SubsystemBase {
    * @return [xSpeakerAngle, ySpeakerAngle]
    */
   public double[] speakerAngles() {
-    
 
     double xSpeakerAngle;
     double ySpeakerAngle;
 
-    
     Pose3d speakerPose = Constants.FIELD_CONSTANTS.SPEAKER_POSE;
 
     Translation2d speakerTranslation = new Translation2d(speakerPose.getX(), speakerPose.getY());
     Translation2d botTranslation = getPose().getTranslation();
-
-    
 
     Translation2d distanceVec = speakerTranslation.minus(botTranslation);
 
