@@ -64,31 +64,7 @@ public class LEDSubsystem extends SubsystemBase {
     _firstPixelHue %= 180;
   }
 
-  public void blink(int[] firstColor, int[] secondColor, int timeBetween) {
-    if (_currentCounter > timeBetween) {
-      if (!_colorOn) {
-        // If LEDs are not on...
-        // Set them on to given color
-        for (int i = 0; i < _ledBuffer.getLength(); i++) {
-          _ledBuffer.setRGB(i, firstColor[0], firstColor[1], firstColor[2]);
-        }
-        _ledStrip.setData(_ledBuffer);
-        _colorOn = true;
-      } else {
-        // If LEDs are on...
-        // Set them off
-        for (int i = 0; i < _ledBuffer.getLength(); i++) {
-          _ledBuffer.setRGB(i, secondColor[0], secondColor[1], secondColor[2]);
-        }
-        _ledStrip.setData(_ledBuffer);
-        _colorOn = false;
-      }
-      _currentCounter = 0;
-    } else {
-      ++_currentCounter;
-    }
-  }
-
+  // Still in testing process \/\/\/
   public void outwardPixels(int[] color, int speed, boolean isOut) {
     // IDEA: Pixels move outward beginning from middle.
   }
@@ -112,9 +88,11 @@ public class LEDSubsystem extends SubsystemBase {
       _firstPixelValue = 0;
     }
   }
+    // Still in testing process /\/\/\
 
   // timeBetween will now be in seconds
-  public void blinkTimerTest(int[] firstColor, int[] secondColor, int timeBetween) {
+  public void blink(int[] firstColor, int[] secondColor, double timeBetween) {
+    _ledTimer.start();
     if (_ledTimer.get() > timeBetween) {
       if (!_colorOn) {
         // If LEDs are not on...
