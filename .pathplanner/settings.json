@@ -3,11 +3,14 @@
   "robotLength": 0.8,
   "holonomicMode": true,
   "pathFolders": [
-    "general",
-    "amp"
+    "d3",
+    "d1",
+    "d2"
   ],
   "autoFolders": [
-    "New Folder"
+    "ds3",
+    "ds1",
+    "ds2"
   ],
   "defaultMaxVel": 4.67,
   "defaultMaxAccel": 3.0,

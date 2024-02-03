@@ -1,0 +1,61 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.7450681568029801,
+      "y": 4.058424693425964
+    },
+    "rotation": -0.707319368544202
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "preloaded 2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "speakerAim"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "get mid note"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "shoot mid note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "speakerAim"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "get center note 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "shoot center note 2"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "ds2",
+  "choreoAuto": false
+}

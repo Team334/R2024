@@ -1,0 +1,85 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.8837387044143455,
+      "y": 6.9797508964387305
+    },
+    "rotation": 67.30620505490764
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "preloaded"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "speakerAim"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "get top note"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "shoot top note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "speakerAim"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "get mid note"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "shoot mid note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "speakerAim"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "get bot note"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "shoot bot note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "speakerAim"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "ds1",
+  "choreoAuto": false
+}
