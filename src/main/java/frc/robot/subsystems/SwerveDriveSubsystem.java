@@ -8,6 +8,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -100,7 +101,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   private final SwerveDrivePoseEstimator _estimator = new SwerveDrivePoseEstimator(
       Constants.Physical.SWERVE_KINEMATICS, getHeadingRaw(), new SwerveModulePosition[]{_frontLeft.getPosition(),
           _frontRight.getPosition(), _backRight.getPosition(), _backLeft.getPosition()},
-      new Pose2d());
+      new Pose2d(), VecBuilder.fill(0.006, 0.006, 0.007), VecBuilder.fill(0.5, 0.5, 1.3));
 
   // VecBuilder.fill(0.006, 0.006, 0.007), VecBuilder.fill(0.5, 0.5, 1.3)
 
