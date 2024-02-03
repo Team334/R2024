@@ -7,6 +7,7 @@ import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.utils.UtilFuncs;
 import frc.robot.utils.configs.NeoConfig;
 
 /** @author Peter Gutkovich */
@@ -53,10 +54,15 @@ public class ElevatorSubsystem extends SubsystemBase {
    * Drives the elevator at a desired percent output (feedforward is included).
    */
   public void driveElevator(double speed) {
+    double out;
+
     if (_usingElevatorFeed)
-      _leftMotor.set(_elevatorFeed.calculate(0) + speed);
-    else
-      _leftMotor.set(_climbFeed.calculate(0) + speed);
+      out = _elevatorFeed.calculate(0);
+    else {
+      out = _climbFeed.calculate(0);
+    }
+    
+    _leftMotor.set(UtilFuncs.FromVolts(out) + speed);
   }
 
   /** Stops elevator movement. */

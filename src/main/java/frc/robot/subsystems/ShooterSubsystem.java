@@ -8,6 +8,7 @@ import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.utils.UtilFuncs;
 import frc.robot.utils.configs.NeoConfig;
 
 /**
@@ -57,7 +58,7 @@ public class ShooterSubsystem extends SubsystemBase {
    * included).
    */
   public void driveAngle(double speed) {
-    _leftMotor.set(_angleFeed.calculate(Math.toRadians(getAngle()), 0) + speed);
+    _leftMotor.set(UtilFuncs.FromVolts(_angleFeed.calculate(Math.toRadians(getAngle()), 0)) + speed);
   }
 
   /** Stops the shooter's angular movement. */
