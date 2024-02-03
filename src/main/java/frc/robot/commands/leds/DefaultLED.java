@@ -24,7 +24,7 @@ public class DefaultLED extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    _leds.movingPixels(44, 1);
+    _leds.movingPixels(44, 0.2);
   }
 
   // Called once the command ends or is interrupted.
