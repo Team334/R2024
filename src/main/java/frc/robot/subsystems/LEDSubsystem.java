@@ -16,7 +16,7 @@ public class LEDSubsystem extends SubsystemBase {
   private int _firstPixelHue; // For rainbow
 
   private int _value; // For moving pixel pattern.
-  private int _firstPixelValue; // For moving pixel pattern.
+  private int _firstPixelIndex; // For moving pixel pattern.
 
   // Current counter will be how we manage time of our blinking pattern
   // 1 = 20ms if command is put in a periodic func.
@@ -24,7 +24,6 @@ public class LEDSubsystem extends SubsystemBase {
   // colorOn used to control blinking.
   private boolean _colorOn = false;
 
-  // For blinkingTimerTest
   private Timer _ledTimer = new Timer();
 
   /** Creates a new LEDSubsystem. */
@@ -69,14 +68,16 @@ public class LEDSubsystem extends SubsystemBase {
     // IDEA: Pixels move outward beginning from middle.
   }
 
-  public void movingPixels(int hueHSV, int speed) {
+  public void movingPixels(int hueHSV, double speed) {
     _ledTimer.start();
     // IDEA: Pixels move right to left or left to right.
+    System.out.println("RAW: " + _firstPixelIndex);
     for (int i = 0; i < _ledBuffer.getLength(); i++) {
-      if ((i - _firstPixelHue) % 3 == 0) {
+      System.out.println(i - _firstPixelIndex);
+      if ((i - _firstPixelIndex) % 3 == 0) {
         _value = 0;
-      } else if ((i - _firstPixelHue) % 3 == 1) {
-        _value = 15;
+      } else if ((i - _firstPixelIndex) % 3 == 1) {
+        // _value = 15;
       } else {
         _value = 255;
       }
@@ -84,13 +85,13 @@ public class LEDSubsystem extends SubsystemBase {
     }
     _ledStrip.setData(_ledBuffer);
     if (_ledTimer.get() >= speed) {
-      _firstPixelValue += 1;
+      _firstPixelIndex += 1;
       _ledTimer.reset();
       _ledTimer.start();
     }
 
-    if (_firstPixelValue == 2) {
-      _firstPixelValue = 0;
+    if (_firstPixelIndex == 3) {
+      _firstPixelIndex = 0;
     }
   }
     // Still in testing process /\/\/\
