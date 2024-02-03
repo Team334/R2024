@@ -74,13 +74,9 @@ public class LEDSubsystem extends SubsystemBase {
     System.out.println("RAW: " + _firstPixelIndex);
     for (int i = 0; i < _ledBuffer.getLength(); i++) {
       System.out.println(i - _firstPixelIndex);
-      if ((i - _firstPixelIndex) % 3 == 0) {
-        _value = 0;
-      } else if ((i - _firstPixelIndex) % 3 == 1) {
-        // _value = 15;
-      } else {
-        _value = 255;
-      }
+      if ((i - _firstPixelIndex + 3) % 3 == 0) _value = 255;
+      else _value = 0;
+      
       _ledBuffer.setHSV(i, hueHSV, 255, _value);
     }
     _ledStrip.setData(_ledBuffer);
