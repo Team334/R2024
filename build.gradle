@@ -1,7 +1,7 @@
 plugins {
     id "java"
     id "edu.wpi.first.GradleRIO" version "2024.2.1"
-    id 'com.diffplug.spotless' version '6.25.0'
+    // id 'com.diffplug.spotless' version '6.25.0'
 }
 
 java {
@@ -98,49 +98,49 @@ tasks.withType(JavaCompile) {
     options.compilerArgs.add '-XDstringConcat=inline'
 }
 
-spotless {
-    java {
-        target fileTree('.') {
-            include '**/*.java'
-            exclude '**/build/**', '**/build-*/**', '**/*.chrp', '**/*.auto', '**/*.path'
-        }
-        eclipse()
-        importOrder('java|javax', 'com.acme', '', '\\#com.acme', '\\#')
-        indentWithSpaces(2)
-        formatAnnotations()
-        toggleOffOn()
-        removeUnusedImports()
-        trimTrailingWhitespace()
-        endWithNewline()
-        licenseHeader '/* Copyright (C) $YEAR Team 334. All Rights Reserved.*/'
-    }
-    groovyGradle {
-        target fileTree('.') {
-            include '**/*.gradle'
-            exclude '**/build/**', '**/build-*/**'
-        }
-        greclipse()
-        indentWithSpaces(4)
-        trimTrailingWhitespace()
-        endWithNewline()
-    }
-    format 'xml', {
-        target fileTree('.') {
-            include '**/*.xml'
-            exclude '**/build/**', '**/build-*/**'
-        }
-        eclipseWtp('xml')
-        trimTrailingWhitespace()
-        indentWithSpaces(2)
-        endWithNewline()
-    }
-    format 'misc', {
-        target fileTree('.') {
-            include '**/*.md', '**/.gitignore'
-            exclude '**/build/**', '**/build-*/**'
-        }
-        trimTrailingWhitespace()
-        indentWithSpaces(2)
-        endWithNewline()
-    }
-}
+// spotless {
+//    java {
+//        target fileTree('.') {
+//            include '**/*.java'
+//            exclude '**/build/**', '**/build-*/**', '**/*.chrp', '**/*.auto', '**/*.path'
+//        }
+//        eclipse()
+//        importOrder('java|javax', 'com.acme', '', '\\#com.acme', '\\#')
+//        indentWithSpaces(2)
+//        formatAnnotations()
+//        toggleOffOn()
+//       removeUnusedImports()
+//        trimTrailingWhitespace()
+//        endWithNewline()
+//        licenseHeader '/* Copyright (C) $YEAR Team 334. All Rights Reserved.*/'
+//    }
+//    groovyGradle {
+//        target fileTree('.') {
+//            include '**/*.gradle'
+//            exclude '**/build/**', '**/build-*/**'
+//        }
+//        greclipse()
+//        indentWithSpaces(4)
+//        trimTrailingWhitespace()
+//        endWithNewline()
+//    }
+//    format 'xml', {
+//        target fileTree('.') {
+//            include '**/*.xml'
+//            exclude '**/build/**', '**/build-*/**'
+//        }
+//        eclipseWtp('xml')
+//        trimTrailingWhitespace()
+//        indentWithSpaces(2)
+//        endWithNewline()
+//    }
+//    format 'misc', {
+//        target fileTree('.') {
+//            include '**/*.md', '**/.gitignore'
+//            exclude '**/build/**', '**/build-*/**'
+//        }
+//        trimTrailingWhitespace()
+//        indentWithSpaces(2)
+//        endWithNewline()
+//    }
+// }

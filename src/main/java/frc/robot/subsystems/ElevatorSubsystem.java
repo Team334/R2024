@@ -53,8 +53,10 @@ public class ElevatorSubsystem extends SubsystemBase {
    * Drives the elevator at a desired percent output (feedforward is included).
    */
   public void driveElevator(double speed) {
-    if (_usingElevatorFeed) _leftMotor.set(_elevatorFeed.calculate(0) + speed);
-    else _leftMotor.set(_climbFeed.calculate(0) + speed);
+    if (_usingElevatorFeed)
+      _leftMotor.set(_elevatorFeed.calculate(0) + speed);
+    else
+      _leftMotor.set(_climbFeed.calculate(0) + speed);
   }
 
   /** Stops elevator movement. */
@@ -62,7 +64,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     driveElevator(0);
   }
 
-  public void changeElevatorFeed(){
+  public void changeElevatorFeed() {
     _usingElevatorFeed = !_usingElevatorFeed;
   }
 }

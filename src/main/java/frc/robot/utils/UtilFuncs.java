@@ -24,10 +24,10 @@ public final class UtilFuncs {
   public static Alliance GetAlliance() {
     // Optional<Alliance> alliance = DriverStation.getAlliance();
     // if (alliance.isPresent()) {
-    //   return alliance.get();
+    // return alliance.get();
     // }
 
     // return null;
-    return AllianceHelper.getInstance().getAlliance(); 
+    return AllianceHelper.getInstance().getAlliance();
   }
 }

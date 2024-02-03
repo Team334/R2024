@@ -4,6 +4,8 @@ package frc.robot.subsystems;
 import java.util.Optional;
 
 import com.fasterxml.jackson.databind.JsonNode;
+
+import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -14,10 +16,15 @@ import frc.robot.utils.helpers.LimelightHelper;
 /**
  * @author Lucas Ou
  * @author Alex Reyes
+ * @author Peter Gutkovich
  */
 public class VisionSubsystem extends SubsystemBase {
   private final LimelightHelper _limelight = LimelightHelper.getInstance();
-  
+
+  private final MedianFilter _xFilter = new MedianFilter(10);
+  private final MedianFilter _yFilter = new MedianFilter(10);
+  // TODO: I don't think a rotation filter is needed
+
   // private double[] _botpose = new double[6];
 
   /** Creates a new VisionSubsystem. */
@@ -64,10 +71,10 @@ public class VisionSubsystem extends SubsystemBase {
     } else {
       double[] botpose_array = botpose_entry.getDoubleArray(new double[6]);
 
-      double botposeX = botpose_array[0];
-      double botposeY = botpose_array[1];
-      double botposeYaw = Math.toRadians(botpose_array[5]);
-      Rotation2d botposeRotation = new Rotation2d(botposeYaw);
+      double botposeX = _xFilter.calculate(botpose_array[0]); // to get rid of the weird origin outlier
+      double botposeY = _yFilter.calculate(botpose_array[1]); // to get rid of the weird origin outlier
+      double botposeYaw = botpose_array[5];
+      Rotation2d botposeRotation = Rotation2d.fromRadians(botposeYaw);
 
       Pose2d botPose2D = new Pose2d(botposeX, botposeY, botposeRotation);
 
