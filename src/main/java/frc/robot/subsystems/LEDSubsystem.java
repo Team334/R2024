@@ -71,7 +71,6 @@ public class LEDSubsystem extends SubsystemBase {
   public void movingPixels(int hueHSV, double speed) {
     _ledTimer.start();
     // IDEA: Pixels move right to left or left to right.
-    System.out.println("RAW: " + _firstPixelIndex);
     for (int i = 0; i < _ledBuffer.getLength(); i++) {
       System.out.println(i - _firstPixelIndex);
       if ((i - _firstPixelIndex + 3) % 3 == 0) _value = 255;
