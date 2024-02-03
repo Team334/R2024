@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
+import frc.robot.commands.intake.HoldIntake;
 import frc.robot.commands.leds.DefaultLED;
 import frc.robot.commands.shooter.AutoAim;
 import frc.robot.commands.shooter.SpinShooter;
@@ -22,6 +23,7 @@ import frc.robot.commands.swerve.ResetPose;
 import frc.robot.commands.swerve.TeleopDrive;
 import frc.robot.commands.swerve.ToggleSwerveOrient;
 import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
@@ -40,6 +42,7 @@ public class RobotContainer {
   private final SwerveDriveSubsystem _swerveSubsystem = new SwerveDriveSubsystem(_visionSubsystem);
   private final ShooterSubsystem _shooterSubsystem = new ShooterSubsystem();
   private final ElevatorSubsystem _elevatorSubsystem = new ElevatorSubsystem();
+  private final IntakeSubsystem _intakeSubsystem = new IntakeSubsystem();
   private final LEDSubsystem _ledSubsystem = new LEDSubsystem(Constants.Ports.LEDS, 14);
 
   // controllers (for driver and operator)
@@ -74,6 +77,7 @@ public class RobotContainer {
 
     // _elevatorSubsystem.setDefaultCommand(new HoldElevator(_elevatorSubsystem));
     // _shooterSubsystem.setDefaultCommand(new HoldShooter(_shooterSubsystem));
+    _intakeSubsystem.setDefaultCommand(new HoldIntake(_intakeSubsystem));
 
     // configure trigger bindings
     configureBindings();

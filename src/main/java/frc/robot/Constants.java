@@ -55,6 +55,8 @@ public final class Constants {
     public static final double SWERVE_DRIVE_MAX_ANGULAR_SPEED = Math.PI * 1; // TODO: Get this value
 
     public static final double SHOOTER_MAX_SPEED = 1; // TODO: Get this
+
+    public static final double INTAKE_FEED_SPEED = 0.8; // TODO: Get this
   }
 
   public static class Physical {
@@ -72,11 +74,16 @@ public final class Constants {
 
     public static final double ELEVATOR_GEAR_RATIO = 100; // TODO: fixed but they might change it
 
-    public static final double SHOOTER_HEIGHT_STOWED = 0; // TODO: Get this value
+    public static final double SHOOTER_HEIGHT_STOWED = 0.2; // TODO: Get this value
 
     public static final SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(
         new Translation2d(0.292, 0.292), new Translation2d(0.292, -0.292), new Translation2d(-0.292, -0.292),
         new Translation2d(-0.292, 0.292));
+  }
+
+  public static class Encoders {
+    public static final int INTAKE_STOWED = 0;
+    public static final int INTAKE_OUT = 0;
   }
 
   public static class FeedForward {
