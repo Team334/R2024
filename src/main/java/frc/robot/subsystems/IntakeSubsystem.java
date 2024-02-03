@@ -21,7 +21,8 @@ public class IntakeSubsystem extends SubsystemBase {
   /** How to feed (in or out). */
   public enum FeedMode {
     INTAKE,
-    OUTTAKE
+    OUTTAKE,
+    NONE
   }
 
   /** The actuator state (out or stowed). */
@@ -32,8 +33,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
   /** Creates a new IntakeSubsystem. */
   public IntakeSubsystem() {
-    _feedMotor = new CANSparkMax(0, MotorType.kBrushless);
-    _actuatorMotor = new CANSparkMax(0, MotorType.kBrushless);
+    _feedMotor = new CANSparkMax(Constants.CAN.INTAKE_FEED, MotorType.kBrushless);
+    _actuatorMotor = new CANSparkMax(Constants.CAN.INTAKE_ACTUATOR, MotorType.kBrushless);
 
     _actuatorEncoder = _actuatorMotor.getEncoder();
   }
@@ -87,9 +88,11 @@ public class IntakeSubsystem extends SubsystemBase {
         _feedMotor.set(-Constants.Speeds.INTAKE_FEED_SPEED);
         break;
 
-      default: 
+      case NONE:
         _feedMotor.set(0);
         break;
+      
+      default: break;
     }
   }
 

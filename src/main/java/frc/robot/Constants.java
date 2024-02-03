@@ -45,6 +45,9 @@ public final class Constants {
     public static final int ELEVATOR_LEFT = 15; // TODO: Get right can ID's for elevator
     public static final int ELEVATOR_RIGHT = 16;
 
+    public static final int INTAKE_ACTUATOR = 17;
+    public static final int INTAKE_FEED = 18;
+
     public static final int CAN_TIMEOUT = 10;
   }
 

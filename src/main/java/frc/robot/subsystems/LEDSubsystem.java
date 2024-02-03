@@ -69,7 +69,8 @@ public class LEDSubsystem extends SubsystemBase {
     // IDEA: Pixels move outward beginning from middle.
   }
 
-  public void movingPixels(int hueHSV) {
+  public void movingPixels(int hueHSV, int speed) {
+    _ledTimer.start();
     // IDEA: Pixels move right to left or left to right.
     for (int i = 0; i < _ledBuffer.getLength(); i++) {
       if ((i - _firstPixelHue) % 3 == 0) {
@@ -82,8 +83,12 @@ public class LEDSubsystem extends SubsystemBase {
       _ledBuffer.setHSV(i, hueHSV, 255, _value);
     }
     _ledStrip.setData(_ledBuffer);
+    if (_ledTimer.get() >= speed) {
+      _firstPixelValue += 1;
+      _ledTimer.reset();
+      _ledTimer.start();
+    }
 
-    _firstPixelValue += 1;
     if (_firstPixelValue == 2) {
       _firstPixelValue = 0;
     }

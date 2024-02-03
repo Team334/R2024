@@ -30,7 +30,7 @@ public class FeedIntake extends Command {
 
   /** FeedIntake as a hold command (runs forever). */
   public FeedIntake(IntakeSubsystem intake, ActuatorState actuatorState) {
-    this(intake, actuatorState, null);
+    this(intake, actuatorState, FeedMode.NONE);
     
     _runOnce = false;
   }
