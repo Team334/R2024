@@ -81,11 +81,15 @@ public class IntakeSubsystem extends SubsystemBase {
     switch (feedMode) {
       case INTAKE:
         _feedMotor.set(Constants.Speeds.INTAKE_FEED_SPEED);
+        break;
   
       case OUTTAKE:
         _feedMotor.set(-Constants.Speeds.INTAKE_FEED_SPEED);
+        break;
 
-      default: break;
+      default: 
+        _feedMotor.set(0);
+        break;
     }
   }
 

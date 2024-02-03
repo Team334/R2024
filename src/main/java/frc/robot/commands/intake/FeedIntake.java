@@ -7,26 +7,44 @@ package frc.robot.commands.intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.IntakeSubsystem.ActuatorState;
+import frc.robot.subsystems.IntakeSubsystem.FeedMode;
 
-public class HoldIntake extends Command {
+public class FeedIntake extends Command {
   private final IntakeSubsystem _intake;
 
-  /** Creates a new HoldIntake. */
-  public HoldIntake(IntakeSubsystem intake) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  private final ActuatorState _actuatorState;
+  private final FeedMode _feedMode;
+
+  private boolean _runOnce; // TODO: do we need this?
+
+  /** Creates a new FeedIntake. */
+  public FeedIntake(IntakeSubsystem intake, ActuatorState actuatorState, FeedMode feedMode) {
     _intake = intake;
+
+    _actuatorState = actuatorState;
+    _feedMode = feedMode;
+    _runOnce = false;
 
     addRequirements(_intake);
   }
 
+  /** FeedIntake as a hold command (runs forever). */
+  public FeedIntake(IntakeSubsystem intake, ActuatorState actuatorState) {
+    this(intake, actuatorState, null);
+    
+    _runOnce = false;
+  }
+
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    _intake.feed(_feedMode);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    _intake.actuate(ActuatorState.STOWED);
+    _intake.actuate(_actuatorState);
   }
 
   // Called once the command ends or is interrupted.
@@ -36,6 +54,6 @@ public class HoldIntake extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return _runOnce && _intake.atDesiredActuatorState();
   }
 }
