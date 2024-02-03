@@ -72,7 +72,6 @@ public class LEDSubsystem extends SubsystemBase {
     _ledTimer.start();
     // IDEA: Pixels move right to left or left to right.
     for (int i = 0; i < _ledBuffer.getLength(); i++) {
-      System.out.println(i - _firstPixelIndex);
       if ((i - _firstPixelIndex + 3) % 3 == 0) _value = 255;
       else _value = 0;
       
