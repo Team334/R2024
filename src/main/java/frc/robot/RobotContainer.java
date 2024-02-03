@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
+import frc.robot.commands.intake.FeedIntake;
 import frc.robot.commands.leds.DefaultLED;
 import frc.robot.commands.shooter.AutoAim;
 import frc.robot.commands.shooter.SpinShooter;
@@ -22,10 +23,13 @@ import frc.robot.commands.swerve.ResetPose;
 import frc.robot.commands.swerve.TeleopDrive;
 import frc.robot.commands.swerve.ToggleSwerveOrient;
 import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.subsystems.IntakeSubsystem.ActuatorState;
+import frc.robot.subsystems.IntakeSubsystem.FeedMode;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -40,6 +44,7 @@ public class RobotContainer {
   private final SwerveDriveSubsystem _swerveSubsystem = new SwerveDriveSubsystem(_visionSubsystem);
   private final ShooterSubsystem _shooterSubsystem = new ShooterSubsystem();
   private final ElevatorSubsystem _elevatorSubsystem = new ElevatorSubsystem();
+  private final IntakeSubsystem _intakeSubsystem = new IntakeSubsystem();
   private final LEDSubsystem _ledSubsystem = new LEDSubsystem(Constants.Ports.LEDS, 14);
 
   // controllers (for driver and operator)
@@ -74,6 +79,7 @@ public class RobotContainer {
 
     // _elevatorSubsystem.setDefaultCommand(new HoldElevator(_elevatorSubsystem));
     // _shooterSubsystem.setDefaultCommand(new HoldShooter(_shooterSubsystem));
+    _intakeSubsystem.setDefaultCommand(new FeedIntake(_intakeSubsystem, ActuatorState.STOWED));
 
     // configure trigger bindings
     configureBindings();
@@ -94,18 +100,15 @@ public class RobotContainer {
             () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
             () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1)));
 
-    // for testing velocity output (forward at 0.3 m/s), is it straight?
-    // ...
-
-    _driveController.triangle().whileTrue(Commands.run(() -> {
-      _swerveSubsystem.driveChassis(new ChassisSpeeds(0.3, 0, 0));
-    }, _swerveSubsystem));
-
     _driveController.L2()
         .whileTrue(new PivotMotor(_ledSubsystem, _swerveSubsystem, true, () -> -_driveController.getLeftY()));
 
     _driveController.R2()
         .whileTrue(new PivotMotor(_ledSubsystem, _swerveSubsystem, false, () -> -_driveController.getLeftY()));
+
+    _driveController.triangle().whileTrue(
+      new FeedIntake(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE)
+    );
   }
 
   /** @return The Command to schedule for auton. */

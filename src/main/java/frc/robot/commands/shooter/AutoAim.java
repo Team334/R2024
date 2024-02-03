@@ -31,7 +31,7 @@ public class AutoAim extends Command {
   private boolean _reachedSwerveHeading;
   private boolean _reachedShooterAngle;
 
-  private boolean _runOnce = false;
+  private boolean _runOnce;
 
   private PIDController _headingController = new PIDController(Constants.PID.SWERVE_HEADING_KP, 0,
       Constants.PID.SWERVE_HEADING_KD);
@@ -47,6 +47,8 @@ public class AutoAim extends Command {
 
     _xSpeed = xSpeed;
     _ySpeed = ySpeed;
+
+    _runOnce = false;
 
     _headingController.setTolerance(2);
     _headingController.enableContinuousInput(-180, 180);
