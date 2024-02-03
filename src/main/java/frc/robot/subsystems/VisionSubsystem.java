@@ -21,8 +21,8 @@ import frc.robot.utils.helpers.LimelightHelper;
 public class VisionSubsystem extends SubsystemBase {
   private final LimelightHelper _limelight = LimelightHelper.getInstance();
 
-  private final MedianFilter _xFilter = new MedianFilter(10);
-  private final MedianFilter _yFilter = new MedianFilter(10);
+  private final MedianFilter _xFilter = new MedianFilter(20);
+  private final MedianFilter _yFilter = new MedianFilter(20);
   // TODO: I don't think a rotation filter is needed
 
   // private double[] _botpose = new double[6];
@@ -71,8 +71,10 @@ public class VisionSubsystem extends SubsystemBase {
     } else {
       double[] botpose_array = botpose_entry.getDoubleArray(new double[6]);
 
-      double botposeX = _xFilter.calculate(botpose_array[0]); // to get rid of the weird origin outlier
-      double botposeY = _yFilter.calculate(botpose_array[1]); // to get rid of the weird origin outlier
+      // double botposeX = _xFilter.calculate(botpose_array[0]); // to get rid of the weird origin outlier
+      // double botposeY = _yFilter.calculate(botpose_array[1]); // to get rid of the weird origin outlier
+      double botposeX = botpose_array[0];
+      double botposeY = botpose_array[1];
       double botposeYaw = botpose_array[5];
       Rotation2d botposeRotation = Rotation2d.fromRadians(botposeYaw);
 
