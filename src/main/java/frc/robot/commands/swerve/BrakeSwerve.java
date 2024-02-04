@@ -27,7 +27,7 @@ public class BrakeSwerve extends Command {
     _swerveDrive = swerveDrive;
     _leds = leds;
 
-    addRequirements(swerveDrive, leds);
+    addRequirements(_swerveDrive, _leds);
   }
 
   /**
@@ -38,11 +38,9 @@ public class BrakeSwerve extends Command {
    *            amount of time (must be >0).
    */
   public BrakeSwerve(SwerveDriveSubsystem swerveDrive, LEDSubsystem leds, double timeout) {
-    _swerveDrive = swerveDrive;
-    _timeout = timeout;
-    _leds = leds;
+    this(swerveDrive, leds);
 
-    addRequirements(swerveDrive, leds);
+    _timeout = timeout;
   }
 
   // Called when the command is initially scheduled.

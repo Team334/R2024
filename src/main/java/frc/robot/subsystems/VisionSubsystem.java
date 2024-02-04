@@ -25,7 +25,6 @@ public class VisionSubsystem extends SubsystemBase {
   private final MedianFilter _xFilter = new MedianFilter(15);
   private final MedianFilter _yFilter = new MedianFilter(15);
   private final MedianFilter _yawFilter = new MedianFilter(10);
-  // TODO: I don't think a rotation filter is needed
 
   // private double[] _botpose = new double[6];
 
@@ -75,7 +74,7 @@ public class VisionSubsystem extends SubsystemBase {
 
       double botposeX = _xFilter.calculate(botpose_array[0]); // to get rid of the weird origin outlier
       double botposeY = _yFilter.calculate(botpose_array[1]); // to get rid of the weird origin outlier
-      double botposeYaw = _yawFilter.calculate(botpose_array[5]);
+      double botposeYaw = _yawFilter.calculate(botpose_array[5]); // to get rid of weird 0 heading outlier
       // double botposeX = botpose_array[0];
       // double botposeY = botpose_array[1];
       // double botposeYaw = botpose_array[5];

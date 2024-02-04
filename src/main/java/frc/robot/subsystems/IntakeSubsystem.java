@@ -64,7 +64,6 @@ public class IntakeSubsystem extends SubsystemBase {
         _actuatorMotor.set(_actuatorController.calculate(getActuator(), Constants.Encoders.INTAKE_STOWED));
         break;
     
-
       case OUT:
         _actuatorMotor.set(_actuatorController.calculate(getActuator(), Constants.Encoders.INTAKE_OUT));
         break;
