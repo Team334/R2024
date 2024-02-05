@@ -63,22 +63,15 @@ public class LEDSubsystem extends SubsystemBase {
     _firstPixelHue %= 180;
   }
 
-  // Still in testing process \/\/\/
-  public void outwardPixels(int[] color, int speed, boolean isOut) {
-    // IDEA: Pixels move outward beginning from middle.
-  }
-  // Still in testing process /\/\/\
-
-
   public void movingPixels(int hueHSV, double speed) {
     _ledTimer.start();
     // IDEA: Pixels move right to left or left to right.
     for (int i = 0; i < _ledBuffer.getLength(); i++) {
-      if ((i - _firstPixelIndex + 3) % 3 == 0)
+      if ((i - _firstPixelIndex + 3) % 3 == 0) {
         _value = 255;
-      else
+      } else {
         _value = 0;
-
+      }
       _ledBuffer.setHSV(i, hueHSV, 255, _value);
     }
     _ledStrip.setData(_ledBuffer);
