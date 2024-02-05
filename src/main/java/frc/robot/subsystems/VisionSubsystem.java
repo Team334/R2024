@@ -21,9 +21,9 @@ import frc.robot.utils.helpers.LimelightHelper;
 public class VisionSubsystem extends SubsystemBase {
   private final LimelightHelper _limelight = LimelightHelper.getInstance();
 
-  private final MedianFilter _xFilter = new MedianFilter(15);
-  private final MedianFilter _yFilter = new MedianFilter(15);
-  private final MedianFilter _yawFilter = new MedianFilter(10);
+  private final MedianFilter _xFilter = new MedianFilter(20);
+  private final MedianFilter _yFilter = new MedianFilter(20);
+  private final MedianFilter _yawFilter = new MedianFilter(20);
 
   // private double[] _botpose = new double[6];
 
