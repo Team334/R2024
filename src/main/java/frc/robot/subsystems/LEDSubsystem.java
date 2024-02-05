@@ -67,6 +67,8 @@ public class LEDSubsystem extends SubsystemBase {
   public void outwardPixels(int[] color, int speed, boolean isOut) {
     // IDEA: Pixels move outward beginning from middle.
   }
+  // Still in testing process /\/\/\
+
 
   public void movingPixels(int hueHSV, double speed) {
     _ledTimer.start();
@@ -90,7 +92,6 @@ public class LEDSubsystem extends SubsystemBase {
       _firstPixelIndex = 0;
     }
   }
-  // Still in testing process /\/\/\
 
   // timeBetween will now be in seconds
   public void blink(int[] firstColor, int[] secondColor, double timeBetween) {
