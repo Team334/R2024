@@ -99,8 +99,9 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   // Pose Estimator -> Has built in odometry and uses supplied vision measurements
   private final SwerveDrivePoseEstimator _estimator = new SwerveDrivePoseEstimator(
-      Constants.Physical.SWERVE_KINEMATICS, getHeadingRaw(), new SwerveModulePosition[]{_frontLeft.getPosition(),
-          _frontRight.getPosition(), _backRight.getPosition(), _backLeft.getPosition()},
+      Constants.Physical.SWERVE_KINEMATICS, getHeadingRaw(),
+      new SwerveModulePosition[]{_frontLeft.getPosition(), _frontRight.getPosition(), _backRight.getPosition(),
+          _backLeft.getPosition()},
       new Pose2d(), VecBuilder.fill(0.006, 0.006, 0.007), VecBuilder.fill(0.5, 0.5, 1.3));
 
   // VecBuilder.fill(0.006, 0.006, 0.007), VecBuilder.fill(0.5, 0.5, 1.3)

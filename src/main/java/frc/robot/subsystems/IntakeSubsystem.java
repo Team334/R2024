@@ -1,10 +1,9 @@
 /* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -20,15 +19,12 @@ public class IntakeSubsystem extends SubsystemBase {
 
   /** How to feed (in or out). */
   public enum FeedMode {
-    INTAKE,
-    OUTTAKE,
-    NONE
+    INTAKE, OUTTAKE, NONE
   }
 
   /** The actuator state (out or stowed). */
   public enum ActuatorState {
-    STOWED,
-    OUT
+    STOWED, OUT
   }
 
   /** Creates a new IntakeSubsystem. */
@@ -53,45 +49,49 @@ public class IntakeSubsystem extends SubsystemBase {
     return _actuatorEncoder.getPosition();
   }
 
-  /** 
+  /**
    * Set the actuator's state. MUST BE CALLED REPEATEDLY.
-   * 
-   * @param actuatorState The state to set the actuator to.
+   *
+   * @param actuatorState
+   *            The state to set the actuator to.
    */
   public void actuate(ActuatorState actuatorState) {
     switch (actuatorState) {
-      case STOWED:
+      case STOWED :
         _actuatorMotor.set(_actuatorController.calculate(getActuator(), Constants.Encoders.INTAKE_STOWED));
         break;
-    
-      case OUT:
+
+      case OUT :
         _actuatorMotor.set(_actuatorController.calculate(getActuator(), Constants.Encoders.INTAKE_OUT));
         break;
-      
-      default: break;
+
+      default :
+        break;
     }
   }
 
   /**
    * Feed in/out of the intake.
-   * 
-   * @param feedMode How to feed.
+   *
+   * @param feedMode
+   *            How to feed.
    */
   public void feed(FeedMode feedMode) {
     switch (feedMode) {
-      case INTAKE:
+      case INTAKE :
         _feedMotor.set(Constants.Speeds.INTAKE_FEED_SPEED);
         break;
-  
-      case OUTTAKE:
+
+      case OUTTAKE :
         _feedMotor.set(-Constants.Speeds.INTAKE_FEED_SPEED);
         break;
 
-      case NONE:
+      case NONE :
         _feedMotor.set(0);
         break;
-      
-      default: break;
+
+      default :
+        break;
     }
   }
 

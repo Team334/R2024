@@ -1,7 +1,4 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
+/* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -31,7 +28,7 @@ public class FeedIntake extends Command {
   /** FeedIntake as a hold command (runs forever). */
   public FeedIntake(IntakeSubsystem intake, ActuatorState actuatorState) {
     this(intake, actuatorState, FeedMode.NONE);
-    
+
     _runOnce = false;
   }
 
@@ -49,7 +46,8 @@ public class FeedIntake extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override

@@ -5,11 +5,9 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
@@ -24,12 +22,12 @@ import frc.robot.commands.swerve.TeleopDrive;
 import frc.robot.commands.swerve.ToggleSwerveOrient;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.IntakeSubsystem.ActuatorState;
+import frc.robot.subsystems.IntakeSubsystem.FeedMode;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
-import frc.robot.subsystems.IntakeSubsystem.ActuatorState;
-import frc.robot.subsystems.IntakeSubsystem.FeedMode;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -106,9 +104,7 @@ public class RobotContainer {
     _driveController.R2()
         .whileTrue(new PivotMotor(_ledSubsystem, _swerveSubsystem, false, () -> -_driveController.getLeftY()));
 
-    _driveController.triangle().whileTrue(
-      new FeedIntake(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE)
-    );
+    _driveController.triangle().whileTrue(new FeedIntake(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE));
   }
 
   /** @return The Command to schedule for auton. */

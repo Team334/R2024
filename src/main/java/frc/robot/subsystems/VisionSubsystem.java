@@ -4,7 +4,6 @@ package frc.robot.subsystems;
 import java.util.Optional;
 
 import com.fasterxml.jackson.databind.JsonNode;
-
 import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;

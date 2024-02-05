@@ -61,7 +61,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     else {
       out = _climbFeed.calculate(0);
     }
-    
+
     _leftMotor.set(UtilFuncs.FromVolts(out) + speed);
   }
 

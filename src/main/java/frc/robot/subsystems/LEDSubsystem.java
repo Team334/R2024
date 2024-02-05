@@ -72,9 +72,11 @@ public class LEDSubsystem extends SubsystemBase {
     _ledTimer.start();
     // IDEA: Pixels move right to left or left to right.
     for (int i = 0; i < _ledBuffer.getLength(); i++) {
-      if ((i - _firstPixelIndex + 3) % 3 == 0) _value = 255;
-      else _value = 0;
-      
+      if ((i - _firstPixelIndex + 3) % 3 == 0)
+        _value = 255;
+      else
+        _value = 0;
+
       _ledBuffer.setHSV(i, hueHSV, 255, _value);
     }
     _ledStrip.setData(_ledBuffer);
@@ -88,7 +90,7 @@ public class LEDSubsystem extends SubsystemBase {
       _firstPixelIndex = 0;
     }
   }
-    // Still in testing process /\/\/\
+  // Still in testing process /\/\/\
 
   // timeBetween will now be in seconds
   public void blink(int[] firstColor, int[] secondColor, double timeBetween) {
