@@ -35,6 +35,8 @@ public class PivotMotor extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    System.out.println("RE INIT PIVOT");
+
     double currentRotation = MathUtil.inputModulus(_swerveDrive.getHeading().getDegrees(), 0, 360);
 
     Translation2d _frontLeft = new Translation2d(0.292, 0.292);
@@ -56,6 +58,7 @@ public class PivotMotor extends Command {
 
     // // Debug a
     SmartDashboard.putNumber("Quadrant", quadrant);
+    SmartDashboard.putBoolean("LEFT PRESSED", _left);
     SmartDashboard.putNumber("Current Rotation", currentRotation);
     SmartDashboard.putNumber("Foward", _forward.getAsDouble());
 

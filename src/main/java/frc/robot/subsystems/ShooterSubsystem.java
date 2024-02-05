@@ -23,13 +23,13 @@ public class ShooterSubsystem extends SubsystemBase {
   private final RelativeEncoder _leftEncoder = _leftMotor.getEncoder();
 
   private final ArmFeedforward _angleFeed = new ArmFeedforward(0, 0, 0);
-  private final PIDController _angleController = new PIDController(getAngle(), getVelocity(), getAngle());
+  private final PIDController _angleController = new PIDController(0, 0, 0);
 
   private final PIDController _shooterController = new PIDController(Constants.PID.SHOOTER_FLYWHEEL_KP, 1, 0);
 
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
-    NeoConfig.configureNeo(_leftMotor, true);
+    NeoConfig.configureNeo(_leftMotor, false);
     NeoConfig.configureFollowerNeo(_rightMotor, _leftMotor, true);
   }
 
@@ -66,32 +66,32 @@ public class ShooterSubsystem extends SubsystemBase {
     driveAngle(0);
   }
 
-  /** Get the velocity of the back wheel (left side) in m/s. */
-  public double getVelocity() {
-    double neo_rps = _leftEncoder.getVelocity() / 60;
+  // /** Get the velocity of the back wheel (left side) in m/s. */
+  // public double getVelocity() {
+  //   double neo_rps = _leftEncoder.getVelocity() / 60;
 
-    double number = (neo_rps / Constants.Physical.SHOOTER_GEAR_RATIO)
-        * Constants.Physical.SHOOTER_FLYWHEEL_CIRCUMFERENCE;
+  //   double number = (neo_rps / Constants.Physical.SHOOTER_GEAR_RATIO)
+  //       * Constants.Physical.SHOOTER_FLYWHEEL_CIRCUMFERENCE;
 
-    if (number < 0) {
-      number = 0;
-    }
+  //   if (number < 0) {
+  //     number = 0;
+  //   }
 
-    return number;
-  }
+  //   return number;
+  // }
 
-  /** Set the velocity of the back wheels in m/s. */
-  public void setVelocity(double velocity) {
-    double flywheel_output = (velocity / Constants.Speeds.SHOOTER_MAX_SPEED); // FEEDFORWARD (main output)
-    double flywheel_pid = _shooterController.calculate(getVelocity(), velocity); // PID for distrubances
+  // /** Set the velocity of the back wheels in m/s. */
+  // public void setVelocity(double velocity) {
+  //   double flywheel_output = (velocity / Constants.Speeds.SHOOTER_MAX_SPEED); // FEEDFORWARD (main output)
+  //   double flywheel_pid = _shooterController.calculate(getVelocity(), velocity); // PID for distrubances
 
-    // a similar controller setup can be found in SwerveModule
-    _leftMotor.set(flywheel_output + flywheel_pid);
-  }
+  //   // a similar controller setup can be found in SwerveModule
+  //   _leftMotor.set(flywheel_output + flywheel_pid);
+  // }
 
   /** Spins the shooter forward. */
   public void spinShooter() {
-    _leftMotor.set(-1.0);
+    _leftMotor.set(1.0);
   }
 
   /** Stops spinning the shooter. */
