@@ -20,9 +20,11 @@ public class ShooterSubsystem extends SubsystemBase {
   private final CANSparkMax _leftMotor = new CANSparkMax(Constants.CAN.SHOOTER_LEFT, MotorType.kBrushless);
   private final CANSparkMax _rightMotor = new CANSparkMax(Constants.CAN.SHOOTER_RIGHT, MotorType.kBrushless);
 
+  private final CANSparkMax _angleMotor = new CANSparkMax(Constants.CAN.SHOOTER_ANGLE, MotorType.kBrushless);
+
   private final RelativeEncoder _leftEncoder = _leftMotor.getEncoder();
 
-  private final ArmFeedforward _angleFeed = new ArmFeedforward(0, 0, 0);
+  private final ArmFeedforward _angleFeed = new ArmFeedforward(0, 0, 0); // nothing for now
   private final PIDController _angleController = new PIDController(0, 0, 0);
 
   private final PIDController _shooterController = new PIDController(Constants.PID.SHOOTER_FLYWHEEL_KP, 1, 0);
@@ -31,6 +33,8 @@ public class ShooterSubsystem extends SubsystemBase {
   public ShooterSubsystem() {
     NeoConfig.configureNeo(_leftMotor, false);
     NeoConfig.configureFollowerNeo(_rightMotor, _leftMotor, true);
+
+    NeoConfig.configureNeo(_angleMotor, true);
   }
 
   @Override
@@ -58,7 +62,8 @@ public class ShooterSubsystem extends SubsystemBase {
    * included).
    */
   public void driveAngle(double speed) {
-    _leftMotor.set(UtilFuncs.FromVolts(_angleFeed.calculate(Math.toRadians(getAngle()), 0)) + speed);
+    // _angleMotor.set(UtilFuncs.FromVolts(_angleFeed.calculate(Math.toRadians(getAngle()), 0)) + speed);
+    _angleMotor.set(speed);
   }
 
   /** Stops the shooter's angular movement. */
@@ -88,6 +93,10 @@ public class ShooterSubsystem extends SubsystemBase {
   //   // a similar controller setup can be found in SwerveModule
   //   _leftMotor.set(flywheel_output + flywheel_pid);
   // }
+
+  public void spinShooter(double speed) {
+    _leftMotor.set(speed);
+  }
 
   /** Spins the shooter forward. */
   public void spinShooter() {

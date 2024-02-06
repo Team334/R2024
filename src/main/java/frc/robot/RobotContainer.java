@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import frc.robot.commands.intake.FeedIntake;
 import frc.robot.commands.leds.DefaultLED;
 import frc.robot.commands.shooter.AutoAim;
+import frc.robot.commands.shooter.OperateShooter;
 import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.commands.swerve.BrakeSwerve;
 import frc.robot.commands.swerve.PivotMotor;
@@ -39,7 +40,7 @@ import frc.robot.subsystems.VisionSubsystem;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final VisionSubsystem _visionSubsystem = new VisionSubsystem();
-  private final SwerveDriveSubsystem _swerveSubsystem = new SwerveDriveSubsystem(_visionSubsystem);
+  // private final SwerveDriveSubsystem _swerveSubsystem = new SwerveDriveSubsystem(_visionSubsystem);
   private final ShooterSubsystem _shooterSubsystem = new ShooterSubsystem();
   private final ElevatorSubsystem _elevatorSubsystem = new ElevatorSubsystem();
   private final IntakeSubsystem _intakeSubsystem = new IntakeSubsystem();
@@ -47,6 +48,9 @@ public class RobotContainer {
 
   // controllers (for driver and operator)
   private final CommandPS4Controller _driveController = new CommandPS4Controller(Constants.Ports.DRIVER_CONTROLLER);
+  private final CommandPS4Controller _operatorController = new CommandPS4Controller(Constants.Ports.OPERATOR_CONTROLLER);
+
+  // private final Command
 
   // slew rate limiters applied to joysticks
   private final SlewRateLimiter _driveFilterLeftX = new SlewRateLimiter(4);
@@ -55,62 +59,75 @@ public class RobotContainer {
   private final SlewRateLimiter _driveFilterRightY = new SlewRateLimiter(4);
 
   // sendable chooser for auton commands
-  private final SendableChooser<Command> _autonChooser;
+  // private final SendableChooser<Command> _autonChooser;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // TODO: should switch to regsiterCommands for more neatness
-    NamedCommands.registerCommand("printHello", new PrintCommand("AUTON HELLO"));
-    NamedCommands.registerCommand("waitCommand", new WaitCommand(3));
-    NamedCommands.registerCommand("interruptSwerve", new BrakeSwerve(_swerveSubsystem, _ledSubsystem));
-    NamedCommands.registerCommand("speakerAim",
-        new AutoAim(_ledSubsystem, _shooterSubsystem, _visionSubsystem, _swerveSubsystem));
+    // NamedCommands.registerCommand("printHello", new PrintCommand("AUTON HELLO"));
+    // NamedCommands.registerCommand("waitCommand", new WaitCommand(3));
+    // NamedCommands.registerCommand("interruptSwerve", new BrakeSwerve(_swerveSubsystem, _ledSubsystem));
+    // NamedCommands.registerCommand("speakerAim",
+    //     new AutoAim(_ledSubsystem, _shooterSubsystem, _visionSubsystem, _swerveSubsystem));
 
-    _swerveSubsystem.setDefaultCommand(new TeleopDrive(_swerveSubsystem,
-        () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
-        () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1),
-        () -> MathUtil.applyDeadband(-_driveFilterRightX.calculate(_driveController.getRightX()), 0.1)));
+    // _swerveSubsystem.setDefaultCommand(new TeleopDrive(_swerveSubsystem,
+    //     () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
+    //     () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1),
+    //     () -> MathUtil.applyDeadband(-_driveFilterRightX.calculate(_driveController.getRightX()), 0.1)));
 
     _ledSubsystem.setDefaultCommand(new DefaultLED(_ledSubsystem));
+    _shooterSubsystem.setDefaultCommand(new OperateShooter(
+      _shooterSubsystem,
+      () -> MathUtil.applyDeadband(_operatorController.getLeftY(), 0.5),
+      () -> MathUtil.applyDeadband(_operatorController.getRightY(), 0.5)
+    ));
 
     // _elevatorSubsystem.setDefaultCommand(new HoldElevator(_elevatorSubsystem));
     // _shooterSubsystem.setDefaultCommand(new HoldShooter(_shooterSubsystem));
+    
+    // _shooterSubsystem.setDefaultCommand(new OperateShooter(
+    //   _shooterSubsystem,
+    //   () -> MathUtil.applyDeadband(_operatorController.getRightY(), 0.05)
+    // ));
+
     _intakeSubsystem.setDefaultCommand(new FeedIntake(_intakeSubsystem, ActuatorState.STOWED));
 
     // configure trigger bindings
     configureBindings();
 
-    _autonChooser = AutoBuilder.buildAutoChooser();
+    // _autonChooser = AutoBuilder.buildAutoChooser();
 
-    SmartDashboard.putData("AUTON CHOOSER", _autonChooser);
+    // SmartDashboard.putData("AUTON CHOOSER", _autonChooser);
   }
 
   // to configure button bindings
   private void configureBindings() {
-    _driveController.R1().onTrue(new ToggleSwerveOrient(_swerveSubsystem));
-    _driveController.square().onTrue(new ResetPose(_swerveSubsystem));
-    _driveController.circle().whileTrue(new SpinShooter(_shooterSubsystem));
-    _driveController.cross().whileTrue(new BrakeSwerve(_swerveSubsystem, _ledSubsystem));
-    _driveController.L1()
-        .whileTrue(new AutoAim(_shooterSubsystem, _ledSubsystem, _visionSubsystem, _swerveSubsystem,
-            () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
-            () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1)));
+    // _driveController.R1().onTrue(new ToggleSwerveOrient(_swerveSubsystem));
+    // _driveController.square().onTrue(new ResetPose(_swerveSubsystem));
+    // 
+    // _driveController.cross().whileTrue(new BrakeSwerve(_swerveSubsystem, _ledSubsystem));
+    // _driveController.L1()
+    //     .whileTrue(new AutoAim(_shooterSubsystem, _ledSubsystem, _visionSubsystem, _swerveSubsystem,
+    //         () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
+    //         () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1)));
 
-    _driveController.L2()
-        .whileTrue(new PivotMotor(_ledSubsystem, _swerveSubsystem, true, () -> -_driveController.getLeftY()));
+    // _driveController.L2()
+    //     .whileTrue(new PivotMotor(_ledSubsystem, _swerveSubsystem, true, () -> -_driveController.getLeftY()));
 
-    _driveController.R2()
-        .whileTrue(new PivotMotor(_ledSubsystem, _swerveSubsystem, false, () -> -_driveController.getLeftY()));
+    // _driveController.R2()
+    //     .whileTrue(new PivotMotor(_ledSubsystem, _swerveSubsystem, false, () -> -_driveController.getLeftY()));
 
+    // _operatorController.circle().whileTrue();
     _driveController.triangle().whileTrue(new FeedIntake(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE));
   }
 
   /** @return The Command to schedule for auton. */
   public Command getAutonCommand() {
-    _swerveSubsystem.fieldOriented = false; // make sure swerve is robot-relative for pathplanner to work
+    // _swerveSubsystem.fieldOriented = false; // make sure swerve is robot-relative for pathplanner to work
 
-    return _autonChooser.getSelected();
+    // return _autonChooser.getSelected();
+    return null;
   }
 }

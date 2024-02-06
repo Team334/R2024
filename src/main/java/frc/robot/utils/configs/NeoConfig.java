@@ -22,7 +22,7 @@ public class NeoConfig {
    *            - Whether to invert the motor or not.
    */
   public static void configureNeo(CANSparkMax neo, boolean invert) {
-    neo.setIdleMode(IdleMode.kCoast);
+    neo.setIdleMode(IdleMode.kBrake);
     neo.enableSoftLimit(SoftLimitDirection.kForward, false);
     neo.enableSoftLimit(SoftLimitDirection.kReverse, false);
     neo.setInverted(invert);

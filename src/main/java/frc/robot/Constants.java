@@ -41,12 +41,13 @@ public final class Constants {
 
     public static final int SHOOTER_LEFT = 13;
     public static final int SHOOTER_RIGHT = 14;
+    public static final int SHOOTER_ANGLE = 15;
 
-    public static final int ELEVATOR_LEFT = 15; // TODO: Get right can ID's for elevator
-    public static final int ELEVATOR_RIGHT = 16;
+    public static final int ELEVATOR_LEFT = 16; // TODO: Get right can ID's
+    public static final int ELEVATOR_RIGHT = 17;
 
-    public static final int INTAKE_ACTUATOR = 17;
-    public static final int INTAKE_FEED = 18;
+    public static final int INTAKE_ACTUATOR = 18;
+    public static final int INTAKE_FEED = 19;
 
     public static final int CAN_TIMEOUT = 10;
   }
@@ -135,6 +136,7 @@ public final class Constants {
 
   public static class Ports {
     public static final int DRIVER_CONTROLLER = 0;
+    public static final int OPERATOR_CONTROLLER = 1;
     public static final int LEDS = 0; // pwm port
   }
 
