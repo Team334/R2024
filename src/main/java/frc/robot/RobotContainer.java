@@ -120,7 +120,8 @@ public class RobotContainer {
     //     .whileTrue(new PivotMotor(_ledSubsystem, _swerveSubsystem, false, () -> -_driveController.getLeftY()));
 
     // _operatorController.circle().whileTrue();
-    _driveController.triangle().whileTrue(new FeedIntake(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE));
+    _operatorController.triangle().whileTrue(new FeedIntake(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE));
+    // _operatorController.circle().whileTrue(new );
   }
 
   /** @return The Command to schedule for auton. */

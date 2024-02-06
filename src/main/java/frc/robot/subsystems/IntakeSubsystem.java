@@ -7,12 +7,13 @@ import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.utils.configs.NeoConfig;
 
 /**
  * @author Peter Gutkovich
  */
 public class IntakeSubsystem extends SubsystemBase {
-  private final CANSparkMax _feedMotor, _actuatorMotor;
+  public final CANSparkMax _feedMotor, _actuatorMotor;
   private final PIDController _actuatorController = new PIDController(0, 0, 0);
 
   private final RelativeEncoder _actuatorEncoder;
@@ -33,6 +34,8 @@ public class IntakeSubsystem extends SubsystemBase {
     _actuatorMotor = new CANSparkMax(Constants.CAN.INTAKE_ACTUATOR, MotorType.kBrushless);
 
     _actuatorEncoder = _actuatorMotor.getEncoder();
+
+    NeoConfig.configureNeo(_feedMotor, false);
   }
 
   /**
