@@ -18,10 +18,7 @@ public class LEDSubsystem extends SubsystemBase {
   private int _value; // For moving pixel pattern.
   private int _firstPixelIndex; // For moving pixel pattern.
 
-  // Current counter will be how we manage time of our blinking pattern
-  // 1 = 20ms if command is put in a periodic func.
-  private int _currentCounter = 0;
-  // colorOn used to control blinking.
+  // colorOn used to control blinking status.
   private boolean _colorOn = false;
 
   private Timer _ledTimer = new Timer();
@@ -48,6 +45,7 @@ public class LEDSubsystem extends SubsystemBase {
   }
 
   public void rainbow() {
+    _ledTimer.start();
     for (int i = 0; i < _ledBuffer.getLength(); i++) {
       // Get the distance of the rainbow between two pixels. (180 /
       // _ledBuffer.getLength())
@@ -59,8 +57,12 @@ public class LEDSubsystem extends SubsystemBase {
     }
     _ledStrip.setData(_ledBuffer);
 
-    _firstPixelHue += 3;
-    _firstPixelHue %= 180;
+    if (_ledTimer.get() >= 0.02) {
+      _firstPixelHue += 3;
+      _firstPixelHue %= 180;
+      _ledTimer.reset();
+      _ledTimer.start();
+    }
   }
 
   public void movingPixels(int hueHSV, double speed) {
@@ -111,9 +113,6 @@ public class LEDSubsystem extends SubsystemBase {
         _ledTimer.reset();
         _ledTimer.start();
       }
-      _currentCounter = 0;
-    } else {
-      ++_currentCounter;
     }
   }
 
