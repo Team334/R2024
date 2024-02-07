@@ -5,6 +5,8 @@ import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -28,10 +30,10 @@ public class ShooterSubsystem extends SubsystemBase {
 
 
   private final ArmFeedforward _angleFeed = new ArmFeedforward(0, 0, 0); // nothing for now
-  private final PIDController _angleController = new PIDController(0, 0, 0);
+  private final PIDController _angleController = new PIDController(0.05, 0, 0.01);
    
 
-  private final PIDController _shooterController = new PIDController(Constants.PID.SHOOTER_FLYWHEEL_KP, 1, 0);
+  private final PIDController _shooterController = new PIDController(Constants.PID.SHOOTER_FLYWHEEL_KP, 0, 0);
 
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
@@ -48,6 +50,9 @@ public class ShooterSubsystem extends SubsystemBase {
     
     _angleMotor.setSoftLimit(SoftLimitDirection.kForward, (float) (90 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360));
     _angleMotor.setSoftLimit(SoftLimitDirection.kReverse, (float) (-90 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360));
+
+    _angleController.setTolerance(0.5);
+    SmartDashboard.putData("ANGLE PID", _angleController);
   }
 
   @Override
@@ -64,7 +69,13 @@ public class ShooterSubsystem extends SubsystemBase {
 
   /** Set the angle of the shooter in degrees. MUST be called repeatedly. */
   public void setAngle(double angleDegrees) {
-    driveAngle(_angleController.calculate(getAngle(), angleDegrees));
+    double pid = MathUtil.clamp(
+      _angleController.calculate(getAngle(), _angleController.getSetpoint()), // test
+      -Constants.Speeds.SHOOTER_ANGLE_MAX_SPEED,
+      Constants.Speeds.SHOOTER_ANGLE_MAX_SPEED
+    );
+
+    driveAngle(pid);
   }
 
   /** Get the angle of the shooter in degrees. */
@@ -78,7 +89,6 @@ public class ShooterSubsystem extends SubsystemBase {
    */
   public void driveAngle(double speed) {
     _angleMotor.set(UtilFuncs.FromVolts(_angleFeed.calculate(Math.toRadians(getAngle()), 0)) + speed);
-    // _angleMotor.set(speed);
   }
 
   /** Stops the shooter's angular movement. */

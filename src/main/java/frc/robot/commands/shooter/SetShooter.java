@@ -9,14 +9,15 @@ import frc.robot.subsystems.ShooterSubsystem;
 /**
  * @author Elvis Osmanov
  * @author Harry Chen
+ * @author Peter Gutkovich
  */
-public class AngleShooter extends Command {
+public class SetShooter extends Command {
   /** Creates a new AngleShooter. */
   private ShooterSubsystem _shooter;
 
   private DoubleSupplier _angle;
 
-  public AngleShooter(ShooterSubsystem shooter, DoubleSupplier angle) {
+  public SetShooter(ShooterSubsystem shooter, DoubleSupplier angle) {
     // Use addRequirements() here to declare subsystem dependencies.
     _shooter = shooter;
     _angle = angle;
@@ -31,7 +32,8 @@ public class AngleShooter extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    _shooter.setAngle(_angle.getAsDouble());
+    // _shooter.setAngle(_angle.getAsDouble());
+    _shooter.setAngle(0);
   }
 
   // Called once the command ends or is interrupted.

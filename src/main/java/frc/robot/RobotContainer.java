@@ -15,6 +15,7 @@ import frc.robot.commands.intake.FeedIntake;
 import frc.robot.commands.leds.DefaultLED;
 import frc.robot.commands.shooter.AutoAim;
 import frc.robot.commands.shooter.OperateShooter;
+import frc.robot.commands.shooter.SetShooter;
 import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.commands.swerve.BrakeSwerve;
 import frc.robot.commands.swerve.PivotMotor;
@@ -80,8 +81,8 @@ public class RobotContainer {
     _ledSubsystem.setDefaultCommand(new DefaultLED(_ledSubsystem));
     _shooterSubsystem.setDefaultCommand(new OperateShooter(
       _shooterSubsystem,
-      () -> MathUtil.applyDeadband(_operatorController.getLeftY(), 0.5),
-      () -> MathUtil.applyDeadband(_operatorController.getRightY(), 0.5)
+      () -> MathUtil.applyDeadband(_operatorController.getLeftY(), 0.05),
+      () -> MathUtil.applyDeadband(_operatorController.getRightY(), 0.05)
     ));
 
     // _elevatorSubsystem.setDefaultCommand(new HoldElevator(_elevatorSubsystem));
@@ -121,6 +122,7 @@ public class RobotContainer {
 
     // _operatorController.circle().whileTrue();
     _operatorController.triangle().whileTrue(new FeedIntake(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE));
+    _operatorController.circle().whileTrue(new SetShooter(_shooterSubsystem, () -> 45));
     // _operatorController.circle().whileTrue(new );
   }
 
