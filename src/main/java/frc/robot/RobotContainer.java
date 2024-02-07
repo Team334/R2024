@@ -8,6 +8,7 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
@@ -93,7 +94,7 @@ public class RobotContainer {
     //   () -> MathUtil.applyDeadband(_operatorController.getRightY(), 0.05)
     // ));
 
-    _intakeSubsystem.setDefaultCommand(new FeedIntake(_intakeSubsystem, ActuatorState.STOWED));
+    // _intakeSubsystem.setDefaultCommand(new FeedIntake(_intakeSubsystem, ActuatorState.STOWED));
 
     // configure trigger bindings
     configureBindings();
@@ -122,6 +123,8 @@ public class RobotContainer {
 
     // _operatorController.circle().whileTrue();
     _operatorController.triangle().whileTrue(new FeedIntake(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE));
+    _operatorController.square().whileTrue(new FeedIntake(_intakeSubsystem, ActuatorState.OUT, FeedMode.OUTTAKE));
+
     _operatorController.circle().whileTrue(new SetShooter(_shooterSubsystem, () -> 45));
     // _operatorController.circle().whileTrue(new );
   }

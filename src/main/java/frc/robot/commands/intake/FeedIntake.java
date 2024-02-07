@@ -35,21 +35,21 @@ public class FeedIntake extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // _intake.feed(_feedMode);
-    _intake._feedMotor.set(0.3);
+    _intake.feed(_feedMode);
+    _intake.actuate(ActuatorState.STOWED);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    _intake.actuate(_actuatorState);
+    // _intake.actuate(ActuatorState.STOWED);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    // _intake.feed(FeedMode.NONE);
-    _intake._feedMotor.set(0);
+    _intake.feed(FeedMode.NONE);
+    _intake.actuate(ActuatorState.OUT);
   }
 
   // Returns true when the command should end.

@@ -13,7 +13,7 @@ import frc.robot.utils.configs.NeoConfig;
  * @author Peter Gutkovich
  */
 public class IntakeSubsystem extends SubsystemBase {
-  public final CANSparkMax _feedMotor, _actuatorMotor;
+  private final CANSparkMax _feedMotor, _actuatorMotor;
   private final PIDController _actuatorController = new PIDController(0, 0, 0);
 
   private final RelativeEncoder _actuatorEncoder;
@@ -35,7 +35,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
     _actuatorEncoder = _actuatorMotor.getEncoder();
 
-    NeoConfig.configureNeo(_feedMotor, false);
+    NeoConfig.configureNeo(_feedMotor, true);
+    NeoConfig.configureNeo(_actuatorMotor, false);
   }
 
   /**
@@ -61,16 +62,22 @@ public class IntakeSubsystem extends SubsystemBase {
   public void actuate(ActuatorState actuatorState) {
     switch (actuatorState) {
       case STOWED :
-        _actuatorMotor.set(_actuatorController.calculate(getActuator(), Constants.Encoders.INTAKE_STOWED));
+        _actuatorMotor.set(-0.4);
+        // _actuatorMotor.set(_actuatorController.calculate(getActuator(), Constants.Encoders.INTAKE_STOWED));
         break;
 
       case OUT :
-        _actuatorMotor.set(_actuatorController.calculate(getActuator(), Constants.Encoders.INTAKE_OUT));
+        _actuatorMotor.set(0);
+        // _actuatorMotor.set(_actuatorController.calculate(getActuator(), Constants.Encoders.INTAKE_OUT));
         break;
 
       default :
         break;
     }
+  }
+
+  public void feed(double s) {
+    _feedMotor.set(s);
   }
 
   /**
