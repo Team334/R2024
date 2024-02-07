@@ -58,7 +58,8 @@ public final class Constants {
     public static final double SWERVE_DRIVE_MAX_SPEED = 4.67;
     public static final double SWERVE_DRIVE_MAX_ANGULAR_SPEED = Math.PI * 1; // TODO: Get this value
 
-    public static final double SHOOTER_MAX_SPEED = 1; // TODO: Get this
+    public static final double SHOOTER_SPIN_MAX_SPEED = 0.8; // TODO: Get this
+    public static final double SHOOTER_ANGLE_MAX_SPEED = 0.1;
 
     public static final double INTAKE_FEED_SPEED = 0.2; // TODO: Get this
   }
@@ -72,7 +73,8 @@ public final class Constants {
     public static final double SWERVE_DRIVE_WHEEL_RADIUS = 0.05;
     public static final double SWERVE_DRIVE_WHEEL_CIRCUMFERENCE = 2 * Math.PI * SWERVE_DRIVE_WHEEL_RADIUS;
 
-    public static final double SHOOTER_GEAR_RATIO = 1.45; // TODO: FIND THIS
+    public static final double SHOOTER_FLYWHEEL_GEAR_RATIO = 1.45; // TODO: FIND THIS
+    public static final double SHOOTER_ANGLE_GEAR_RATIO = 67.2;
     public static final double SHOOTER_FLYWHEEL_RADIUS = 1; // TODO: FIND RADIUS
     public static final double SHOOTER_FLYWHEEL_CIRCUMFERENCE = 2 * Math.PI * SHOOTER_FLYWHEEL_RADIUS;
 

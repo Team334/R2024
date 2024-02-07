@@ -7,6 +7,7 @@ package frc.robot.commands.shooter;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class OperateShooter extends Command {
@@ -32,8 +33,8 @@ public class OperateShooter extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    _shooter.driveAngle(_angleSpeed.getAsDouble() * 0.1); // TODO: find speed coeff
-    _shooter.spinShooter(_shooterSpeed.getAsDouble() * 0.8);
+    _shooter.driveAngle(_angleSpeed.getAsDouble() * Constants.Speeds.SHOOTER_ANGLE_MAX_SPEED); // TODO: find speed coeff
+    _shooter.spinShooter(_shooterSpeed.getAsDouble() * Constants.Speeds.SHOOTER_SPIN_MAX_SPEED);
   }
 
   // Called once the command ends or is interrupted.

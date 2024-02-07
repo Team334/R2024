@@ -1,11 +1,13 @@
 /* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.utils.UtilFuncs;
@@ -19,13 +21,15 @@ import frc.robot.utils.configs.NeoConfig;
 public class ShooterSubsystem extends SubsystemBase {
   private final CANSparkMax _leftMotor = new CANSparkMax(Constants.CAN.SHOOTER_LEFT, MotorType.kBrushless);
   private final CANSparkMax _rightMotor = new CANSparkMax(Constants.CAN.SHOOTER_RIGHT, MotorType.kBrushless);
-
   private final CANSparkMax _angleMotor = new CANSparkMax(Constants.CAN.SHOOTER_ANGLE, MotorType.kBrushless);
 
   private final RelativeEncoder _leftEncoder = _leftMotor.getEncoder();
+  private final RelativeEncoder _angleEncoder = _angleMotor.getEncoder();
+
 
   private final ArmFeedforward _angleFeed = new ArmFeedforward(0, 0, 0); // nothing for now
   private final PIDController _angleController = new PIDController(0, 0, 0);
+   
 
   private final PIDController _shooterController = new PIDController(Constants.PID.SHOOTER_FLYWHEEL_KP, 1, 0);
 
@@ -35,11 +39,22 @@ public class ShooterSubsystem extends SubsystemBase {
     NeoConfig.configureFollowerNeo(_rightMotor, _leftMotor, true);
 
     NeoConfig.configureNeo(_angleMotor, true);
+
+    _angleEncoder.setPosition(0);
+    
+    // soft limits
+    _angleMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+    _angleMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    
+    _angleMotor.setSoftLimit(SoftLimitDirection.kForward, (float) (90 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360));
+    _angleMotor.setSoftLimit(SoftLimitDirection.kReverse, (float) (-90 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360));
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("SHOOTER ANGLE ENCODER", _angleEncoder.getPosition());
+    SmartDashboard.putNumber("SHOOTER ANGLE", getAngle());
   }
 
   /** Returns true if the shooter is at the last desired height setpoint. */
@@ -54,7 +69,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   /** Get the angle of the shooter in degrees. */
   public double getAngle() {
-    return 0;
+    return _angleEncoder.getPosition() / Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO * 360;
   }
 
   /**
@@ -62,8 +77,8 @@ public class ShooterSubsystem extends SubsystemBase {
    * included).
    */
   public void driveAngle(double speed) {
-    // _angleMotor.set(UtilFuncs.FromVolts(_angleFeed.calculate(Math.toRadians(getAngle()), 0)) + speed);
-    _angleMotor.set(speed);
+    _angleMotor.set(UtilFuncs.FromVolts(_angleFeed.calculate(Math.toRadians(getAngle()), 0)) + speed);
+    // _angleMotor.set(speed);
   }
 
   /** Stops the shooter's angular movement. */
