@@ -61,7 +61,8 @@ public final class Constants {
     public static final double SHOOTER_SPIN_MAX_SPEED = 0.8; // TODO: Get this
     public static final double SHOOTER_ANGLE_MAX_SPEED = 0.1;
 
-    public static final double INTAKE_FEED_SPEED = 0.5; // TODO: Get this
+    public static final double INTAKE_FEED_MAX_SPEED = 0.5; // TODO: Get this
+    public static final double INTAKE_ACTUATE_MAX_SPEED = 0.3;
   }
 
   public static class Physical {
@@ -89,7 +90,7 @@ public final class Constants {
 
   public static class Encoders {
     public static final int INTAKE_STOWED = 0;
-    public static final int INTAKE_OUT = 0;
+    public static final int INTAKE_OUT = 60;
   }
 
   public static class FeedForward {
