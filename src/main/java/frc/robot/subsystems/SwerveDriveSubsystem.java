@@ -42,20 +42,16 @@ import frc.robot.utils.UtilFuncs;
 public class SwerveDriveSubsystem extends SubsystemBase {
   // each swerve module
   private final SwerveModule _frontLeft = new SwerveModule("Front Left", Constants.CAN.DRIVE_FRONT_LEFT,
-      Constants.CAN.ROT_FRONT_LEFT, Constants.CAN.ENC_FRONT_LEFT, Constants.PID.FRONT_LEFT_DRIVE_KP,
-      Constants.PID.FRONT_LEFT_ROTATE_KP);
+      Constants.CAN.ROT_FRONT_LEFT, Constants.CAN.ENC_FRONT_LEFT);
 
   private final SwerveModule _frontRight = new SwerveModule("Front Right", Constants.CAN.DRIVE_FRONT_RIGHT,
-      Constants.CAN.ROT_FRONT_RIGHT, Constants.CAN.ENC_FRONT_RIGHT, Constants.PID.FRONT_RIGHT_DRIVE_KP,
-      Constants.PID.FRONT_RIGHT_ROTATE_KP);
+      Constants.CAN.ROT_FRONT_RIGHT, Constants.CAN.ENC_FRONT_RIGHT);
 
   private final SwerveModule _backRight = new SwerveModule("Back Right", Constants.CAN.DRIVE_BACK_RIGHT,
-      Constants.CAN.ROT_BACK_RIGHT, Constants.CAN.ENC_BACK_RIGHT, Constants.PID.BACK_RIGHT_DRIVE_KP,
-      Constants.PID.BACK_RIGHT_ROTATE_KP);
+      Constants.CAN.ROT_BACK_RIGHT, Constants.CAN.ENC_BACK_RIGHT);
 
   private final SwerveModule _backLeft = new SwerveModule("Back Left", Constants.CAN.DRIVE_BACK_LEFT,
-      Constants.CAN.ROT_BACK_LEFT, Constants.CAN.ENC_BACK_LEFT, Constants.PID.BACK_LEFT_DRIVE_KP,
-      Constants.PID.BACK_LEFT_ROTATE_KP);
+      Constants.CAN.ROT_BACK_LEFT, Constants.CAN.ENC_BACK_LEFT);
 
   SwerveModuleState[] states = new SwerveModuleState[]{
       new SwerveModuleState(_frontLeft.getDriveVelocity(), Rotation2d.fromDegrees(_frontLeft.getAngle())),

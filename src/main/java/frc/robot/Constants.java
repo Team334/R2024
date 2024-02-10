@@ -55,7 +55,7 @@ public final class Constants {
   public static class Speeds {
     public static final double SWERVE_DRIVE_COEFF = .4;
 
-    public static final double SWERVE_DRIVE_MAX_SPEED = 4.67;
+    public static final double SWERVE_DRIVE_MAX_SPEED = 4.67; // meters per second
     public static final double SWERVE_DRIVE_MAX_ANGULAR_SPEED = Math.PI * 1; // TODO: Get this value
 
     public static final double SHOOTER_SPIN_MAX_SPEED = 0.8; // TODO: Get this
@@ -103,16 +103,19 @@ public final class Constants {
   public static class PID {
     // TODO: Tune everything
 
-    // TODO: bruh these don't work
-    public static final double FRONT_LEFT_DRIVE_KP = 0.05;
-    public static final double FRONT_RIGHT_DRIVE_KP = 0.05;
-    public static final double BACK_RIGHT_DRIVE_KP = 0.05;
-    public static final double BACK_LEFT_DRIVE_KP = 0.05;
+    public static final double MODULE_DRIVE_KP = 0.05;
+    public static final double MODULE_ROTATION_KP = 0.009;
 
-    public static final double FRONT_LEFT_ROTATE_KP = 0.009;
-    public static final double FRONT_RIGHT_ROTATE_KP = 0.009;
-    public static final double BACK_RIGHT_ROTATE_KP = 0.009;
-    public static final double BACK_LEFT_ROTATE_KP = 0.009;
+    // these are all the same, so the two constants above are used instead
+    // public static final double FRONT_LEFT_DRIVE_KP = 0.05;
+    // public static final double FRONT_RIGHT_DRIVE_KP = 0.05;
+    // public static final double BACK_RIGHT_DRIVE_KP = 0.05;
+    // public static final double BACK_LEFT_DRIVE_KP = 0.05;
+
+    // public static final double FRONT_LEFT_ROTATE_KP = 0.009;
+    // public static final double FRONT_RIGHT_ROTATE_KP = 0.009;
+    // public static final double BACK_RIGHT_ROTATE_KP = 0.009;
+    // public static final double BACK_LEFT_ROTATE_KP = 0.009;
 
     public static final PIDConstants PP_TRANSLATION = new PIDConstants(3.69, 0, 0);
     public static final PIDConstants PP_ROTATION = new PIDConstants(1.21993, 0, 0);

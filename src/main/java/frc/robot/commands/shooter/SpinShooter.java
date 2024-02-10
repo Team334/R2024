@@ -1,9 +1,8 @@
 /* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot.commands.shooter;
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.Speeds;
 import frc.robot.subsystems.ShooterSubsystem;
 
 /**
@@ -13,11 +12,9 @@ import frc.robot.subsystems.ShooterSubsystem;
  */
 public class SpinShooter extends Command {
   private ShooterSubsystem _shooter;
-  private DoubleSupplier _speed;
 
-  public SpinShooter(ShooterSubsystem shooter, DoubleSupplier speed) {
+  public SpinShooter(ShooterSubsystem shooter) {
     _shooter = shooter;
-    _speed = speed;
     addRequirements(_shooter);
   }
 
@@ -29,7 +26,7 @@ public class SpinShooter extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    _shooter.spinShooter(_speed.getAsDouble());
+    _shooter.spinShooter(Speeds.SHOOTER_SPIN_MAX_SPEED);
   }
 
   // Called once the command ends or is interrupted.

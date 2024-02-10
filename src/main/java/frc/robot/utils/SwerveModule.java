@@ -11,6 +11,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
+import frc.robot.Constants.PID;
 import frc.robot.utils.configs.TalonFXConfig;
 
 /**
@@ -43,13 +44,8 @@ public class SwerveModule {
    *            - CAN ID of rotation motor.
    * @param encoderId
    *            - CAN ID of cancoder.
-   * @param driveP
-   *            - kP for the drive controller.
-   * @param rotationP
-   *            - kP for the rotation controller.
    */
-  public SwerveModule(String name, int driveMotorId, int rotationMotorId, int encoderId, double driveP,
-      double rotationP) {
+  public SwerveModule(String name, int driveMotorId, int rotationMotorId, int encoderId) {
     _driveMotor = new TalonFX(driveMotorId);
     _rotationMotor = new TalonFX(rotationMotorId);
 
@@ -66,9 +62,9 @@ public class SwerveModule {
 
     _name = name;
 
-    _driveController = new PIDController(driveP, 0, 0);
+    _driveController = new PIDController(PID.MODULE_DRIVE_KP, 0, 0);
 
-    _rotationController = new PIDController(rotationP, 0, 0);
+    _rotationController = new PIDController(PID.MODULE_ROTATION_KP, 0, 0);
     _rotationController.enableContinuousInput(-180, 180);
 
     SmartDashboard.putData(_driveController);

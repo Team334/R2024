@@ -11,7 +11,6 @@ import frc.robot.Constants;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
 
 /**
  * @author Elvis Osmanov
@@ -20,7 +19,6 @@ import frc.robot.subsystems.VisionSubsystem;
  */
 public class AutoAim extends Command {
   private final ShooterSubsystem _shooter;
-  private final VisionSubsystem _vision;
   private final SwerveDriveSubsystem _swerve;
   private final LEDSubsystem _leds;
 
@@ -36,12 +34,11 @@ public class AutoAim extends Command {
       Constants.PID.SWERVE_HEADING_KD);
 
   /** Creates a new AutoAim. */
-  public AutoAim(ShooterSubsystem shooter, LEDSubsystem leds, VisionSubsystem vision, SwerveDriveSubsystem swerve,
+  public AutoAim(ShooterSubsystem shooter, LEDSubsystem leds, SwerveDriveSubsystem swerve,
       DoubleSupplier xSpeed, DoubleSupplier ySpeed) {
     // Use addRequirements() here to declare subsystem dependencies.
     _leds = leds;
     _shooter = shooter;
-    _vision = vision;
     _swerve = swerve;
 
     _xSpeed = xSpeed;
@@ -52,12 +49,12 @@ public class AutoAim extends Command {
     _headingController.setTolerance(2);
     _headingController.enableContinuousInput(-180, 180);
 
-    addRequirements(_shooter, _vision, _swerve, _leds);
+    addRequirements(_shooter, _swerve, _leds);
   }
 
   /** Creates an auton AutoAim that ends when it reaches the first setpoints. */
-  public AutoAim(LEDSubsystem leds, ShooterSubsystem shooter, VisionSubsystem vision, SwerveDriveSubsystem swerve) {
-    this(shooter, leds, vision, swerve, () -> 0, () -> 0);
+  public AutoAim(LEDSubsystem leds, ShooterSubsystem shooter, SwerveDriveSubsystem swerve) {
+    this(shooter, leds, swerve, () -> 0, () -> 0);
 
     _runOnce = true;
   }

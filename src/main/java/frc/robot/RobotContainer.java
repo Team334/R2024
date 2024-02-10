@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
+import frc.robot.commands.elevator.SetElevator;
 import frc.robot.commands.intake.FeedActuate;
 import frc.robot.commands.leds.DefaultLED;
 import frc.robot.commands.shooter.AutoAim;
@@ -87,7 +88,13 @@ public class RobotContainer {
       () -> MathUtil.applyDeadband(_operatorController.getRightY(), 0.05)
     ));
 
+    // Non drive/operate default commands
+    _elevatorSubsystem.setDefaultCommand(new SetElevator(_elevatorSubsystem).repeatedly());
+    _shooterSubsystem.setDefaultCommand(new SetShooter(_shooterSubsystem).repeatedly());
     _intakeSubsystem.setDefaultCommand(new FeedActuate(_intakeSubsystem).repeatedly());
+    // TODO: make sure .repeatedly() works
+
+
     _ledSubsystem.setDefaultCommand(new DefaultLED(_ledSubsystem));
 
     // _elevatorSubsystem.setDefaultCommand(new HoldElevator(_elevatorSubsystem));

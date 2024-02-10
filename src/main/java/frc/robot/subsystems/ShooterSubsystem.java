@@ -119,13 +119,9 @@ public class ShooterSubsystem extends SubsystemBase {
   //   _leftMotor.set(flywheel_output + flywheel_pid);
   // }
 
+  /** Spins the shooter at the specified percent output. */
   public void spinShooter(double speed) {
     _leftMotor.set(speed);
-  }
-
-  /** Spins the shooter forward. */
-  public void spinShooter() {
-    _leftMotor.set(1.0);
   }
 
   /** Stops spinning the shooter. */

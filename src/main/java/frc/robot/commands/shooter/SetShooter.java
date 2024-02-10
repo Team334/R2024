@@ -23,6 +23,11 @@ public class SetShooter extends Command {
     _angle = angle;
     addRequirements(_shooter);
   }
+  
+  /** Sets the shooter to its lowest angle (flat). */
+  public SetShooter(ShooterSubsystem shooter) {
+    this(shooter, () -> 0);
+  }
 
   // Called when the command is initially scheduled.
   @Override

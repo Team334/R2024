@@ -76,7 +76,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
     switch (actuatorState) {
       case STOWED :
-        // _actuatorMotor.set(-0.8);
         out = MathUtil.clamp(
           _actuatorController.calculate(getActuator(), Constants.Encoders.INTAKE_STOWED),
           -Constants.Speeds.INTAKE_ACTUATE_MAX_SPEED,
@@ -85,7 +84,6 @@ public class IntakeSubsystem extends SubsystemBase {
         break;
 
       case OUT :
-        // _actuatorMotor.set(0.8);
         out = MathUtil.clamp(
           _actuatorController.calculate(getActuator(), Constants.Encoders.INTAKE_OUT),
           -Constants.Speeds.INTAKE_ACTUATE_MAX_SPEED,
@@ -104,6 +102,7 @@ public class IntakeSubsystem extends SubsystemBase {
     _actuatorMotor.set(out);
   }
 
+  // for testing
   public void feed(double s) {
     _feedMotor.set(s);
   }
