@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
-import frc.robot.commands.intake.FeedIntake;
+import frc.robot.commands.intake.FeedActuate;
 import frc.robot.commands.leds.DefaultLED;
 import frc.robot.commands.shooter.AutoAim;
 import frc.robot.commands.shooter.OperateShooter;
@@ -74,17 +74,21 @@ public class RobotContainer {
     // NamedCommands.registerCommand("speakerAim",
     //     new AutoAim(_ledSubsystem, _shooterSubsystem, _visionSubsystem, _swerveSubsystem));
 
+    // Drive/Operate default commands
+
     // _swerveSubsystem.setDefaultCommand(new TeleopDrive(_swerveSubsystem,
     //     () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
     //     () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1),
     //     () -> MathUtil.applyDeadband(-_driveFilterRightX.calculate(_driveController.getRightX()), 0.1)));
 
-    _ledSubsystem.setDefaultCommand(new DefaultLED(_ledSubsystem));
     _shooterSubsystem.setDefaultCommand(new OperateShooter(
       _shooterSubsystem,
       () -> MathUtil.applyDeadband(_operatorController.getLeftY(), 0.05),
       () -> MathUtil.applyDeadband(_operatorController.getRightY(), 0.05)
     ));
+
+    _intakeSubsystem.setDefaultCommand(new FeedActuate(_intakeSubsystem).repeatedly());
+    _ledSubsystem.setDefaultCommand(new DefaultLED(_ledSubsystem));
 
     // _elevatorSubsystem.setDefaultCommand(new HoldElevator(_elevatorSubsystem));
     // _shooterSubsystem.setDefaultCommand(new HoldShooter(_shooterSubsystem));
@@ -122,8 +126,8 @@ public class RobotContainer {
     //     .whileTrue(new PivotMotor(_ledSubsystem, _swerveSubsystem, false, () -> -_driveController.getLeftY()));
 
     // _operatorController.circle().whileTrue();
-    _operatorController.triangle().whileTrue(new FeedIntake(_intakeSubsystem, ActuatorState.STOWED, FeedMode.NONE));
-    _operatorController.square().whileTrue(new FeedIntake(_intakeSubsystem, ActuatorState.OUT, FeedMode.NONE));
+    _operatorController.triangle().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.NONE));
+    _operatorController.square().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.NONE));
 
     _operatorController.circle().whileTrue(
       Commands.run(() -> _intakeSubsystem.actuate(-0.3), _intakeSubsystem).handleInterrupt(() -> _intakeSubsystem.actuate(0))

@@ -6,43 +6,36 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.IntakeSubsystem.ActuatorState;
 import frc.robot.subsystems.IntakeSubsystem.FeedMode;
 
-public class FeedIntake extends Command {
+public class FeedActuate extends Command {
   private final IntakeSubsystem _intake;
 
   private final ActuatorState _actuatorState;
   private final FeedMode _feedMode;
 
-  private boolean _runOnce; // TODO: do we need this?
-
-  /** Creates a new FeedIntake. */
-  public FeedIntake(IntakeSubsystem intake, ActuatorState actuatorState, FeedMode feedMode) {
+  /** Creates a new FeedActuate. */
+  public FeedActuate(IntakeSubsystem intake, ActuatorState actuatorState, FeedMode feedMode) {
     _intake = intake;
 
     _actuatorState = actuatorState;
     _feedMode = feedMode;
-    _runOnce = false;
 
     addRequirements(_intake);
   }
 
-  /** FeedIntake as a hold command (runs forever). */
-  public FeedIntake(IntakeSubsystem intake, ActuatorState actuatorState) {
-    this(intake, actuatorState, FeedMode.NONE);
-
-    _runOnce = false;
+  /** FeedActuate that stows the actuator and has a feed mode of NONE. */
+  public FeedActuate(IntakeSubsystem intake) {
+    this(intake, ActuatorState.STOWED, FeedMode.NONE);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     _intake.feed(_feedMode);
-    // _intake.actuate(_actuatorState);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // _intake.actuate(ActuatorState.STOWED);
     _intake.actuate(_actuatorState);
   }
 
@@ -56,8 +49,6 @@ public class FeedIntake extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // return _runOnce && _intake.atDesiredActuatorState();
-    // return false;
     return _intake.atDesiredActuatorState();
   }
 }

@@ -32,8 +32,7 @@ public class SetShooter extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // _shooter.setAngle(_angle.getAsDouble());
-    _shooter.setAngle(0);
+    _shooter.setAngle(_angle.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.
