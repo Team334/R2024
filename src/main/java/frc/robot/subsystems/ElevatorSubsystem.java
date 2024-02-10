@@ -41,7 +41,7 @@ public class ElevatorSubsystem extends SubsystemBase {
    * @param useFeed If true, use climb feed, if false, use elevator feed.
    */
   public void useClimbFeed(boolean useFeed) {
-    _usingElevatorFeed = useFeed;
+    _usingElevatorFeed = !useFeed;
   }
   
   /** Returns true if the elevator is at the last desired height setpoint. */
