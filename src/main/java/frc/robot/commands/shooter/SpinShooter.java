@@ -15,18 +15,19 @@ public class SpinShooter extends Command {
 
   public SpinShooter(ShooterSubsystem shooter) {
     _shooter = shooter;
-    addRequirements(_shooter);
+
+    // NO SHOOTER REQUIREMENT TO NOT MESS WITH SHOOTER ANGLING COMMANDS
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    _shooter.spinShooter(Speeds.SHOOTER_SPIN_MAX_SPEED);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    _shooter.spinShooter(Speeds.SHOOTER_SPIN_MAX_SPEED);
   }
 
   // Called once the command ends or is interrupted.

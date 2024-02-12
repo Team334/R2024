@@ -2,26 +2,24 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.shooter;
+package frc.robot.commands.elevator;
 
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
 
-public class OperateShooter extends Command {
-  private final ShooterSubsystem _shooter;
+public class OperateElevator extends Command {
+  private final ElevatorSubsystem _elevator;
+  private final DoubleSupplier _heightSpeed;
 
-  private final DoubleSupplier _angleSpeed;
-
-  /** Creates a new OperateShooter. */
-  public OperateShooter(ShooterSubsystem shooter, DoubleSupplier angleSpeed) {
+  /** Creates a new OperateElevator. */
+  public OperateElevator(ElevatorSubsystem elevator, DoubleSupplier heightSpeed) {
     // Use addRequirements() here to declare subsystem dependencies.
-    _angleSpeed = angleSpeed;
+    _elevator = elevator;
+    _heightSpeed = heightSpeed;
 
-    _shooter = shooter;
-    addRequirements(_shooter);
+    addRequirements(_elevator);
   }
 
   // Called when the command is initially scheduled.
@@ -31,7 +29,7 @@ public class OperateShooter extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    _shooter.driveAngle(_angleSpeed.getAsDouble() * Constants.Speeds.SHOOTER_ANGLE_MAX_SPEED); // TODO: find speed coeff
+    _elevator.driveElevator(_heightSpeed.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.

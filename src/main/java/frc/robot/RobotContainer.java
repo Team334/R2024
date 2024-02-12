@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandStadiaController;
+import frc.robot.commands.elevator.OperateElevator;
 import frc.robot.commands.elevator.SetElevator;
 import frc.robot.commands.intake.FeedActuate;
 import frc.robot.commands.leds.DefaultLED;
@@ -92,7 +93,11 @@ public class RobotContainer {
 
     _shooterSubsystem.setDefaultCommand(new OperateShooter(
       _shooterSubsystem,
-      () -> MathUtil.applyDeadband(_operatorController.getLeftY(), 0.05),
+      () -> MathUtil.applyDeadband(_operatorController.getLeftY(), 0.05)
+    ));
+
+    _elevatorSubsystem.setDefaultCommand(new OperateElevator(
+      _elevatorSubsystem,
       () -> MathUtil.applyDeadband(_operatorController.getRightY(), 0.05)
     ));
 
@@ -141,6 +146,8 @@ public class RobotContainer {
     //     .whileTrue(new PivotMotor(_ledSubsystem, _swerveSubsystem, false, () -> -_driveController.getLeftY()));
 
     // _operatorController.circle().whileTrue();
+    _operatorController.L1().whileTrue(new SpinShooter(_shooterSubsystem));
+
     _operatorController.triangle().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.OUTTAKE));
     _operatorController.square().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE));
 
