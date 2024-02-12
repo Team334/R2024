@@ -61,8 +61,8 @@ public final class Constants {
     public static final double SHOOTER_SPIN_MAX_SPEED = 0.8; // TODO: Get this
     public static final double SHOOTER_ANGLE_MAX_SPEED = 0.1;
 
-    public static final double INTAKE_FEED_MAX_SPEED = 0.5; // TODO: Get this
-    public static final double INTAKE_ACTUATE_MAX_SPEED = 0.3;
+    public static final double INTAKE_FEED_MAX_SPEED = 0.25; // TODO: Get this
+    public static final double INTAKE_ACTUATE_MAX_SPEED = 0.6;
   }
 
   public static class Physical {

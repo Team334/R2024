@@ -116,11 +116,11 @@ public class IntakeSubsystem extends SubsystemBase {
   public void feed(FeedMode feedMode) {
     switch (feedMode) {
       case INTAKE :
-        _feedMotor.set(Constants.Speeds.INTAKE_FEED_MAX_SPEED);
+        _feedMotor.set(-Constants.Speeds.INTAKE_FEED_MAX_SPEED);
         break;
 
       case OUTTAKE :
-        _feedMotor.set(-Constants.Speeds.INTAKE_FEED_MAX_SPEED);
+        _feedMotor.set(Constants.Speeds.INTAKE_FEED_MAX_SPEED);
         break;
 
       case NONE :

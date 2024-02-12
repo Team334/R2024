@@ -24,7 +24,7 @@ public class FeedActuate extends Command {
 
   /** FeedActuate that stows the actuator and has a feed mode of NONE. */
   public FeedActuate(IntakeSubsystem intake) {
-    this(intake, ActuatorState.STOWED, FeedMode.NONE);
+    this(intake, ActuatorState.NONE, FeedMode.NONE);
   }
 
   // Called when the command is initially scheduled.
@@ -42,13 +42,12 @@ public class FeedActuate extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    _intake.feed(FeedMode.NONE);
     _intake.actuate(ActuatorState.NONE);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return _intake.atDesiredActuatorState();
+    return false;
   }
 }
