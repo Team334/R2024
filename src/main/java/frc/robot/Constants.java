@@ -20,6 +20,8 @@ import frc.robot.utils.UtilFuncs;
  * wherever the constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public static final Alliance SAFE_ALLIANCE = Alliance.Red;
+
   public static class CAN {
     public static final int DRIVE_FRONT_LEFT = 1;
     public static final int ROT_FRONT_LEFT = 2;

@@ -22,12 +22,6 @@ public final class UtilFuncs {
    * The alliance for the match (shortcut for AllianceHelper).
    */
   public static Alliance GetAlliance() {
-    // Optional<Alliance> alliance = DriverStation.getAlliance();
-    // if (alliance.isPresent()) {
-    // return alliance.get();
-    // }
-
-    // return null;
     return AllianceHelper.getInstance().getAlliance();
   }
 }
