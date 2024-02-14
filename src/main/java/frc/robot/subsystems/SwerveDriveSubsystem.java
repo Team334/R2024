@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.FieldConstants;
 import frc.robot.utils.BNO055;
 import frc.robot.utils.SwerveModule;
 import frc.robot.utils.UtilFuncs;
@@ -326,11 +327,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
    * @return [xSpeakerAngle, ySpeakerAngle]
    */
   public double[] speakerAngles() {
-
     double xSpeakerAngle;
     double ySpeakerAngle;
 
-    Pose3d speakerPose = Constants.FIELD_CONSTANTS.SPEAKER_POSE;
+    Pose3d speakerPose = UtilFuncs.GetAlliance() == Alliance.Red ? FieldConstants.SPEAKER_POSE_RED : FieldConstants.SPEAKER_POSE_BLUE;
 
     Translation2d speakerTranslation = new Translation2d(speakerPose.getX(), speakerPose.getY());
     Translation2d botTranslation = getPose().getTranslation();

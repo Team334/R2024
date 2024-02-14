@@ -7,7 +7,6 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import frc.robot.utils.AllianceFieldConstants;
 import frc.robot.utils.UtilFuncs;
 
 /**
@@ -146,11 +145,6 @@ public final class Constants {
     public static final int LEDS = 0; // pwm port
   }
 
-  /**
-   * Field constants that are dynamically set up for the match's alliance color.
-   */
-  public static final AllianceFieldConstants FIELD_CONSTANTS = new AllianceFieldConstants();
-
   // static field constants
   public static class FieldConstants {
     public static final double SPEAKER_HEIGHT = 2;
@@ -169,7 +163,5 @@ public final class Constants {
     public static final int[] YELLOW = {255, 255, 0};
     public static final int[] BLUE = {0, 0, 255};
     public static final int[] RED = {255, 0, 0};
-
-    public static final int[] ALLIANCE_RGB = UtilFuncs.GetAlliance() == Alliance.Red ? RED : BLUE;
   }
 }
