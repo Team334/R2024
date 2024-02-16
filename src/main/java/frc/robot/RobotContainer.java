@@ -47,12 +47,12 @@ import frc.robot.subsystems.VisionSubsystem;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  // private final VisionSubsystem _visionSubsystem = new VisionSubsystem();
-  // private final SwerveDriveSubsystem _swerveSubsystem = new SwerveDriveSubsystem(_visionSubsystem);
-  // private final ShooterSubsystem _shooterSubsystem = new ShooterSubsystem();
+  private final VisionSubsystem _visionSubsystem = new VisionSubsystem();
+  private final SwerveDriveSubsystem _swerveSubsystem = new SwerveDriveSubsystem(_visionSubsystem);
+  private final ShooterSubsystem _shooterSubsystem = new ShooterSubsystem();
   private final ElevatorSubsystem _elevatorSubsystem = new ElevatorSubsystem();
-  // private final IntakeSubsystem _intakeSubsystem = new IntakeSubsystem();
-  // private final LEDSubsystem _ledSubsystem = new LEDSubsystem(Constants.Ports.LEDS, 14);
+  private final IntakeSubsystem _intakeSubsystem = new IntakeSubsystem();
+  private final LEDSubsystem _ledSubsystem = new LEDSubsystem(Constants.Ports.LEDS, 14);
 
   // controllers (for driver and operator)
   private final CommandPS4Controller _driveController = new CommandPS4Controller(Constants.Ports.DRIVER_CONTROLLER);
@@ -155,6 +155,7 @@ public class RobotContainer {
     );  
     _operatorController.R1().whileTrue(
       Commands.run(() -> _elevatorSubsystem.driveElevator(0.5), _elevatorSubsystem).handleInterrupt(() -> _elevatorSubsystem.stopElevator())
+    );
     _operatorController.L1().whileTrue(new SpinShooter(_shooterSubsystem));
 
     _operatorController.triangle().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.OUTTAKE));

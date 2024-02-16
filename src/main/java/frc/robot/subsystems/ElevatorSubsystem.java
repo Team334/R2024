@@ -47,7 +47,7 @@ public class ElevatorSubsystem extends SubsystemBase {
    * @param useFeed If true, use climb feed, if false, use elevator feed.
    */
   public void useClimbFeed(boolean useFeed) {
-    _usingElevatorFeed = !useFeed;
+    _usingClimberFeed = !useFeed;
   }
   
   /** Returns true if the elevator is at the last desired height setpoint. */
@@ -83,7 +83,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   /** Stops elevator movement. */
   public void stopElevator() {
-    System.out.println("Stopped");
+    // System.out.println("Stopped");
     driveElevator(0);
   }
 
