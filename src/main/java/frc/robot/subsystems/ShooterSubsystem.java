@@ -48,8 +48,8 @@ public class ShooterSubsystem extends SubsystemBase {
     _angleMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
     _angleMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
     
-    _angleMotor.setSoftLimit(SoftLimitDirection.kForward, (float) (90 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360));
-    _angleMotor.setSoftLimit(SoftLimitDirection.kReverse, (float) (-90 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360));
+    _angleMotor.setSoftLimit(SoftLimitDirection.kForward, (float) (30 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360));
+    _angleMotor.setSoftLimit(SoftLimitDirection.kReverse, (float) (-45 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360));
 
     _angleController.setTolerance(0.5);
     SmartDashboard.putData("ANGLE PID", _angleController);

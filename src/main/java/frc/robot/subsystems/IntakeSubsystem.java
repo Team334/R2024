@@ -20,6 +20,7 @@ public class IntakeSubsystem extends SubsystemBase {
   private final PIDController _actuatorController = new PIDController(0, 0, 0);
 
   private final RelativeEncoder _actuatorEncoder;
+  private final RelativeEncoder _feedEncoder;
 
   /** How to feed (in or out). */
   public enum FeedMode {
@@ -39,12 +40,21 @@ public class IntakeSubsystem extends SubsystemBase {
     _actuatorEncoder = _actuatorMotor.getEncoder();
     _actuatorEncoder.setPosition(0);
 
+    _feedEncoder = _feedMotor.getEncoder();
+
     _actuatorController.setTolerance(0.5);
 
     NeoConfig.configureNeo(_feedMotor, true);
     NeoConfig.configureNeo(_actuatorMotor, false);
   }
 
+  public boolean hasNote() {
+    if (Math.abs(_feedMotor.get()) > 0 && Math.abs(_feedEncoder.getVelocity()) < 0.1) {
+      return true;
+    }
+
+    return false;
+  }
 
   /**
    * Returns true if the actuator is at the last desired state.
@@ -137,5 +147,7 @@ public class IntakeSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("ACTUATOR ENCODER", _actuatorEncoder.getPosition());
     SmartDashboard.putData("ACTUATOR PID", _actuatorController);
+
+    // if (hasNote()) { feed(FeedMode.NONE); }
   }
 }

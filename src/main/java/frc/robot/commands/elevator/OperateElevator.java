@@ -29,7 +29,7 @@ public class OperateElevator extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    _elevator.driveElevator(_heightSpeed.getAsDouble());
+    _elevator.driveElevator(_heightSpeed.getAsDouble() * 0.1);
   }
 
   // Called once the command ends or is interrupted.

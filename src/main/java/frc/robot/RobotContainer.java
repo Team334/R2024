@@ -67,6 +67,9 @@ public class RobotContainer {
   private final SlewRateLimiter _driveFilterRightX = new SlewRateLimiter(4);
   private final SlewRateLimiter _driveFilterRightY = new SlewRateLimiter(4);
 
+  private final SlewRateLimiter _operatorFilterLeftY = new SlewRateLimiter(4);
+  private final SlewRateLimiter _operatorFilterRightY = new SlewRateLimiter(4);
+
   // sendable chooser for auton commands
   // private final SendableChooser<Command> _autonChooser;
 
@@ -93,18 +96,16 @@ public class RobotContainer {
 
     _shooterSubsystem.setDefaultCommand(new OperateShooter(
       _shooterSubsystem,
-      () -> MathUtil.applyDeadband(_operatorController.getLeftY(), 0.05)
+      () -> _operatorFilterLeftY.calculate(MathUtil.applyDeadband(_operatorController.getLeftY(), 0.05))
     ));
 
     _elevatorSubsystem.setDefaultCommand(new OperateElevator(
       _elevatorSubsystem,
-      () -> MathUtil.applyDeadband(_operatorController.getRightY(), 0.05)
+      () -> _operatorFilterRightY.calculate(MathUtil.applyDeadband(_operatorController.getRightY(), 0.05))
     ));
 
     // Non drive/operate default commands
-    _elevatorSubsystem.setDefaultCommand(new SetElevator(_elevatorSubsystem).repeatedly());
-    _shooterSubsystem.setDefaultCommand(new SetShooter(_shooterSubsystem).repeatedly());
-    _intakeSubsystem.setDefaultCommand(new FeedActuate(_intakeSubsystem));
+    // _intakeSubsystem.setDefaultCommand(new FeedActuate(_intakeSubsystem));
     // TODO: make sure .repeatedly() works
 
 
@@ -150,24 +151,30 @@ public class RobotContainer {
     // _operatorController.triangle().whileTrue(new FeedIntake(_intakeSubsystem, ActuatorState.STOWED, Fe                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           edMode.NONE));
     // _operatorController.square().whileTrue(new FeedIntake(_intakeSubsystem, ActuatorState.OUT, FeedMode.NONE));
 
-    _operatorController.L1().whileTrue(
-      Commands.run(() -> _elevatorSubsystem.driveElevator(-0.5), _elevatorSubsystem).handleInterrupt(() -> _elevatorSubsystem.stopElevator())
-    );  
-    _operatorController.R1().whileTrue(
-      Commands.run(() -> _elevatorSubsystem.driveElevator(0.5), _elevatorSubsystem).handleInterrupt(() -> _elevatorSubsystem.stopElevator())
-    );
+    // _operatorController.L1().whileTrue(
+    //   Commands.run(() -> _elevatorSubsystem.driveElevator(-0.5), _elevatorSubsystem).handleInterrupt(() -> _elevatorSubsystem.stopElevator())
+    // );  
+    // _operatorController.R1().whileTrue(
+    //   Commands.run(() -> _elevatorSubsystem.driveElevator(0.5), _elevatorSubsystem).handleInterrupt(() -> _elevatorSubsystem.stopElevator())
+    // );
+
     _operatorController.L1().whileTrue(new SpinShooter(_shooterSubsystem));
 
-    _operatorController.triangle().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.OUTTAKE));
-    _operatorController.square().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE));
+    // _operatorController.triangle().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.OUTTAKE));
+    // _operatorController.square().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE));
 
     _operatorController.circle().whileTrue(
-      Commands.run(() -> _intakeSubsystem.actuate(-0.6), _intakeSubsystem).handleInterrupt(() -> _intakeSubsystem.actuate(0))
+      Commands.run(() -> _intakeSubsystem.actuate(-0.1), _intakeSubsystem).handleInterrupt(() -> _intakeSubsystem.actuate(0))
     );
     _operatorController.cross().whileTrue(
-      Commands.run(() -> _intakeSubsystem.actuate(0.6), _intakeSubsystem).handleInterrupt(() -> _intakeSubsystem.actuate(0))
-
+      Commands.run(() -> _intakeSubsystem.actuate(0.1), _intakeSubsystem).handleInterrupt(() -> _intakeSubsystem.actuate(0))
     );
+
+    // _operatorController.L1().whileTrue(
+    //   new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE).alongWith(
+    //     new SetShooter(_shooterSubsystem, () -> 45)
+    //   ).alongWith(new SetElevator(_elevatorSubsystem))
+    // );
 
 
     // _operatorController.circle().whileTrue(
