@@ -47,12 +47,12 @@ import frc.robot.subsystems.VisionSubsystem;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final VisionSubsystem _visionSubsystem = new VisionSubsystem();
-  private final SwerveDriveSubsystem _swerveSubsystem = new SwerveDriveSubsystem(_visionSubsystem);
+  //private final VisionSubsystem _visionSubsystem = new VisionSubsystem();
+  //private final SwerveDriveSubsystem _swerveSubsystem = new SwerveDriveSubsystem(_visionSubsystem);
   private final ShooterSubsystem _shooterSubsystem = new ShooterSubsystem();
   private final ElevatorSubsystem _elevatorSubsystem = new ElevatorSubsystem();
-  private final IntakeSubsystem _intakeSubsystem = new IntakeSubsystem();
-  private final LEDSubsystem _ledSubsystem = new LEDSubsystem(Constants.Ports.LEDS, 14);
+ private final IntakeSubsystem _intakeSubsystem = new IntakeSubsystem();
+// private final LEDSubsystem _ledSubsystem = new LEDSubsystem(Constants.Ports.LEDS, 14);
 
   // controllers (for driver and operator)
   private final CommandPS4Controller _driveController = new CommandPS4Controller(Constants.Ports.DRIVER_CONTROLLER);
@@ -108,7 +108,7 @@ public class RobotContainer {
     // TODO: make sure .repeatedly() works
 
 
-    _ledSubsystem.setDefaultCommand(new DefaultLED(_ledSubsystem));
+    // _ledSubsystem.setDefaultCommand(new DefaultLED(_ledSubsystem));
 
     // _elevatorSubsystem.setDefaultCommand(new HoldElevator(_elevatorSubsystem));
     // _shooterSubsystem.setDefaultCommand(new HoldShooter(_shooterSubsystem));
