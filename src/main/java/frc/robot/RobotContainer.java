@@ -102,7 +102,7 @@ public class RobotContainer {
 
     _elevatorSubsystem.setDefaultCommand(new OperateElevator(
       _elevatorSubsystem,
-      () -> _operatorFilterRightY.calculate(MathUtil.applyDeadband(_operatorController.getRightY(), 0.05))
+      () -> -_operatorFilterRightY.calculate(MathUtil.applyDeadband(_operatorController.getRightY(), 0.05))
     ));
 
     // Non drive/operate default commands
@@ -160,15 +160,16 @@ public class RobotContainer {
     // );
 
     _operatorController.L1().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.SHOOT));
+    _operatorController.L2().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.AMP));
 
     // _operatorController.triangle().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.OUTTAKE));
     // _operatorController.square().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE));
 
     _operatorController.circle().whileTrue(
-      Commands.run(() -> _intakeSubsystem.actuate(-0.1), _intakeSubsystem).handleInterrupt(() -> _intakeSubsystem.actuate(0))
+      Commands.run(() -> _intakeSubsystem.actuate(-0.05), _intakeSubsystem).handleInterrupt(() -> _intakeSubsystem.actuate(0))
     );
     _operatorController.cross().whileTrue(
-      Commands.run(() -> _intakeSubsystem.actuate(0.1), _intakeSubsystem).handleInterrupt(() -> _intakeSubsystem.actuate(0))
+      Commands.run(() -> _intakeSubsystem.actuate(0.05), _intakeSubsystem).handleInterrupt(() -> _intakeSubsystem.actuate(0))
     );
 
     // _operatorController.L1().whileTrue(

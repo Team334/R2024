@@ -43,7 +43,9 @@ public class ShooterSubsystem extends SubsystemBase {
 
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
-    NeoConfig.configureNeo(_leftMotor, false);
+    NeoConfig.configureNeo(_leftMotor, true);
+    // NeoConfig.configureNeo(_rightMotor, false);
+
     NeoConfig.configureFollowerNeo(_rightMotor, _leftMotor, true);
 
     NeoConfig.configureNeo(_angleMotor, true);
@@ -128,11 +130,11 @@ public class ShooterSubsystem extends SubsystemBase {
   public void setShooterState(ShooterState state) {
     switch (state) {
       case SHOOT:
-        spinShooter(Speeds.SHOOTER_SPIN_MAX_SPEED);
+        spinShooter(Speeds.SHOOTER_SPIN_SPEED);
         break;
     
       case AMP:
-        spinShooter(Speeds.SHOOTER_SPIN_MAX_SPEED / 2);
+        spinShooter(Speeds.SHOOTER_AMP_SPEED);
         break;
 
       case NONE:
@@ -147,10 +149,12 @@ public class ShooterSubsystem extends SubsystemBase {
   /** Spins the shooter at the specified percent output. */
   public void spinShooter(double speed) {
     _leftMotor.set(speed);
+    // _rightMotor.set(speed); 
   }
 
   /** Stops spinning the shooter. */
   public void stopShooter() {
     _leftMotor.set(0);
+    // _rightMotor.set(0);
   }
 }

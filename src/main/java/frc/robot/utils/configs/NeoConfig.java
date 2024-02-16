@@ -24,7 +24,7 @@ public class NeoConfig {
   public static void configureNeo(CANSparkMax neo, boolean invert) {
     neo.restoreFactoryDefaults();
     
-    neo.setCANTimeout(10);
+    // neo.setCANTimeout(10);
 
     neo.setIdleMode(IdleMode.kBrake);
 
