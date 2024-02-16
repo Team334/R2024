@@ -41,6 +41,15 @@ public class ElevatorSubsystem extends SubsystemBase {
     // setMotor(elevatorFeed.calculate(0));
   }
 
+  /**
+   * Whether using the climb feed forward or not (different gravity constant).
+   * 
+   * @param useFeed If true, use climb feed, if false, use elevator feed.
+   */
+  public void useClimbFeed(boolean useFeed) {
+    _usingElevatorFeed = !useFeed;
+  }
+  
   /** Returns true if the elevator is at the last desired height setpoint. */
   public boolean atDesiredHeight() {
     return _heightController.atSetpoint();
@@ -77,8 +86,11 @@ public class ElevatorSubsystem extends SubsystemBase {
     System.out.println("Stopped");
     driveElevator(0);
   }
+<<<<<<< HEAD
 
   public void changeElevatorFeed() {
     _usingClimberFeed = !_usingClimberFeed;
   }
+=======
+>>>>>>> 2f064d3522d8e80a821576884869c6a77d8d22b7
 }

@@ -7,7 +7,6 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import frc.robot.utils.AllianceFieldConstants;
 import frc.robot.utils.UtilFuncs;
 
 /**
@@ -21,6 +20,8 @@ import frc.robot.utils.UtilFuncs;
  * wherever the constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public static final Alliance SAFE_ALLIANCE = Alliance.Red;
+
   public static class CAN {
     public static final int DRIVE_FRONT_LEFT = 1;
     public static final int ROT_FRONT_LEFT = 2;
@@ -55,14 +56,14 @@ public final class Constants {
   public static class Speeds {
     public static final double SWERVE_DRIVE_COEFF = .4;
 
-    public static final double SWERVE_DRIVE_MAX_SPEED = 4.67;
+    public static final double SWERVE_DRIVE_MAX_SPEED = 4.67; // meters per second
     public static final double SWERVE_DRIVE_MAX_ANGULAR_SPEED = Math.PI * 1; // TODO: Get this value
 
     public static final double SHOOTER_SPIN_MAX_SPEED = 0.8; // TODO: Get this
     public static final double SHOOTER_ANGLE_MAX_SPEED = 0.1;
 
-    public static final double INTAKE_FEED_MAX_SPEED = 0.5; // TODO: Get this
-    public static final double INTAKE_ACTUATE_MAX_SPEED = 0.3;
+    public static final double INTAKE_FEED_MAX_SPEED = 0.25; // TODO: Get this
+    public static final double INTAKE_ACTUATE_MAX_SPEED = 0.6;
   }
 
   public static class Physical {
@@ -103,16 +104,19 @@ public final class Constants {
   public static class PID {
     // TODO: Tune everything
 
-    // TODO: bruh these don't work
-    public static final double FRONT_LEFT_DRIVE_KP = 0.05;
-    public static final double FRONT_RIGHT_DRIVE_KP = 0.05;
-    public static final double BACK_RIGHT_DRIVE_KP = 0.05;
-    public static final double BACK_LEFT_DRIVE_KP = 0.05;
+    public static final double MODULE_DRIVE_KP = 0.05;
+    public static final double MODULE_ROTATION_KP = 0.009;
 
-    public static final double FRONT_LEFT_ROTATE_KP = 0.009;
-    public static final double FRONT_RIGHT_ROTATE_KP = 0.009;
-    public static final double BACK_RIGHT_ROTATE_KP = 0.009;
-    public static final double BACK_LEFT_ROTATE_KP = 0.009;
+    // these are all the same, so the two constants above are used instead
+    // public static final double FRONT_LEFT_DRIVE_KP = 0.05;
+    // public static final double FRONT_RIGHT_DRIVE_KP = 0.05;
+    // public static final double BACK_RIGHT_DRIVE_KP = 0.05;
+    // public static final double BACK_LEFT_DRIVE_KP = 0.05;
+
+    // public static final double FRONT_LEFT_ROTATE_KP = 0.009;
+    // public static final double FRONT_RIGHT_ROTATE_KP = 0.009;
+    // public static final double BACK_RIGHT_ROTATE_KP = 0.009;
+    // public static final double BACK_LEFT_ROTATE_KP = 0.009;
 
     public static final PIDConstants PP_TRANSLATION = new PIDConstants(3.69, 0, 0);
     public static final PIDConstants PP_ROTATION = new PIDConstants(1.21993, 0, 0);
@@ -143,11 +147,6 @@ public final class Constants {
     public static final int LEDS = 0; // pwm port
   }
 
-  /**
-   * Field constants that are dynamically set up for the match's alliance color.
-   */
-  public static final AllianceFieldConstants FIELD_CONSTANTS = new AllianceFieldConstants();
-
   // static field constants
   public static class FieldConstants {
     public static final double SPEAKER_HEIGHT = 2;
@@ -166,7 +165,5 @@ public final class Constants {
     public static final int[] YELLOW = {255, 255, 0};
     public static final int[] BLUE = {0, 0, 255};
     public static final int[] RED = {255, 0, 0};
-
-    public static final int[] ALLIANCE_RGB = UtilFuncs.GetAlliance() == Alliance.Red ? RED : BLUE;
   }
 }

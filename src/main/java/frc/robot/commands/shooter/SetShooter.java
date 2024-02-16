@@ -23,6 +23,11 @@ public class SetShooter extends Command {
     _angle = angle;
     addRequirements(_shooter);
   }
+  
+  /** Sets the shooter to its lowest angle (flat). */
+  public SetShooter(ShooterSubsystem shooter) {
+    this(shooter, () -> 0);
+  }
 
   // Called when the command is initially scheduled.
   @Override
@@ -32,8 +37,7 @@ public class SetShooter extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // _shooter.setAngle(_angle.getAsDouble());
-    _shooter.setAngle(0);
+    _shooter.setAngle(_angle.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.

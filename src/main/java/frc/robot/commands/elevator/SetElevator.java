@@ -20,9 +20,15 @@ public class SetElevator extends Command {
 
   public SetElevator(ElevatorSubsystem elevator, DoubleSupplier height) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(elevator);
     _elevator = elevator;
     _height = height;
+
+    addRequirements(_elevator);
+  }
+
+  /** Set elevator that sets the elevator to its lowest height. */
+  public SetElevator(ElevatorSubsystem elevator) {
+    this(elevator, () -> 0);
   }
 
   // Called when the command is initially scheduled.

@@ -6,13 +6,11 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
 
 /**
  * @author Elvis Osmanov
@@ -21,7 +19,6 @@ import frc.robot.subsystems.VisionSubsystem;
  */
 public class AutoAim extends Command {
   private final ShooterSubsystem _shooter;
-  private final VisionSubsystem _vision;
   private final SwerveDriveSubsystem _swerve;
   private final LEDSubsystem _leds;
 
@@ -37,12 +34,11 @@ public class AutoAim extends Command {
       Constants.PID.SWERVE_HEADING_KD);
 
   /** Creates a new AutoAim. */
-  public AutoAim(ShooterSubsystem shooter, LEDSubsystem leds, VisionSubsystem vision, SwerveDriveSubsystem swerve,
+  public AutoAim(ShooterSubsystem shooter, LEDSubsystem leds, SwerveDriveSubsystem swerve,
       DoubleSupplier xSpeed, DoubleSupplier ySpeed) {
     // Use addRequirements() here to declare subsystem dependencies.
     _leds = leds;
     _shooter = shooter;
-    _vision = vision;
     _swerve = swerve;
 
     _xSpeed = xSpeed;
@@ -53,17 +49,12 @@ public class AutoAim extends Command {
     _headingController.setTolerance(2);
     _headingController.enableContinuousInput(-180, 180);
 
-    SmartDashboard.putBoolean("BRUH", false);
-    SmartDashboard.putNumber("VEL", 0);
-    SmartDashboard.putNumber("DESIRED SWERVE HEADING", 0);
-    SmartDashboard.putNumber("CALCULATED", 0);
-
-    addRequirements(_shooter, _vision, _swerve, _leds);
+    addRequirements(_shooter, _swerve, _leds);
   }
 
   /** Creates an auton AutoAim that ends when it reaches the first setpoints. */
-  public AutoAim(LEDSubsystem leds, ShooterSubsystem shooter, VisionSubsystem vision, SwerveDriveSubsystem swerve) {
-    this(shooter, leds, vision, swerve, () -> 0, () -> 0);
+  public AutoAim(LEDSubsystem leds, ShooterSubsystem shooter, SwerveDriveSubsystem swerve) {
+    this(shooter, leds, swerve, () -> 0, () -> 0);
 
     _runOnce = true;
   }
@@ -73,9 +64,6 @@ public class AutoAim extends Command {
   public void initialize() {
     _reachedSwerveHeading = false;
     _reachedShooterAngle = false;
-
-    SmartDashboard.putBoolean("BRUH", true);
-
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -84,15 +72,10 @@ public class AutoAim extends Command {
     double currentSwerveHeading = _swerve.getHeading().getDegrees();
     double desiredSwerveHeading = _swerve.speakerAngles()[0];
 
-    SmartDashboard.putNumber("DESIRED SWERVE HEADING", desiredSwerveHeading);
-    SmartDashboard.putNumber("SHOOTER ANGLE", _swerve.speakerAngles()[1]);
-
     double rotationVelocity = MathUtil.clamp(
         _headingController.calculate(currentSwerveHeading, desiredSwerveHeading),
         -Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED * 2,
         Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED * 2);
-
-    SmartDashboard.putNumber("VEL", rotationVelocity);
 
     _reachedSwerveHeading = _headingController.atSetpoint();
     _reachedShooterAngle = true; // TODO: make this actually use the shooter
@@ -114,9 +97,7 @@ public class AutoAim extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    SmartDashboard.putBoolean("BRUH", false);
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

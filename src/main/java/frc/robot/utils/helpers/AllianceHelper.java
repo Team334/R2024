@@ -4,10 +4,13 @@ package frc.robot.utils.helpers;
 import java.util.Optional;
 
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.Constants;
 
 /** Singleton class to help manage alliance stuff. */
 public class AllianceHelper {
   private static AllianceHelper _instance;
+  
+  public static boolean USE_SAFE_ALLIANCE = false;
 
   /** Get the single instance of the AllianceHelper. */
   public static AllianceHelper getInstance() {
@@ -40,6 +43,8 @@ public class AllianceHelper {
    * Get the match's alliance.
    */
   public Alliance getAlliance() {
+    if (USE_SAFE_ALLIANCE) return Constants.SAFE_ALLIANCE;
+
     return _matchAlliance;
   }
 }

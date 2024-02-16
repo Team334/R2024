@@ -1,10 +1,16 @@
 /* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot.commands.leds;
 
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.Constants.LEDColors;
 import frc.robot.subsystems.LEDSubsystem;
+import frc.robot.utils.UtilFuncs;
 
+/**
+ * @author Lucas Ou
+ */
 public class DefaultLED extends Command {
   private LEDSubsystem _leds;
 
@@ -18,13 +24,12 @@ public class DefaultLED extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    _leds.setColor(Constants.LEDColors.ALLIANCE_RGB);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // _leds.movingPixels(44, 0.2);
+    _leds.setColor(UtilFuncs.GetAlliance() == Alliance.Red ? LEDColors.RED : LEDColors.BLUE);
   }
 
   // Called once the command ends or is interrupted.

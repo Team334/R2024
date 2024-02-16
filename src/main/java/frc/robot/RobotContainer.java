@@ -1,6 +1,8 @@
 /* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot;
 
+import javax.print.attribute.standard.MediaSize.NA;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.MathUtil;
@@ -12,7 +14,11 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
-import frc.robot.commands.intake.FeedIntake;
+import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
+import edu.wpi.first.wpilibj2.command.button.CommandStadiaController;
+import frc.robot.commands.elevator.OperateElevator;
+import frc.robot.commands.elevator.SetElevator;
+import frc.robot.commands.intake.FeedActuate;
 import frc.robot.commands.leds.DefaultLED;
 import frc.robot.commands.shooter.AutoAim;
 import frc.robot.commands.shooter.OperateShooter;
@@ -50,7 +56,8 @@ public class RobotContainer {
 
   // controllers (for driver and operator)
   private final CommandPS4Controller _driveController = new CommandPS4Controller(Constants.Ports.DRIVER_CONTROLLER);
-  private final CommandPS4Controller _operatorController = new CommandPS4Controller(Constants.Ports.OPERATOR_CONTROLLER);
+  // private final CommandPS4Controller _operatorController = new CommandPS4Controller(Constants.Ports.OPERATOR_CONTROLLER);
+  private final CommandPS5Controller _operatorController = new CommandPS5Controller(Constants.Ports.OPERATOR_CONTROLLER);
 
   // private final Command
 
@@ -74,17 +81,43 @@ public class RobotContainer {
     // NamedCommands.registerCommand("speakerAim",
     //     new AutoAim(_ledSubsystem, _shooterSubsystem, _visionSubsystem, _swerveSubsystem));
 
+    NamedCommands.registerCommand("actuateOut", new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE).until(
+      () -> _intakeSubsystem.atDesiredActuatorState()
+    ).andThen(new WaitCommand(5)));
+    // Drive/Operate default commands
+
     // _swerveSubsystem.setDefaultCommand(new TeleopDrive(_swerveSubsystem,
     //     () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
     //     () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1),
     //     () -> MathUtil.applyDeadband(-_driveFilterRightX.calculate(_driveController.getRightX()), 0.1)));
 
+<<<<<<< HEAD
     // _ledSubsystem.setDefaultCommand(new DefaultLED(_ledSubsystem));
     // _shooterSubsystem.setDefaultCommand(new OperateShooter(
     //   _shooterSubsystem,
     //   () -> MathUtil.applyDeadband(_operatorController.getLeftY(), 0.05),
     //   () -> MathUtil.applyDeadband(_operatorController.getRightY(), 0.05)
     // ));
+=======
+    _shooterSubsystem.setDefaultCommand(new OperateShooter(
+      _shooterSubsystem,
+      () -> MathUtil.applyDeadband(_operatorController.getLeftY(), 0.05)
+    ));
+
+    _elevatorSubsystem.setDefaultCommand(new OperateElevator(
+      _elevatorSubsystem,
+      () -> MathUtil.applyDeadband(_operatorController.getRightY(), 0.05)
+    ));
+>>>>>>> 2f064d3522d8e80a821576884869c6a77d8d22b7
+
+    // Non drive/operate default commands
+    _elevatorSubsystem.setDefaultCommand(new SetElevator(_elevatorSubsystem).repeatedly());
+    _shooterSubsystem.setDefaultCommand(new SetShooter(_shooterSubsystem).repeatedly());
+    _intakeSubsystem.setDefaultCommand(new FeedActuate(_intakeSubsystem));
+    // TODO: make sure .repeatedly() works
+
+
+    _ledSubsystem.setDefaultCommand(new DefaultLED(_ledSubsystem));
 
     // _elevatorSubsystem.setDefaultCommand(new HoldElevator(_elevatorSubsystem));
     // _shooterSubsystem.setDefaultCommand(new HoldShooter(_shooterSubsystem));
@@ -122,6 +155,7 @@ public class RobotContainer {
     //     .whileTrue(new PivotMotor(_ledSubsystem, _swerveSubsystem, false, () -> -_driveController.getLeftY()));
 
     // _operatorController.circle().whileTrue();
+<<<<<<< HEAD
     // _operatorController.triangle().whileTrue(new FeedIntake(_intakeSubsystem, ActuatorState.STOWED, Fe                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           edMode.NONE));
     // _operatorController.square().whileTrue(new FeedIntake(_intakeSubsystem, ActuatorState.OUT, FeedMode.NONE));
 
@@ -130,6 +164,18 @@ public class RobotContainer {
     );  
     _operatorController.R1().whileTrue(
       Commands.run(() -> _elevatorSubsystem.driveElevator(0.5), _elevatorSubsystem).handleInterrupt(() -> _elevatorSubsystem.stopElevator())
+=======
+    _operatorController.L1().whileTrue(new SpinShooter(_shooterSubsystem));
+
+    _operatorController.triangle().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.OUTTAKE));
+    _operatorController.square().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE));
+
+    _operatorController.circle().whileTrue(
+      Commands.run(() -> _intakeSubsystem.actuate(-0.6), _intakeSubsystem).handleInterrupt(() -> _intakeSubsystem.actuate(0))
+    );
+    _operatorController.cross().whileTrue(
+      Commands.run(() -> _intakeSubsystem.actuate(0.6), _intakeSubsystem).handleInterrupt(() -> _intakeSubsystem.actuate(0))
+>>>>>>> 2f064d3522d8e80a821576884869c6a77d8d22b7
     );
 
 
