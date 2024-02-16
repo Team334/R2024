@@ -41,12 +41,12 @@ import frc.robot.subsystems.VisionSubsystem;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final VisionSubsystem _visionSubsystem = new VisionSubsystem();
+  // private final VisionSubsystem _visionSubsystem = new VisionSubsystem();
   // private final SwerveDriveSubsystem _swerveSubsystem = new SwerveDriveSubsystem(_visionSubsystem);
-  private final ShooterSubsystem _shooterSubsystem = new ShooterSubsystem();
+  // private final ShooterSubsystem _shooterSubsystem = new ShooterSubsystem();
   private final ElevatorSubsystem _elevatorSubsystem = new ElevatorSubsystem();
-  private final IntakeSubsystem _intakeSubsystem = new IntakeSubsystem();
-  private final LEDSubsystem _ledSubsystem = new LEDSubsystem(Constants.Ports.LEDS, 14);
+  // private final IntakeSubsystem _intakeSubsystem = new IntakeSubsystem();
+  // private final LEDSubsystem _ledSubsystem = new LEDSubsystem(Constants.Ports.LEDS, 14);
 
   // controllers (for driver and operator)
   private final CommandPS4Controller _driveController = new CommandPS4Controller(Constants.Ports.DRIVER_CONTROLLER);
@@ -79,12 +79,12 @@ public class RobotContainer {
     //     () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1),
     //     () -> MathUtil.applyDeadband(-_driveFilterRightX.calculate(_driveController.getRightX()), 0.1)));
 
-    _ledSubsystem.setDefaultCommand(new DefaultLED(_ledSubsystem));
-    _shooterSubsystem.setDefaultCommand(new OperateShooter(
-      _shooterSubsystem,
-      () -> MathUtil.applyDeadband(_operatorController.getLeftY(), 0.05),
-      () -> MathUtil.applyDeadband(_operatorController.getRightY(), 0.05)
-    ));
+    // _ledSubsystem.setDefaultCommand(new DefaultLED(_ledSubsystem));
+    // _shooterSubsystem.setDefaultCommand(new OperateShooter(
+    //   _shooterSubsystem,
+    //   () -> MathUtil.applyDeadband(_operatorController.getLeftY(), 0.05),
+    //   () -> MathUtil.applyDeadband(_operatorController.getRightY(), 0.05)
+    // ));
 
     // _elevatorSubsystem.setDefaultCommand(new HoldElevator(_elevatorSubsystem));
     // _shooterSubsystem.setDefaultCommand(new HoldShooter(_shooterSubsystem));
@@ -122,15 +122,23 @@ public class RobotContainer {
     //     .whileTrue(new PivotMotor(_ledSubsystem, _swerveSubsystem, false, () -> -_driveController.getLeftY()));
 
     // _operatorController.circle().whileTrue();
-    _operatorController.triangle().whileTrue(new FeedIntake(_intakeSubsystem, ActuatorState.STOWED, FeedMode.NONE));
-    _operatorController.square().whileTrue(new FeedIntake(_intakeSubsystem, ActuatorState.OUT, FeedMode.NONE));
+    // _operatorController.triangle().whileTrue(new FeedIntake(_intakeSubsystem, ActuatorState.STOWED, Fe                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           edMode.NONE));
+    // _operatorController.square().whileTrue(new FeedIntake(_intakeSubsystem, ActuatorState.OUT, FeedMode.NONE));
 
-    _operatorController.circle().whileTrue(
-      Commands.run(() -> _intakeSubsystem.actuate(-0.3), _intakeSubsystem).handleInterrupt(() -> _intakeSubsystem.actuate(0))
+    _operatorController.L1().whileTrue(
+      Commands.run(() -> _elevatorSubsystem.driveElevator(-0.5), _elevatorSubsystem).handleInterrupt(() -> _elevatorSubsystem.stopElevator())
+    );  
+    _operatorController.R1().whileTrue(
+      Commands.run(() -> _elevatorSubsystem.driveElevator(0.5), _elevatorSubsystem).handleInterrupt(() -> _elevatorSubsystem.stopElevator())
     );
-    _operatorController.cross().whileTrue(
-      Commands.run(() -> _intakeSubsystem.actuate(0.3), _intakeSubsystem).handleInterrupt(() -> _intakeSubsystem.actuate(0))
-    );
+
+
+    // _operatorController.circle().whileTrue(
+    //   Commands.run(() -> _intakeSubsystem.actuate(-0.3), _intakeSubsystem).handleInterrupt(() -> _intakeSubsystem.actuate(0))
+    // );
+    // _operatorController.cross().whileTrue(
+    //   Commands.run(() -> _intakeSubsystem.actuate(0.3), _intakeSubsystem).handleInterrupt(() -> _intakeSubsystem.actuate(0))
+    // );
 
     // _operatorController.circle().whileTrue(new FeedIntake(_intakeSubsystem, ActuatorState.NONE, FeedMode.INTAKE));
     // _operatorController.cross().whileTrue(new FeedIntake(_intakeSubsystem, ActuatorState.NONE, FeedMode.OUTTAKE));

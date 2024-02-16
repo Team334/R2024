@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkBase.IdleMode;
+
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -15,17 +17,21 @@ public class ElevatorSubsystem extends SubsystemBase {
   private final CANSparkMax _leftMotor = new CANSparkMax(Constants.CAN.ELEVATOR_LEFT, MotorType.kBrushless);
   private final CANSparkMax _rightMotor = new CANSparkMax(Constants.CAN.ELEVATOR_RIGHT, MotorType.kBrushless);
 
-  private final ElevatorFeedforward _elevatorFeed = new ElevatorFeedforward(0, Constants.FeedForward.ELEVATOR_KG, 0);
+  private final ElevatorFeedforward _elevatorFeed = new ElevatorFeedforward(0, 0, 0);
   private final ElevatorFeedforward _climbFeed = new ElevatorFeedforward(0, 0, 0); // TODO: Get this value
 
   private final PIDController _heightController = new PIDController(Constants.PID.ELEVATOR_KP, 0, 0);
 
-  private boolean _usingElevatorFeed = true;
+  private boolean _usingClimberFeed = false;
 
   /** Creates a new ElevatorSubsystem . */
   public ElevatorSubsystem() {
     NeoConfig.configureNeo(_leftMotor, true);
-    NeoConfig.configureFollowerNeo(_leftMotor, _rightMotor, true);
+    NeoConfig.configureFollowerNeo(_rightMotor, _leftMotor, true);
+
+    // _leftMotor.setIdleMode(IdleMode.kCoast);
+    // _rightMotor.setIdleMode(IdleMode.kCoast);
+
   }
 
   @Override
@@ -54,23 +60,25 @@ public class ElevatorSubsystem extends SubsystemBase {
    * Drives the elevator at a desired percent output (feedforward is included).
    */
   public void driveElevator(double speed) {
-    double out;
 
-    if (_usingElevatorFeed)
-      out = _elevatorFeed.calculate(0);
-    else {
-      out = _climbFeed.calculate(0);
-    }
+    // double out = 0;
 
-    _leftMotor.set(UtilFuncs.FromVolts(out) + speed);
+    // if (_usingClimberFeed)
+    //   out = _climbFeed.calculate(0);
+    // else {
+    //   out = _elevatorFeed.calculate(0);
+    // }
+
+    _leftMotor.set(speed);
   }
 
   /** Stops elevator movement. */
   public void stopElevator() {
+    System.out.println("Stopped");
     driveElevator(0);
   }
 
   public void changeElevatorFeed() {
-    _usingElevatorFeed = !_usingElevatorFeed;
+    _usingClimberFeed = !_usingClimberFeed;
   }
 }
