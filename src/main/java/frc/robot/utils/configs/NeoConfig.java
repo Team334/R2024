@@ -24,24 +24,28 @@ public class NeoConfig {
   public static void configureNeo(CANSparkMax neo, boolean invert) {
     neo.restoreFactoryDefaults();
     
+    neo.setCANTimeout(10);
+
     neo.setIdleMode(IdleMode.kBrake);
+
     neo.enableSoftLimit(SoftLimitDirection.kForward, false);
     neo.enableSoftLimit(SoftLimitDirection.kReverse, false);
+
     neo.setInverted(invert);
   }
 
   /**
    * Configure a follower of a master Neo motor.
    *
-   * @param neo
+   * @param follower
    *            - The Neo (with CANSparkMax) to config.
    * @param master
    *            - The master motor.
    * @param opposeMaster
    *            - Whether to oppose the master or not.
    */
-  public static void configureFollowerNeo(CANSparkMax neo, CANSparkMax master, boolean opposeMaster) {
-    configureNeo(neo, false);
-    neo.follow(master, opposeMaster);
+  public static void configureFollowerNeo(CANSparkMax follower, CANSparkMax master, boolean opposeMaster) {
+    configureNeo(follower, false);
+    follower.follow(master, opposeMaster);
   }
 }
