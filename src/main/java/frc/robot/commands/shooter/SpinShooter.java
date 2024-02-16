@@ -4,6 +4,7 @@ package frc.robot.commands.shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.Speeds;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.ShooterSubsystem.ShooterState;
 
 /**
  * @author Elvis Osmanov
@@ -12,9 +13,11 @@ import frc.robot.subsystems.ShooterSubsystem;
  */
 public class SpinShooter extends Command {
   private ShooterSubsystem _shooter;
+  private ShooterState _state;
 
-  public SpinShooter(ShooterSubsystem shooter) {
+  public SpinShooter(ShooterSubsystem shooter, ShooterState state) {
     _shooter = shooter;
+    _state = state;
 
     // NO SHOOTER REQUIREMENT TO NOT MESS WITH SHOOTER ANGLING COMMANDS
   }
@@ -22,7 +25,7 @@ public class SpinShooter extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    _shooter.spinShooter(Speeds.SHOOTER_SPIN_MAX_SPEED);
+    _shooter.setShooterState(_state);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -33,7 +36,7 @@ public class SpinShooter extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    _shooter.stopShooter();
+    _shooter.setShooterState(ShooterState.NONE);
   }
 
   // Returns true when the command should end.

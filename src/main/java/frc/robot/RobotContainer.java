@@ -33,6 +33,7 @@ import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.IntakeSubsystem.ActuatorState;
 import frc.robot.subsystems.IntakeSubsystem.FeedMode;
+import frc.robot.subsystems.ShooterSubsystem.ShooterState;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
@@ -158,7 +159,7 @@ public class RobotContainer {
     //   Commands.run(() -> _elevatorSubsystem.driveElevator(0.5), _elevatorSubsystem).handleInterrupt(() -> _elevatorSubsystem.stopElevator())
     // );
 
-    _operatorController.L1().whileTrue(new SpinShooter(_shooterSubsystem));
+    _operatorController.L1().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.SHOOT));
 
     // _operatorController.triangle().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.OUTTAKE));
     // _operatorController.square().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE));

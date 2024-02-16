@@ -12,6 +12,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.Speeds;
 import frc.robot.utils.UtilFuncs;
 import frc.robot.utils.configs.NeoConfig;
 
@@ -32,8 +33,13 @@ public class ShooterSubsystem extends SubsystemBase {
   private final ArmFeedforward _angleFeed = new ArmFeedforward(0, 0, 0); // nothing for now
   private final PIDController _angleController = new PIDController(0.05, 0, 0.01);
    
-
   private final PIDController _shooterController = new PIDController(Constants.PID.SHOOTER_FLYWHEEL_KP, 0, 0);
+
+  public enum ShooterState {
+    SHOOT,
+    AMP,
+    NONE
+  }
 
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
@@ -118,6 +124,25 @@ public class ShooterSubsystem extends SubsystemBase {
   //   // a similar controller setup can be found in SwerveModule
   //   _leftMotor.set(flywheel_output + flywheel_pid);
   // }
+
+  public void setShooterState(ShooterState state) {
+    switch (state) {
+      case SHOOT:
+        spinShooter(Speeds.SHOOTER_SPIN_MAX_SPEED);
+        break;
+    
+      case AMP:
+        spinShooter(Speeds.SHOOTER_SPIN_MAX_SPEED / 2);
+        break;
+
+      case NONE:
+        stopShooter();
+        break;
+
+      default:
+        break;
+    }
+  }
 
   /** Spins the shooter at the specified percent output. */
   public void spinShooter(double speed) {
