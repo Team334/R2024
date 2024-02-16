@@ -86,11 +86,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     System.out.println("Stopped");
     driveElevator(0);
   }
-<<<<<<< HEAD
 
   public void changeElevatorFeed() {
     _usingClimberFeed = !_usingClimberFeed;
   }
-=======
->>>>>>> 2f064d3522d8e80a821576884869c6a77d8d22b7
 }

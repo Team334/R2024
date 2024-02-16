@@ -91,14 +91,6 @@ public class RobotContainer {
     //     () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1),
     //     () -> MathUtil.applyDeadband(-_driveFilterRightX.calculate(_driveController.getRightX()), 0.1)));
 
-<<<<<<< HEAD
-    // _ledSubsystem.setDefaultCommand(new DefaultLED(_ledSubsystem));
-    // _shooterSubsystem.setDefaultCommand(new OperateShooter(
-    //   _shooterSubsystem,
-    //   () -> MathUtil.applyDeadband(_operatorController.getLeftY(), 0.05),
-    //   () -> MathUtil.applyDeadband(_operatorController.getRightY(), 0.05)
-    // ));
-=======
     _shooterSubsystem.setDefaultCommand(new OperateShooter(
       _shooterSubsystem,
       () -> MathUtil.applyDeadband(_operatorController.getLeftY(), 0.05)
@@ -108,7 +100,6 @@ public class RobotContainer {
       _elevatorSubsystem,
       () -> MathUtil.applyDeadband(_operatorController.getRightY(), 0.05)
     ));
->>>>>>> 2f064d3522d8e80a821576884869c6a77d8d22b7
 
     // Non drive/operate default commands
     _elevatorSubsystem.setDefaultCommand(new SetElevator(_elevatorSubsystem).repeatedly());
@@ -155,7 +146,7 @@ public class RobotContainer {
     //     .whileTrue(new PivotMotor(_ledSubsystem, _swerveSubsystem, false, () -> -_driveController.getLeftY()));
 
     // _operatorController.circle().whileTrue();
-<<<<<<< HEAD
+
     // _operatorController.triangle().whileTrue(new FeedIntake(_intakeSubsystem, ActuatorState.STOWED, Fe                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           edMode.NONE));
     // _operatorController.square().whileTrue(new FeedIntake(_intakeSubsystem, ActuatorState.OUT, FeedMode.NONE));
 
@@ -164,7 +155,6 @@ public class RobotContainer {
     );  
     _operatorController.R1().whileTrue(
       Commands.run(() -> _elevatorSubsystem.driveElevator(0.5), _elevatorSubsystem).handleInterrupt(() -> _elevatorSubsystem.stopElevator())
-=======
     _operatorController.L1().whileTrue(new SpinShooter(_shooterSubsystem));
 
     _operatorController.triangle().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.OUTTAKE));
@@ -175,7 +165,7 @@ public class RobotContainer {
     );
     _operatorController.cross().whileTrue(
       Commands.run(() -> _intakeSubsystem.actuate(0.6), _intakeSubsystem).handleInterrupt(() -> _intakeSubsystem.actuate(0))
->>>>>>> 2f064d3522d8e80a821576884869c6a77d8d22b7
+
     );
 
 
