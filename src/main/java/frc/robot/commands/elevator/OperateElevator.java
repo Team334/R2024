@@ -7,6 +7,7 @@ package frc.robot.commands.elevator;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.ElevatorSubsystem;
 
 public class OperateElevator extends Command {
@@ -29,7 +30,7 @@ public class OperateElevator extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    _elevator.driveElevator(_heightSpeed.getAsDouble() * 0.2);
+    _elevator.driveElevator(_heightSpeed.getAsDouble() * Constants.Speeds.ELEVATOR_MAX_SPEED);
   }
 
   // Called once the command ends or is interrupted.

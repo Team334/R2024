@@ -175,6 +175,7 @@ public class RobotContainer {
 
 
     _operatorController.R1().whileTrue(new SetShooter(_shooterSubsystem, () -> 25));
+    _operatorController.R2().whileTrue(new SetElevator(_elevatorSubsystem, () -> 45));
 
     // _operatorController.L1().whileTrue(
     //   new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE).alongWith(

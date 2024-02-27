@@ -63,6 +63,7 @@ public final class Constants {
     public static final double SHOOTER_AMP_SPEED = 0.2;
 
     public static final double SHOOTER_ANGLE_MAX_SPEED = 0.3;
+    public static final double ELEVATOR_MAX_SPEED = 0.2;
 
     public static final double INTAKE_FEED_MAX_SPEED = 0.25; // TODO: Get this
     public static final double OUTTAKE_FEED_MAX_SPEED = -0.25;
@@ -127,7 +128,7 @@ public final class Constants {
 
     public static final double SHOOTER_FLYWHEEL_KP = 0;
 
-    public static final double ELEVATOR_KP = 0;
+    public static final double ELEVATOR_KP = 0.01;
 
     public static final double SWERVE_HEADING_KP = 0.045;
     public static final double SWERVE_HEADING_KD = 0.001;

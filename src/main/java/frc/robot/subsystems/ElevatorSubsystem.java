@@ -3,10 +3,14 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkBase.SoftLimitDirection;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.utils.UtilFuncs;
@@ -16,6 +20,8 @@ import frc.robot.utils.configs.NeoConfig;
 public class ElevatorSubsystem extends SubsystemBase {
   private final CANSparkMax _leftMotor = new CANSparkMax(Constants.CAN.ELEVATOR_LEFT, MotorType.kBrushless);
   private final CANSparkMax _rightMotor = new CANSparkMax(Constants.CAN.ELEVATOR_RIGHT, MotorType.kBrushless);
+
+  private final RelativeEncoder _leftEncoder;
 
   private final ElevatorFeedforward _elevatorFeed = new ElevatorFeedforward(0, 0, 0);
   private final ElevatorFeedforward _climbFeed = new ElevatorFeedforward(0, 0, 0); // TODO: Get this value
@@ -29,14 +35,26 @@ public class ElevatorSubsystem extends SubsystemBase {
     NeoConfig.configureNeo(_leftMotor, true);
     NeoConfig.configureFollowerNeo(_rightMotor, _leftMotor, true);
 
-    // _leftMotor.setIdleMode(IdleMode.kCoast);
-    // _rightMotor.setIdleMode(IdleMode.kCoast);
+    _leftEncoder = _leftMotor.getEncoder();
+    _leftEncoder.setPosition(0);
+
+    _leftMotor.setSoftLimit(SoftLimitDirection.kForward, 85);
+    _leftMotor.setSoftLimit(SoftLimitDirection.kReverse, 0);
+
+    _leftMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+    _leftMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+
+    _heightController.setTolerance(0.5);
+
+    SmartDashboard.putData("ELEVATOR PID", _heightController);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     // harry chen code maybe fix
+
+    SmartDashboard.putNumber("ELEVATOR ENCODER HEIGHT", getElevatorHeight());
   }
 
   /**
@@ -53,14 +71,20 @@ public class ElevatorSubsystem extends SubsystemBase {
     return _heightController.atSetpoint();
   }
 
-  /** Sets the height of the elevator in meters. MUST be called repeatedly. */
-  public void setElevatorHeight(double heightMeters) {
-    driveElevator(_heightController.calculate(getElevatorHeight(), heightMeters));
+  /** Sets the height of the elevator in encoder val. MUST be called repeatedly. */
+  public void setElevatorHeight(double height) {
+    double out = MathUtil.clamp(
+      _heightController.calculate(getElevatorHeight(), height),
+      -Constants.Speeds.ELEVATOR_MAX_SPEED,
+      Constants.Speeds.ELEVATOR_MAX_SPEED
+    );
+
+    driveElevator(out);
   }
 
-  /** Get the height of the elevator in meters. */
+  /** Get the height of the elevator encoder val. */
   public double getElevatorHeight() {
-    return 0.00;
+    return _leftEncoder.getPosition();
   }
 
   /**
