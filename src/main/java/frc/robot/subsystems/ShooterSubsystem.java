@@ -29,8 +29,8 @@ public class ShooterSubsystem extends SubsystemBase {
   private final RelativeEncoder _leftEncoder = _leftMotor.getEncoder();
   private final RelativeEncoder _angleEncoder = _angleMotor.getEncoder();
 
-  private final ArmFeedforward _angleFeed = new ArmFeedforward(0, 0.5, 0); // nothing for now
-  private final PIDController _angleController = new PIDController(0.5, 0, 0);
+  private final ArmFeedforward _angleFeed = new ArmFeedforward(0, 0, 0); // nothing for now
+  private final PIDController _angleController = new PIDController(0.08, 0, 0);
 
   public enum ShooterState {
     SHOOT,

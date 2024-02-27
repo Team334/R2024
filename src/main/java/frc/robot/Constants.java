@@ -65,7 +65,9 @@ public final class Constants {
     public static final double SHOOTER_ANGLE_MAX_SPEED = 0.3;
 
     public static final double INTAKE_FEED_MAX_SPEED = 0.25; // TODO: Get this
-    public static final double INTAKE_ACTUATE_MAX_SPEED = 0.6;
+    public static final double OUTTAKE_FEED_MAX_SPEED = -0.25;
+
+    public static final double INTAKE_ACTUATE_MAX_SPEED = 0.12;
   }
 
   public static class Physical {
@@ -78,7 +80,7 @@ public final class Constants {
     public static final double SWERVE_DRIVE_WHEEL_CIRCUMFERENCE = 2 * Math.PI * SWERVE_DRIVE_WHEEL_RADIUS;
 
     public static final double SHOOTER_FLYWHEEL_GEAR_RATIO = 1.45; // TODO: FIND THIS
-    public static final double SHOOTER_ANGLE_GEAR_RATIO = 67.2;
+    public static final double SHOOTER_ANGLE_GEAR_RATIO = 112;
     public static final double SHOOTER_FLYWHEEL_RADIUS = 1; // TODO: FIND RADIUS
     public static final double SHOOTER_FLYWHEEL_CIRCUMFERENCE = 2 * Math.PI * SHOOTER_FLYWHEEL_RADIUS;
 

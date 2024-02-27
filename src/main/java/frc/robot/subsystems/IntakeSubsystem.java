@@ -19,7 +19,7 @@ import frc.robot.utils.configs.NeoConfig;
  */
 public class IntakeSubsystem extends SubsystemBase {
   private final CANSparkMax _feedMotor, _actuatorMotor;
-  private final PIDController _actuatorController = new PIDController(0, 0, 0);
+  private final PIDController _actuatorController = new PIDController(0.01, 0, 0);
 
   private final RelativeEncoder _actuatorEncoder;
   private final RelativeEncoder _feedEncoder;
@@ -62,7 +62,7 @@ public class IntakeSubsystem extends SubsystemBase {
    * @return True if the intake is moving against a note, else False.
    */
   public boolean noteSafety() {
-    if (Math.abs(_feedMotor.get()) > 0 && Math.abs(_feedEncoder.getVelocity()) < 0.1) {
+    if (Math.abs(_feedMotor.get()) > 0 && Math.abs(_feedEncoder.getVelocity()) < 2) {
       return true;
     }
 
@@ -139,11 +139,11 @@ public class IntakeSubsystem extends SubsystemBase {
   public void feed(FeedMode feedMode) {
     switch (feedMode) {
       case INTAKE :
-        _feedMotor.set(-Constants.Speeds.INTAKE_FEED_MAX_SPEED);
+        _feedMotor.set(Constants.Speeds.INTAKE_FEED_MAX_SPEED);
         break;
 
       case OUTTAKE :
-        _feedMotor.set(Constants.Speeds.INTAKE_FEED_MAX_SPEED);
+        _feedMotor.set(Constants.Speeds.OUTTAKE_FEED_MAX_SPEED);
         break;
 
       case NONE :
@@ -160,6 +160,8 @@ public class IntakeSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("ACTUATOR ENCODER", _actuatorEncoder.getPosition());
     SmartDashboard.putData("ACTUATOR PID", _actuatorController);
+
+    SmartDashboard.putBoolean("NOTE SAFETY", noteSafety());
 
     // if (noteSafety()) { feed(FeedMode.NONE); }
   }

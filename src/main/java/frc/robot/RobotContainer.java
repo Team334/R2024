@@ -48,8 +48,8 @@ import frc.robot.subsystems.VisionSubsystem;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  //private final VisionSubsystem _visionSubsystem = new VisionSubsystem();
-  //private final SwerveDriveSubsystem _swerveSubsystem = new SwerveDriveSubsystem(_visionSubsystem);
+  // private final VisionSubsystem _visionSubsystem = new VisionSubsystem();
+  // private final SwerveDriveSubsystem _swerveSubsystem = new SwerveDriveSubsystem(_visionSubsystem);
   private final ShooterSubsystem _shooterSubsystem = new ShooterSubsystem();
   private final ElevatorSubsystem _elevatorSubsystem = new ElevatorSubsystem();
  private final IntakeSubsystem _intakeSubsystem = new IntakeSubsystem();
@@ -120,7 +120,7 @@ public class RobotContainer {
     //   () -> MathUtil.applyDeadband(_operatorController.getRightY(), 0.05)
     // ));
 
-    // _intakeSubsystem.setDefaultCommand(new FeedIntake(_intakeSubsystem, ActuatorState.STOWED));
+    _intakeSubsystem.setDefaultCommand(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.NONE).repeatedly());
 
     // configure trigger bindings
     configureBindings();
@@ -165,20 +165,16 @@ public class RobotContainer {
     // _operatorController.triangle().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.OUTTAKE));
     // _operatorController.square().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE));
 
-    _operatorController.circle().whileTrue(
-      Commands.run(() -> _intakeSubsystem.actuate(-0.05), _intakeSubsystem).handleInterrupt(() -> _intakeSubsystem.actuate(0))
-    );
-    _operatorController.cross().whileTrue(
-      Commands.run(() -> _intakeSubsystem.actuate(0.05), _intakeSubsystem).handleInterrupt(() -> _intakeSubsystem.actuate(0))
-    );
-    _operatorController.square().whileTrue(
-      Commands.run(() -> _intakeSubsystem.feed(FeedMode.INTAKE), _intakeSubsystem).handleInterrupt(() -> _intakeSubsystem.feed(FeedMode.NONE))
-    );
-    _operatorController.triangle().whileTrue(
-      Commands.run(() -> _intakeSubsystem.feed(FeedMode.OUTTAKE), _intakeSubsystem).handleInterrupt(() -> _intakeSubsystem.feed(FeedMode.NONE))
-    );
+    _operatorController.circle().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.NONE, FeedMode.INTAKE));
+    _operatorController.cross().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.NONE, FeedMode.OUTTAKE));
+    // _operatorController.square().whileTrue(
+    //   Commands.run(() -> _intakeSubsystem.feed(FeedMode.INTAKE), _intakeSubsystem).handleInterrupt(() -> _intakeSubsystem.feed(FeedMode.NONE))
+    // );
+    _operatorController.square().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE));
+    _operatorController.triangle().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.NONE));
 
-    _operatorController.R1().whileTrue(new SetShooter(_shooterSubsystem, () -> 10));
+
+    _operatorController.R1().whileTrue(new SetShooter(_shooterSubsystem, () -> 25));
 
     // _operatorController.L1().whileTrue(
     //   new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE).alongWith(
