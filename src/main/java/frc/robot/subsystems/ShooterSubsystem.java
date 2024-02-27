@@ -29,11 +29,8 @@ public class ShooterSubsystem extends SubsystemBase {
   private final RelativeEncoder _leftEncoder = _leftMotor.getEncoder();
   private final RelativeEncoder _angleEncoder = _angleMotor.getEncoder();
 
-
-  private final ArmFeedforward _angleFeed = new ArmFeedforward(0, 0, 0); // nothing for now
-  private final PIDController _angleController = new PIDController(0.05, 0, 0.01);
-   
-  private final PIDController _shooterController = new PIDController(Constants.PID.SHOOTER_FLYWHEEL_KP, 0, 0);
+  private final ArmFeedforward _angleFeed = new ArmFeedforward(0, 0.5, 0); // nothing for now
+  private final PIDController _angleController = new PIDController(0.1, 0, 0);
 
   public enum ShooterState {
     SHOOT,
@@ -60,7 +57,6 @@ public class ShooterSubsystem extends SubsystemBase {
     _angleMotor.setSoftLimit(SoftLimitDirection.kReverse, (float) (-45 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360));
 
     _angleController.setTolerance(0.5);
-    SmartDashboard.putData("ANGLE PID", _angleController);
   }
 
   @Override
@@ -70,15 +66,15 @@ public class ShooterSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("SHOOTER ANGLE", getAngle());
   }
 
-  /** Returns true if the shooter is at the last desired height setpoint. */
+  /** Returns true if the shooter is at the last desired angle setpoint. */
   public boolean atDesiredAngle() {
-    return _shooterController.atSetpoint();
+    return _angleController.atSetpoint();
   }
 
   /** Set the angle of the shooter in degrees. MUST be called repeatedly. */
   public void setAngle(double angleDegrees) {
     double pid = MathUtil.clamp(
-      _angleController.calculate(getAngle(), _angleController.getSetpoint()), // test
+      _angleController.calculate(getAngle(), angleDegrees), // test
       -Constants.Speeds.SHOOTER_ANGLE_MAX_SPEED,
       Constants.Speeds.SHOOTER_ANGLE_MAX_SPEED
     );

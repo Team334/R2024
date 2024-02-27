@@ -68,7 +68,7 @@ public class RobotContainer {
   private final SlewRateLimiter _driveFilterRightX = new SlewRateLimiter(4);
   private final SlewRateLimiter _driveFilterRightY = new SlewRateLimiter(4);
 
-  private final SlewRateLimiter _operatorFilterLeftY = new SlewRateLimiter(4);
+  private final SlewRateLimiter _operatorFilterLeftY = new SlewRateLimiter(2);
   private final SlewRateLimiter _operatorFilterRightY = new SlewRateLimiter(4);
 
   // sendable chooser for auton commands
@@ -85,9 +85,9 @@ public class RobotContainer {
     // NamedCommands.registerCommand("speakerAim",
     //     new AutoAim(_ledSubsystem, _shooterSubsystem, _visionSubsystem, _swerveSubsystem));
 
-    NamedCommands.registerCommand("actuateOut", new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE).until(
-      () -> _intakeSubsystem.atDesiredActuatorState()
-    ).andThen(new WaitCommand(5)));
+    // NamedCommands.registerCommand("actuateOut", new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE).until(
+    //   () -> _intakeSubsystem.atDesiredActuatorState()
+    // ).andThen(new WaitCommand(5)));
     // Drive/Operate default commands
 
     // _swerveSubsystem.setDefaultCommand(new TeleopDrive(_swerveSubsystem,
@@ -97,7 +97,7 @@ public class RobotContainer {
 
     _shooterSubsystem.setDefaultCommand(new OperateShooter(
       _shooterSubsystem,
-      () -> _operatorFilterLeftY.calculate(MathUtil.applyDeadband(_operatorController.getLeftY(), 0.05))
+      () -> -MathUtil.applyDeadband(_operatorController.getLeftY(), 0.05)
     ));
 
     _elevatorSubsystem.setDefaultCommand(new OperateElevator(
@@ -171,6 +171,14 @@ public class RobotContainer {
     _operatorController.cross().whileTrue(
       Commands.run(() -> _intakeSubsystem.actuate(0.05), _intakeSubsystem).handleInterrupt(() -> _intakeSubsystem.actuate(0))
     );
+    _operatorController.square().whileTrue(
+      Commands.run(() -> _intakeSubsystem.feed(FeedMode.INTAKE), _intakeSubsystem).handleInterrupt(() -> _intakeSubsystem.feed(FeedMode.NONE))
+    );
+    _operatorController.triangle().whileTrue(
+      Commands.run(() -> _intakeSubsystem.feed(FeedMode.OUTTAKE), _intakeSubsystem).handleInterrupt(() -> _intakeSubsystem.feed(FeedMode.NONE))
+    );
+
+    _operatorController.R1().whileTrue(new SetShooter(_shooterSubsystem, () -> 10));
 
     // _operatorController.L1().whileTrue(
     //   new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE).alongWith(

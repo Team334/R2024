@@ -4,9 +4,11 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkBase.SoftLimitDirection;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -46,9 +48,20 @@ public class IntakeSubsystem extends SubsystemBase {
 
     NeoConfig.configureNeo(_feedMotor, true);
     NeoConfig.configureNeo(_actuatorMotor, false);
+
+    _actuatorMotor.setSoftLimit(SoftLimitDirection.kForward, Constants.Encoders.INTAKE_OUT);
+    _actuatorMotor.setSoftLimit(SoftLimitDirection.kReverse, Constants.Encoders.INTAKE_STOWED);
+
+    _actuatorMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+    _actuatorMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
   }
 
-  public boolean hasNote() {
+  /** 
+   * Creates a safety if the intake is moving against a note.
+   * 
+   * @return True if the intake is moving against a note, else False.
+   */
+  public boolean noteSafety() {
     if (Math.abs(_feedMotor.get()) > 0 && Math.abs(_feedEncoder.getVelocity()) < 0.1) {
       return true;
     }
@@ -148,6 +161,6 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("ACTUATOR ENCODER", _actuatorEncoder.getPosition());
     SmartDashboard.putData("ACTUATOR PID", _actuatorController);
 
-    // if (hasNote()) { feed(FeedMode.NONE); }
+    // if (noteSafety()) { feed(FeedMode.NONE); }
   }
 }
