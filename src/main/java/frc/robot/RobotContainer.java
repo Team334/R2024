@@ -48,11 +48,11 @@ import frc.robot.subsystems.VisionSubsystem;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  // private final VisionSubsystem _visionSubsystem = new VisionSubsystem();
-  // private final SwerveDriveSubsystem _swerveSubsystem = new SwerveDriveSubsystem(_visionSubsystem);
+  private final VisionSubsystem _visionSubsystem = new VisionSubsystem();
+  private final SwerveDriveSubsystem _swerveSubsystem = new SwerveDriveSubsystem(_visionSubsystem);
   private final ShooterSubsystem _shooterSubsystem = new ShooterSubsystem();
   private final ElevatorSubsystem _elevatorSubsystem = new ElevatorSubsystem();
- private final IntakeSubsystem _intakeSubsystem = new IntakeSubsystem();
+  private final IntakeSubsystem _intakeSubsystem = new IntakeSubsystem();
 // private final LEDSubsystem _ledSubsystem = new LEDSubsystem(Constants.Ports.LEDS, 14);
 
   // controllers (for driver and operator)
@@ -78,7 +78,7 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    // TODO: should switch to regsiterCommands for more neatness
+    // TODO: should switch to regsiterCommands for more neatness 
     // NamedCommands.registerCommand("printHello", new PrintCommand("AUTON HELLO"));
     // NamedCommands.registerCommand("waitCommand", new WaitCommand(3));
     // NamedCommands.registerCommand("interruptSwerve", new BrakeSwerve(_swerveSubsystem, _ledSubsystem));
@@ -90,10 +90,10 @@ public class RobotContainer {
     // ).andThen(new WaitCommand(5)));
     // Drive/Operate default commands
 
-    // _swerveSubsystem.setDefaultCommand(new TeleopDrive(_swerveSubsystem,
-    //     () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
-    //     () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1),
-    //     () -> MathUtil.applyDeadband(-_driveFilterRightX.calculate(_driveController.getRightX()), 0.1)));
+    _swerveSubsystem.setDefaultCommand(new TeleopDrive(_swerveSubsystem,
+        () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
+        () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1),
+        () -> MathUtil.applyDeadband(-_driveFilterRightX.calculate(_driveController.getRightX()), 0.1)));
 
     _shooterSubsystem.setDefaultCommand(new OperateShooter(
       _shooterSubsystem,

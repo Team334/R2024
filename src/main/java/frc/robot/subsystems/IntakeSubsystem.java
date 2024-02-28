@@ -46,7 +46,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     _actuatorController.setTolerance(0.5);
 
-    NeoConfig.configureNeo(_feedMotor, true);
+    NeoConfig.configureNeo(_feedMotor, false);
     NeoConfig.configureNeo(_actuatorMotor, false);
 
     _actuatorMotor.setSoftLimit(SoftLimitDirection.kForward, Constants.Encoders.INTAKE_OUT);

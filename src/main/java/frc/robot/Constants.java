@@ -23,22 +23,22 @@ public final class Constants {
   public static final Alliance SAFE_ALLIANCE = Alliance.Red;
 
   public static class CAN {
-    public static final int DRIVE_FRONT_LEFT = 1;
-    public static final int ROT_FRONT_LEFT = 2;
+    public static final int DRIVE_FRONT_LEFT = 5;
+    public static final int ROT_FRONT_LEFT = 6;
 
-    public static final int DRIVE_FRONT_RIGHT = 3;
-    public static final int ROT_FRONT_RIGHT = 4;
+    public static final int DRIVE_FRONT_RIGHT = 7;
+    public static final int ROT_FRONT_RIGHT = 8;
 
-    public static final int DRIVE_BACK_RIGHT = 5;
-    public static final int ROT_BACK_RIGHT = 6;
+    public static final int DRIVE_BACK_RIGHT = 1;
+    public static final int ROT_BACK_RIGHT = 2;
 
-    public static final int DRIVE_BACK_LEFT = 7;
-    public static final int ROT_BACK_LEFT = 8;
+    public static final int DRIVE_BACK_LEFT = 3;
+    public static final int ROT_BACK_LEFT = 4;
 
-    public static final int ENC_FRONT_LEFT = 9;
-    public static final int ENC_FRONT_RIGHT = 10;
-    public static final int ENC_BACK_LEFT = 12;
-    public static final int ENC_BACK_RIGHT = 11;
+    public static final int ENC_FRONT_LEFT = 11;
+    public static final int ENC_FRONT_RIGHT = 12;
+    public static final int ENC_BACK_LEFT = 10;
+    public static final int ENC_BACK_RIGHT = 9;
 
     public static final int SHOOTER_LEFT = 13;
     public static final int SHOOTER_RIGHT = 14;
