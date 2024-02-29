@@ -120,7 +120,7 @@ public class RobotContainer {
     //   () -> MathUtil.applyDeadband(_operatorController.getRightY(), 0.05)
     // ));
 
-    _intakeSubsystem.setDefaultCommand(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.NONE).repeatedly());
+    _intakeSubsystem.setDefaultCommand(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.NONE));
 
     // configure trigger bindings
     configureBindings();
@@ -132,6 +132,11 @@ public class RobotContainer {
 
   // to configure button bindings
   private void configureBindings() {
+    Command safeActuate = new SetShooter(
+      _shooterSubsystem,
+      () -> 0
+    ).andThen(new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE));
+
     // _driveController.R1().onTrue(new ToggleSwerveOrient(_swerveSubsystem));
     // _driveController.square().onTrue(new ResetPose(_swerveSubsystem));
     // 
@@ -170,12 +175,12 @@ public class RobotContainer {
     // _operatorController.square().whileTrue(
     //   Commands.run(() -> _intakeSubsystem.feed(FeedMode.INTAKE), _intakeSubsystem).handleInterrupt(() -> _intakeSubsystem.feed(FeedMode.NONE))
     // );
-    _operatorController.square().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE));
+    _operatorController.square().whileTrue(safeActuate);
     _operatorController.triangle().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.NONE));
 
 
-    _operatorController.R1().whileTrue(new SetShooter(_shooterSubsystem, () -> 25));
-    _operatorController.R2().whileTrue(new SetElevator(_elevatorSubsystem, () -> 45));
+    _operatorController.R1().whileTrue(new SetShooter(_shooterSubsystem, () -> 38));
+    // _operatorController.R2().whileTrue(new SetElevator(_elevatorSubsystem, () -> 45));
 
     // _operatorController.L1().whileTrue(
     //   new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE).alongWith(

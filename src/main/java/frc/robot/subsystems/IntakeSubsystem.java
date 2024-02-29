@@ -19,7 +19,7 @@ import frc.robot.utils.configs.NeoConfig;
  */
 public class IntakeSubsystem extends SubsystemBase {
   private final CANSparkMax _feedMotor, _actuatorMotor;
-  private final PIDController _actuatorController = new PIDController(0.01, 0, 0);
+  private final PIDController _actuatorController = new PIDController(0.03, 0, 0);
 
   private final RelativeEncoder _actuatorEncoder;
   private final RelativeEncoder _feedEncoder;

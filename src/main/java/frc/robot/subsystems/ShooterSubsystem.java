@@ -29,7 +29,7 @@ public class ShooterSubsystem extends SubsystemBase {
   private final RelativeEncoder _leftEncoder = _leftMotor.getEncoder();
   private final RelativeEncoder _angleEncoder = _angleMotor.getEncoder();
 
-  private final ArmFeedforward _angleFeed = new ArmFeedforward(0, 0, 0); // nothing for now
+  private final ArmFeedforward _angleFeed = new ArmFeedforward(0.001, 0, 0); // nothing for now
   private final PIDController _angleController = new PIDController(0.08, 0, 0);
 
   public enum ShooterState {
@@ -53,8 +53,8 @@ public class ShooterSubsystem extends SubsystemBase {
     _angleMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
     _angleMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
     
-    _angleMotor.setSoftLimit(SoftLimitDirection.kForward, (float) (30 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360));
-    _angleMotor.setSoftLimit(SoftLimitDirection.kReverse, (float) (-45 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360));
+    _angleMotor.setSoftLimit(SoftLimitDirection.kForward, (float) (54 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360));
+    _angleMotor.setSoftLimit(SoftLimitDirection.kReverse, (float) (0 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360));
 
     _angleController.setTolerance(0.5);
   }

@@ -66,9 +66,9 @@ public final class Constants {
     public static final double ELEVATOR_MAX_SPEED = 0.2;
 
     public static final double INTAKE_FEED_MAX_SPEED = 0.25; // TODO: Get this
-    public static final double OUTTAKE_FEED_MAX_SPEED = -0.25;
+    public static final double OUTTAKE_FEED_MAX_SPEED = -0.4;
 
-    public static final double INTAKE_ACTUATE_MAX_SPEED = 0.12;
+    public static final double INTAKE_ACTUATE_MAX_SPEED = 0.4;
   }
 
   public static class Physical {
