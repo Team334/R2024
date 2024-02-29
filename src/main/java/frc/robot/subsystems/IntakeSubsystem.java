@@ -8,8 +8,11 @@ import com.revrobotics.CANSparkBase.SoftLimitDirection;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.utils.configs.NeoConfig;
@@ -19,7 +22,13 @@ import frc.robot.utils.configs.NeoConfig;
  */
 public class IntakeSubsystem extends SubsystemBase {
   private final CANSparkMax _feedMotor, _actuatorMotor;
-  private final PIDController _actuatorController = new PIDController(0.03, 0, 0);
+  private final PIDController _actuatorController = new PIDController(0.025, 0, 0);
+  // private final ProfiledPIDController _actuatorController = new ProfiledPIDController(
+  //   0.05,
+  //   0,
+  //   0,
+  //   new TrapezoidProfile.Constraints(22, 50)
+  // );
 
   private final RelativeEncoder _actuatorEncoder;
   private final RelativeEncoder _feedEncoder;
@@ -164,5 +173,6 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("NOTE SAFETY", noteSafety());
 
     // if (noteSafety()) { feed(FeedMode.NONE); }
+    SmartDashboard.putNumber("ACTUATOR VEL", _actuatorEncoder.getVelocity() / 60);
   }
 }
