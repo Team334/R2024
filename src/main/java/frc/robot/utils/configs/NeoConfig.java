@@ -31,6 +31,8 @@ public class NeoConfig {
     neo.enableSoftLimit(SoftLimitDirection.kForward, false);
     neo.enableSoftLimit(SoftLimitDirection.kReverse, false);
 
+    neo.setSmartCurrentLimit(50); // TODO: Find
+
     neo.setInverted(invert);
   }
 

@@ -40,6 +40,8 @@ public class TalonFXConfig {
     config.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
     config.SoftwareLimitSwitch.ReverseSoftLimitEnable = false;
 
+    config.CurrentLimits.StatorCurrentLimit = 50; // TODO: Find
+
     falcon.getConfigurator().apply(config);
 
     return config;
