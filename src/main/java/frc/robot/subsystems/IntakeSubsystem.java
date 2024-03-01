@@ -134,6 +134,17 @@ public class IntakeSubsystem extends SubsystemBase {
     _actuatorMotor.set(out);
   }
 
+  public void setAngle(double angle){
+    double out = 0;
+
+     out = MathUtil.clamp(
+          _actuatorController.calculate(getActuator(), angle),
+          -Constants.Speeds.INTAKE_ACTUATE_MAX_SPEED,
+          Constants.Speeds.INTAKE_ACTUATE_MAX_SPEED);
+
+    _actuatorMotor.set(out);
+  }
+
   // for testing
   public void feed(double s) {
     _feedMotor.set(s);
