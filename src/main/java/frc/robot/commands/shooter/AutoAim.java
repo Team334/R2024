@@ -15,7 +15,6 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.utils.UtilFuncs;
 
 /**
@@ -26,7 +25,6 @@ import frc.robot.utils.UtilFuncs;
 public class AutoAim extends Command {
   private final ShooterSubsystem _shooter;
   private final SwerveDriveSubsystem _swerve;
-  private final VisionSubsystem _vision;
   private final IntakeSubsystem _intake;
   private final ElevatorSubsystem _elevator;
   private final LEDSubsystem _leds;
@@ -44,7 +42,7 @@ public class AutoAim extends Command {
 
   /** Creates a new AutoAim. */
   public AutoAim(ShooterSubsystem shooter, LEDSubsystem leds, SwerveDriveSubsystem swerve,
-      DoubleSupplier xSpeed, DoubleSupplier ySpeed, VisionSubsystem vision, IntakeSubsystem intake, ElevatorSubsystem elevator) {
+      DoubleSupplier xSpeed, DoubleSupplier ySpeed, IntakeSubsystem intake, ElevatorSubsystem elevator) {
     // Use addRequirements() here to declare subsystem dependencies.
     _leds = leds;
     _shooter = shooter;
@@ -58,16 +56,15 @@ public class AutoAim extends Command {
     _headingController.setTolerance(2);
     _headingController.enableContinuousInput(-180, 180);
 
-    _vision = vision;
     _intake = intake;
     _elevator = elevator;
 
-    addRequirements(_shooter, _swerve, _leds);
+    addRequirements(_shooter, _swerve, _leds, _intake, _elevator);
   }
 
   /** Creates an auton AutoAim that ends when it reaches the first setpoints. */
-  public AutoAim(LEDSubsystem leds, ShooterSubsystem shooter, SwerveDriveSubsystem swerve, VisionSubsystem vision, IntakeSubsystem intake, ElevatorSubsystem elevator) {
-    this(shooter, leds, swerve, () -> 0, () -> 0, vision, intake, elevator);
+  public AutoAim(LEDSubsystem leds, ShooterSubsystem shooter, SwerveDriveSubsystem swerve, IntakeSubsystem intake, ElevatorSubsystem elevator) {
+    this(shooter, leds, swerve, () -> 0, () -> 0, intake, elevator);
 
     _runOnce = true;
   }
@@ -84,7 +81,6 @@ public class AutoAim extends Command {
   public void execute() {
     double currentSwerveHeading = _swerve.getHeading().getDegrees();
     double desiredSwerveHeading = _swerve.speakerAngles()[0];
-    int speakerAprilTag = UtilFuncs.GetAlliance() == Alliance.Red ? 4 : 7;
 
     double rotationVelocity = MathUtil.clamp(
         _headingController.calculate(currentSwerveHeading, desiredSwerveHeading),
@@ -93,12 +89,8 @@ public class AutoAim extends Command {
 
     _reachedSwerveHeading = _headingController.atSetpoint();
     
-    if (_vision.isApriltagVisible(speakerAprilTag)){
-      _shooter.setAngle(_vision.tagAngleOffsets(speakerAprilTag)[1]); // Might need an angle offset prob better without limelight
-    }
-    else{
-      _shooter.setAngle(_swerve.speakerAngles()[1]);
-    }
+    
+    _shooter.setAngle(_swerve.speakerAngles()[1]);
 
     _intake.setAngle(_shooter.getAngle());
 
