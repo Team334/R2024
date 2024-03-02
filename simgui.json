@@ -13,7 +13,9 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/ACTUATOR PID": "PIDController",
       "/SmartDashboard/AUTON CHOOSER": "String Chooser",
+      "/SmartDashboard/ELEVATOR PID": "PIDController",
       "/SmartDashboard/FIELD": "Field2d",
       "/SmartDashboard/Gyro": "Gyro",
       "/SmartDashboard/PIDController[1]": "PIDController",

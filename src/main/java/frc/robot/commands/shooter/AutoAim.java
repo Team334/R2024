@@ -89,10 +89,11 @@ public class AutoAim extends Command {
 
     _reachedSwerveHeading = _headingController.atSetpoint();
     
-    
     _shooter.setAngle(_swerve.speakerAngles()[1]);
 
     _intake.setAngle(_shooter.getAngle());
+
+    
 
     if (_reachedSwerveHeading)
       rotationVelocity = 0; // to prevent oscillation

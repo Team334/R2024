@@ -4,12 +4,17 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.AddressableLEDBuffer.IndexedColorIterator;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.LEDColors;
 
 /** @author Lucas Ou */
 public class LEDSubsystem extends SubsystemBase {
   private AddressableLED _ledStrip;
   private AddressableLEDBuffer _ledBuffer;
+
+  // private AddressableLED _ledStrip2;
+
   private int _ledNumber;
 
   private int _hue; // For rainbow
