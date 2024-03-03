@@ -191,13 +191,6 @@ public class RobotContainer {
     // );
 
 
-    // _operatorController.circle().whileTrue(
-    //   Commands.run(() -> _intakeSubsystem.actuate(-0.3), _intakeSubsystem).handleInterrupt(() -> _intakeSubsystem.actuate(0))
-    // );
-    // _operatorController.cross().whileTrue(
-    //   Commands.run(() -> _intakeSubsystem.actuate(0.3), _intakeSubsystem).handleInterrupt(() -> _intakeSubsystem.actuate(0))
-    // );
-
     // _operatorController.circle().whileTrue(new FeedIntake(_intakeSubsystem, ActuatorState.NONE, FeedMode.INTAKE));
     // _operatorController.cross().whileTrue(new FeedIntake(_intakeSubsystem, ActuatorState.NONE, FeedMode.OUTTAKE));
 

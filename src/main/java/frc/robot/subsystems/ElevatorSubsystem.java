@@ -4,7 +4,6 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 
 import edu.wpi.first.math.MathUtil;
@@ -91,25 +90,22 @@ public class ElevatorSubsystem extends SubsystemBase {
    * Drives the elevator at a desired percent output (feedforward is included).
    */
   public void driveElevator(double speed) {
+    double ff = 0;
 
-    // double out = 0;
+    if (_usingClimberFeed)
+      ff = _climbFeed.calculate(0);
+    else {
+      ff = _elevatorFeed.calculate(0);
+    }
 
-    // if (_usingClimberFeed)
-    //   out = _climbFeed.calculate(0);
-    // else {
-    //   out = _elevatorFeed.calculate(0);
-    // }
+    ff = UtilFuncs.FromVolts(ff);
 
-    _leftMotor.set(speed);
+    _leftMotor.set(ff + speed);
   }
 
   /** Stops elevator movement. */
   public void stopElevator() {
     // System.out.println("Stopped");
     driveElevator(0);
-  }
-
-  public void changeElevatorFeed() {
-    _usingClimberFeed = !_usingClimberFeed;
   }
 }

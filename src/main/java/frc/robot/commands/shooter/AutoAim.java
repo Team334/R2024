@@ -26,9 +26,6 @@ import frc.robot.utils.UtilFuncs;
 public class AutoAim extends Command {
   private final ShooterSubsystem _shooter;
   private final SwerveDriveSubsystem _swerve;
-  private final VisionSubsystem _vision;
-  private final IntakeSubsystem _intake;
-  private final ElevatorSubsystem _elevator;
   private final LEDSubsystem _leds;
 
   private final DoubleSupplier _xSpeed;
@@ -43,8 +40,13 @@ public class AutoAim extends Command {
       Constants.PID.SWERVE_HEADING_KD);
 
   /** Creates a new AutoAim. */
-  public AutoAim(ShooterSubsystem shooter, LEDSubsystem leds, SwerveDriveSubsystem swerve,
-      DoubleSupplier xSpeed, DoubleSupplier ySpeed, VisionSubsystem vision, IntakeSubsystem intake, ElevatorSubsystem elevator) {
+  public AutoAim(
+    ShooterSubsystem shooter, 
+    LEDSubsystem leds, 
+    SwerveDriveSubsystem swerve,
+    DoubleSupplier xSpeed, 
+    DoubleSupplier ySpeed
+  ) {
     // Use addRequirements() here to declare subsystem dependencies.
     _leds = leds;
     _shooter = shooter;
@@ -58,16 +60,13 @@ public class AutoAim extends Command {
     _headingController.setTolerance(2);
     _headingController.enableContinuousInput(-180, 180);
 
-    _vision = vision;
-    _intake = intake;
-    _elevator = elevator;
 
     addRequirements(_shooter, _swerve, _leds);
   }
 
   /** Creates an auton AutoAim that ends when it reaches the first setpoints. */
   public AutoAim(LEDSubsystem leds, ShooterSubsystem shooter, SwerveDriveSubsystem swerve, VisionSubsystem vision, IntakeSubsystem intake, ElevatorSubsystem elevator) {
-    this(shooter, leds, swerve, () -> 0, () -> 0, vision, intake, elevator);
+    this(shooter, leds, swerve, () -> 0, () -> 0);
 
     _runOnce = true;
   }
@@ -76,7 +75,7 @@ public class AutoAim extends Command {
   @Override
   public void initialize() {
     _reachedSwerveHeading = false;
-    _reachedShooterAngle = false;
+    _reachedShooterAngle = true; // FOR NOW
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -84,7 +83,6 @@ public class AutoAim extends Command {
   public void execute() {
     double currentSwerveHeading = _swerve.getHeading().getDegrees();
     double desiredSwerveHeading = _swerve.speakerAngles()[0];
-    int speakerAprilTag = UtilFuncs.GetAlliance() == Alliance.Red ? 4 : 7;
 
     double rotationVelocity = MathUtil.clamp(
         _headingController.calculate(currentSwerveHeading, desiredSwerveHeading),
@@ -92,15 +90,6 @@ public class AutoAim extends Command {
         Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED * 2);
 
     _reachedSwerveHeading = _headingController.atSetpoint();
-    
-    if (_vision.isApriltagVisible(speakerAprilTag)){
-      _shooter.setAngle(_vision.tagAngleOffsets(speakerAprilTag)[1]); // Might need an angle offset prob better without limelight
-    }
-    else{
-      _shooter.setAngle(_swerve.speakerAngles()[1]);
-    }
-
-    _intake.setAngle(_shooter.getAngle());
 
     if (_reachedSwerveHeading)
       rotationVelocity = 0; // to prevent oscillation

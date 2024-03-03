@@ -7,7 +7,6 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import frc.robot.utils.UtilFuncs;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -65,8 +64,8 @@ public final class Constants {
     public static final double SHOOTER_ANGLE_MAX_SPEED = 0.3;
     public static final double ELEVATOR_MAX_SPEED = 0.2;
 
-    public static final double INTAKE_FEED_MAX_SPEED = 0.25; // TODO: Get this
-    public static final double OUTTAKE_FEED_MAX_SPEED = -0.4;
+    public static final double INTAKE_FEED_SPEED = 0.25; // TODO: Get this
+    public static final double OUTTAKE_FEED_SPEED = -0.4;
 
     public static final double INTAKE_ACTUATE_MAX_SPEED = 0.4;
   }
@@ -80,13 +79,7 @@ public final class Constants {
     public static final double SWERVE_DRIVE_WHEEL_RADIUS = 0.05;
     public static final double SWERVE_DRIVE_WHEEL_CIRCUMFERENCE = 2 * Math.PI * SWERVE_DRIVE_WHEEL_RADIUS;
 
-    public static final double SHOOTER_FLYWHEEL_GEAR_RATIO = 1.45; // TODO: FIND THIS
     public static final double SHOOTER_ANGLE_GEAR_RATIO = 112;
-    public static final double SHOOTER_FLYWHEEL_RADIUS = 1; // TODO: FIND RADIUS
-    public static final double SHOOTER_FLYWHEEL_CIRCUMFERENCE = 2 * Math.PI * SHOOTER_FLYWHEEL_RADIUS;
-
-    public static final double ELEVATOR_GEAR_RATIO = 100; // TODO: fixed but they might change it
-
     public static final double SHOOTER_HEIGHT_STOWED = 0.2; // TODO: Get this value
 
     public static final SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(
@@ -100,10 +93,12 @@ public final class Constants {
   }
 
   public static class FeedForward {
-    public static final double ELEVATOR_KG = 0.0; // TODO: Find Kg constants
+    public static final double ELEVATOR_KG = 0.0;
 
     public static final double MODULE_DRIVE_KS = 0.32;
     public static final double MODULE_DRIVE_KV = 2.15;
+
+    public static final double SHOOTER_ANGLE_KG = 0.001;
   }
 
   public static class PID {
@@ -111,6 +106,10 @@ public final class Constants {
 
     public static final double MODULE_DRIVE_KP = 0.05;
     public static final double MODULE_ROTATION_KP = 0.009;
+
+    public static final double SHOOTER_ANGLE_KP = 0.08;
+
+    public static final double INTAKE_ACTUATE_KP = 0.025;
 
     // these are all the same, so the two constants above are used instead
     // public static final double FRONT_LEFT_DRIVE_KP = 0.05;
@@ -136,12 +135,12 @@ public final class Constants {
 
   public static class Offsets {
     // these aren't used anymore because cancoders can be zeroed in phoenix tuner
-    public static final double ENCODER_FRONT_LEFT = -93;
-    public static final double ENCODER_FRONT_RIGHT = -58;
-    public static final double ENCODER_BACK_RIGHT = 10;
-    public static final double ENCODER_BACK_LEFT = 43;
+    // public static final double ENCODER_FRONT_LEFT = -93;
+    // public static final double ENCODER_FRONT_RIGHT = -58;
+    // public static final double ENCODER_BACK_RIGHT = 10;
+    // public static final double ENCODER_BACK_LEFT = 43;
 
-    public static final double APRILTAG_SPEAKER_OFFSET = 0.565; // <- Below, but in Meters
+    // public static final double APRILTAG_SPEAKER_OFFSET = 0.565; // <- Below, but in Meters
     // 200(approx height of spk opening) - 132(Height of AprTag) + 11.5(Center of
     // AprTag) <- CM
   }

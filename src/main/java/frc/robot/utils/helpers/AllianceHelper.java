@@ -10,6 +10,7 @@ import frc.robot.Constants;
 public class AllianceHelper {
   private static AllianceHelper _instance;
   
+  /** Whether to use the safe alliance set in Constants. */
   public static boolean USE_SAFE_ALLIANCE = false;
 
   /** Get the single instance of the AllianceHelper. */

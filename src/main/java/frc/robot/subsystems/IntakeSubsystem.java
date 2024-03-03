@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.PID;
 import frc.robot.utils.configs.NeoConfig;
 
 /**
@@ -22,7 +23,7 @@ import frc.robot.utils.configs.NeoConfig;
  */
 public class IntakeSubsystem extends SubsystemBase {
   private final CANSparkMax _feedMotor, _actuatorMotor;
-  private final PIDController _actuatorController = new PIDController(0.025, 0, 0);
+  private final PIDController _actuatorController = new PIDController(PID.INTAKE_ACTUATE_KP, 0, 0);
   // private final ProfiledPIDController _actuatorController = new ProfiledPIDController(
   //   0.05,
   //   0,
@@ -70,6 +71,8 @@ public class IntakeSubsystem extends SubsystemBase {
    * 
    * @return True if the intake is moving against a note, else False.
    */
+
+  // TODO: why not working?
   public boolean noteSafety() {
     if (Math.abs(_feedMotor.get()) > 0 && Math.abs(_feedEncoder.getVelocity()) < 2) {
       return true;
@@ -90,11 +93,6 @@ public class IntakeSubsystem extends SubsystemBase {
    */
   public double getActuator() {
     return _actuatorEncoder.getPosition();
-  }
-
-  // FOR TESTING ONLY
-  public void actuate(double speed) {
-    _actuatorMotor.set(speed);
   }
 
   /**
@@ -134,21 +132,16 @@ public class IntakeSubsystem extends SubsystemBase {
     _actuatorMotor.set(out);
   }
 
-  public void setAngle(double angle){
-    double out = 0;
+  // public void setAngle(double angle){
+  //   double out = 0;
 
-     out = MathUtil.clamp(
-          _actuatorController.calculate(getActuator(), angle),
-          -Constants.Speeds.INTAKE_ACTUATE_MAX_SPEED,
-          Constants.Speeds.INTAKE_ACTUATE_MAX_SPEED);
+  //    out = MathUtil.clamp(
+  //         _actuatorController.calculate(getActuator(), angle),
+  //         -Constants.Speeds.INTAKE_ACTUATE_MAX_SPEED,
+  //         Constants.Speeds.INTAKE_ACTUATE_MAX_SPEED);
 
-    _actuatorMotor.set(out);
-  }
-
-  // for testing
-  public void feed(double s) {
-    _feedMotor.set(s);
-  }
+  //   _actuatorMotor.set(out);
+  // }
 
   /**
    * Feed in/out of the intake.
@@ -159,11 +152,11 @@ public class IntakeSubsystem extends SubsystemBase {
   public void feed(FeedMode feedMode) {
     switch (feedMode) {
       case INTAKE :
-        _feedMotor.set(Constants.Speeds.INTAKE_FEED_MAX_SPEED);
+        _feedMotor.set(Constants.Speeds.INTAKE_FEED_SPEED);
         break;
 
       case OUTTAKE :
-        _feedMotor.set(Constants.Speeds.OUTTAKE_FEED_MAX_SPEED);
+        _feedMotor.set(Constants.Speeds.OUTTAKE_FEED_SPEED);
         break;
 
       case NONE :

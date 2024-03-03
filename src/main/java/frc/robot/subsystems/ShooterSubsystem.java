@@ -12,6 +12,8 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.FeedForward;
+import frc.robot.Constants.PID;
 import frc.robot.Constants.Speeds;
 import frc.robot.utils.UtilFuncs;
 import frc.robot.utils.configs.NeoConfig;
@@ -20,6 +22,7 @@ import frc.robot.utils.configs.NeoConfig;
  * @author Elvis Osmanov
  * @author Peleh Liu
  * @author Cherine Soewingjo
+ * @author Peter Gutkovich
  */
 public class ShooterSubsystem extends SubsystemBase {
   private final CANSparkMax _leftMotor = new CANSparkMax(Constants.CAN.SHOOTER_LEFT, MotorType.kBrushless);
@@ -29,9 +32,10 @@ public class ShooterSubsystem extends SubsystemBase {
   private final RelativeEncoder _leftEncoder = _leftMotor.getEncoder();
   private final RelativeEncoder _angleEncoder = _angleMotor.getEncoder();
 
-  private final ArmFeedforward _angleFeed = new ArmFeedforward(0.001, 0, 0); // nothing for now
-  private final PIDController _angleController = new PIDController(0.08, 0, 0);
+  private final ArmFeedforward _angleFeed = new ArmFeedforward(FeedForward.SHOOTER_ANGLE_KG, 0, 0);
+  private final PIDController _angleController = new PIDController(PID.SHOOTER_ANGLE_KP, 0, 0);
 
+  /** Represents the state of the shooter's flywheels (speaker shoot, amp, nothing). */
   public enum ShooterState {
     SHOOT,
     AMP,
@@ -41,8 +45,6 @@ public class ShooterSubsystem extends SubsystemBase {
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
     NeoConfig.configureNeo(_leftMotor, true);
-    // NeoConfig.configureNeo(_rightMotor, false);
-
     NeoConfig.configureFollowerNeo(_rightMotor, _leftMotor, true);
 
     NeoConfig.configureNeo(_angleMotor, true);
@@ -100,29 +102,7 @@ public class ShooterSubsystem extends SubsystemBase {
     driveAngle(0);
   }
 
-  // /** Get the velocity of the back wheel (left side) in m/s. */
-  // public double getVelocity() {
-  //   double neo_rps = _leftEncoder.getVelocity() / 60;
-
-  //   double number = (neo_rps / Constants.Physical.SHOOTER_GEAR_RATIO)
-  //       * Constants.Physical.SHOOTER_FLYWHEEL_CIRCUMFERENCE;
-
-  //   if (number < 0) {
-  //     number = 0;
-  //   }
-
-  //   return number;
-  // }
-
-  // /** Set the velocity of the back wheels in m/s. */
-  // public void setVelocity(double velocity) {
-  //   double flywheel_output = (velocity / Constants.Speeds.SHOOTER_MAX_SPEED); // FEEDFORWARD (main output)
-  //   double flywheel_pid = _shooterController.calculate(getVelocity(), velocity); // PID for distrubances
-
-  //   // a similar controller setup can be found in SwerveModule
-  //   _leftMotor.set(flywheel_output + flywheel_pid);
-  // }
-
+  /** Sets the state of the shooter. */
   public void setShooterState(ShooterState state) {
     switch (state) {
       case SHOOT:
@@ -145,12 +125,10 @@ public class ShooterSubsystem extends SubsystemBase {
   /** Spins the shooter at the specified percent output. */
   public void spinShooter(double speed) {
     _leftMotor.set(speed);
-    // _rightMotor.set(speed); 
   }
 
   /** Stops spinning the shooter. */
   public void stopShooter() {
-    _leftMotor.set(0);
-    // _rightMotor.set(0);
+    spinShooter(0);
   }
 }

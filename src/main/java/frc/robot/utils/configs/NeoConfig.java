@@ -13,8 +13,7 @@ import com.revrobotics.CANSparkMax;
 /** For configuring Neos (with CANSparkMax). */
 public class NeoConfig {
   /**
-   * Basic Neo (with CANSparkMax) config, sets Falcon to factory defaults, sets
-   * encoder to 0, and sets Neo to Brake neutral mode.
+   * Basic Neo (with CANSparkMax) config, sets Falcon to factory defaults, and sets Neo to Brake neutral mode.
    *
    * @param neo
    *            - The CANSparkMax (with Neo) to configure.

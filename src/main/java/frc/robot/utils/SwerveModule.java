@@ -161,7 +161,6 @@ public class SwerveModule {
 
     rotate(rotation_pid);
     drive(drive_feedforward + drive_pid);
-    // drive(0.08);
   }
 
   /**
