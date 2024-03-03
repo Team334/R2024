@@ -78,17 +78,20 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    // TODO: should switch to regsiterCommands for more neatness 
+    Command autonActuate = new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE);
+
     // NamedCommands.registerCommand("printHello", new PrintCommand("AUTON HELLO"));
     // NamedCommands.registerCommand("waitCommand", new WaitCommand(3));
     // NamedCommands.registerCommand("interruptSwerve", new BrakeSwerve(_swerveSubsystem, _ledSubsystem));
     // NamedCommands.registerCommand("speakerAim",
     //     new AutoAim(_ledSubsystem, _shooterSubsystem, _visionSubsystem, _swerveSubsystem));
 
-    // NamedCommands.registerCommand("actuateOut", new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE).until(
-    //   () -> _intakeSubsystem.atDesiredActuatorState()
-    // ).andThen(new WaitCommand(5)));
+    // less complex auton actuate in case note-safety doesn't work
+    NamedCommands.registerCommand("actuateOut", autonActuate);
+    NamedCommands.registerCommand("actuateIn", Commands.runOnce(autonActuate::cancel));
+
     // Drive/Operate default commands
+
 
     // _swerveSubsystem.setDefaultCommand(new TeleopDrive(_swerveSubsystem,
     //     () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
@@ -107,8 +110,6 @@ public class RobotContainer {
 
     // Non drive/operate default commands
     // _intakeSubsystem.setDefaultCommand(new FeedActuate(_intakeSubsystem));
-    // TODO: make sure .repeatedly() works
-
 
     // _ledSubsystem.setDefaultCommand(new DefaultLED(_ledSubsystem));
 

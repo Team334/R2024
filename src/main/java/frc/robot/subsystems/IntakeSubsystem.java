@@ -74,6 +74,9 @@ public class IntakeSubsystem extends SubsystemBase {
 
   // TODO: why not working?
   public boolean noteSafety() {
+    SmartDashboard.putNumber("FEED OUTPUT", Math.abs(_feedMotor.get()));
+    SmartDashboard.putNumber("FEED VEL", Math.abs(_feedEncoder.getVelocity()));
+
     if (Math.abs(_feedMotor.get()) > 0 && Math.abs(_feedEncoder.getVelocity()) < 2) {
       return true;
     }
