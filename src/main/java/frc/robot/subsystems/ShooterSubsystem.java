@@ -89,6 +89,11 @@ public class ShooterSubsystem extends SubsystemBase {
     return _angleEncoder.getPosition() / Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO * 360;
   }
 
+  /** Get velocity of the shooter flywheel in encoder val. */
+  public double getVelocity() {
+    return _leftEncoder.getVelocity();
+  }
+
   /**
    * Drives the angle motors at the desired percent output (feedforward is
    * included).

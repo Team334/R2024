@@ -19,6 +19,20 @@ public final class UtilFuncs {
   }
 
   /**
+   * See if value is within range of another value.
+   * 
+   * @param val The value to check.
+   * @param desired The desired value.
+   * @param range The range.
+   * 
+   * @return If in range.
+   */
+  public static boolean InRange(double val, double desired, double range) {
+    if (Math.abs(desired - val) <= range) return true;
+    return false;
+  }
+
+  /**
    * The alliance for the match (shortcut for AllianceHelper).
    */
   public static Alliance GetAlliance() {

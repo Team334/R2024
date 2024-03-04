@@ -65,7 +65,7 @@ public class AutoAim extends Command {
   }
 
   /** Creates an auton AutoAim that ends when it reaches the first setpoints. */
-  public AutoAim(LEDSubsystem leds, ShooterSubsystem shooter, SwerveDriveSubsystem swerve, VisionSubsystem vision, IntakeSubsystem intake, ElevatorSubsystem elevator) {
+  public AutoAim(ShooterSubsystem shooter, LEDSubsystem leds, SwerveDriveSubsystem swerve) {
     this(shooter, leds, swerve, () -> 0, () -> 0);
 
     _runOnce = true;

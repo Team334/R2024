@@ -21,6 +21,7 @@ import frc.robot.commands.elevator.SetElevator;
 import frc.robot.commands.intake.FeedActuate;
 import frc.robot.commands.leds.DefaultLED;
 import frc.robot.commands.shooter.AutoAim;
+import frc.robot.commands.shooter.AutonShoot;
 import frc.robot.commands.shooter.OperateShooter;
 import frc.robot.commands.shooter.SetShooter;
 import frc.robot.commands.shooter.SpinShooter;
@@ -88,7 +89,8 @@ public class RobotContainer {
 
     // less complex auton actuate in case note-safety doesn't work
     NamedCommands.registerCommand("actuateOut", autonActuate);
-    NamedCommands.registerCommand("actuateIn", Commands.runOnce(autonActuate::cancel));
+    NamedCommands.registerCommand("actuateIn", Commands.runOnce(autonActuate::cancel).alongWith(new SpinShooter(_shooterSubsystem, ShooterState.SHOOT)));
+    // NamedCommands.registerCommand("shoot", new AutonShoot(_shooterSubsystem, _ledSubsystem, _swerveSubsystem, _intakeSubsystem));
 
     // Drive/Operate default commands
 
@@ -167,8 +169,10 @@ public class RobotContainer {
     //   Commands.run(() -> _elevatorSubsystem.driveElevator(0.5), _elevatorSubsystem).handleInterrupt(() -> _elevatorSubsystem.stopElevator())
     // );
 
-    _operatorController.L1().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.SHOOT));
-    _operatorController.L2().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.AMP));
+    Runnable stop = () -> _shooterSubsystem.stopShooter();
+
+    _operatorController.L1().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.SHOOT).handleInterrupt(stop));
+    _operatorController.L2().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.AMP).handleInterrupt(stop));
 
     // _operatorController.triangle().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.OUTTAKE));
     // _operatorController.square().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE));
