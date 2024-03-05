@@ -62,8 +62,8 @@ public class IntakeSubsystem extends SubsystemBase {
     _actuatorMotor.setSoftLimit(SoftLimitDirection.kForward, Constants.Encoders.INTAKE_OUT);
     _actuatorMotor.setSoftLimit(SoftLimitDirection.kReverse, Constants.Encoders.INTAKE_STOWED);
 
-    _actuatorMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
-    _actuatorMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    _actuatorMotor.enableSoftLimit(SoftLimitDirection.kForward, false);
+    _actuatorMotor.enableSoftLimit(SoftLimitDirection.kReverse, false);
   }
 
   /** 

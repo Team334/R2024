@@ -1,8 +1,9 @@
 /* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 
@@ -17,6 +18,7 @@ import frc.robot.Constants.PID;
 import frc.robot.Constants.Speeds;
 import frc.robot.utils.UtilFuncs;
 import frc.robot.utils.configs.NeoConfig;
+import frc.robot.utils.configs.TalonFXConfig;
 
 /**
  * @author Elvis Osmanov
@@ -27,10 +29,10 @@ import frc.robot.utils.configs.NeoConfig;
 public class ShooterSubsystem extends SubsystemBase {
   private final CANSparkMax _leftMotor = new CANSparkMax(Constants.CAN.SHOOTER_LEFT, MotorType.kBrushless);
   private final CANSparkMax _rightMotor = new CANSparkMax(Constants.CAN.SHOOTER_RIGHT, MotorType.kBrushless);
-  private final CANSparkMax _angleMotor = new CANSparkMax(Constants.CAN.SHOOTER_ANGLE, MotorType.kBrushless);
+
+  private final TalonFX _angleMotor = new TalonFX(Constants.CAN.SHOOTER_ANGLE);
 
   private final RelativeEncoder _leftEncoder = _leftMotor.getEncoder();
-  private final RelativeEncoder _angleEncoder = _angleMotor.getEncoder();
 
   private final ArmFeedforward _angleFeed = new ArmFeedforward(FeedForward.SHOOTER_ANGLE_KG, 0, 0);
   private final PIDController _angleController = new PIDController(PID.SHOOTER_ANGLE_KP, 0, 0);
@@ -47,16 +49,18 @@ public class ShooterSubsystem extends SubsystemBase {
     NeoConfig.configureNeo(_leftMotor, true);
     NeoConfig.configureFollowerNeo(_rightMotor, _leftMotor, true);
 
-    NeoConfig.configureNeo(_angleMotor, true);
-
-    _angleEncoder.setPosition(0);
+    TalonFXConfig.configureFalcon(_angleMotor, true);
     
     // soft limits
-    _angleMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
-    _angleMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
-    
-    _angleMotor.setSoftLimit(SoftLimitDirection.kForward, (float) (54 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360));
-    _angleMotor.setSoftLimit(SoftLimitDirection.kReverse, (float) (0 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360));
+    SoftwareLimitSwitchConfigs softLimits = new SoftwareLimitSwitchConfigs();
+
+    softLimits.ForwardSoftLimitThreshold = 54 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360;
+    softLimits.ReverseSoftLimitThreshold = 0 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360;
+
+    softLimits.ForwardSoftLimitEnable = true;
+    softLimits.ReverseSoftLimitEnable = true;
+
+    _angleMotor.getConfigurator().apply(softLimits);
 
     _angleController.setTolerance(0.5);
   }
@@ -64,7 +68,7 @@ public class ShooterSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("SHOOTER ANGLE ENCODER", _angleEncoder.getPosition());
+    SmartDashboard.putNumber("SHOOTER ANGLE ENCODER", _angleMotor.getPosition().getValueAsDouble());
     SmartDashboard.putNumber("SHOOTER ANGLE", getAngle());
   }
 
@@ -86,7 +90,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   /** Get the angle of the shooter in degrees. */
   public double getAngle() {
-    return _angleEncoder.getPosition() / Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO * 360;
+    return _angleMotor.getPosition().getValueAsDouble() / Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO * 360;
   }
 
   /** Get velocity of the shooter flywheel in encoder val. */

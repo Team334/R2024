@@ -1,11 +1,8 @@
 /* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkBase.SoftLimitDirection;
-
+import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
+import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
@@ -13,14 +10,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.utils.UtilFuncs;
-import frc.robot.utils.configs.NeoConfig;
+import frc.robot.utils.configs.TalonFXConfig;
 
 /** @author Peter Gutkovich */
 public class ElevatorSubsystem extends SubsystemBase {
-  private final CANSparkMax _leftMotor = new CANSparkMax(Constants.CAN.ELEVATOR_LEFT, MotorType.kBrushless);
-  private final CANSparkMax _rightMotor = new CANSparkMax(Constants.CAN.ELEVATOR_RIGHT, MotorType.kBrushless);
-
-  private final RelativeEncoder _leftEncoder;
+  private final TalonFX _leftMotor = new TalonFX(Constants.CAN.ELEVATOR_LEFT);
+  private final TalonFX _rightMotor = new TalonFX(Constants.CAN.ELEVATOR_RIGHT);
 
   private final ElevatorFeedforward _elevatorFeed = new ElevatorFeedforward(0, 0, 0);
   private final ElevatorFeedforward _climbFeed = new ElevatorFeedforward(0, 0, 0); // TODO: Get this value
@@ -31,20 +26,21 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   /** Creates a new ElevatorSubsystem . */
   public ElevatorSubsystem() {
-    NeoConfig.configureNeo(_leftMotor, true);
-    NeoConfig.configureFollowerNeo(_rightMotor, _leftMotor, true);
+    TalonFXConfig.configureFalcon(_leftMotor, false);
+    TalonFXConfig.configureFollowerFalcon(_rightMotor, _leftMotor, true);
 
-    _leftEncoder = _leftMotor.getEncoder();
-    _leftEncoder.setPosition(0);
+    SoftwareLimitSwitchConfigs softLimits = new SoftwareLimitSwitchConfigs();
 
-    _leftMotor.setSoftLimit(SoftLimitDirection.kForward, 85);
-    _leftMotor.setSoftLimit(SoftLimitDirection.kReverse, 0);
+    softLimits.ForwardSoftLimitThreshold = 85;
+    softLimits.ReverseSoftLimitThreshold = 0;
 
-    _leftMotor.enableSoftLimit(SoftLimitDirection.kForward, false);
-    _leftMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    softLimits.ForwardSoftLimitEnable = true;
+    softLimits.ReverseSoftLimitEnable = true;
+
+    _leftMotor.getConfigurator().apply(softLimits);
 
     _heightController.setTolerance(0.5);
-
+    
     SmartDashboard.putData("ELEVATOR PID", _heightController);
   }
 
@@ -83,7 +79,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   /** Get the height of the elevator encoder val. */
   public double getElevatorHeight() {
-    return _leftEncoder.getPosition();
+    return _leftMotor.getPosition().getValueAsDouble();
   }
 
   /**

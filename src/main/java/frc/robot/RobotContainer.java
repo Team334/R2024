@@ -69,7 +69,7 @@ public class RobotContainer {
   private final SlewRateLimiter _driveFilterRightX = new SlewRateLimiter(4);
   private final SlewRateLimiter _driveFilterRightY = new SlewRateLimiter(4);
 
-  private final SlewRateLimiter _operatorFilterLeftY = new SlewRateLimiter(2);
+  private final SlewRateLimiter _operatorFilterLeftY = new SlewRateLimiter(4);
   private final SlewRateLimiter _operatorFilterRightY = new SlewRateLimiter(4);
 
   // sendable chooser for auton commands
@@ -100,10 +100,10 @@ public class RobotContainer {
     //     () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1),
     //     () -> MathUtil.applyDeadband(-_driveFilterRightX.calculate(_driveController.getRightX()), 0.1)));
 
-    _shooterSubsystem.setDefaultCommand(new OperateShooter(
-      _shooterSubsystem,
-      () -> -MathUtil.applyDeadband(_operatorController.getLeftY(), 0.05)
-    ));
+    // _shooterSubsystem.setDefaultCommand(new OperateShooter(
+    //   _shooterSubsystem,
+    //   () -> -MathUtil.applyDeadband(_operatorController.getLeftY(), 0.05)
+    // ));
 
     _elevatorSubsystem.setDefaultCommand(new OperateElevator(
       _elevatorSubsystem,
@@ -123,10 +123,10 @@ public class RobotContainer {
     //   () -> MathUtil.applyDeadband(_operatorController.getRightY(), 0.05)
     // ));
 
-    _intakeSubsystem.setDefaultCommand(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.NONE));
+    // _intakeSubsystem.setDefaultCommand(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.NONE));
 
     // configure trigger bindings
-    configureBindings();
+    // configureBindings();
 
     // _autonChooser = AutoBuilder.buildAutoChooser();
 
