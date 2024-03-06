@@ -22,31 +22,31 @@ public final class Constants {
   public static final Alliance SAFE_ALLIANCE = Alliance.Red;
 
   public static class CAN {
-    public static final int DRIVE_FRONT_LEFT = 5;
-    public static final int ROT_FRONT_LEFT = 6;
+    public static final int DRIVE_FRONT_LEFT = 1;
+    public static final int ROT_FRONT_LEFT = 2;
 
-    public static final int DRIVE_FRONT_RIGHT = 7;
-    public static final int ROT_FRONT_RIGHT = 8;
+    public static final int DRIVE_FRONT_RIGHT = 3;
+    public static final int ROT_FRONT_RIGHT = 4;
 
-    public static final int DRIVE_BACK_RIGHT = 1;
-    public static final int ROT_BACK_RIGHT = 2;
+    public static final int DRIVE_BACK_RIGHT = 5;
+    public static final int ROT_BACK_RIGHT = 6;
 
-    public static final int DRIVE_BACK_LEFT = 3;
-    public static final int ROT_BACK_LEFT = 4;
+    public static final int DRIVE_BACK_LEFT = 7;
+    public static final int ROT_BACK_LEFT = 8;
 
-    public static final int ENC_FRONT_LEFT = 11;
-    public static final int ENC_FRONT_RIGHT = 12;
-    public static final int ENC_BACK_LEFT = 10;
-    public static final int ENC_BACK_RIGHT = 9;
+    public static final int ENC_FRONT_LEFT = 9;
+    public static final int ENC_FRONT_RIGHT = 10;
+    public static final int ENC_BACK_LEFT = 11;
+    public static final int ENC_BACK_RIGHT = 12;
 
     public static final int SHOOTER_LEFT = 13;
     public static final int SHOOTER_RIGHT = 14;
-    public static final int SHOOTER_ANGLE = 15;
+    public static final int SHOOTER_ANGLE = 15; // make sure settings are right. something got messed up when trying to fix intake sparkmax
 
     public static final int ELEVATOR_LEFT = 16; // TODO: Get right can ID's
     public static final int ELEVATOR_RIGHT = 17;
 
-    public static final int INTAKE_ACTUATOR = 18;
+    public static final int INTAKE_ACTUATOR = 18; // double check this because we are switching out for a new sparkmax
     public static final int INTAKE_FEED = 19;
 
     public static final int CAN_TIMEOUT = 10;
@@ -64,10 +64,10 @@ public final class Constants {
     public static final double SHOOTER_ANGLE_MAX_SPEED = 0.3;
     public static final double ELEVATOR_MAX_SPEED = 0.2;
 
-    public static final double INTAKE_FEED_SPEED = 0.25; // TODO: Get this
+    public static final double INTAKE_FEED_SPEED = 0.4; // TODO: Get this
     public static final double OUTTAKE_FEED_SPEED = -0.4;
 
-    public static final double INTAKE_ACTUATE_MAX_SPEED = 0.5;
+    public static final double INTAKE_ACTUATE_MAX_SPEED = 0.3;
   }
 
   public static class Physical {
@@ -92,6 +92,8 @@ public final class Constants {
     public static final int INTAKE_OUT = 15;
 
     public static final int SHOOTER_SHOOT_VEL = 10; // TODO: get this 
+
+    public static final int ELEVATOR_MAX_HEIGHT = 155;
   }
 
   public static class FeedForward {
@@ -106,7 +108,7 @@ public final class Constants {
   public static class PID {
     // TODO: Tune everything
 
-    public static final double MODULE_DRIVE_KP = 0.05;
+    public static final double MODULE_DRIVE_KP = 0.015;
     public static final double MODULE_ROTATION_KP = 0.009;
 
     public static final double SHOOTER_ANGLE_KP = 0.08;

@@ -9,6 +9,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.Encoders;
 import frc.robot.utils.UtilFuncs;
 import frc.robot.utils.configs.TalonFXConfig;
 
@@ -31,11 +32,11 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     SoftwareLimitSwitchConfigs softLimits = new SoftwareLimitSwitchConfigs();
 
-    softLimits.ForwardSoftLimitThreshold = 85;
+    softLimits.ForwardSoftLimitThreshold = Encoders.ELEVATOR_MAX_HEIGHT;
     softLimits.ReverseSoftLimitThreshold = 0;
 
-    softLimits.ForwardSoftLimitEnable = true;
-    softLimits.ReverseSoftLimitEnable = true;
+    softLimits.ForwardSoftLimitEnable = false;
+    softLimits.ReverseSoftLimitEnable = false;
 
     _leftMotor.getConfigurator().apply(softLimits);
 

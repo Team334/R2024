@@ -34,7 +34,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private final RelativeEncoder _leftEncoder = _leftMotor.getEncoder();
 
-  private final ArmFeedforward _angleFeed = new ArmFeedforward(FeedForward.SHOOTER_ANGLE_KG, 0, 0);
+  private final ArmFeedforward _angleFeed = new ArmFeedforward(0, 0, 0);
   private final PIDController _angleController = new PIDController(PID.SHOOTER_ANGLE_KP, 0, 0);
 
   /** Represents the state of the shooter's flywheels (speaker shoot, amp, nothing). */
@@ -54,8 +54,8 @@ public class ShooterSubsystem extends SubsystemBase {
     // soft limits
     SoftwareLimitSwitchConfigs softLimits = new SoftwareLimitSwitchConfigs();
 
-    softLimits.ForwardSoftLimitThreshold = 54 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360;
-    softLimits.ReverseSoftLimitThreshold = 0 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360;
+    softLimits.ForwardSoftLimitThreshold = 20 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360;
+    softLimits.ReverseSoftLimitThreshold = -7 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360;
 
     softLimits.ForwardSoftLimitEnable = false;
     softLimits.ReverseSoftLimitEnable = false;
@@ -104,6 +104,7 @@ public class ShooterSubsystem extends SubsystemBase {
    */
   public void driveAngle(double speed) {
     _angleMotor.set(UtilFuncs.FromVolts(_angleFeed.calculate(Math.toRadians(getAngle()), 0)) + speed);
+    System.out.println(speed);
   }
 
   /** Stops the shooter's angular movement. */
