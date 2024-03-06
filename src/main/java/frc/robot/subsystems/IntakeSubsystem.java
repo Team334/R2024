@@ -84,6 +84,10 @@ public class IntakeSubsystem extends SubsystemBase {
     return false;
   }
 
+  public void work() {
+    _actuatorMotor.set(0.6);
+  }
+
   /**
    * Returns true if the actuator is at the last desired state.
    */
@@ -132,6 +136,8 @@ public class IntakeSubsystem extends SubsystemBase {
         break;
     }
 
+    // System.out.println(out);
+    SmartDashboard.putNumber("OUT", out);
     _actuatorMotor.set(out);
   }
 

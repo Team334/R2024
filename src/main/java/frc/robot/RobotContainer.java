@@ -100,10 +100,10 @@ public class RobotContainer {
     //     () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1),
     //     () -> MathUtil.applyDeadband(-_driveFilterRightX.calculate(_driveController.getRightX()), 0.1)));
 
-    // _shooterSubsystem.setDefaultCommand(new OperateShooter(
-    //   _shooterSubsystem,
-    //   () -> -MathUtil.applyDeadband(_operatorController.getLeftY(), 0.05)
-    // ));
+    _shooterSubsystem.setDefaultCommand(new OperateShooter(
+      _shooterSubsystem,
+      () -> -MathUtil.applyDeadband(_operatorController.getLeftY(), 0.05)
+    ));
 
     _elevatorSubsystem.setDefaultCommand(new OperateElevator(
       _elevatorSubsystem,
@@ -123,10 +123,10 @@ public class RobotContainer {
     //   () -> MathUtil.applyDeadband(_operatorController.getRightY(), 0.05)
     // ));
 
-    // _intakeSubsystem.setDefaultCommand(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.NONE));
+    _intakeSubsystem.setDefaultCommand(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.NONE));
 
     // configure trigger bindings
-    // configureBindings();
+    configureBindings();
 
     // _autonChooser = AutoBuilder.buildAutoChooser();
 
@@ -135,12 +135,12 @@ public class RobotContainer {
 
   // to configure button bindings
   private void configureBindings() {
-    Command safeActuate = new SetShooter(
-      _shooterSubsystem,
-      () -> 0
-    ).andThen(new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.NONE));
+    // Command safeActuate = new SetShooter(
+    //   _shooterSubsystem,
+    //   () -> 0
+    // ).andThen(new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.NONE));
 
-    safeActuate = new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.NONE);
+    // safeActuate = new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.NONE);
 
     // _driveController.R1().onTrue(new ToggleSwerveOrient(_swerveSubsystem));
     // _driveController.square().onTrue(new ResetPose(_swerveSubsystem));
@@ -169,24 +169,24 @@ public class RobotContainer {
     //   Commands.run(() -> _elevatorSubsystem.driveElevator(0.5), _elevatorSubsystem).handleInterrupt(() -> _elevatorSubsystem.stopElevator())
     // );
 
-    Runnable stop = () -> _shooterSubsystem.stopShooter();
+    // Runnable stop = () -> _shooterSubsystem.stopShooter();
 
-    _operatorController.L1().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.SHOOT).handleInterrupt(stop));
-    _operatorController.L2().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.AMP).handleInterrupt(stop));
+    // _operatorController.L1().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.SHOOT).handleInterrupt(stop));
+    // _operatorController.L2().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.AMP).handleInterrupt(stop));
 
     // _operatorController.triangle().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.OUTTAKE));
     // _operatorController.square().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE));
 
-    _operatorController.circle().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.NONE, FeedMode.INTAKE));
-    _operatorController.cross().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.NONE, FeedMode.NONE));
+    // _operatorController.circle().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.NONE, FeedMode.INTAKE));
+    // _operatorController.cross().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.NONE, FeedMode.NONE));
     // _operatorController.square().whileTrue(
     //   Commands.run(() -> _intakeSubsystem.feed(FeedMode.INTAKE), _intakeSubsystem).handleInterrupt(() -> _intakeSubsystem.feed(FeedMode.NONE))
     // );
-    _operatorController.square().whileTrue(safeActuate);
-    _operatorController.triangle().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.OUTTAKE));
+    _operatorController.square().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.NONE));
+    // _operatorController.triangle().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.OUTTAKE));
+    _operatorController.triangle().whileTrue(Commands.run(_intakeSubsystem::work, _intakeSubsystem));
 
-
-    _operatorController.R1().whileTrue(new SetShooter(_shooterSubsystem, () -> 38));
+    // _operatorController.R1().whileTrue(new SetShooter(_shooterSubsystem, () -> 38));
     // _operatorController.R2().whileTrue(new SetElevator(_elevatorSubsystem, () -> 45));
 
     // _operatorController.L1().whileTrue(

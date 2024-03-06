@@ -26,7 +26,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   /** Creates a new ElevatorSubsystem . */
   public ElevatorSubsystem() {
-    TalonFXConfig.configureFalcon(_leftMotor, false);
+    TalonFXConfig.configureFalcon(_leftMotor, true);
     TalonFXConfig.configureFollowerFalcon(_rightMotor, _leftMotor, true);
 
     SoftwareLimitSwitchConfigs softLimits = new SoftwareLimitSwitchConfigs();

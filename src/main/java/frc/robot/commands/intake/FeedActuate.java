@@ -42,7 +42,6 @@ public class FeedActuate extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    _intake.actuate(ActuatorState.NONE);
   }
 
   // Returns true when the command should end.

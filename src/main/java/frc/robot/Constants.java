@@ -67,7 +67,7 @@ public final class Constants {
     public static final double INTAKE_FEED_SPEED = 0.25; // TODO: Get this
     public static final double OUTTAKE_FEED_SPEED = -0.4;
 
-    public static final double INTAKE_ACTUATE_MAX_SPEED = 0.4;
+    public static final double INTAKE_ACTUATE_MAX_SPEED = 0.5;
   }
 
   public static class Physical {
@@ -111,7 +111,7 @@ public final class Constants {
 
     public static final double SHOOTER_ANGLE_KP = 0.08;
 
-    public static final double INTAKE_ACTUATE_KP = 0.025;
+    public static final double INTAKE_ACTUATE_KP = 0.08;
 
     // these are all the same, so the two constants above are used instead
     // public static final double FRONT_LEFT_DRIVE_KP = 0.05;
