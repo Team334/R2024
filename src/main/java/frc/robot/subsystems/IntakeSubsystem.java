@@ -92,6 +92,8 @@ public class IntakeSubsystem extends SubsystemBase {
    * Returns true if the actuator is at the last desired state.
    */
   public boolean atDesiredActuatorState() {
+    if (_actuatorController.atSetpoint()) System.out.println("s" + _actuatorController.getSetpoint());
+
     return _actuatorController.atSetpoint();
   }
 

@@ -31,6 +31,7 @@ public class FeedActuate extends Command {
   @Override
   public void initialize() {
     _intake.feed(_feedMode);
+    _intake.actuate(_actuatorState);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

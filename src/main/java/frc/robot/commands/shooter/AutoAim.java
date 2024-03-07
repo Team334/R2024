@@ -61,7 +61,7 @@ public class AutoAim extends Command {
     _headingController.enableContinuousInput(-180, 180);
 
 
-    addRequirements(_shooter, _swerve, _leds);
+    addRequirements(_swerve);
   }
 
   /** Creates an auton AutoAim that ends when it reaches the first setpoints. */
@@ -82,7 +82,13 @@ public class AutoAim extends Command {
   @Override
   public void execute() {
     double currentSwerveHeading = _swerve.getHeading().getDegrees();
-    double desiredSwerveHeading = _swerve.speakerAngles()[0];
+
+    double[] angles = _swerve.speakerAngles();
+
+    double desiredSwerveHeading = angles[0];
+    double desiredShooterAngle = angles[1];
+
+    System.out.println(desiredShooterAngle);
 
     double rotationVelocity = MathUtil.clamp(
         _headingController.calculate(currentSwerveHeading, desiredSwerveHeading),
@@ -90,20 +96,23 @@ public class AutoAim extends Command {
         Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED * 2);
 
     _reachedSwerveHeading = _headingController.atSetpoint();
+    _reachedShooterAngle = _shooter.atDesiredAngle();
 
     if (_reachedSwerveHeading)
       rotationVelocity = 0; // to prevent oscillation
 
-    if (_reachedSwerveHeading && _reachedShooterAngle) {
-      _leds.setColor(Constants.LEDColors.GREEN);
-    } else {
-      _leds.blink(Constants.LEDColors.YELLOW, Constants.LEDColors.NOTHING, 0.2);
-    }
+    // if (_reachedSwerveHeading && _reachedShooterAngle) {
+    //   _leds.setColor(Constants.LEDColors.GREEN);
+    // } else {
+    //   _leds.blink(Constants.LEDColors.YELLOW, Constants.LEDColors.NOTHING, 0.2);
+    // }
 
     _swerve.driveChassis(new ChassisSpeeds(
         _xSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
         _ySpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
         rotationVelocity));
+      
+    _shooter.setAngle(desiredShooterAngle);
   }
 
   // Called once the command ends or is interrupted.

@@ -5,8 +5,11 @@ import javax.print.attribute.standard.MediaSize.NA;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.revrobotics.CANSparkBase.FaultID;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -27,9 +30,7 @@ import frc.robot.commands.shooter.SetShooter;
 import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.commands.swerve.BrakeSwerve;
 import frc.robot.commands.swerve.PivotMotor;
-import frc.robot.commands.swerve.ResetPose;
 import frc.robot.commands.swerve.TeleopDrive;
-import frc.robot.commands.swerve.ToggleSwerveOrient;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.IntakeSubsystem.ActuatorState;
@@ -93,8 +94,6 @@ public class RobotContainer {
     // NamedCommands.registerCommand("shoot", new AutonShoot(_shooterSubsystem, _ledSubsystem, _swerveSubsystem, _intakeSubsystem));
 
     // Drive/Operate default commands
-
-
     _swerveSubsystem.setDefaultCommand(new TeleopDrive(_swerveSubsystem,
         () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.05),
         () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.05),
@@ -135,73 +134,36 @@ public class RobotContainer {
 
   // to configure button bindings
   private void configureBindings() {
-    Command safeActuate = new SetShooter(
-      _shooterSubsystem,
-      () -> 0
-    ).andThen(new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE));
+    Command safeFeedIn = new SetShooter(_shooterSubsystem, () -> 52).andThen(
+      new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE)
+    );
 
-    // safeActuate = new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.NONE);
-
-    // _driveController.R1().onTrue(new ToggleSwerveOrient(_swerveSubsystem));
-    // _driveController.square().onTrue(new ResetPose(_swerveSubsystem));
-    // 
-    // _driveController.cross().whileTrue(new BrakeSwerve(_swerveSubsystem, _ledSubsystem));
-    // _driveController.L1()
-    //     .whileTrue(new AutoAim(_shooterSubsystem, _ledSubsystem, _visionSubsystem, _swerveSubsystem,
-    //         () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.1),
-    //         () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.1)));
-
-    // _driveController.L2()
-    //     .whileTrue(new PivotMotor(_ledSubsystem, _swerveSubsystem, true, () -> -_driveController.getLeftY()));
-
-    // _driveController.R2()
-    //     .whileTrue(new PivotMotor(_ledSubsystem, _swerveSubsystem, false, () -> -_driveController.getLeftY()));
-
-    // _operatorController.circle().whileTrue();
-
-    // _operatorController.triangle().whileTrue(new FeedIntake(_intakeSubsystem, ActuatorState.STOWED, Fe                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           edMode.NONE));
-    // _operatorController.square().whileTrue(new FeedIntake(_intakeSubsystem, ActuatorState.OUT, FeedMode.NONE));
-
-    // _operatorController.L1().whileTrue(
-    //   Commands.run(() -> _elevatorSubsystem.driveElevator(-0.5), _elevatorSubsystem).handleInterrupt(() -> _elevatorSubsystem.stopElevator())
-    // );  
-    // _operatorController.R1().whileTrue(
-    //   Commands.run(() -> _elevatorSubsystem.driveElevator(0.5), _elevatorSubsystem).handleInterrupt(() -> _elevatorSubsystem.stopElevator())
-    // );
+    Command feedOut = new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.NONE).onlyWhile(() -> !_intakeSubsystem.atDesiredActuatorState()).andThen(
+      new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.OUTTAKE)
+    );
 
     Runnable stop = () -> _shooterSubsystem.stopShooter();
 
     _operatorController.L1().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.SHOOT).handleInterrupt(stop));
     _operatorController.L2().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.AMP).handleInterrupt(stop));
 
-    // _operatorController.triangle().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.OUTTAKE));
-    // _operatorController.square().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE));
-
-    // _operatorController.circle().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.NONE, FeedMode.INTAKE));
-    // _operatorController.cross().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.NONE, FeedMode.NONE));
-    // _operatorController.square().whileTrue(
-    //   Commands.run(() -> _intakeSubsystem.feed(FeedMode.INTAKE), _intakeSubsystem).handleInterrupt(() -> _intakeSubsystem.feed(FeedMode.NONE))
-    // );
-    _operatorController.square().whileTrue(safeActuate);
+    _operatorController.square().whileTrue(safeFeedIn);
+    _operatorController.circle().whileTrue(feedOut);
     _operatorController.triangle().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.OUTTAKE));
     _operatorController.cross().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.NONE, FeedMode.INTAKE));
-    // _operatorController.triangle().whileTrue(Commands.run(_intakeSubsystem::work, _intakeSubsystem));
 
-    // _operatorController.R1().whileTrue(new SetShooter(_shooterSubsystem, () -> 38));
-    // _operatorController.R2().whileTrue(new SetElevator(_elevatorSubsystem, () -> 45));
+    _driveController.R1().onTrue(Commands.runOnce(() -> _swerveSubsystem.fieldOriented = !_swerveSubsystem.fieldOriented, _swerveSubsystem));
+    _driveController.L1().onTrue(Commands.runOnce(() -> _swerveSubsystem.resetPose(new Pose2d()), _swerveSubsystem));
 
-    // _operatorController.L1().whileTrue(
-    //   new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE).alongWith(
-    //     new SetShooter(_shooterSubsystem, () -> 45)
-    //   ).alongWith(new SetElevator(_elevatorSubsystem))
-    // );
-
-
-    // _operatorController.circle().whileTrue(new FeedIntake(_intakeSubsystem, ActuatorState.NONE, FeedMode.INTAKE));
-    // _operatorController.cross().whileTrue(new FeedIntake(_intakeSubsystem, ActuatorState.NONE, FeedMode.OUTTAKE));
-
-    // _operatorController.circle().whileTrue(new SetShooter(_shooterSubsystem, () -> 45));
-    // _operatorController.circle().whileTrue(new );
+    _driveController.R2().whileTrue(
+      new AutoAim(
+        _shooterSubsystem,
+        null,
+        _swerveSubsystem,
+        () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.05),
+        () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.05)
+      )
+    );
   }
 
   /** @return The Command to schedule for auton. */

@@ -35,8 +35,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     softLimits.ForwardSoftLimitThreshold = Encoders.ELEVATOR_MAX_HEIGHT;
     softLimits.ReverseSoftLimitThreshold = 0;
 
-    softLimits.ForwardSoftLimitEnable = false;
-    softLimits.ReverseSoftLimitEnable = false;
+    softLimits.ForwardSoftLimitEnable = true;
+    softLimits.ReverseSoftLimitEnable = true;
 
     _leftMotor.getConfigurator().apply(softLimits);
 

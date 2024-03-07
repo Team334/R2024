@@ -54,11 +54,11 @@ public class ShooterSubsystem extends SubsystemBase {
     // soft limits
     SoftwareLimitSwitchConfigs softLimits = new SoftwareLimitSwitchConfigs();
 
-    softLimits.ForwardSoftLimitThreshold = 20 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360;
-    softLimits.ReverseSoftLimitThreshold = -7 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360;
+    softLimits.ForwardSoftLimitThreshold = 55 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360;
+    softLimits.ReverseSoftLimitThreshold = -25 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360;
 
-    softLimits.ForwardSoftLimitEnable = false;
-    softLimits.ReverseSoftLimitEnable = false;
+    softLimits.ForwardSoftLimitEnable = true;
+    softLimits.ReverseSoftLimitEnable = true;
 
     _angleMotor.getConfigurator().apply(softLimits);
 
@@ -76,7 +76,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public boolean atDesiredAngle() {
     return _angleController.atSetpoint();
   }
-
+ 
   /** Set the angle of the shooter in degrees. MUST be called repeatedly. */
   public void setAngle(double angleDegrees) {
     double pid = MathUtil.clamp(
@@ -104,7 +104,6 @@ public class ShooterSubsystem extends SubsystemBase {
    */
   public void driveAngle(double speed) {
     _angleMotor.set(UtilFuncs.FromVolts(_angleFeed.calculate(Math.toRadians(getAngle()), 0)) + speed);
-    System.out.println(speed);
   }
 
   /** Stops the shooter's angular movement. */
