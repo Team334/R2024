@@ -134,14 +134,14 @@ public final class Constants {
 
     public static final double SHOOTER_FLYWHEEL_KP = 0;
 
-    public static final double ELEVATOR_KP = 2.1;
+    public static final double ELEVATOR_KP = 6;
 
     public static final double SWERVE_HEADING_KP = 0.045;
     public static final double SWERVE_HEADING_KD = 0.001;
   }
 
   public static class Offsets {
-    // these aren't used anymore because cancoders can be zeroed in phoenix tuner
+    // these aren't used anymore because cancoders can be zeroed in phoenix tuner 
     // public static final double ENCODER_FRONT_LEFT = -93;
     // public static final double ENCODER_FRONT_RIGHT = -58;
     // public static final double ENCODER_BACK_RIGHT = 10;
