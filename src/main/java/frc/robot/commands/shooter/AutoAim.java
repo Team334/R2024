@@ -84,7 +84,7 @@ public class AutoAim extends Command {
   public void execute() {
     double currentSwerveHeading = _swerve.getHeading().getDegrees();
 
-    double[] angles = _swerve.speakerAngles(Physical.ELEVATOR_LOWEST_HEIGHT);
+    double[] angles = _swerve.speakerAngles(Physical.ELEVATOR_LOWEST_HEIGHT /** + calculated elevator height */);
 
     double desiredSwerveHeading = angles[0];
     double desiredShooterAngle = angles[1];
@@ -99,8 +99,7 @@ public class AutoAim extends Command {
     _reachedSwerveHeading = _headingController.atSetpoint();
     _reachedShooterAngle = _shooter.atDesiredAngle();
 
-    if (_reachedSwerveHeading)
-      rotationVelocity = 0; // to prevent oscillation
+    if (_reachedSwerveHeading) rotationVelocity = 0; // to prevent oscillation
 
     // if (_reachedSwerveHeading && _reachedShooterAngle) {
     //   _leds.setColor(Constants.LEDColors.GREEN);
