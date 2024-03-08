@@ -84,10 +84,11 @@ public class AutoAim extends Command {
   public void execute() {
     double currentSwerveHeading = _swerve.getHeading().getDegrees();
 
-    double[] angles = _swerve.speakerAngles(Physical.ELEVATOR_LOWEST_HEIGHT /** + calculated elevator height */);
+    double[] offsets = _swerve.speakerOffsets();
 
-    double desiredSwerveHeading = angles[0];
-    double desiredShooterAngle = angles[1];
+    double desiredSwerveHeading = offsets[0];
+    double desiredShooterAngle = offsets[1];
+    double desiredElevatorHeight = offsets[2];
 
     System.out.println(desiredShooterAngle);
 

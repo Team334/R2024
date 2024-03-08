@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.FieldConstants;
+import frc.robot.Constants.Physical;
 import frc.robot.utils.BNO055;
 import frc.robot.utils.SwerveModule;
 import frc.robot.utils.UtilFuncs;
@@ -322,13 +323,11 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   }
 
   /**
-   * Get the setpoint x and y angles for the drive/shooter for auto-aim.
-   *
-   * @param elevatorHeight The current elevator/shooter height (in meters) from the floor.
+   * Get the setpoint x and y angles as well as elevater height for auto-aim.
    * 
-   * @return [xSpeakerAngle, ySpeakerAngle]
+   * @return [xSpeakerAngle, ySpeakerAngle, elevatorHeight]
    */
-  public double[] speakerAngles(double elevatorHeight) {
+  public double[] speakerOffsets() {
     double xSpeakerAngle;
     double ySpeakerAngle;
 
@@ -339,14 +338,16 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     Translation2d distanceVec = speakerTranslation.minus(botTranslation);
 
+    double elevatorHeight = Physical.ELEVATOR_MAX_SHOOT_HEIGHT - (distanceVec.getNorm() * 0.01); // TODO: get values and test
+
     xSpeakerAngle = MathUtil.inputModulus(distanceVec.getAngle().getDegrees(), -180, 180);
 
-    double zDifference = speakerPose.getZ() - elevatorHeight; // TODO: move to Constants?
+    double zDifference = speakerPose.getZ() - elevatorHeight;
     ySpeakerAngle = Math.toDegrees(Math.atan(zDifference / distanceVec.getNorm()));
 
-    double[] angles = {xSpeakerAngle, ySpeakerAngle};
+    double[] offsets = {xSpeakerAngle, ySpeakerAngle, elevatorHeight};
 
-    return angles;
+    return offsets;
   }
 
   public void pivotMotor(Translation2d pivotPoint) {
