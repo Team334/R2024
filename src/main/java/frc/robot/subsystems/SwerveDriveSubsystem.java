@@ -324,9 +324,11 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   /**
    * Get the setpoint x and y angles for the drive/shooter for auto-aim.
    *
+   * @param elevatorHeight The current elevator/shooter height (in meters) from the floor.
+   * 
    * @return [xSpeakerAngle, ySpeakerAngle]
    */
-  public double[] speakerAngles() {
+  public double[] speakerAngles(double elevatorHeight) {
     double xSpeakerAngle;
     double ySpeakerAngle;
 
@@ -339,60 +341,12 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     xSpeakerAngle = MathUtil.inputModulus(distanceVec.getAngle().getDegrees(), -180, 180);
 
-    double zDifference = speakerPose.getZ() - Constants.Physical.SHOOTER_HEIGHT_STOWED; // TODO: move to Constants?
+    double zDifference = speakerPose.getZ() - elevatorHeight; // TODO: move to Constants?
     ySpeakerAngle = Math.toDegrees(Math.atan(zDifference / distanceVec.getNorm()));
 
     double[] angles = {xSpeakerAngle, ySpeakerAngle};
 
     return angles;
-
-    // OLD CODE BELOW
-
-    // int tagID = Constants.FIELD_CONSTANTS.SPEAKER_TAG;
-    // Pose3d tagPose =
-    // Constants.FIELD_CONSTANTS.APRILTAG_LAYOUT.getTagPose(tagID).get();
-
-    // Translation2d tagTranslation = new Translation2d(tagPose.getX(),
-    // tagPose.getY());
-    // Translation2d botTranslation = _pose.getTranslation();
-
-    // Rotation2d moveAngle = tagTranslation.minus(botTranslation).getAngle();
-
-    // double[] a = {1, 2};
-
-    // SmartDashboard.putNumber("MOVE ANGLE", moveAngle.getDegrees());
-
-    // double xDifference = tagPose.getX() - _pose.getX();
-    // double yDifference = tagPose.getY() - _pose.getY();
-
-    // Constants.FIELD_CONSTANTS.SPEAKER_POSE.minus(new Pose2d());
-
-    // double distanceToRobot = Math.sqrt(Math.pow(xDifference, 2) +
-    // Math.pow(yDifference, 2));
-
-    // double zDifference = FieldConstants.SPEAKER_HEIGHT -
-    // Constants.Physical.SHOOTER_HEIGHT_STOWED;
-
-    // double angleY = Math.atan(zDifference / distanceToRobot);
-
-    // Rotation2d currentRotation = getHeading();
-    // double angleX = 0;
-
-    // if (getPose().getY() > Constants.FIELD_CONSTANTS.SPEAKER_POSE.getY()){
-    // angleX = -currentRotation.getDegrees() + Math.atan((getPose().getY() -
-    // Constants.FIELD_CONSTANTS.SPEAKER_POSE.getY()) / (getPose().getX() -
-    // Constants.FIELD_CONSTANTS.SPEAKER_POSE.getX()));
-    // }
-    // else{
-    // angleX = -currentRotation.getDegrees() -
-    // Math.atan((Constants.FIELD_CONSTANTS.SPEAKER_POSE.getY() - getPose().getY())
-    // /
-    // (getPose().getX() - Constants.FIELD_CONSTANTS.SPEAKER_POSE.getX()));
-    // }
-
-    // double[] angles = {angleX, angleY};
-
-    // return angles;
   }
 
   public void pivotMotor(Translation2d pivotPoint) {

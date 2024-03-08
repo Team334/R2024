@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Constants.FieldConstants;
+import frc.robot.Constants.Physical;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
@@ -83,7 +84,7 @@ public class AutoAim extends Command {
   public void execute() {
     double currentSwerveHeading = _swerve.getHeading().getDegrees();
 
-    double[] angles = _swerve.speakerAngles();
+    double[] angles = _swerve.speakerAngles(Physical.ELEVATOR_LOWEST_HEIGHT);
 
     double desiredSwerveHeading = angles[0];
     double desiredShooterAngle = angles[1];
