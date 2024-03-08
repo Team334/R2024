@@ -109,7 +109,7 @@ public class RobotContainer {
     ));
 
     // Non drive/operate default commands
-    _intakeSubsystem.setDefaultCommand(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.NONE));
+    // _intakeSubsystem.setDefaultCommand(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.NONE));
 
     configureBindings();
 
@@ -137,7 +137,8 @@ public class RobotContainer {
     _operatorController.square().whileTrue(safeFeedIn);
     _operatorController.circle().whileTrue(feedOut);
     _operatorController.triangle().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.OUTTAKE));
-    _operatorController.cross().whileTrue(new FeedActuate(_intakeSubsystem, FeedMode.INTAKE));
+    // _operatorController.cross().whileTrue(new FeedActuate(_intakeSubsystem, FeedMode.INTAKE));
+    _operatorController.cross().whileTrue(new SetElevator(_elevatorSubsystem, () -> .3));
 
     // driver bindings
     _driveController.R1().onTrue(Commands.runOnce(() -> _swerveSubsystem.fieldOriented = !_swerveSubsystem.fieldOriented, _swerveSubsystem));

@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.Encoders;
+import frc.robot.Constants.Physical;
 import frc.robot.utils.UtilFuncs;
 import frc.robot.utils.configs.TalonFXConfig;
 
@@ -32,7 +33,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     SoftwareLimitSwitchConfigs softLimits = new SoftwareLimitSwitchConfigs();
 
-    softLimits.ForwardSoftLimitThreshold = Encoders.ELEVATOR_MAX_HEIGHT;
+    softLimits.ForwardSoftLimitThreshold = 0.45 * Physical.ELEVATOR_GEAR_RATIO / Physical.ELEVATOR_DISTANCE_PER_ROTATION;
     softLimits.ReverseSoftLimitThreshold = 0;
 
     softLimits.ForwardSoftLimitEnable = true;
@@ -40,7 +41,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     _leftMotor.getConfigurator().apply(softLimits);
 
-    _heightController.setTolerance(0.5);
+    _heightController.setTolerance(0.01);
     
     SmartDashboard.putData("ELEVATOR PID", _heightController);
   }
@@ -50,7 +51,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     // harry chen code maybe fix
 
-    SmartDashboard.putNumber("ELEVATOR ENCODER HEIGHT", getElevatorHeight());
+    SmartDashboard.putNumber("ELEVATOR HEIGHT METERS", getElevatorHeight());
   }
 
   /**
@@ -67,20 +68,24 @@ public class ElevatorSubsystem extends SubsystemBase {
     return _heightController.atSetpoint();
   }
 
-  /** Sets the height of the elevator in encoder val. MUST be called repeatedly. */
+  /** Sets the height of the elevator in meters. MUST be called repeatedly. */
   public void setElevatorHeight(double height) {
+    // System.out.println(height);
+
     double out = MathUtil.clamp(
       _heightController.calculate(getElevatorHeight(), height),
       -Constants.Speeds.ELEVATOR_MAX_SPEED,
       Constants.Speeds.ELEVATOR_MAX_SPEED
     );
 
+    System.out.println(out);
+
     driveElevator(out);
   }
 
-  /** Get the height of the elevator encoder val. */
+  /** Get the height of the elevator in meters. */
   public double getElevatorHeight() {
-    return _leftMotor.getPosition().getValueAsDouble();
+    return _leftMotor.getPosition().getValueAsDouble() / Physical.ELEVATOR_GEAR_RATIO * Physical.ELEVATOR_DISTANCE_PER_ROTATION;
   }
 
   /**

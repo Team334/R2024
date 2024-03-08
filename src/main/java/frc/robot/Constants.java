@@ -84,6 +84,9 @@ public final class Constants {
     public static final double ELEVATOR_LOWEST_HEIGHT = 0.38; // TODO: Get this value
     public static final double ELEVATOR_MAX_SHOOT_HEIGHT = ELEVATOR_LOWEST_HEIGHT + 0.1; // TODO: Get this value
 
+    public static final double ELEVATOR_GEAR_RATIO = 25;
+    public static final double ELEVATOR_DISTANCE_PER_ROTATION = .09;
+
     public static final SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(
         new Translation2d(0.292, 0.292), new Translation2d(0.292, -0.292), new Translation2d(-0.292, -0.292),
         new Translation2d(-0.292, 0.292));
@@ -94,8 +97,6 @@ public final class Constants {
     public static final int INTAKE_OUT = 15;
 
     public static final int SHOOTER_SHOOT_VEL = 10; // TODO: get this 
-
-    public static final int ELEVATOR_MAX_HEIGHT = 155;
   }
 
   public static class FeedForward {
@@ -133,7 +134,7 @@ public final class Constants {
 
     public static final double SHOOTER_FLYWHEEL_KP = 0;
 
-    public static final double ELEVATOR_KP = 0.01;
+    public static final double ELEVATOR_KP = 2.1;
 
     public static final double SWERVE_HEADING_KP = 0.045;
     public static final double SWERVE_HEADING_KD = 0.001;
