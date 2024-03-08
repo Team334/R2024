@@ -22,9 +22,14 @@ public class FeedActuate extends Command {
     addRequirements(_intake);
   }
 
-  /** FeedActuate that stows the actuator and has a feed mode of NONE. */
-  public FeedActuate(IntakeSubsystem intake) {
-    this(intake, ActuatorState.NONE, FeedMode.NONE);
+  /** FeedActuate to only control actuator state. */
+  public FeedActuate(IntakeSubsystem intake, ActuatorState actuatorState) {
+    this(intake, actuatorState, FeedMode.NONE);
+  }
+
+  /** FeedActuate to only control feed mode. */
+  public FeedActuate(IntakeSubsystem intake, FeedMode feedMode) {
+    this(intake, ActuatorState.NONE, feedMode);
   }
 
   // Called when the command is initially scheduled.

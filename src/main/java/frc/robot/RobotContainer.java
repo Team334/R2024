@@ -88,7 +88,6 @@ public class RobotContainer {
     // NamedCommands.registerCommand("speakerAim",
     //     new AutoAim(_ledSubsystem, _shooterSubsystem, _visionSubsystem, _swerveSubsystem));
 
-    // less complex auton actuate in case note-safety doesn't work
     NamedCommands.registerCommand("actuateOut", autonActuate);
     NamedCommands.registerCommand("actuateIn", Commands.runOnce(autonActuate::cancel).alongWith(new SpinShooter(_shooterSubsystem, ShooterState.SHOOT)));
     // NamedCommands.registerCommand("shoot", new AutonShoot(_shooterSubsystem, _ledSubsystem, _swerveSubsystem, _intakeSubsystem));
@@ -110,21 +109,8 @@ public class RobotContainer {
     ));
 
     // Non drive/operate default commands
-    // _intakeSubsystem.setDefaultCommand(new FeedActuate(_intakeSubsystem));
-
-    // _ledSubsystem.setDefaultCommand(new DefaultLED(_ledSubsystem));
-
-    // _elevatorSubsystem.setDefaultCommand(new HoldElevator(_elevatorSubsystem));
-    // _shooterSubsystem.setDefaultCommand(new HoldShooter(_shooterSubsystem));
-    
-    // _shooterSubsystem.setDefaultCommand(new OperateShooter(
-    //   _shooterSubsystem,
-    //   () -> MathUtil.applyDeadband(_operatorController.getRightY(), 0.05)
-    // ));
-
     _intakeSubsystem.setDefaultCommand(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.NONE));
 
-    // configure trigger bindings
     configureBindings();
 
     // _autonChooser = AutoBuilder.buildAutoChooser();
@@ -138,20 +124,22 @@ public class RobotContainer {
       new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE)
     );
 
-    Command feedOut = new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.NONE).onlyWhile(() -> !_intakeSubsystem.atDesiredActuatorState()).andThen(
+    Command feedOut = new FeedActuate(_intakeSubsystem, ActuatorState.OUT).onlyWhile(() -> !_intakeSubsystem.atDesiredActuatorState()).andThen(
       new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.OUTTAKE)
     );
 
     Runnable stop = () -> _shooterSubsystem.stopShooter();
 
+    // operator bindings
     _operatorController.L1().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.SHOOT).handleInterrupt(stop));
     _operatorController.L2().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.AMP).handleInterrupt(stop));
 
     _operatorController.square().whileTrue(safeFeedIn);
     _operatorController.circle().whileTrue(feedOut);
     _operatorController.triangle().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.OUTTAKE));
-    _operatorController.cross().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.NONE, FeedMode.INTAKE));
+    _operatorController.cross().whileTrue(new FeedActuate(_intakeSubsystem, FeedMode.INTAKE));
 
+    // driver bindings
     _driveController.R1().onTrue(Commands.runOnce(() -> _swerveSubsystem.fieldOriented = !_swerveSubsystem.fieldOriented, _swerveSubsystem));
     _driveController.L1().onTrue(Commands.runOnce(() -> _swerveSubsystem.resetPose(new Pose2d()), _swerveSubsystem));
 
