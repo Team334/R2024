@@ -26,6 +26,7 @@ import frc.robot.utils.UtilFuncs;
  */
 public class AutoAim extends Command {
   private final ShooterSubsystem _shooter;
+  private final ElevatorSubsystem  _elevator;
   private final SwerveDriveSubsystem _swerve;
   private final LEDSubsystem _leds;
 
@@ -34,6 +35,7 @@ public class AutoAim extends Command {
 
   private boolean _reachedSwerveHeading;
   private boolean _reachedShooterAngle;
+  private boolean _reachedElevatorHeight;
 
   private boolean _runOnce;
 
@@ -42,15 +44,17 @@ public class AutoAim extends Command {
 
   /** Creates a new AutoAim. */
   public AutoAim(
-    ShooterSubsystem shooter, 
+    ShooterSubsystem shooter,
+    ElevatorSubsystem elevator,
     LEDSubsystem leds, 
     SwerveDriveSubsystem swerve,
-    DoubleSupplier xSpeed, 
+    DoubleSupplier xSpeed,
     DoubleSupplier ySpeed
   ) {
     // Use addRequirements() here to declare subsystem dependencies.
     _leds = leds;
     _shooter = shooter;
+    _elevator = elevator;
     _swerve = swerve;
 
     _xSpeed = xSpeed;
@@ -61,13 +65,12 @@ public class AutoAim extends Command {
     _headingController.setTolerance(2);
     _headingController.enableContinuousInput(-180, 180);
 
-
     addRequirements(_swerve);
   }
 
   /** Creates an auton AutoAim that ends when it reaches the first setpoints. */
-  public AutoAim(ShooterSubsystem shooter, LEDSubsystem leds, SwerveDriveSubsystem swerve) {
-    this(shooter, leds, swerve, () -> 0, () -> 0);
+  public AutoAim(ShooterSubsystem shooter, ElevatorSubsystem elevator, LEDSubsystem leds, SwerveDriveSubsystem swerve) {
+    this(shooter, elevator, leds, swerve, () -> 0, () -> 0);
 
     _runOnce = true;
   }
@@ -77,6 +80,7 @@ public class AutoAim extends Command {
   public void initialize() {
     _reachedSwerveHeading = false;
     _reachedShooterAngle = true; // FOR NOW
+    _reachedElevatorHeight = true; // FOR NOW
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -99,6 +103,7 @@ public class AutoAim extends Command {
 
     _reachedSwerveHeading = _headingController.atSetpoint();
     _reachedShooterAngle = _shooter.atDesiredAngle();
+    _reachedElevatorHeight = _elevator.atDesiredHeight();
 
     if (_reachedSwerveHeading) rotationVelocity = 0; // to prevent oscillation
 
@@ -114,6 +119,7 @@ public class AutoAim extends Command {
         rotationVelocity));
       
     _shooter.setAngle(desiredShooterAngle);
+    _elevator.setHeight(desiredElevatorHeight);
   }
 
   // Called once the command ends or is interrupted.
@@ -123,6 +129,6 @@ public class AutoAim extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return _runOnce && _reachedSwerveHeading && _reachedShooterAngle;
+    return _runOnce && _reachedSwerveHeading && _reachedShooterAngle && _reachedElevatorHeight;
   }
 }

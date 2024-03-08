@@ -51,7 +51,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     // harry chen code maybe fix
 
-    SmartDashboard.putNumber("ELEVATOR HEIGHT METERS", getElevatorHeight());
+    SmartDashboard.putNumber("ELEVATOR HEIGHT METERS", getHeight());
   }
 
   /**
@@ -69,11 +69,11 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   /** Sets the height of the elevator in meters. MUST be called repeatedly. */
-  public void setElevatorHeight(double height) {
+  public void setHeight(double height) {
     // System.out.println(height);
 
     double out = MathUtil.clamp(
-      _heightController.calculate(getElevatorHeight(), height),
+      _heightController.calculate(getHeight(), height),
       -Constants.Speeds.ELEVATOR_MAX_SPEED,
       Constants.Speeds.ELEVATOR_MAX_SPEED
     );
@@ -84,7 +84,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   /** Get the height of the elevator in meters. */
-  public double getElevatorHeight() {
+  public double getHeight() {
     return _leftMotor.getPosition().getValueAsDouble() / Physical.ELEVATOR_GEAR_RATIO * Physical.ELEVATOR_DISTANCE_PER_ROTATION;
   }
 

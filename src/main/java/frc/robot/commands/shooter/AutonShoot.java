@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants.Encoders;
 import frc.robot.commands.intake.FeedActuate;
+import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -25,6 +26,7 @@ public class AutonShoot extends SequentialCommandGroup {
   /** Creates a new AutonShoot. */
   public AutonShoot(
     ShooterSubsystem shooter,
+    ElevatorSubsystem elevator,
     LEDSubsystem leds,
     SwerveDriveSubsystem swerve,
     IntakeSubsystem intake
@@ -32,7 +34,7 @@ public class AutonShoot extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new AutoAim(shooter, leds, swerve),
+      new AutoAim(shooter, elevator, leds, swerve),
       new WaitUntilCommand(() -> UtilFuncs.InRange(shooter.getVelocity(), Encoders.SHOOTER_SHOOT_VEL, 1)),
       new FeedActuate(intake, ActuatorState.STOWED, FeedMode.OUTTAKE).withTimeout(1),
       new SpinShooter(shooter, ShooterState.NONE).until(() -> true)

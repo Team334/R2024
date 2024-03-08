@@ -147,6 +147,7 @@ public class RobotContainer {
     _driveController.R2().whileTrue(
       new AutoAim(
         _shooterSubsystem,
+        _elevatorSubsystem,
         null,
         _swerveSubsystem,
         () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.05),
