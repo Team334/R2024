@@ -94,7 +94,7 @@ public final class Constants {
 
   public static class Encoders {
     public static final int INTAKE_STOWED = 0;
-    public static final int INTAKE_OUT = 15;
+    public static final int INTAKE_OUT = 13;
 
     public static final int SHOOTER_SHOOT_VEL = 10; // TODO: get this 
   }

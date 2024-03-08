@@ -74,6 +74,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   /** Returns true if the shooter is at the last desired angle setpoint. */
   public boolean atDesiredAngle() {
+    System.out.println(_angleController.getSetpoint());
     return _angleController.atSetpoint();
   }
  

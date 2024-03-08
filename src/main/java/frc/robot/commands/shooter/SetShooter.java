@@ -32,6 +32,7 @@ public class SetShooter extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    _shooter.setAngle(_angle.getAsDouble());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -43,12 +44,14 @@ public class SetShooter extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    System.out.println("DONE");
     _shooter.stopAngle();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    System.out.println(_shooter.atDesiredAngle());
     return _shooter.atDesiredAngle();
   }
 }
