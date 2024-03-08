@@ -82,7 +82,7 @@ public final class Constants {
     public static final double SHOOTER_ANGLE_GEAR_RATIO = 112;
     
     public static final double ELEVATOR_LOWEST_HEIGHT = 0.38; // TODO: Get this value
-    public static final double ELEVATOR_MAX_SHOOT_HEIGHT = 0.1; // TODO: Get this value
+    public static final double ELEVATOR_MAX_SHOOT_HEIGHT = ELEVATOR_LOWEST_HEIGHT + 0.1; // TODO: Get this value
 
     public static final SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(
         new Translation2d(0.292, 0.292), new Translation2d(0.292, -0.292), new Translation2d(-0.292, -0.292),

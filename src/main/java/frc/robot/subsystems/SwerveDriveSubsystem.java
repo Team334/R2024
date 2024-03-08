@@ -345,7 +345,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     double zDifference = speakerPose.getZ() - elevatorHeight;
     ySpeakerAngle = Math.toDegrees(Math.atan(zDifference / distanceVec.getNorm()));
 
-    double[] offsets = {xSpeakerAngle, ySpeakerAngle, elevatorHeight};
+    double[] offsets = {xSpeakerAngle, ySpeakerAngle, elevatorHeight - Physical.ELEVATOR_LOWEST_HEIGHT};
 
     return offsets;
   }
