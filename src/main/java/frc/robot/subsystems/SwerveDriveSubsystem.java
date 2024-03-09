@@ -100,8 +100,9 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       Constants.Physical.SWERVE_KINEMATICS, getHeadingRaw(),
       new SwerveModulePosition[]{_frontLeft.getPosition(), _frontRight.getPosition(), _backRight.getPosition(),
           _backLeft.getPosition()},
-      new Pose2d(), VecBuilder.fill(0.006, 0.006, 0.007), VecBuilder.fill(0.52, 0.52, 1.35));
+      new Pose2d(), VecBuilder.fill(0.01, 0.01, 0.01), VecBuilder.fill(0.9, 0.9, 0.9));
 
+  // VecBuilder.fill(0.006, 0.006, 0.007), VecBuilder.fill(0.52, 0.52, 1.35)
   // VecBuilder.fill(0.006, 0.006, 0.007), VecBuilder.fill(0.5, 0.5, 1.3)
 
   /** Return the estimated pose of the swerve chassis. */
@@ -118,7 +119,9 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   public SwerveDriveSubsystem(VisionSubsystem visionSubsystem) {
     _visionSubsystem = visionSubsystem;
 
-    // resetPose(_visionSubsystem.getBotpose().get()); // for testing
+    resetPose(
+      new Pose2d(2.52, 5.25, Rotation2d.fromDegrees(180))
+    ); // for testing
 
     // setupOrchestra();
 
@@ -171,6 +174,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    speakerOffsets();
+
     publisher.set(states);
 
     SmartDashboard.putNumber("Gyro 180/-180", getHeading().getDegrees());
@@ -314,7 +319,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   /** Get heading of the drive from the pose estimator. */
   public Rotation2d getHeading() {
-    return _estimator.getEstimatedPosition().getRotation();
+    return getPose().getRotation();
   }
 
   /** Get heading DIRECTLY from the BNO055 gyro as a Rotation2d. */
@@ -338,7 +343,9 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     Translation2d distanceVec = speakerTranslation.minus(botTranslation);
 
-    double elevatorHeight = Physical.ELEVATOR_MAX_SHOOT_HEIGHT - (distanceVec.getNorm() * 0.01); // TODO: get values and test
+    SmartDashboard.putNumber("DISTANCE", distanceVec.getNorm());
+
+    double elevatorHeight = Physical.ELEVATOR_MAX_SHOOT_HEIGHT - (distanceVec.getNorm() * 0.025); // TODO: get values and test
 
     xSpeakerAngle = MathUtil.inputModulus(distanceVec.getAngle().getDegrees(), -180, 180);
 

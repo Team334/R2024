@@ -39,8 +39,8 @@ public final class Constants {
     public static final int ENC_BACK_LEFT = 11;
     public static final int ENC_BACK_RIGHT = 12;
 
-    public static final int SHOOTER_LEFT = 13;
-    public static final int SHOOTER_RIGHT = 14;
+    public static final int SHOOTER_LEFT = 14;
+    public static final int SHOOTER_RIGHT = 13;
     public static final int SHOOTER_ANGLE = 15; // make sure settings are right. something got messed up when trying to fix intake sparkmax
 
     public static final int ELEVATOR_LEFT = 16; // TODO: Get right can ID's
@@ -53,16 +53,16 @@ public final class Constants {
   }
 
   public static class Speeds {
-    public static final double SWERVE_DRIVE_COEFF = .55;
+    public static final double SWERVE_DRIVE_COEFF = .65;
 
     public static final double SWERVE_DRIVE_MAX_SPEED = 4.67; // meters per second
     public static final double SWERVE_DRIVE_MAX_ANGULAR_SPEED = Math.PI * 1; // TODO: Get this value
 
-    public static final double SHOOTER_SPIN_SPEED = 1; // TODO: Get this
+    public static final double SHOOTER_SPIN_SPEED = .85; // TODO: Get this
     public static final double SHOOTER_AMP_SPEED = 0.33;
 
     public static final double SHOOTER_ANGLE_MAX_SPEED = 0.3;
-    public static final double ELEVATOR_MAX_SPEED = 0.5;
+    public static final double ELEVATOR_MAX_SPEED = 0.75;
 
     public static final double INTAKE_FEED_SPEED = 0.5; // TODO: Get this
     public static final double OUTTAKE_FEED_SPEED = -0.4;
@@ -81,8 +81,8 @@ public final class Constants {
 
     public static final double SHOOTER_ANGLE_GEAR_RATIO = 112;
     
-    public static final double ELEVATOR_LOWEST_HEIGHT = 0.38; // TODO: Get this value
-    public static final double ELEVATOR_MAX_SHOOT_HEIGHT = ELEVATOR_LOWEST_HEIGHT + 0.1; // TODO: Get this value
+    public static final double ELEVATOR_LOWEST_HEIGHT = 0.343; // TODO: Get this value
+    public static final double ELEVATOR_MAX_SHOOT_HEIGHT = .44; // TODO: Get this value
 
     public static final double ELEVATOR_GEAR_RATIO = 25;
     public static final double ELEVATOR_DISTANCE_PER_ROTATION = .09;
@@ -136,7 +136,7 @@ public final class Constants {
 
     public static final double ELEVATOR_KP = 6;
 
-    public static final double SWERVE_HEADING_KP = 0.045;
+    public static final double SWERVE_HEADING_KP = 0.025;
     public static final double SWERVE_HEADING_KD = 0.001;
   }
 
@@ -160,13 +160,13 @@ public final class Constants {
 
   // static field constants
   public static class FieldConstants {
-    public static final double SPEAKER_HEIGHT = 2.03;
+    public static final double SPEAKER_HEIGHT = 2.26;
 
     public static final int SPEAKER_TAG_BLUE = 7;
     public static final int SPEAKER_TAG_RED = 4;
 
-    public static final Pose3d SPEAKER_POSE_BLUE = new Pose3d(0.35, 5.3, SPEAKER_HEIGHT, new Rotation3d(0, 0, 180));
-    public static final Pose3d SPEAKER_POSE_RED = new Pose3d(16.8, 5.3, SPEAKER_HEIGHT, new Rotation3d(0, 0, 0));
+    public static final Pose3d SPEAKER_POSE_BLUE = new Pose3d(0.17, 5.3, SPEAKER_HEIGHT, new Rotation3d(0, 0, 180));
+    public static final Pose3d SPEAKER_POSE_RED = new Pose3d(16.8, 5.3, SPEAKER_HEIGHT, new Rotation3d(0, 0, 0)); // TODO: fix X here
   }
 
   public static class LEDColors {

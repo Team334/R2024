@@ -7,6 +7,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Constants.FieldConstants;
@@ -62,10 +63,10 @@ public class AutoAim extends Command {
 
     _runOnce = false;
 
-    _headingController.setTolerance(2);
+    _headingController.setTolerance(.5);
     _headingController.enableContinuousInput(-180, 180);
 
-    addRequirements(_swerve);
+    addRequirements(_swerve, _shooter, _elevator);
   }
 
   /** Creates an auton AutoAim that ends when it reaches the first setpoints. */
@@ -98,14 +99,14 @@ public class AutoAim extends Command {
 
     double rotationVelocity = MathUtil.clamp(
         _headingController.calculate(currentSwerveHeading, desiredSwerveHeading),
-        -Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED * 2,
-        Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED * 2);
+        -Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED,
+        Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED);
 
     _reachedSwerveHeading = _headingController.atSetpoint();
     _reachedShooterAngle = _shooter.atDesiredAngle();
     _reachedElevatorHeight = _elevator.atDesiredHeight();
 
-    if (_reachedSwerveHeading) rotationVelocity = 0; // to prevent oscillation
+    SmartDashboard.putNumber("Y", desiredSwerveHeading);
 
     // if (_reachedSwerveHeading && _reachedShooterAngle) {
     //   _leds.setColor(Constants.LEDColors.GREEN);
@@ -117,7 +118,6 @@ public class AutoAim extends Command {
         _xSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
         _ySpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
         rotationVelocity));
-      
     _shooter.setAngle(desiredShooterAngle);
     _elevator.setHeight(desiredElevatorHeight);
   }

@@ -35,8 +35,8 @@ public class AutonShoot extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new AutoAim(shooter, elevator, leds, swerve),
-      new WaitUntilCommand(() -> UtilFuncs.InRange(shooter.getVelocity(), Encoders.SHOOTER_SHOOT_VEL, 1)),
-      new FeedActuate(intake, ActuatorState.STOWED, FeedMode.OUTTAKE).withTimeout(1),
+      // new WaitUntilCommand(() -> UtilFuncs.InRange(shooter.getVelocity(), Encoders.SHOOTER_SHOOT_VEL, 1)),
+      new FeedActuate(intake, FeedMode.OUTTAKE).withTimeout(1),
       new SpinShooter(shooter, ShooterState.NONE).until(() -> true)
     );
   }

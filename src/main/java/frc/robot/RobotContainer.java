@@ -55,7 +55,7 @@ public class RobotContainer {
   private final ShooterSubsystem _shooterSubsystem = new ShooterSubsystem();
   private final ElevatorSubsystem _elevatorSubsystem = new ElevatorSubsystem();
   private final IntakeSubsystem _intakeSubsystem = new IntakeSubsystem();
-// private final LEDSubsystem _ledSubsystem = new LEDSubsystem(Constants.Ports.LEDS, 14);
+private final LEDSubsystem _ledSubsystem = new LEDSubsystem(Constants.Ports.LEDS, 14);
 
   // controllers (for driver and operator)
   private final CommandPS4Controller _driveController = new CommandPS4Controller(Constants.Ports.DRIVER_CONTROLLER);
@@ -90,7 +90,7 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("actuateOut", autonActuate);
     NamedCommands.registerCommand("actuateIn", Commands.runOnce(autonActuate::cancel).alongWith(new SpinShooter(_shooterSubsystem, ShooterState.SHOOT)));
-    // NamedCommands.registerCommand("shoot", new AutonShoot(_shooterSubsystem, _ledSubsystem, _swerveSubsystem, _intakeSubsystem));
+    NamedCommands.registerCommand("shoot", new AutonShoot(_shooterSubsystem, _elevatorSubsystem, _ledSubsystem, _swerveSubsystem, _intakeSubsystem));
 
     // Drive/Operate default commands
     _swerveSubsystem.setDefaultCommand(new TeleopDrive(_swerveSubsystem,

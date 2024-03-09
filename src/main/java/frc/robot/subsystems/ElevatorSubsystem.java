@@ -33,7 +33,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     SoftwareLimitSwitchConfigs softLimits = new SoftwareLimitSwitchConfigs();
 
-    softLimits.ForwardSoftLimitThreshold = 0.5 * Physical.ELEVATOR_GEAR_RATIO / Physical.ELEVATOR_DISTANCE_PER_ROTATION;
+    softLimits.ForwardSoftLimitThreshold = 0.55 * Physical.ELEVATOR_GEAR_RATIO / Physical.ELEVATOR_DISTANCE_PER_ROTATION;
     softLimits.ReverseSoftLimitThreshold = 0;
 
     softLimits.ForwardSoftLimitEnable = true;
@@ -51,6 +51,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     // harry chen code maybe fix
 
+    SmartDashboard.putNumber("ELEVATOR HEIGHT FROM GROUND", getHeight() + Physical.ELEVATOR_LOWEST_HEIGHT);
     SmartDashboard.putNumber("ELEVATOR HEIGHT METERS", getHeight());
   }
 
