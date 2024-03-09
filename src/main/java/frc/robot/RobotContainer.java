@@ -74,22 +74,26 @@ private final LEDSubsystem _ledSubsystem = new LEDSubsystem(Constants.Ports.LEDS
   private final SlewRateLimiter _operatorFilterRightY = new SlewRateLimiter(4);
 
   // sendable chooser for auton commands
-  // private final SendableChooser<Command> _autonChooser;
+  private final SendableChooser<Command> _autonChooser;
+
+  private final Command _safeFeedIn = new SetShooter(_shooterSubsystem, () -> 52).andThen(
+    new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE)
+  );
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    Command autonActuate = new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE);
-
     // NamedCommands.registerCommand("printHello", new PrintCommand("AUTON HELLO"));
     // NamedCommands.registerCommand("waitCommand", new WaitCommand(3));
     // NamedCommands.registerCommand("interruptSwerve", new BrakeSwerve(_swerveSubsystem, _ledSubsystem));
     // NamedCommands.registerCommand("speakerAim",
     //     new AutoAim(_ledSubsystem, _shooterSubsystem, _visionSubsystem, _swerveSubsystem));
 
-    NamedCommands.registerCommand("actuateOut", autonActuate);
-    NamedCommands.registerCommand("actuateIn", Commands.runOnce(autonActuate::cancel).alongWith(new SpinShooter(_shooterSubsystem, ShooterState.SHOOT)));
+    NamedCommands.registerCommand("actuateOut", new SetShooter(_shooterSubsystem, () -> 52).andThen(
+    new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE)
+    ));
+    NamedCommands.registerCommand("actuateIn", new FeedActuate(_intakeSubsystem, ActuatorState.STOWED).alongWith(new SpinShooter(_shooterSubsystem, ShooterState.SHOOT).until(() -> true)));
     NamedCommands.registerCommand("shoot", new AutonShoot(_shooterSubsystem, _elevatorSubsystem, _ledSubsystem, _swerveSubsystem, _intakeSubsystem));
 
     // Drive/Operate default commands
@@ -113,9 +117,8 @@ private final LEDSubsystem _ledSubsystem = new LEDSubsystem(Constants.Ports.LEDS
 
     configureBindings();
 
-    // _autonChooser = AutoBuilder.buildAutoChooser();
-
-    // SmartDashboard.putData("AUTON CHOOSER", _autonChooser);
+    _autonChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("AUTON CHOOSER", _autonChooser);
   }
 
   // to configure button bindings
@@ -158,9 +161,9 @@ private final LEDSubsystem _ledSubsystem = new LEDSubsystem(Constants.Ports.LEDS
 
   /** @return The Command to schedule for auton. */
   public Command getAutonCommand() {
-    // _swerveSubsystem.fieldOriented = false; // make sure swerve is robot-relative for pathplanner to work
+    _swerveSubsystem.fieldOriented = false; // make sure swerve is robot-relative for pathplanner to work
 
-    // return _autonChooser.getSelected();
-    return null;
+    return _autonChooser.getSelected();
+    // return null;
   }
 }

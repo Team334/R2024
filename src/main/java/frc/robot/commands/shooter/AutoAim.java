@@ -63,7 +63,7 @@ public class AutoAim extends Command {
 
     _runOnce = false;
 
-    _headingController.setTolerance(.5);
+    _headingController.setTolerance(2);
     _headingController.enableContinuousInput(-180, 180);
 
     addRequirements(_swerve, _shooter, _elevator);
@@ -80,8 +80,8 @@ public class AutoAim extends Command {
   @Override
   public void initialize() {
     _reachedSwerveHeading = false;
-    _reachedShooterAngle = true; // FOR NOW
-    _reachedElevatorHeight = true; // FOR NOW
+    _reachedShooterAngle = false;
+    _reachedElevatorHeight = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.

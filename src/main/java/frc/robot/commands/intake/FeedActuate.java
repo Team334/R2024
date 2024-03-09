@@ -32,6 +32,10 @@ public class FeedActuate extends Command {
     this(intake, ActuatorState.NONE, feedMode);
   }
 
+  public FeedActuate(IntakeSubsystem intake) {
+    this(intake, FeedMode.NONE);
+  }
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
@@ -49,6 +53,8 @@ public class FeedActuate extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    _intake.actuate(ActuatorState.NONE);
+    _intake.feed(FeedMode.NONE);
   }
 
   // Returns true when the command should end.

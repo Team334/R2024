@@ -53,9 +53,9 @@ public final class Constants {
   }
 
   public static class Speeds {
-    public static final double SWERVE_DRIVE_COEFF = .65;
+    public static final double SWERVE_DRIVE_COEFF = .6;
 
-    public static final double SWERVE_DRIVE_MAX_SPEED = 4.67; // meters per second
+    public static final double SWERVE_DRIVE_MAX_SPEED = 4; // meters per second
     public static final double SWERVE_DRIVE_MAX_ANGULAR_SPEED = Math.PI * 1; // TODO: Get this value
 
     public static final double SHOOTER_SPIN_SPEED = .85; // TODO: Get this
@@ -160,7 +160,7 @@ public final class Constants {
 
   // static field constants
   public static class FieldConstants {
-    public static final double SPEAKER_HEIGHT = 2.26;
+    public static final double SPEAKER_HEIGHT = 2.24;
 
     public static final int SPEAKER_TAG_BLUE = 7;
     public static final int SPEAKER_TAG_RED = 4;

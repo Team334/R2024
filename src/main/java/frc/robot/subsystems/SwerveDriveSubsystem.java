@@ -119,9 +119,9 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   public SwerveDriveSubsystem(VisionSubsystem visionSubsystem) {
     _visionSubsystem = visionSubsystem;
 
-    resetPose(
-      new Pose2d(2.52, 5.25, Rotation2d.fromDegrees(180))
-    ); // for testing
+    // resetPose(
+    //   new Pose2d(2.52, 5.25, Rotation2d.fromDegrees(180))
+    // ); // for testing
 
     // setupOrchestra();
 
@@ -217,7 +217,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     // getRobotRelativeSpeeds().vxMetersPerSecond);
     // SmartDashboard.putNumber("ACTUAL Y SPEED",
     // getRobotRelativeSpeeds().vyMetersPerSecond);
-    SmartDashboard.putNumber("Robot Speed", _robotSpeed);
+    SmartDashboard.putNumber("Robot Speed", getRobotRelativeSpeeds().vxMetersPerSecond);
   }
 
   // to setup talon orchestra
