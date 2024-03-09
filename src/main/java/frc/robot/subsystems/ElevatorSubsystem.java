@@ -33,7 +33,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     SoftwareLimitSwitchConfigs softLimits = new SoftwareLimitSwitchConfigs();
 
-    softLimits.ForwardSoftLimitThreshold = 0.45 * Physical.ELEVATOR_GEAR_RATIO / Physical.ELEVATOR_DISTANCE_PER_ROTATION;
+    softLimits.ForwardSoftLimitThreshold = 0.5 * Physical.ELEVATOR_GEAR_RATIO / Physical.ELEVATOR_DISTANCE_PER_ROTATION;
     softLimits.ReverseSoftLimitThreshold = 0;
 
     softLimits.ForwardSoftLimitEnable = true;

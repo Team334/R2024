@@ -62,7 +62,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     _angleMotor.getConfigurator().apply(softLimits);
 
-    _angleController.setTolerance(0.1);
+    _angleController.setTolerance(0.5);
   }
 
   @Override
@@ -136,6 +136,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public void spinShooter(double speed) {
     _leftMotor.set(speed);
   }
+
 
   /** Stops spinning the shooter. */
   public void stopShooter() {

@@ -100,12 +100,12 @@ public class RobotContainer {
 
     _shooterSubsystem.setDefaultCommand(new OperateShooter(
       _shooterSubsystem,
-      () -> -MathUtil.applyDeadband(_operatorController.getLeftY(), 0.05)
+      () -> -MathUtil.applyDeadband(_operatorController.getRightY(), 0.05)
     ));
 
     _elevatorSubsystem.setDefaultCommand(new OperateElevator(
       _elevatorSubsystem,
-      () -> -_operatorFilterRightY.calculate(MathUtil.applyDeadband(_operatorController.getRightY(), 0.05))
+      () -> -_operatorFilterLeftY.calculate(MathUtil.applyDeadband(_operatorController.getLeftY(), 0.05))
     ));
 
     // Non drive/operate default commands
@@ -142,6 +142,7 @@ public class RobotContainer {
     // driver bindings
     _driveController.R1().onTrue(Commands.runOnce(() -> _swerveSubsystem.fieldOriented = !_swerveSubsystem.fieldOriented, _swerveSubsystem));
     _driveController.L1().onTrue(Commands.runOnce(() -> _swerveSubsystem.resetPose(new Pose2d()), _swerveSubsystem));
+   // _driveController.cross().whileTrue(new BrakeSwerve(_swerveSubsystem, new LEDSubsystem(0, 0)));
 
     _driveController.R2().whileTrue(
       new AutoAim(

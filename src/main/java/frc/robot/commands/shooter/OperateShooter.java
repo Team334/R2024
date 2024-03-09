@@ -32,6 +32,7 @@ public class OperateShooter extends Command {
   @Override
   public void execute() {
     _shooter.driveAngle(_angleSpeed.getAsDouble() * Constants.Speeds.SHOOTER_ANGLE_MAX_SPEED); // TODO: find speed coeff
+    
   }
 
   // Called once the command ends or is interrupted.
