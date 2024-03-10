@@ -44,14 +44,12 @@ public class SetShooter extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    System.out.println("DONE" + interrupted);
     _shooter.stopAngle();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    System.out.println(_shooter.atDesiredAngle());
     return _shooter.atDesiredAngle();
   }
 }

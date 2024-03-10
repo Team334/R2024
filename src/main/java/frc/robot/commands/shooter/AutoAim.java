@@ -94,9 +94,7 @@ public class AutoAim extends Command {
     double desiredSwerveHeading = offsets[0];
     double desiredShooterAngle = offsets[1];
     double desiredElevatorHeight = offsets[2];
-
-    System.out.println(desiredShooterAngle);
-
+    
     double rotationVelocity = MathUtil.clamp(
         _headingController.calculate(currentSwerveHeading, desiredSwerveHeading),
         -Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED,

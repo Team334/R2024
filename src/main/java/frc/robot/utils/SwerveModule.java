@@ -9,6 +9,7 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Constants.PID;
@@ -67,18 +68,14 @@ public class SwerveModule {
     _rotationController = new PIDController(PID.MODULE_ROTATION_KP, 0, 0);
     _rotationController.enableContinuousInput(-180, 180);
 
-    SmartDashboard.putData(_driveController);
-    SmartDashboard.putData(_rotationController);
-
     TalonFXConfig.configureFalcon(_driveMotor, false);
     TalonFXConfig.configureFalcon(_rotationMotor, true);
   }
 
-  /** Display's this module's info on SmartDashboard. */
-  public void displayInfo() {
-    SmartDashboard.putNumber(_name + " Angle", getAngle());
-    SmartDashboard.putNumber(_name + " Velocity", getDriveVelocity());
-    SmartDashboard.putNumber(_name + " Current", _rotationMotor.getTorqueCurrent().getValueAsDouble());
+  /** Display's this module's info on SmartDashboard through a supplied builder. */
+  public void displayInfo(SendableBuilder builder) {
+    builder.addDoubleProperty(_name + " Angle", () -> getAngle(), null);
+    builder.addDoubleProperty(_name + " Left Velocity", () -> getDriveVelocity(), null);
   }
 
   /**

@@ -79,8 +79,6 @@ public class VisionSubsystem extends SubsystemBase {
       // double botposeYaw = botpose_array[5];
       Rotation2d botposeRotation = Rotation2d.fromDegrees(botposeYaw);
 
-      SmartDashboard.putNumber("BOTPOSE YAW", botposeYaw);
-
       Pose2d botPose2D = new Pose2d(botposeX, botposeY, botposeRotation);
 
       return Optional.of(botPose2D);

@@ -66,8 +66,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   private VisionSubsystem _visionSubsystem;
 
-  private double _robotSpeed = 0;
-
   Translation2d _pivotPoint = new Translation2d(0, 0);
 
   private final Orchestra _orchestra = new Orchestra();
@@ -81,19 +79,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   StructArrayPublisher<SwerveModuleState> publisher = NetworkTableInstance.getDefault()
       .getStructArrayTopic("MyStates", SwerveModuleState.struct).publish();
 
-  // private final SysIdRoutine _sysID = new SysIdRoutine(
-  // new SysIdRoutine.Config(),
-  // new SysIdRoutine.Mechanism(
-  // (volts) -> {
-  // driveTest(UtilFuncs.FromVolts(volts.in(Units.Volts)));
-  // },
-  // (log) -> {
-  // new Measure()
-  // // log.motor("Front Left").linearVelocity(_frontLeft.getDriveVelocity());
-  // },
-  // this
-  // )
-  // );
 
   // Pose Estimator -> Has built in odometry and uses supplied vision measurements
   private final SwerveDrivePoseEstimator _estimator = new SwerveDrivePoseEstimator(
@@ -102,6 +87,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
           _backLeft.getPosition()},
       new Pose2d(), VecBuilder.fill(0.01, 0.01, 0.01), VecBuilder.fill(0.9, 0.9, 0.9));
 
+  // OTHER POSSIBLE STD VALUES:
   // VecBuilder.fill(0.006, 0.006, 0.007), VecBuilder.fill(0.52, 0.52, 1.35)
   // VecBuilder.fill(0.006, 0.006, 0.007), VecBuilder.fill(0.5, 0.5, 1.3)
 
@@ -136,6 +122,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
           }
           return false;
         }, this);
+    
     SmartDashboard.putData("Gyro", new Sendable() {
       @Override
       public void initSendable(SendableBuilder builder) {
@@ -143,47 +130,28 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         builder.addDoubleProperty("Value", () -> getHeading().getDegrees(), null);
       }
     });
+
     SmartDashboard.putData("Swerve Drive", new Sendable() {
       @Override
       public void initSendable(SendableBuilder builder) {
-        builder.setSmartDashboardType("SwerveDrive");
-        builder.addDoubleProperty("Front Left Angle", () -> _frontLeft.getAngle(), null);
-        builder.addDoubleProperty("Front Left Velocity", () -> _frontLeft.getDriveVelocity(), null);
-        builder.addDoubleProperty("Front Right Angle", () -> _frontRight.getAngle(), null);
-        builder.addDoubleProperty("Front Right Velocity", () -> _frontRight.getDriveVelocity(), null);
-        builder.addDoubleProperty("Back Left Angle", () -> _backLeft.getAngle(), null);
-        builder.addDoubleProperty("Back Left Velocity", () -> _backLeft.getDriveVelocity(), null);
-        builder.addDoubleProperty("Back Right Angle", () -> _backRight.getAngle(), null);
-        builder.addDoubleProperty("Back Right Velocity", () -> _backRight.getDriveVelocity(), null);
+        _frontLeft.displayInfo(builder);
+        _frontLeft.displayInfo(builder);
+        _backRight.displayInfo(builder);
+        _backLeft.displayInfo(builder);
         builder.addDoubleProperty("Robot Angle", () -> getHeading().getDegrees(), null);
         builder.addDoubleProperty("Swerve Speed", () -> Constants.Speeds.SWERVE_DRIVE_COEFF, null);
       }
     });
-    // SmartDashboard.putData(
-    // "Gyro",
-    // new Sendable() {
-    // @Override
-    // public void initSendable(SendableBuilder builder) {
-    // builder.setSmartDashboardType("Gyro");
-    // builder.addDoubleProperty("Value", () -> getHeading().getDegrees(), null);
-    // }
-    // });
 
     SmartDashboard.putData("Swerve/Built-in Accelerometer", new BuiltInAccelerometer());
   }
 
   @Override
   public void periodic() {
-    speakerOffsets();
-
     publisher.set(states);
 
     SmartDashboard.putNumber("Gyro 180/-180", getHeading().getDegrees());
 
-    // System.out.println(speakerAngles()[0]);
-
-    // This method will be called once per scheduler run
-    // SmartDashboard.putNumber("Gyro", getHeading().getDegrees());
     SmartDashboard.putBoolean("Field Oriented", fieldOriented);
     SmartDashboard.putNumber("CAN Utilization %", RobotController.getCANStatus().percentBusUtilization * 100.0);
     SmartDashboard.putNumber("Voltage", RobotController.getBatteryVoltage());
@@ -191,14 +159,13 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("RSL", RobotController.getRSLState());
     SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
 
-    _frontLeft.displayInfo();
-    _frontRight.displayInfo();
-    _backRight.displayInfo();
-    _backLeft.displayInfo();
-
     // Update the bot's pose
-    _estimator.update(getHeadingRaw(), new SwerveModulePosition[]{_frontLeft.getPosition(),
-        _frontRight.getPosition(), _backRight.getPosition(), _backLeft.getPosition()});
+    _estimator.update(getHeadingRaw(), new SwerveModulePosition[]{
+      _frontLeft.getPosition(),
+      _frontRight.getPosition(), 
+      _backRight.getPosition(), 
+      _backLeft.getPosition()
+    });
 
     if (_visionSubsystem.isApriltagVisible()) {
       Optional<Pose2d> visionBotpose = _visionSubsystem.getBotpose();
@@ -207,17 +174,9 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       }
     }
 
+    // field icon updates
     _field.setRobotPose(getPose());
     SmartDashboard.putData("FIELD", _field);
-
-    _robotSpeed = Math.sqrt(Math.pow(getRobotRelativeSpeeds().vxMetersPerSecond, 2)
-        + Math.pow(getRobotRelativeSpeeds().vyMetersPerSecond, 2));
-
-    // SmartDashboard.putNumber("ACTUAL X SPEED",
-    // getRobotRelativeSpeeds().vxMetersPerSecond);
-    // SmartDashboard.putNumber("ACTUAL Y SPEED",
-    // getRobotRelativeSpeeds().vyMetersPerSecond);
-    SmartDashboard.putNumber("Robot Speed", getRobotRelativeSpeeds().vxMetersPerSecond);
   }
 
   // to setup talon orchestra
@@ -256,17 +215,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     SwerveModuleState[] moduleStates = Constants.Physical.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds,
         _pivotPoint);
     setStates(moduleStates);
-  }
-
-  /**
-   * Testing function that sets all the modules' drive motors to the desired
-   * percent output.
-   */
-  public void driveTest(double speed) {
-    _frontLeft.drive(speed);
-    _frontRight.drive(speed);
-    _backRight.drive(speed);
-    _backLeft.drive(speed);
   }
 
   /**

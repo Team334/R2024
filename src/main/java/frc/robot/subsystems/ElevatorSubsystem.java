@@ -71,15 +71,11 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   /** Sets the height of the elevator in meters. MUST be called repeatedly. */
   public void setHeight(double height) {
-    // System.out.println(height);
-
     double out = MathUtil.clamp(
       _heightController.calculate(getHeight(), height),
       -Constants.Speeds.ELEVATOR_MAX_SPEED,
       Constants.Speeds.ELEVATOR_MAX_SPEED
     );
-
-    System.out.println(out);
 
     driveElevator(out);
   }
@@ -108,7 +104,6 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   /** Stops elevator movement. */
   public void stopElevator() {
-    // System.out.println("Stopped");
     driveElevator(0);
   }
 }
