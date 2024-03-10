@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandStadiaController;
+import frc.robot.Constants.Presets;
 import frc.robot.commands.elevator.OperateElevator;
 import frc.robot.commands.elevator.SetElevator;
 import frc.robot.commands.intake.FeedActuate;
@@ -81,7 +82,7 @@ private final LEDSubsystem _ledSubsystem = new LEDSubsystem(Constants.Ports.LEDS
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    NamedCommands.registerCommand("actuateOut", new SetShooter(_shooterSubsystem, () -> 52).andThen(
+    NamedCommands.registerCommand("actuateOut", new SetShooter(_shooterSubsystem, () -> Presets.ACTUATE_SHOOTER_ANGLE).andThen(
       new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE)
     ));
     NamedCommands.registerCommand("actuateIn", new FeedActuate(_intakeSubsystem, ActuatorState.STOWED).alongWith(new SpinShooter(_shooterSubsystem, ShooterState.SHOOT).until(() -> true)));
@@ -114,7 +115,7 @@ private final LEDSubsystem _ledSubsystem = new LEDSubsystem(Constants.Ports.LEDS
 
   // to configure button bindings
   private void configureBindings() {
-    Command safeFeedIn = new SetShooter(_shooterSubsystem, () -> 52).andThen(
+    Command safeFeedIn = new SetShooter(_shooterSubsystem, () -> Presets.ACTUATE_SHOOTER_ANGLE).andThen(
       new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE)
     );
 

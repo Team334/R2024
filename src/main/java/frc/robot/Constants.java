@@ -96,7 +96,7 @@ public final class Constants {
     public static final int INTAKE_STOWED = 0;
     public static final int INTAKE_OUT = 15;
 
-    public static final int SHOOTER_SHOOT_VEL = 10; // TODO: get this 
+    public static final int SHOOTER_SHOOT_VEL = 10; // TODO: get this?
   }
 
   public static class FeedForward {
@@ -109,25 +109,12 @@ public final class Constants {
   }
 
   public static class PID {
-    // TODO: Tune everything
-
     public static final double MODULE_DRIVE_KP = 0.015;
     public static final double MODULE_ROTATION_KP = 0.009;
 
     public static final double SHOOTER_ANGLE_KP = 0.08;
 
     public static final double INTAKE_ACTUATE_KP = 0.08;
-
-    // these are all the same, so the two constants above are used instead
-    // public static final double FRONT_LEFT_DRIVE_KP = 0.05;
-    // public static final double FRONT_RIGHT_DRIVE_KP = 0.05;
-    // public static final double BACK_RIGHT_DRIVE_KP = 0.05;
-    // public static final double BACK_LEFT_DRIVE_KP = 0.05;
-
-    // public static final double FRONT_LEFT_ROTATE_KP = 0.009;
-    // public static final double FRONT_RIGHT_ROTATE_KP = 0.009;
-    // public static final double BACK_RIGHT_ROTATE_KP = 0.009;
-    // public static final double BACK_LEFT_ROTATE_KP = 0.009;
 
     public static final PIDConstants PP_TRANSLATION = new PIDConstants(3.69, 0, 0);
     public static final PIDConstants PP_ROTATION = new PIDConstants(1.21993, 0, 0);
@@ -140,16 +127,14 @@ public final class Constants {
     public static final double SWERVE_HEADING_KD = 0.001;
   }
 
-  public static class Offsets {
-    // these aren't used anymore because cancoders can be zeroed in phoenix tuner 
-    // public static final double ENCODER_FRONT_LEFT = -93;
-    // public static final double ENCODER_FRONT_RIGHT = -58;
-    // public static final double ENCODER_BACK_RIGHT = 10;
-    // public static final double ENCODER_BACK_LEFT = 43;
 
-    // public static final double APRILTAG_SPEAKER_OFFSET = 0.565; // <- Below, but in Meters
-    // 200(approx height of spk opening) - 132(Height of AprTag) + 11.5(Center of
-    // AprTag) <- CM
+  public static class Presets {
+    public static final double CLOSE_SHOOTER_ANGLE = 0;
+    public static final double CLOSE_ELEVATOR_HEIGHT = 0;
+
+    public static final double ACTUATE_SHOOTER_ANGLE = 52;
+
+    public static final double ELEVATOR_HEIGHT_RATE = -0.025;
   }
 
   public static class Ports {

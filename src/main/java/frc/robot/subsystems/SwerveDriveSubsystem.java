@@ -31,6 +31,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.Physical;
+import frc.robot.Constants.Presets;
 import frc.robot.utils.BNO055;
 import frc.robot.utils.SwerveModule;
 import frc.robot.utils.UtilFuncs;
@@ -293,7 +294,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("DISTANCE", distanceVec.getNorm());
 
-    double elevatorHeight = Physical.ELEVATOR_MAX_SHOOT_HEIGHT - (distanceVec.getNorm() * 0.025); // TODO: get values and test
+    double elevatorHeight = Physical.ELEVATOR_MAX_SHOOT_HEIGHT + (distanceVec.getNorm() * Presets.ELEVATOR_HEIGHT_RATE); // TODO: get values and test
 
     xSpeakerAngle = MathUtil.inputModulus(distanceVec.getAngle().getDegrees(), -180, 180);
 
