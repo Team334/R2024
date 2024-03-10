@@ -128,7 +128,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
     switch (state) {
       case SHOOT:
-        spinShooter(Speeds.SHOOTER_SPIN_SPEED);
+        if (UtilFuncs.ShootFast()) spinShooter(Speeds.SHOOTER_FAST_SPIN_SPEED);
+        else spinShooter(Speeds.SHOOTER_SLOW_SPIN_SPEED);
         break;
     
       case AMP:

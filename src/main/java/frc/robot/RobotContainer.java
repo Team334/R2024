@@ -37,6 +37,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.IntakeSubsystem.ActuatorState;
 import frc.robot.subsystems.IntakeSubsystem.FeedMode;
 import frc.robot.subsystems.ShooterSubsystem.ShooterState;
+import frc.robot.utils.UtilFuncs;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
@@ -56,7 +57,7 @@ public class RobotContainer {
   private final ShooterSubsystem _shooterSubsystem = new ShooterSubsystem();
   private final ElevatorSubsystem _elevatorSubsystem = new ElevatorSubsystem();
   private final IntakeSubsystem _intakeSubsystem = new IntakeSubsystem();
-private final LEDSubsystem _ledSubsystem = new LEDSubsystem(Constants.Ports.LEDS, 14);
+  private final LEDSubsystem _ledSubsystem = new LEDSubsystem(Constants.Ports.LEDS, 14);
 
   // controllers (for driver and operator)
   private final CommandPS4Controller _driveController = new CommandPS4Controller(Constants.Ports.DRIVER_CONTROLLER);
@@ -108,6 +109,8 @@ private final LEDSubsystem _ledSubsystem = new LEDSubsystem(Constants.Ports.LEDS
     _intakeSubsystem.setDefaultCommand(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.NONE));
 
     configureBindings();
+
+    UtilFuncs.ShootFast(_swerveSubsystem::speakerDistance);
 
     _autonChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("AUTON CHOOSER", _autonChooser);

@@ -277,6 +277,22 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   }
 
   /**
+   * Get the distance of the chassis from the speaker shot point.
+   * 
+   * @return Norm of the distance vector.
+   */
+  public double speakerDistance() {
+    Pose3d speakerPose = UtilFuncs.GetAlliance() == Alliance.Red ? FieldConstants.SPEAKER_POSE_RED : FieldConstants.SPEAKER_POSE_BLUE;
+
+    Translation2d speakerTranslation = new Translation2d(speakerPose.getX(), speakerPose.getY());
+    Translation2d botTranslation = getPose().getTranslation();
+
+    Translation2d distanceVec = speakerTranslation.minus(botTranslation);
+
+    return distanceVec.getNorm();
+  }
+
+  /**
    * Get the setpoint x and y angles as well as elevater height for auto-aim.
    * 
    * @return [xSpeakerAngle, ySpeakerAngle, elevatorHeight]

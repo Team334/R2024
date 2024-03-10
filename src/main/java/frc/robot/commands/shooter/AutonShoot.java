@@ -40,9 +40,9 @@ public class AutonShoot extends SequentialCommandGroup {
 
       // pre-shooting (rev up if needed, while auto aiming, while feeding in for squish)
       new ParallelCommandGroup(
-        new SpinShooter(shooter, ShooterState.SHOOT, true).unless(() -> shooter.isState(ShooterState.SHOOT)).withTimeout(3),
+        new SpinShooter(shooter, ShooterState.SHOOT).unless(() -> shooter.isState(ShooterState.SHOOT)).withTimeout(3),
         new AutoAim(shooter, elevator, leds, swerve, Presets.CLOSE_SHOOTER_ANGLE, Presets.CLOSE_ELEVATOR_HEIGHT, _headingPreset).withTimeout(5),
-        new FeedActuate(intake, FeedMode.INTAKE).withTimeout(4)
+        new FeedActuate(intake, FeedMode.INTAKE).withTimeout(3)
       ),
       // new WaitUntilCommand(() -> UtilFuncs.InRange(shooter.getVelocity(), Encoders.SHOOTER_SHOOT_VEL, 1)),
       new FeedActuate(intake, FeedMode.OUTTAKE).withTimeout(2),
