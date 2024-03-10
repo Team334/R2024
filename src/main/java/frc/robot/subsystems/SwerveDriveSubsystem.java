@@ -168,7 +168,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       _backLeft.getPosition()
     });
 
-    if (_visionSubsystem.isApriltagVisible()) {
+    if (_visionSubsystem.isValid()) { // TODO: make sure this works
       Optional<Pose2d> visionBotpose = _visionSubsystem.getBotpose();
       if (visionBotpose.isPresent()) {
         _estimator.addVisionMeasurement(visionBotpose.get(), _visionSubsystem.getLatency());

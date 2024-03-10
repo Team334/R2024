@@ -24,6 +24,7 @@ public class SpinShooter extends Command {
     // NO SHOOTER SUBSYSTEM REQUIREMENT TO NOT MESS WITH SHOOTER ANGLING COMMANDS
   }
 
+  /** SpinShooter that never ends. */
   public SpinShooter(ShooterSubsystem shooter, ShooterState state) {
     this(shooter, state, false);
   }

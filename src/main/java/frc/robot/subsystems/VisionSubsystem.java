@@ -4,6 +4,8 @@ package frc.robot.subsystems;
 import java.util.Optional;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+
 import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -11,6 +13,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.FieldConstants;
 import frc.robot.utils.helpers.LimelightHelper;
 
 /**
@@ -83,6 +86,25 @@ public class VisionSubsystem extends SubsystemBase {
 
       return Optional.of(botPose2D);
     }
+  }
+
+  /**
+   * Tells whether limelight data is valid or not. For the data to be valid, the limelight 
+   * must be looking at at least one apriltag, and the apriltag must be in the specific distance range.
+   */
+  public boolean isValid() {
+    if (!isApriltagVisible()) return false;
+
+    JsonNode tags = _limelight.getTags();
+    
+    for (JsonNode tag : tags) {
+      double distance = ((ArrayNode) tag.get("t6t_rs")).get(0).asDouble();
+      if (distance <= FieldConstants.TAG_DISTANCE_THRESHOLD) {
+        return true;
+      }
+    }
+    
+    return false;
   }
 
   /** Return a boolean for whether a tag is seen. */
