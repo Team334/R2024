@@ -4,17 +4,17 @@
 
 package frc.robot.commands.shooter;
 
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import frc.robot.Constants.Encoders;
+import frc.robot.Constants.Presets;
 import frc.robot.commands.intake.FeedActuate;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
-import frc.robot.subsystems.IntakeSubsystem.ActuatorState;
 import frc.robot.subsystems.IntakeSubsystem.FeedMode;
 import frc.robot.subsystems.ShooterSubsystem.ShooterState;
 import frc.robot.utils.UtilFuncs;
@@ -23,6 +23,8 @@ import frc.robot.utils.UtilFuncs;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutonShoot extends SequentialCommandGroup {
+  private double _headingPreset;
+
   /** Creates a new AutonShoot. */
   public AutonShoot(
     ShooterSubsystem shooter,
@@ -34,10 +36,17 @@ public class AutonShoot extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new AutoAim(shooter, elevator, leds, swerve).alongWith(new FeedActuate(intake, FeedMode.INTAKE).withTimeout(5)).withTimeout(6),
+      Commands.runOnce(() -> {_headingPreset = (UtilFuncs.GetAlliance() == Alliance.Red) ? 0 : 180;}),
+
+      // pre-shooting (rev up if needed, while auto aiming, while feeding in for squish)
+      new ParallelCommandGroup(
+        new SpinShooter(shooter, ShooterState.SHOOT, true).unless(() -> shooter.isState(ShooterState.SHOOT)).withTimeout(3),
+        new AutoAim(shooter, elevator, leds, swerve, Presets.CLOSE_SHOOTER_ANGLE, Presets.CLOSE_ELEVATOR_HEIGHT, _headingPreset).withTimeout(5),
+        new FeedActuate(intake, FeedMode.INTAKE).withTimeout(4)
+      ),
       // new WaitUntilCommand(() -> UtilFuncs.InRange(shooter.getVelocity(), Encoders.SHOOTER_SHOOT_VEL, 1)),
       new FeedActuate(intake, FeedMode.OUTTAKE).withTimeout(2),
-      new SpinShooter(shooter, ShooterState.NONE).until(() -> true)
+      new SpinShooter(shooter, ShooterState.NONE, true)
     );
   }
 }

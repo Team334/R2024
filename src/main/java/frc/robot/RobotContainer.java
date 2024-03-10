@@ -85,7 +85,7 @@ private final LEDSubsystem _ledSubsystem = new LEDSubsystem(Constants.Ports.LEDS
     NamedCommands.registerCommand("actuateOut", new SetShooter(_shooterSubsystem, () -> Presets.ACTUATE_SHOOTER_ANGLE).andThen(
       new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE)
     ));
-    NamedCommands.registerCommand("actuateIn", new FeedActuate(_intakeSubsystem, ActuatorState.STOWED).alongWith(new SpinShooter(_shooterSubsystem, ShooterState.SHOOT).until(() -> true)));
+    NamedCommands.registerCommand("actuateIn", new FeedActuate(_intakeSubsystem, ActuatorState.STOWED).alongWith(new SpinShooter(_shooterSubsystem, ShooterState.SHOOT, true)));
     NamedCommands.registerCommand("shoot", new AutonShoot(_shooterSubsystem, _elevatorSubsystem, _ledSubsystem, _swerveSubsystem, _intakeSubsystem));
 
     // Drive/Operate default commands

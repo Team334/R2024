@@ -14,12 +14,18 @@ import frc.robot.subsystems.ShooterSubsystem.ShooterState;
 public class SpinShooter extends Command {
   private final ShooterSubsystem _shooter;
   private final ShooterState _state;
+  private final boolean _instant;
 
-  public SpinShooter(ShooterSubsystem shooter, ShooterState state) {
+  public SpinShooter(ShooterSubsystem shooter, ShooterState state, boolean instant) {
     _shooter = shooter;
     _state = state;
+    _instant = instant;
 
-    // NO SHOOTER REQUIREMENT TO NOT MESS WITH SHOOTER ANGLING COMMANDS
+    // NO SHOOTER SUBSYSTEM REQUIREMENT TO NOT MESS WITH SHOOTER ANGLING COMMANDS
+  }
+
+  public SpinShooter(ShooterSubsystem shooter, ShooterState state) {
+    this(shooter, state, false);
   }
 
   // Called when the command is initially scheduled.
@@ -40,6 +46,6 @@ public class SpinShooter extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return _instant;
   }
 }
