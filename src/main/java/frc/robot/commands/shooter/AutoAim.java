@@ -162,6 +162,8 @@ public class AutoAim extends Command {
     _reachedShooterAngle = _shooter.atDesiredAngle();
     _reachedElevatorHeight = _elevator.atDesiredHeight();
 
+    if (_reachedSwerveHeading) rotationVelocity = 0;
+
     SmartDashboard.putNumber("Y", _desiredSwerveHeading);
 
     // if (_reachedSwerveHeading && _reachedShooterAngle) {
@@ -184,7 +186,11 @@ public class AutoAim extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    _swerve.driveChassis(new ChassisSpeeds());
+    _elevator.stopElevator();;
+    _shooter.stopAngle();
+  }
 
   // Returns true when the command should end.
   @Override

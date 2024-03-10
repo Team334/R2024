@@ -41,7 +41,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     _leftMotor.getConfigurator().apply(softLimits);
 
-    _heightController.setTolerance(0.005);
+    _heightController.setTolerance(0.02);
     
     SmartDashboard.putData("ELEVATOR PID", _heightController);
   }
