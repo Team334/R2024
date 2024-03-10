@@ -280,7 +280,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
    * 
    * @return [xSpeakerAngle, ySpeakerAngle, elevatorHeight]
    */
-  public double[] speakerOffsets() {
+  public double[] speakerSetpoints() {
     double xSpeakerAngle;
     double ySpeakerAngle;
 

@@ -38,12 +38,29 @@ public class AutoAim extends Command {
   private boolean _reachedShooterAngle;
   private boolean _reachedElevatorHeight;
 
+  private double _desiredSwerveHeading = 0;
+  private double _desiredShooterAngle = 0;
+  private double _desiredElevatorHeight = 0;
+
   private boolean _runOnce;
+  private boolean _overrideDesired;
 
   private PIDController _headingController = new PIDController(Constants.PID.SWERVE_HEADING_KP, 0,
       Constants.PID.SWERVE_HEADING_KD);
 
-  /** Creates a new AutoAim. */
+  /**
+   * Constructs an AutoAim that does NOT finish when reaching setpoints.
+   * It calculates angle/height/heading setpoints.
+   * 
+   * (USE FOR TELEOP)
+   * 
+   * @param shooter Shooter subsystem.
+   * @param elevator Elevator subsystem.
+   * @param leds Led subsystem.
+   * @param swerve Swerve subsystem.
+   * @param xSpeed X joystick speed.
+   * @param ySpeed Y joystick speed.
+   */
   public AutoAim(
     ShooterSubsystem shooter,
     ElevatorSubsystem elevator,
@@ -52,7 +69,6 @@ public class AutoAim extends Command {
     DoubleSupplier xSpeed,
     DoubleSupplier ySpeed
   ) {
-    // Use addRequirements() here to declare subsystem dependencies.
     _leds = leds;
     _shooter = shooter;
     _elevator = elevator;
@@ -62,6 +78,7 @@ public class AutoAim extends Command {
     _ySpeed = ySpeed;
 
     _runOnce = false;
+    _overrideDesired = false;
 
     _headingController.setTolerance(2);
     _headingController.enableContinuousInput(-180, 180);
@@ -69,11 +86,49 @@ public class AutoAim extends Command {
     addRequirements(_swerve, _shooter, _elevator);
   }
 
-  /** Creates an auton AutoAim that ends when it reaches the first setpoints. */
+  /**
+   * Constructs an AutoAim that finishes when it reaches its initial setpoints.
+   * It calculates angle/height/heading setpoints.
+   * 
+   * (USE FOR AUTON)
+   * 
+   * @param shooter Shooter subsystem.
+   * @param elevator Elevator subsystem.
+   * @param leds Led subsystem.
+   * @param swerve Swerve subsystem.
+   */
   public AutoAim(ShooterSubsystem shooter, ElevatorSubsystem elevator, LEDSubsystem leds, SwerveDriveSubsystem swerve) {
     this(shooter, elevator, leds, swerve, () -> 0, () -> 0);
 
     _runOnce = true;
+  }
+
+  /**
+   * Constructs an AutoAim that finishes when it reaches its initial setpoint. 
+   * It does NOT calculate angle/height/heading setpoints, and overrides them with supplied setpoints instead.
+   * 
+   * (USE FOR AUTON)
+   * 
+   * @param shooterAngle Desired shooter angle.
+   * @param elevatorHeight Desired elevator height.
+   * @param swerveHeading Desired swerve heading.
+   */
+  public AutoAim(
+    ShooterSubsystem shooter, 
+    ElevatorSubsystem elevator, 
+    LEDSubsystem leds, 
+    SwerveDriveSubsystem swerve,
+    double shooterAngle,
+    double elevatorHeight,
+    double swerveHeading
+  ) {
+    this(shooter, elevator, leds, swerve);
+
+    _desiredShooterAngle = shooterAngle;
+    _desiredElevatorHeight = elevatorHeight;
+    _desiredSwerveHeading = swerveHeading;
+
+    _overrideDesired = true;
   }
 
   // Called when the command is initially scheduled.
@@ -89,22 +144,25 @@ public class AutoAim extends Command {
   public void execute() {
     double currentSwerveHeading = _swerve.getHeading().getDegrees();
 
-    double[] offsets = _swerve.speakerOffsets();
+    if (_overrideDesired) {
+      double[] setpoints = _swerve.speakerSetpoints();
 
-    double desiredSwerveHeading = offsets[0];
-    double desiredShooterAngle = offsets[1];
-    double desiredElevatorHeight = offsets[2];
+      _desiredSwerveHeading = setpoints[0];
+      _desiredShooterAngle = setpoints[1];
+      _desiredElevatorHeight = setpoints[2];
+    }
     
     double rotationVelocity = MathUtil.clamp(
-        _headingController.calculate(currentSwerveHeading, desiredSwerveHeading),
-        -Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED,
-        Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED);
+      _headingController.calculate(currentSwerveHeading, _desiredSwerveHeading),
+      -Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED,
+      Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED
+    );
 
     _reachedSwerveHeading = _headingController.atSetpoint();
     _reachedShooterAngle = _shooter.atDesiredAngle();
     _reachedElevatorHeight = _elevator.atDesiredHeight();
 
-    SmartDashboard.putNumber("Y", desiredSwerveHeading);
+    SmartDashboard.putNumber("Y", _desiredSwerveHeading);
 
     // if (_reachedSwerveHeading && _reachedShooterAngle) {
     //   _leds.setColor(Constants.LEDColors.GREEN);
@@ -112,12 +170,16 @@ public class AutoAim extends Command {
     //   _leds.blink(Constants.LEDColors.YELLOW, Constants.LEDColors.NOTHING, 0.2);
     // }
 
-    _swerve.driveChassis(new ChassisSpeeds(
+    _swerve.driveChassis(
+      new ChassisSpeeds(
         _xSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
         _ySpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
-        rotationVelocity));
-    _shooter.setAngle(desiredShooterAngle);
-    _elevator.setHeight(desiredElevatorHeight);
+        rotationVelocity
+      )
+    );
+
+    _shooter.setAngle(_desiredShooterAngle);
+    _elevator.setHeight(_desiredElevatorHeight);
   }
 
   // Called once the command ends or is interrupted.

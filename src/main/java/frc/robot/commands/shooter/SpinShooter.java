@@ -12,8 +12,8 @@ import frc.robot.subsystems.ShooterSubsystem.ShooterState;
  * @author Peleh Liu
  */
 public class SpinShooter extends Command {
-  private ShooterSubsystem _shooter;
-  private ShooterState _state;
+  private final ShooterSubsystem _shooter;
+  private final ShooterState _state;
 
   public SpinShooter(ShooterSubsystem shooter, ShooterState state) {
     _shooter = shooter;

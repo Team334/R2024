@@ -76,22 +76,13 @@ private final LEDSubsystem _ledSubsystem = new LEDSubsystem(Constants.Ports.LEDS
   // sendable chooser for auton commands
   private final SendableChooser<Command> _autonChooser;
 
-  private final Command _safeFeedIn = new SetShooter(_shooterSubsystem, () -> 52).andThen(
-    new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE)
-  );
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    // NamedCommands.registerCommand("printHello", new PrintCommand("AUTON HELLO"));
-    // NamedCommands.registerCommand("waitCommand", new WaitCommand(3));
-    // NamedCommands.registerCommand("interruptSwerve", new BrakeSwerve(_swerveSubsystem, _ledSubsystem));
-    // NamedCommands.registerCommand("speakerAim",
-    //     new AutoAim(_ledSubsystem, _shooterSubsystem, _visionSubsystem, _swerveSubsystem));
-
     NamedCommands.registerCommand("actuateOut", new SetShooter(_shooterSubsystem, () -> 52).andThen(
-    new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE)
+      new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE)
     ));
     NamedCommands.registerCommand("actuateIn", new FeedActuate(_intakeSubsystem, ActuatorState.STOWED).alongWith(new SpinShooter(_shooterSubsystem, ShooterState.SHOOT).until(() -> true)));
     NamedCommands.registerCommand("shoot", new AutonShoot(_shooterSubsystem, _elevatorSubsystem, _ledSubsystem, _swerveSubsystem, _intakeSubsystem));
@@ -131,11 +122,11 @@ private final LEDSubsystem _ledSubsystem = new LEDSubsystem(Constants.Ports.LEDS
       new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.OUTTAKE)
     );
 
-    Runnable stop = () -> _shooterSubsystem.stopShooter();
+    Runnable stopShooter = () -> _shooterSubsystem.stopShooter();
 
     // operator bindings
-    _operatorController.L1().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.SHOOT).handleInterrupt(stop));
-    _operatorController.L2().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.AMP).handleInterrupt(stop));
+    _operatorController.L1().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.SHOOT).handleInterrupt(stopShooter));
+    _operatorController.L2().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.AMP).handleInterrupt(stopShooter));
 
     _operatorController.square().whileTrue(safeFeedIn);
     _operatorController.circle().whileTrue(feedOut);
@@ -145,7 +136,7 @@ private final LEDSubsystem _ledSubsystem = new LEDSubsystem(Constants.Ports.LEDS
     // driver bindings
     _driveController.R1().onTrue(Commands.runOnce(() -> _swerveSubsystem.fieldOriented = !_swerveSubsystem.fieldOriented, _swerveSubsystem));
     _driveController.L1().onTrue(Commands.runOnce(() -> _swerveSubsystem.resetPose(new Pose2d()), _swerveSubsystem));
-   // _driveController.cross().whileTrue(new BrakeSwerve(_swerveSubsystem, new LEDSubsystem(0, 0)));
+    _driveController.cross().whileTrue(new BrakeSwerve(_swerveSubsystem, _ledSubsystem));
 
     _driveController.R2().whileTrue(
       new AutoAim(
