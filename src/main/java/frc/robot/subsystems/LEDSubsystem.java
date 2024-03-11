@@ -117,9 +117,12 @@ public class LEDSubsystem extends SubsystemBase {
   public void movingPixels(int hueHSV, double speed) {
     _ledTimer.start();
 
-    for (int i = 0; i < _ledBuffer.getLength(); i+=5) {
+    for (int i = 0; i < _ledBuffer.getLength(); i+=20) {
       for (int x = 0; x < 6; x++) {
         _ledBuffer.setHSV(x+i, hueHSV, 255, 255);
+      }
+      for (int x=6; x < 16; x++) {
+        _ledBuffer.setHSV(x, 0, 0, 0);
       }
     }
     
