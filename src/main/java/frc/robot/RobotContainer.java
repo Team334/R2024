@@ -83,10 +83,16 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    NamedCommands.registerCommand("brake", new BrakeSwerve(_swerveSubsystem, _ledSubsystem));
+    
     NamedCommands.registerCommand("actuateOut", new SetShooter(_shooterSubsystem, () -> Presets.ACTUATE_SHOOTER_ANGLE).andThen(
       new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE)
     ));
-    NamedCommands.registerCommand("actuateIn", new FeedActuate(_intakeSubsystem, ActuatorState.STOWED).alongWith(new SpinShooter(_shooterSubsystem, ShooterState.SHOOT, true)));
+
+    NamedCommands.registerCommand("actuateIn", new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.INTAKE).alongWith(
+      new SpinShooter(_shooterSubsystem, ShooterState.SHOOT, true)
+    ));
+
     NamedCommands.registerCommand("shoot", new AutonShoot(_shooterSubsystem, _elevatorSubsystem, _ledSubsystem, _swerveSubsystem, _intakeSubsystem));
 
     // Drive/Operate default commands
@@ -136,6 +142,11 @@ public class RobotContainer {
     _operatorController.circle().whileTrue(feedOut);
     _operatorController.triangle().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.OUTTAKE));
     _operatorController.cross().whileTrue(new FeedActuate(_intakeSubsystem, FeedMode.INTAKE));
+
+    // test for the presets
+    _driveController.square().onTrue(
+      new AutonShoot(_shooterSubsystem, _elevatorSubsystem, _ledSubsystem, _swerveSubsystem, _intakeSubsystem)
+    );
 
     // driver bindings
     _driveController.R1().onTrue(Commands.runOnce(() -> _swerveSubsystem.fieldOriented = !_swerveSubsystem.fieldOriented, _swerveSubsystem));

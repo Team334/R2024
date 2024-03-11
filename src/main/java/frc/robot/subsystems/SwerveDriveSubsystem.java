@@ -86,7 +86,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       Constants.Physical.SWERVE_KINEMATICS, getHeadingRaw(),
       new SwerveModulePosition[]{_frontLeft.getPosition(), _frontRight.getPosition(), _backRight.getPosition(),
           _backLeft.getPosition()},
-      new Pose2d(), VecBuilder.fill(0.01, 0.01, 0.01), VecBuilder.fill(0.9, 0.9, 0.9));
+      new Pose2d(), VecBuilder.fill(0.01, 0.01, 0.01), VecBuilder.fill(0.9, 0.9, 1.2));
 
   // OTHER POSSIBLE STD VALUES:
   // VecBuilder.fill(0.006, 0.006, 0.007), VecBuilder.fill(0.52, 0.52, 1.35)
@@ -167,6 +167,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       _backRight.getPosition(), 
       _backLeft.getPosition()
     });
+
+    SmartDashboard.putBoolean("IN RANGE", _visionSubsystem.isValid());
 
     if (_visionSubsystem.isValid()) { // TODO: make sure this works
       Optional<Pose2d> visionBotpose = _visionSubsystem.getBotpose();

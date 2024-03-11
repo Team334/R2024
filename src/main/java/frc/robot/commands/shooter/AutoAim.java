@@ -142,9 +142,11 @@ public class AutoAim extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    System.out.println("AIMING");
+    
     double currentSwerveHeading = _swerve.getHeading().getDegrees();
 
-    if (_overrideDesired) {
+    if (!_overrideDesired) {
       double[] setpoints = _swerve.speakerSetpoints();
 
       _desiredSwerveHeading = setpoints[0];

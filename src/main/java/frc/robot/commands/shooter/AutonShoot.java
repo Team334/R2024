@@ -4,12 +4,16 @@
 
 package frc.robot.commands.shooter;
 
+import java.util.concurrent.locks.Condition;
+
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.Presets;
 import frc.robot.commands.intake.FeedActuate;
+import frc.robot.commands.swerve.BrakeSwerve;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
@@ -24,6 +28,7 @@ import frc.robot.utils.UtilFuncs;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutonShoot extends SequentialCommandGroup {
   private double _headingPreset;
+  private boolean _isAimed = false;
 
   /** Creates a new AutonShoot. */
   public AutonShoot(
@@ -38,14 +43,16 @@ public class AutonShoot extends SequentialCommandGroup {
     addCommands(
       Commands.runOnce(() -> {_headingPreset = (UtilFuncs.GetAlliance() == Alliance.Red) ? 0 : 180;}),
 
-      // pre-shooting (rev up if needed, while auto aiming, while feeding in for squish)
       new ParallelCommandGroup(
-        new SpinShooter(shooter, ShooterState.SHOOT).unless(() -> shooter.isState(ShooterState.SHOOT)).withTimeout(3),
-        new AutoAim(shooter, elevator, leds, swerve, Presets.CLOSE_SHOOTER_ANGLE, Presets.CLOSE_ELEVATOR_HEIGHT, _headingPreset).withTimeout(5),
-        new FeedActuate(intake, FeedMode.INTAKE).withTimeout(3)
+        new SpinShooter(shooter, ShooterState.SHOOT).unless(() -> shooter.isState(ShooterState.SHOOT)).withTimeout(1.5),
+        new AutoAim(shooter, elevator, leds, swerve, Presets.CLOSE_SHOOTER_ANGLE, Presets.CLOSE_ELEVATOR_HEIGHT, 180).onlyIf(
+          () -> !_isAimed
+        ).withTimeout(3).andThen(() -> _isAimed = true),
+        new FeedActuate(intake, FeedMode.INTAKE).unless(() -> intake.isFeedMode(FeedMode.INTAKE)).withTimeout(1)
       ),
+      // pre-shooting (rev up if needed, while auto aiming, while feeding in for squish)
       // new WaitUntilCommand(() -> UtilFuncs.InRange(shooter.getVelocity(), Encoders.SHOOTER_SHOOT_VEL, 1)),
-      new FeedActuate(intake, FeedMode.OUTTAKE).withTimeout(2),
+      new FeedActuate(intake, FeedMode.OUTTAKE).withTimeout(0.5),
       new SpinShooter(shooter, ShooterState.NONE, true)
     );
   }

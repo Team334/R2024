@@ -98,8 +98,9 @@ public class VisionSubsystem extends SubsystemBase {
     JsonNode tags = _limelight.getTags();
     
     for (JsonNode tag : tags) {
-      double distance = ((ArrayNode) tag.get("t6t_rs")).get(0).asDouble();
+      double distance = ((ArrayNode) tag.get("t6t_cs")).get(2).asDouble();
       if (distance <= FieldConstants.TAG_DISTANCE_THRESHOLD) {
+        SmartDashboard.putNumber("TAG DISTANCE", distance);
         return true;
       }
     }

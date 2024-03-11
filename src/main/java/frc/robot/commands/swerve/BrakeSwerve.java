@@ -27,7 +27,7 @@ public class BrakeSwerve extends Command {
     _swerveDrive = swerveDrive;
     _leds = leds;
 
-    addRequirements(_swerveDrive, _leds);
+    addRequirements(_swerveDrive);
   }
 
   /**
