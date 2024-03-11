@@ -149,6 +149,16 @@ public class RobotContainer {
     //     Commands.run(() -> _intakeSubsystem.actuate(-0.3), _intakeSubsystem).handleInterrupt(() -> _intakeSubsystem.actuate(0))
     // ));
 
+    // _operatorController.R2().onTrue(
+    //   Commands.runOnce(_intakeSubsystem::toggleReverseSoftLimit, _intakeSubsystem)
+    // );
+
+    // _operatorController.R1().onTrue(
+    //   Commands.run(() -> _intakeSubsystem.actuate(-0.1), _intakeSubsystem).handleInterrupt(
+    //     _intakeSubsystem::resetActuatorEncoder
+    //   )
+    // );
+
     // _operatorController.R1().onTrue(
     //   Commands.runOnce(_intakeSubsystem::resetReverseSoftLimit, _intakeSubsystem)
     // );

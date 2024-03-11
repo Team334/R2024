@@ -75,7 +75,7 @@ public class SwerveModule {
   /** Display's this module's info on SmartDashboard through a supplied builder. */
   public void displayInfo(SendableBuilder builder) {
     builder.addDoubleProperty(_name + " Angle", () -> getAngle(), null);
-    builder.addDoubleProperty(_name + " Left Velocity", () -> getDriveVelocity(), null);
+    builder.addDoubleProperty(_name + " Velocity", () -> getDriveVelocity(), null);
   }
 
   /**

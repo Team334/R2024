@@ -2,8 +2,10 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 
@@ -25,7 +27,7 @@ import frc.robot.utils.configs.NeoConfig;
  */
 public class IntakeSubsystem extends SubsystemBase {
   private final CANSparkMax _feedMotor, _actuatorMotor;
-  private final PIDController _actuatorController = new PIDController(PID.INTAKE_ACTUATE_KP, 0, 0.004);
+  private final PIDController _actuatorController = new PIDController(PID.INTAKE_ACTUATE_KP, 0, 0);
   // private final ProfiledPIDController _actuatorController = new ProfiledPIDController(
   //   0.05,
   //   0,
@@ -54,7 +56,7 @@ public class IntakeSubsystem extends SubsystemBase {
     _feedMotor = new CANSparkMax(Constants.CAN.INTAKE_FEED, MotorType.kBrushless);
     _actuatorMotor = new CANSparkMax(Constants.CAN.INTAKE_ACTUATOR, MotorType.kBrushless);
 
-    _actuatorEncoder = _actuatorMotor.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, 8192);
+    _actuatorEncoder = _actuatorMotor.getEncoder();
     _actuatorEncoder.setPosition(0);
 
     _feedEncoder = _feedMotor.getEncoder();
@@ -108,18 +110,17 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   /**
-   * Disables the reverse soft limit of the actuator.
+   * Toggle reverse soft limit.
    */
-  public void disableReverseSoftLimit() {
-    _actuatorMotor.enableSoftLimit(SoftLimitDirection.kReverse, false);
+  public void toggleReverseSoftLimit() {
+    _actuatorMotor.enableSoftLimit(SoftLimitDirection.kReverse, !_actuatorMotor.isSoftLimitEnabled(SoftLimitDirection.kReverse));
   }
 
   /**
    * Resets the reverse soft limit (and encoder) of the actuator.
    */
-  public void resetReverseSoftLimit() {
+  public void resetActuatorEncoder() {
     _actuatorEncoder.setPosition(0);
-    _actuatorMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
   }
 
   /**
@@ -217,7 +218,7 @@ public class IntakeSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("ACTUATOR ENCODER", _actuatorEncoder.getPosition());
+    SmartDashboard.putNumber("ACTUATOR ENCODER", getActuator());
     SmartDashboard.putData("ACTUATOR PID", _actuatorController);
     SmartDashboard.putNumber("ACTUATOR OUT", _actuatorMotor.get());
 

@@ -93,19 +93,20 @@ public class VisionSubsystem extends SubsystemBase {
    * must be looking at at least one apriltag, and the apriltag must be in the specific distance range.
    */
   public boolean isValid() {
-    if (!isApriltagVisible()) return false;
-
-    JsonNode tags = _limelight.getTags();
-    
-    for (JsonNode tag : tags) {
-      double distance = ((ArrayNode) tag.get("t6t_cs")).get(2).asDouble();
-      if (distance <= FieldConstants.TAG_DISTANCE_THRESHOLD) {
-        SmartDashboard.putNumber("TAG DISTANCE", distance);
-        return true;
-      }
-    }
-    
+    if (isApriltagVisible()) return true;
     return false;
+
+    // JsonNode tags = _limelight.getTags();
+    
+    // for (JsonNode tag : tags) {
+    //   double distance = ((ArrayNode) tag.get("t6t_cs")).get(2).asDouble();
+    //   if (distance <= FieldConstants.TAG_DISTANCE_THRESHOLD) {
+    //     SmartDashboard.putNumber("TAG DISTANCE", distance);
+    //     return true;
+    //   }
+    // }
+    
+    // return false;
   }
 
   /** Return a boolean for whether a tag is seen. */

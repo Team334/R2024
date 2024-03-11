@@ -136,7 +136,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       @Override
       public void initSendable(SendableBuilder builder) {
         _frontLeft.displayInfo(builder);
-        _frontLeft.displayInfo(builder);
+        _frontRight.displayInfo(builder);
         _backRight.displayInfo(builder);
         _backLeft.displayInfo(builder);
         builder.addDoubleProperty("Robot Angle", () -> getHeading().getDegrees(), null);
