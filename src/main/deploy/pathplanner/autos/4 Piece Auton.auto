@@ -2,25 +2,37 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7450681568029801,
-      "y": 4.058424693425964
+      "x": 1.3459738631188973,
+      "y": 5.546821904454621
     },
-    "rotation": -0.707319368544202
+    "rotation": 180.0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "shoot"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": null
+            "pathName": "get bot note"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "shoot bot note"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "speakerAim"
+            "name": "shoot"
           }
         },
         {
@@ -38,24 +50,30 @@
         {
           "type": "named",
           "data": {
-            "name": "speakerAim"
+            "name": "shoot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "get center note 2"
+            "pathName": "get top note"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "shoot center note 2"
+            "pathName": "shoot top note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shoot"
           }
         }
       ]
     }
   },
-  "folder": "d2",
+  "folder": null,
   "choreoAuto": false
 }

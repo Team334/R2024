@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3459738631188973,
-      "y": 5.546821904454621
+      "x": 1.35,
+      "y": 5.55
     },
     "rotation": 180.0
   },
@@ -46,16 +46,10 @@
           "data": {
             "pathName": "shoot mid note"
           }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "shoot"
-          }
         }
       ]
     }
   },
-  "folder": "ds2",
+  "folder": null,
   "choreoAuto": false
 }

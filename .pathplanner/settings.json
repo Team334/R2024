@@ -3,14 +3,15 @@
   "robotLength": 0.8,
   "holonomicMode": true,
   "pathFolders": [
-    "d3",
+    "straight pickup",
     "d1",
-    "d2"
+    "d2",
+    "d3"
   ],
   "autoFolders": [
-    "ds3",
     "ds1",
-    "ds2"
+    "d2",
+    "ds3"
   ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
