@@ -57,7 +57,7 @@ public class RobotContainer {
   private final ShooterSubsystem _shooterSubsystem = new ShooterSubsystem();
   private final ElevatorSubsystem _elevatorSubsystem = new ElevatorSubsystem();
   private final IntakeSubsystem _intakeSubsystem = new IntakeSubsystem();
-  private final LEDSubsystem _ledSubsystem = new LEDSubsystem(Constants.Ports.LEDS, 14);
+  private final LEDSubsystem _ledSubsystem = new LEDSubsystem(Constants.Ports.LEDS, 60);
 
   // controllers (for driver and operator)
   private final CommandPS4Controller _driveController = new CommandPS4Controller(Constants.Ports.DRIVER_CONTROLLER);
@@ -113,6 +113,7 @@ public class RobotContainer {
 
     // Non drive/operate default commands
     _intakeSubsystem.setDefaultCommand(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.NONE));
+    _ledSubsystem.setDefaultCommand(new DefaultLED(_ledSubsystem));
 
     configureBindings();
 

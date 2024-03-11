@@ -35,6 +35,11 @@ public class LEDSubsystem extends SubsystemBase {
     _ledStrip.start();
   }
 
+  /**
+   * Sets color of LED strip.
+   * 
+   * @param color List of RGB values for color.
+   */
   public void setColor(int[] color) {
     // For every pixel in RGB format!!!
     for (int i = 0; i < _ledBuffer.getLength(); i++) {
@@ -44,51 +49,14 @@ public class LEDSubsystem extends SubsystemBase {
     _ledStrip.setData(_ledBuffer);
   }
 
-  public void rainbow() {
-    _ledTimer.start();
-    for (int i = 0; i < _ledBuffer.getLength(); i++) {
-      // Get the distance of the rainbow between two pixels. (180 /
-      // _ledBuffer.getLength())
-      // Times the index of current pixel. (i)
-      // Plus the hue of the first pixel.
-      // ^This will get us the "moved" hue for the current pixel^
-      _hue = (_firstPixelHue + (i * (180 / _ledBuffer.getLength()))) % 180;
-      _ledBuffer.setHSV(i, _hue, 255, 255);
-    }
-    _ledStrip.setData(_ledBuffer);
-
-    if (_ledTimer.get() >= 0.02) {
-      _firstPixelHue += 3;
-      _firstPixelHue %= 180;
-      _ledTimer.reset();
-      _ledTimer.start();
-    }
-  }
-
-  public void movingPixels(int hueHSV, double speed) {
-    _ledTimer.start();
-    // IDEA: Pixels move right to left or left to right.
-    for (int i = 0; i < _ledBuffer.getLength(); i++) {
-      if ((i - _firstPixelIndex + 3) % 3 == 0) {
-        _value = 255;
-      } else {
-        _value = 0;
-      }
-      _ledBuffer.setHSV(i, hueHSV, 255, _value);
-    }
-    _ledStrip.setData(_ledBuffer);
-    if (_ledTimer.get() >= speed) {
-      _firstPixelIndex += 1;
-      _ledTimer.reset();
-      _ledTimer.start();
-    }
-
-    if (_firstPixelIndex == 3) {
-      _firstPixelIndex = 0;
-    }
-  }
-
   // timeBetween will now be in seconds
+  /**
+   * Blinks a color on LED strip.
+   * 
+   * @param firstColor First alternating color in RGB.
+   * @param secondColor Second alternating color in RGB.
+   * @param timeBetween Time between each blink (in seconds).
+   */
   public void blink(int[] firstColor, int[] secondColor, double timeBetween) {
     _ledTimer.start();
     if (_ledTimer.get() > timeBetween) {
@@ -113,6 +81,57 @@ public class LEDSubsystem extends SubsystemBase {
         _ledTimer.reset();
         _ledTimer.start();
       }
+    }
+  }
+
+  /**
+   * A rainbow pattern for LEDs.
+   */
+  public void rainbow() {
+    _ledTimer.start();
+    for (int i = 0; i < _ledBuffer.getLength(); i++) {
+      // Get the distance of the rainbow between two pixels. (180 /
+      // _ledBuffer.getLength())
+      // Times the index of current pixel. (i)
+      // Plus the hue of the first pixel.
+      // ^This will get us the "moved" hue for the current pixel^
+      _hue = (_firstPixelHue + (i * (180 / _ledBuffer.getLength()))) % 180;
+      _ledBuffer.setHSV(i, _hue, 255, 255);
+    }
+    _ledStrip.setData(_ledBuffer);
+
+    if (_ledTimer.get() >= 0.02) {
+      _firstPixelHue += 3;
+      _firstPixelHue %= 180;
+      _ledTimer.reset();
+      _ledTimer.start();
+    }
+  }
+
+  /**
+   * Several lights traveling along the LED strip.
+   * 
+   * @param hueHSV Color of moving light in HSV (hue).
+   * @param speed Seed of which the light is moving.
+   */
+  public void movingPixels(int hueHSV, double speed) {
+    _ledTimer.start();
+
+    for (int i = 0; i < _ledBuffer.getLength(); i+=5) {
+      for (int x = 0; x < 6; x++) {
+        _ledBuffer.setHSV(x+i, hueHSV, 255, 255);
+      }
+    }
+    
+    _ledStrip.setData(_ledBuffer);
+    if (_ledTimer.get() >= speed) {
+      _firstPixelIndex += 1;
+      _ledTimer.reset();
+      _ledTimer.start();
+    }
+
+    if (_firstPixelIndex == 3) {
+      _firstPixelIndex = 0;
     }
   }
 
