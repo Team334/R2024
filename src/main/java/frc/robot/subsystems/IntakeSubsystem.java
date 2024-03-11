@@ -89,10 +89,20 @@ public class IntakeSubsystem extends SubsystemBase {
   //   return false;
   // }
 
+  /**
+   * Check if the FeedMode has last been set to the desired value.
+   * 
+   * @param feedMode The FeedMode to check.
+   */
   public boolean isFeedMode(FeedMode feedMode) {
     return _feedMode == feedMode;
   }
 
+  /**
+   * Check if the ActuatorState has been set to the desired value.
+   * 
+   * @param actuatorState The ActuatorState to check.
+   */
   public boolean isActuatorState(ActuatorState actuatorState) {
     return _actuatorState == actuatorState;
   }
