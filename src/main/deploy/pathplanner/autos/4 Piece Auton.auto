@@ -2,61 +2,19 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.8837387044143455,
-      "y": 6.9797508964387305
+      "x": 1.3459738631188973,
+      "y": 5.546821904454621
     },
-    "rotation": 67.30620505490764
+    "rotation": 180.0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "preloaded"
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "speakerAim"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "get top note"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "shoot top note"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "speakerAim"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "get mid note"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "shoot mid note"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "speakerAim"
+            "name": "shoot"
           }
         },
         {
@@ -74,12 +32,48 @@
         {
           "type": "named",
           "data": {
-            "name": "speakerAim"
+            "name": "shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "get mid note"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "shoot mid note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "get top note"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "shoot top note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shoot"
           }
         }
       ]
     }
   },
-  "folder": "ds1",
+  "folder": null,
   "choreoAuto": false
 }

@@ -3,24 +3,24 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.51,
-        "y": 4.5
+        "x": 2.41,
+        "y": 4.32
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.5477852757507313,
-        "y": 4.871958572745974
+        "x": 2.4477852757507317,
+        "y": 4.691958572745975
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.3829526758152613,
+        "x": 1.35,
         "y": 5.546821904454621
       },
       "prevControl": {
-        "x": 1.4207379515659924,
+        "x": 1.3877852757507312,
         "y": 5.204767887013254
       },
       "nextControl": null,
@@ -29,11 +29,23 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 0.8,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 4.67,
+        "maxAcceleration": 1.5,
+        "maxAngularVelocity": 180.0,
+        "maxAngularAcceleration": 360.0
+      }
+    }
+  ],
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0.2,
+      "waypointRelativePos": 0.15,
       "command": {
         "type": "sequential",
         "data": {
@@ -61,7 +73,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "d3",
+  "folder": "reg paths",
   "previewStartingState": null,
   "useDefaultConstraints": false
 }

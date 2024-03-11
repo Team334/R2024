@@ -2,60 +2,60 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7728022663252532,
-      "y": 2.5977615919195807
+      "x": 1.308995050422533,
+      "y": 5.509843091758257
     },
-    "rotation": 0
+    "rotation": 180.0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "shoot"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "preloaded 3"
+            "pathName": "REAL AUTON OUT"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "REAL AUTON IN"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "speakerAim"
+            "name": "shoot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "get bot note"
+            "pathName": "get mid"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "shoot bot note"
+            "pathName": "shoot mid"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "speakerAim"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "get center note 3"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "shoot center note 3"
+            "name": "shoot"
           }
         }
       ]
     }
   },
-  "folder": "ds3",
+  "folder": null,
   "choreoAuto": false
 }

@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.3644632694670795,
-        "y": 5.4821089822359825
+        "x": 1.35,
+        "y": 5.55
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7434960996048119,
-        "y": 5.4821089822359825
+        "x": 1.7290328301377325,
+        "y": 5.55
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.4,
-        "y": 5.4821089822359825
+        "x": 2.2981782900502736,
+        "y": 5.55
       },
       "prevControl": {
-        "x": 1.9653689757829964,
-        "y": 5.491353685410074
+        "x": 1.8635472658332701,
+        "y": 5.559244703174091
       },
       "nextControl": null,
       "isLocked": false,
@@ -29,11 +29,23 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 0.7,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 4.67,
+        "maxAcceleration": 1.5,
+        "maxAngularVelocity": 180.0,
+        "maxAngularAcceleration": 360.0
+      }
+    }
+  ],
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0.25,
+      "waypointRelativePos": 0.0,
       "command": {
         "type": "sequential",
         "data": {
@@ -61,7 +73,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "d2",
+  "folder": "reg paths",
   "previewStartingState": null,
   "useDefaultConstraints": false
 }
