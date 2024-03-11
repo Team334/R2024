@@ -57,7 +57,7 @@ public class RobotContainer {
   private final ShooterSubsystem _shooterSubsystem = new ShooterSubsystem();
   private final ElevatorSubsystem _elevatorSubsystem = new ElevatorSubsystem();
   private final IntakeSubsystem _intakeSubsystem = new IntakeSubsystem();
-  private final LEDSubsystem _ledSubsystem = new LEDSubsystem(Constants.Ports.LEDS, 60);
+  private final LEDSubsystem _ledSubsystem = new LEDSubsystem(Constants.Ports.LEDS, 20);
 
   // controllers (for driver and operator)
   private final CommandPS4Controller _driveController = new CommandPS4Controller(Constants.Ports.DRIVER_CONTROLLER);
