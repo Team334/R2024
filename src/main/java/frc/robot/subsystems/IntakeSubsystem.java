@@ -94,6 +94,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public boolean isActuatorState(ActuatorState actuatorState) {
     return _actuatorState == actuatorState;
+  }
+  
   /**
    * Disables the reverse soft limit of the actuator.
    */
