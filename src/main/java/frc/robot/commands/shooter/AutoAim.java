@@ -160,10 +160,6 @@ public class AutoAim extends Command {
       Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED
     );
 
-    _reachedSwerveHeading = _headingController.atSetpoint();
-    _reachedShooterAngle = _shooter.atDesiredAngle();
-    _reachedElevatorHeight = _elevator.atDesiredHeight();
-
     if (_reachedSwerveHeading) rotationVelocity = 0;
 
     SmartDashboard.putNumber("Y", _desiredSwerveHeading);
@@ -184,6 +180,10 @@ public class AutoAim extends Command {
 
     _shooter.setAngle(_desiredShooterAngle);
     _elevator.setHeight(_desiredElevatorHeight);
+
+    _reachedSwerveHeading = _headingController.atSetpoint();
+    _reachedShooterAngle = _shooter.atDesiredAngle();
+    _reachedElevatorHeight = _elevator.atDesiredHeight();
   }
 
   // Called once the command ends or is interrupted.

@@ -86,9 +86,9 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       Constants.Physical.SWERVE_KINEMATICS, getHeadingRaw(),
       new SwerveModulePosition[]{_frontLeft.getPosition(), _frontRight.getPosition(), _backRight.getPosition(),
           _backLeft.getPosition()},
-      new Pose2d(), VecBuilder.fill(0.01, 0.01, 0.01), VecBuilder.fill(0.9, 0.9, 1.2));
+      new Pose2d(), VecBuilder.fill(0.01, 0.01, 0.01), VecBuilder.fill(0.9, 0.9, 1.8)); // note: LL heading std was 0.9 
 
-  // OTHER POSSIBLE STD VALUES:
+  // OTHER POSSIBLE STD DEV VALUES:
   // VecBuilder.fill(0.006, 0.006, 0.007), VecBuilder.fill(0.52, 0.52, 1.35)
   // VecBuilder.fill(0.006, 0.006, 0.007), VecBuilder.fill(0.5, 0.5, 1.3)
 
@@ -173,6 +173,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     if (_visionSubsystem.isValid()) { // TODO: make sure this works
       Optional<Pose2d> visionBotpose = _visionSubsystem.getBotpose();
       if (visionBotpose.isPresent()) {
+        // Pose2d updateBotpose = new Pose2d(visionBotpose.get().getTranslation(), getHeading()); // use gyro heading only?
         _estimator.addVisionMeasurement(visionBotpose.get(), _visionSubsystem.getLatency());
       }
     }

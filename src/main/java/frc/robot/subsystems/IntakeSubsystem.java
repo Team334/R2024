@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.PID;
+import frc.robot.Constants.Speeds;
 import frc.robot.utils.configs.NeoConfig;
 
 /**
@@ -93,6 +94,19 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public boolean isActuatorState(ActuatorState actuatorState) {
     return _actuatorState == actuatorState;
+  /**
+   * Disables the reverse soft limit of the actuator.
+   */
+  public void disableReverseSoftLimit() {
+    _actuatorMotor.enableSoftLimit(SoftLimitDirection.kReverse, false);
+  }
+
+  /**
+   * Resets the reverse soft limit (and encoder) of the actuator.
+   */
+  public void resetReverseSoftLimit() {
+    _actuatorEncoder.setPosition(0);
+    _actuatorMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
   }
 
   /**
@@ -112,44 +126,41 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   /**
+   * Actuate the intake at a given speed. Speed gets clamped.
+   */
+  public void actuate(double speed) {
+    _actuatorMotor.set(MathUtil.clamp(
+      speed,
+      -Speeds.INTAKE_ACTUATE_MAX_SPEED,
+      Speeds.INTAKE_ACTUATE_MAX_SPEED
+    ));
+  }
+
+  /**
    * Set the actuator's state. MUST BE CALLED REPEATEDLY.
    *
    * @param actuatorState
    *            The state to set the actuator to.
    */
-  public void actuate(ActuatorState actuatorState) {
-    double out = 0;
-    
+  public void actuate(ActuatorState actuatorState) {    
     _actuatorState = actuatorState;
 
     switch (actuatorState) {
       case STOWED :
-        out = MathUtil.clamp(
-          _actuatorController.calculate(getActuator(), Constants.Encoders.INTAKE_STOWED),
-          -Constants.Speeds.INTAKE_ACTUATE_MAX_SPEED,
-          Constants.Speeds.INTAKE_ACTUATE_MAX_SPEED
-        );
+        actuate(_actuatorController.calculate(getActuator(), Constants.Encoders.INTAKE_STOWED));
         break;
 
       case OUT :
-        out = MathUtil.clamp(
-          _actuatorController.calculate(getActuator(), Constants.Encoders.INTAKE_OUT),
-          -Constants.Speeds.INTAKE_ACTUATE_MAX_SPEED,
-          Constants.Speeds.INTAKE_ACTUATE_MAX_SPEED
-        );
+        actuate(_actuatorController.calculate(getActuator(), Constants.Encoders.INTAKE_OUT));
         break;
 
       case NONE:
-        out = 0;
+        actuate(0);
         break;
       
       default:
         break;
     }
-
-    // System.out.println(out);
-    SmartDashboard.putNumber("OUT", out);
-    _actuatorMotor.set(out);
   }
 
   // public void setAngle(double angle){
@@ -195,6 +206,7 @@ public class IntakeSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("ACTUATOR ENCODER", _actuatorEncoder.getPosition());
     SmartDashboard.putData("ACTUATOR PID", _actuatorController);
+    SmartDashboard.putNumber("ACTUATOR OUT", _actuatorMotor.get());
 
     // SmartDashboard.putBoolean("NOTE SAFETY", noteSafety());
 
