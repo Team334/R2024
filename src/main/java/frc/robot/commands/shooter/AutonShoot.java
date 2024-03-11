@@ -27,7 +27,6 @@ import frc.robot.utils.UtilFuncs;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutonShoot extends SequentialCommandGroup {
-  private double _headingPreset;
   private boolean _isAimed = false;
 
   /** Creates a new AutonShoot. */
@@ -41,11 +40,9 @@ public class AutonShoot extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      Commands.runOnce(() -> {_headingPreset = (UtilFuncs.GetAlliance() == Alliance.Red) ? 0 : 180;}),
-
       new ParallelCommandGroup(
         new SpinShooter(shooter, ShooterState.SHOOT).unless(() -> shooter.isState(ShooterState.SHOOT)).withTimeout(1.5),
-        new AutoAim(shooter, elevator, leds, swerve, Presets.CLOSE_SHOOTER_ANGLE, Presets.CLOSE_ELEVATOR_HEIGHT, 180).onlyIf(
+        new AutoAim(shooter, elevator, leds, swerve, Presets.CLOSE_SHOOTER_ANGLE, Presets.CLOSE_ELEVATOR_HEIGHT, this::headingPreset).onlyIf(
           () -> !_isAimed
         ).withTimeout(3).andThen(() -> _isAimed = true),
         new FeedActuate(intake, FeedMode.INTAKE).unless(() -> intake.isFeedMode(FeedMode.INTAKE)).withTimeout(1)
@@ -55,5 +52,9 @@ public class AutonShoot extends SequentialCommandGroup {
       new FeedActuate(intake, FeedMode.OUTTAKE).withTimeout(0.5),
       new SpinShooter(shooter, ShooterState.NONE, true)
     );
+  }
+
+  private double headingPreset() {
+    return (UtilFuncs.GetAlliance() == Alliance.Red) ? 0 : 180;
   }
 }

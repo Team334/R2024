@@ -42,6 +42,8 @@ public class AutoAim extends Command {
   private double _desiredShooterAngle = 0;
   private double _desiredElevatorHeight = 0;
 
+  private DoubleSupplier _swerveHeadingSupplier;
+
   private boolean _runOnce;
   private boolean _overrideDesired;
 
@@ -111,7 +113,7 @@ public class AutoAim extends Command {
    * 
    * @param shooterAngle Desired shooter angle.
    * @param elevatorHeight Desired elevator height.
-   * @param swerveHeading Desired swerve heading.
+   * @param swerveHeadingSupplier Desired swerve heading supplier. This is a supplier since heading could change based on alliance.
    */
   public AutoAim(
     ShooterSubsystem shooter, 
@@ -120,13 +122,13 @@ public class AutoAim extends Command {
     SwerveDriveSubsystem swerve,
     double shooterAngle,
     double elevatorHeight,
-    double swerveHeading
+    DoubleSupplier swerveHeadingSupplier
   ) {
     this(shooter, elevator, leds, swerve);
 
     _desiredShooterAngle = shooterAngle;
     _desiredElevatorHeight = elevatorHeight;
-    _desiredSwerveHeading = swerveHeading;
+    _swerveHeadingSupplier = swerveHeadingSupplier;
 
     _overrideDesired = true;
   }
@@ -137,6 +139,8 @@ public class AutoAim extends Command {
     _reachedSwerveHeading = false;
     _reachedShooterAngle = false;
     _reachedElevatorHeight = false;
+
+    if (_overrideDesired) _desiredSwerveHeading = _swerveHeadingSupplier.getAsDouble();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
