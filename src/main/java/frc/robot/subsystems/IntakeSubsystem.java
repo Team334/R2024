@@ -4,6 +4,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 
 import edu.wpi.first.math.MathUtil;
@@ -53,7 +54,7 @@ public class IntakeSubsystem extends SubsystemBase {
     _feedMotor = new CANSparkMax(Constants.CAN.INTAKE_FEED, MotorType.kBrushless);
     _actuatorMotor = new CANSparkMax(Constants.CAN.INTAKE_ACTUATOR, MotorType.kBrushless);
 
-    _actuatorEncoder = _actuatorMotor.getEncoder();
+    _actuatorEncoder = _actuatorMotor.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, 8192);
     _actuatorEncoder.setPosition(0);
 
     _feedEncoder = _feedMotor.getEncoder();
