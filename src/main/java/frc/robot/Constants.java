@@ -63,12 +63,12 @@ public final class Constants {
     public static final double SHOOTER_AMP_SPEED = 0.33;
 
     public static final double SHOOTER_ANGLE_MAX_SPEED = 0.3;
-    public static final double ELEVATOR_MAX_SPEED = 0.75;
+    public static final double ELEVATOR_MAX_SPEED = 1;
 
     public static final double INTAKE_FEED_SPEED = 0.6; // TODO: Get this
     public static final double OUTTAKE_FEED_SPEED = -0.4;
 
-    public static final double INTAKE_ACTUATE_MAX_SPEED = 0.3;
+    public static final double INTAKE_ACTUATE_MAX_SPEED = 0.5;
   }
 
   public static class Physical {
@@ -95,7 +95,7 @@ public final class Constants {
 
   public static class Encoders {
     public static final int INTAKE_STOWED = 0;
-    public static final int INTAKE_OUT = 15;
+    public static final int INTAKE_OUT = 16;
 
     public static final int SHOOTER_SHOOT_VEL = 10; // TODO: get this?
   }

@@ -143,10 +143,14 @@ public class RobotContainer {
     _operatorController.triangle().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.OUTTAKE));
     _operatorController.cross().whileTrue(new FeedActuate(_intakeSubsystem, FeedMode.INTAKE));
 
-    _operatorController.R2().whileTrue(
-      Commands.runOnce(_intakeSubsystem::disableReverseSoftLimit, _intakeSubsystem).andThen(
-        Commands.run(() -> _intakeSubsystem.actuate(-0.3), _intakeSubsystem).handleInterrupt(_intakeSubsystem::resetReverseSoftLimit)
-    ));
+    // _operatorController.R2().whileTrue(
+    //   Commands.runOnce(_intakeSubsystem::disableReverseSoftLimit, _intakeSubsystem).andThen(
+    //     Commands.run(() -> _intakeSubsystem.actuate(-0.3), _intakeSubsystem).handleInterrupt(() -> _intakeSubsystem.actuate(0))
+    // ));
+
+    // _operatorController.R1().onTrue(
+    //   Commands.runOnce(_intakeSubsystem::resetReverseSoftLimit, _intakeSubsystem)
+    // );
 
     // driver bindings
     _driveController.R1().onTrue(Commands.runOnce(() -> _swerveSubsystem.fieldOriented = !_swerveSubsystem.fieldOriented, _swerveSubsystem));

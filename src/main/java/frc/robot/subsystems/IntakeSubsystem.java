@@ -24,7 +24,7 @@ import frc.robot.utils.configs.NeoConfig;
  */
 public class IntakeSubsystem extends SubsystemBase {
   private final CANSparkMax _feedMotor, _actuatorMotor;
-  private final PIDController _actuatorController = new PIDController(PID.INTAKE_ACTUATE_KP, 0, 0);
+  private final PIDController _actuatorController = new PIDController(PID.INTAKE_ACTUATE_KP, 0, 0.004);
   // private final ProfiledPIDController _actuatorController = new ProfiledPIDController(
   //   0.05,
   //   0,
@@ -95,7 +95,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public boolean isActuatorState(ActuatorState actuatorState) {
     return _actuatorState == actuatorState;
   }
-  
+
   /**
    * Disables the reverse soft limit of the actuator.
    */
