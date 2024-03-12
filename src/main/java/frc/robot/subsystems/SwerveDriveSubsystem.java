@@ -32,6 +32,7 @@ import frc.robot.Constants;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.Physical;
 import frc.robot.Constants.Presets;
+import frc.robot.subsystems.ShooterSubsystem.ShooterState;
 import frc.robot.utils.BNO055;
 import frc.robot.utils.SwerveModule;
 import frc.robot.utils.UtilFuncs;
@@ -71,6 +72,13 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   private final Orchestra _orchestra = new Orchestra();
   String song = "output.chrp";
+
+  private DrivingSpeeds _drivingState = DrivingSpeeds.SLOW;
+
+  public enum DrivingSpeeds{
+    FAST,
+    SLOW
+  }
 
   private Field2d _field = new Field2d();
 
@@ -328,5 +336,21 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   public void resetPivot() {
     _pivotPoint = new Translation2d(0, 0);
+  }
+
+  public void toggleSpeed(){
+    if (_drivingState == DrivingSpeeds.FAST) {
+      _drivingState = DrivingSpeeds.SLOW;
+    } else {
+      _drivingState = DrivingSpeeds.FAST;
+    }
+  }
+  
+  public double getDriveCoeff() {
+    if (_drivingState == DrivingSpeeds.FAST) {
+      return Constants.Speeds.SWERVE_DRIVE_FAST_COEFF;
+    } else {
+      return Constants.Speeds.SWERVE_DRIVE_SLOW_COEFF;
+    }
   }
 }

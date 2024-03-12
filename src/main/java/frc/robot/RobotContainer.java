@@ -99,7 +99,7 @@ public class RobotContainer {
     _swerveSubsystem.setDefaultCommand(new TeleopDrive(_swerveSubsystem,
         () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.05),
         () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.05),
-        () -> MathUtil.applyDeadband(-_driveFilterRightX.calculate(_driveController.getRightX()), 0.05), Constants.Speeds.SWERVE_DRIVE_SLOW_COEFF));
+        () -> MathUtil.applyDeadband(-_driveFilterRightX.calculate(_driveController.getRightX()), 0.05)));
 
     _shooterSubsystem.setDefaultCommand(new OperateShooter(
       _shooterSubsystem,
@@ -167,10 +167,7 @@ public class RobotContainer {
     _driveController.R1().onTrue(Commands.runOnce(() -> _swerveSubsystem.fieldOriented = !_swerveSubsystem.fieldOriented, _swerveSubsystem));
     _driveController.L1().onTrue(Commands.runOnce(() -> _swerveSubsystem.resetPose(new Pose2d()), _swerveSubsystem));
     _driveController.cross().whileTrue(new BrakeSwerve(_swerveSubsystem, _ledSubsystem));
-    _driveController.L2().whileTrue(new TeleopDrive(_swerveSubsystem,
-        () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.05),
-        () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.05),
-        () -> MathUtil.applyDeadband(-_driveFilterRightX.calculate(_driveController.getRightX()), 0.05), Constants.Speeds.SWERVE_DRIVE_FAST_COEFF));
+    _driveController.L2().onTrue(Commands.runOnce(() -> _swerveSubsystem.toggleSpeed(), _swerveSubsystem));
 
 
     _driveController.R2().whileTrue(
