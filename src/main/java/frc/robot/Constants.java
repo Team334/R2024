@@ -53,7 +53,7 @@ public final class Constants {
   }
 
   public static class Speeds {
-    public static final double SWERVE_DRIVE_SLOW_COEFF = .6; // Defult driving speed
+    public static final double SWERVE_DRIVE_SLOW_COEFF = .6; // Default driving speed
     public static final double SWERVE_DRIVE_FAST_COEFF = .8;
 
     public static final double SWERVE_DRIVE_MAX_SPEED = 4; // meters per second
