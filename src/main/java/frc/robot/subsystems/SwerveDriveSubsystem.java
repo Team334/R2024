@@ -207,6 +207,28 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   }
 
   /**
+   * Toggle the driving speed between slow/fast.
+   */
+  public void toggleSpeed(){
+    if (_drivingState == DrivingSpeeds.FAST) {
+      _drivingState = DrivingSpeeds.SLOW;
+    } else {
+      _drivingState = DrivingSpeeds.FAST;
+    }
+  }
+  
+  /**
+   * Get drive coeff based on toggled speed.
+   */
+  public double getDriveCoeff() {
+    if (_drivingState == DrivingSpeeds.FAST) {
+      return Constants.Speeds.SWERVE_DRIVE_FAST_COEFF;
+    } else {
+      return Constants.Speeds.SWERVE_DRIVE_SLOW_COEFF;
+    }
+  }
+
+  /**
    * Set the chassis speed of the swerve drive.
    *
    * <p>
@@ -336,21 +358,5 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   public void resetPivot() {
     _pivotPoint = new Translation2d(0, 0);
-  }
-
-  public void toggleSpeed(){
-    if (_drivingState == DrivingSpeeds.FAST) {
-      _drivingState = DrivingSpeeds.SLOW;
-    } else {
-      _drivingState = DrivingSpeeds.FAST;
-    }
-  }
-  
-  public double getDriveCoeff() {
-    if (_drivingState == DrivingSpeeds.FAST) {
-      return Constants.Speeds.SWERVE_DRIVE_FAST_COEFF;
-    } else {
-      return Constants.Speeds.SWERVE_DRIVE_SLOW_COEFF;
-    }
   }
 }
