@@ -22,9 +22,11 @@ public class TeleopDrive extends Command {
 
   private final DoubleSupplier _rotationSpeed;
 
+  private final double _driveCoeff;
+
   /** Creates a new TeleopDrive. */
   public TeleopDrive(SwerveDriveSubsystem swerveDrive, DoubleSupplier xSpeed, DoubleSupplier ySpeed,
-      DoubleSupplier rotationSpeed) {
+      DoubleSupplier rotationSpeed, double swerveDriveFastCoeff) {
 
     _swerveDrive = swerveDrive;
 
@@ -32,6 +34,8 @@ public class TeleopDrive extends Command {
     _ySpeed = ySpeed;
 
     _rotationSpeed = rotationSpeed;
+
+    _driveCoeff = swerveDriveFastCoeff;
 
     // Use addRequirements() here to declare subsystem dependencies.\
     addRequirements(swerveDrive);
@@ -48,8 +52,8 @@ public class TeleopDrive extends Command {
     // apply controller deadband
     // drive the swerve chassis subsystem
     _swerveDrive.driveChassis(new ChassisSpeeds(
-        _xSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
-        _ySpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * Constants.Speeds.SWERVE_DRIVE_COEFF,
+        _xSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * _driveCoeff,
+        _ySpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * _driveCoeff,
         _rotationSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED));
   }
 

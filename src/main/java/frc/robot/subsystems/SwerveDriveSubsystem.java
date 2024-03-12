@@ -140,7 +140,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         _backRight.displayInfo(builder);
         _backLeft.displayInfo(builder);
         builder.addDoubleProperty("Robot Angle", () -> getHeading().getDegrees(), null);
-        builder.addDoubleProperty("Swerve Speed", () -> Constants.Speeds.SWERVE_DRIVE_COEFF, null);
+        builder.addDoubleProperty("Swerve Speed", () -> Constants.Speeds.SWERVE_DRIVE_SLOW_COEFF, null);
       }
     });
 
