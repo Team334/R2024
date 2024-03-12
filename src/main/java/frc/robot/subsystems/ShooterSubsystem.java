@@ -73,7 +73,7 @@ public class ShooterSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("SHOOTER ANGLE ENCODER", _angleMotor.getPosition().getValueAsDouble());
     SmartDashboard.putNumber("SHOOTER ANGLE", getAngle());
 
-    SmartDashboard.putNumber("SHOOTER PERCENT OUTPUT", _leftMotor.get());
+    // SmartDashboard.putNumber("SHOOTER PERCENT OUTPUT", _leftMotor.get());
   }
 
   /**
@@ -130,8 +130,12 @@ public class ShooterSubsystem extends SubsystemBase {
 
     switch (state) {
       case SHOOT:
-        if (UtilFuncs.ShootFast()) spinShooter(Speeds.SHOOTER_FAST_SPIN_SPEED);
-        else spinShooter(Speeds.SHOOTER_SLOW_SPIN_SPEED);
+        if (UtilFuncs.ShootFast()) { 
+          spinShooter(Speeds.SHOOTER_FAST_SPIN_SPEED); 
+        } else {
+          System.out.println("FAR");
+          spinShooter(Speeds.SHOOTER_SLOW_SPIN_SPEED);
+        }
         break;
     
       case AMP:

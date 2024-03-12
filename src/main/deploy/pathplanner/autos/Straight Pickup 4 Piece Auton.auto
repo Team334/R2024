@@ -20,24 +20,6 @@
         {
           "type": "path",
           "data": {
-            "pathName": "REAL AUTON OUT"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "REAL AUTON IN"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "shoot"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
             "pathName": "get mid"
           }
         },
@@ -56,6 +38,24 @@
         {
           "type": "path",
           "data": {
+            "pathName": "REAL AUTON OUT"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "REAL AUTON IN"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
             "pathName": "get top"
           }
         },
@@ -63,6 +63,12 @@
           "type": "path",
           "data": {
             "pathName": "shoot top"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shoot"
           }
         }
       ]

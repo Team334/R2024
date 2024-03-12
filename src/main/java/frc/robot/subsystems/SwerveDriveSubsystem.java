@@ -94,7 +94,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       Constants.Physical.SWERVE_KINEMATICS, getHeadingRaw(),
       new SwerveModulePosition[]{_frontLeft.getPosition(), _frontRight.getPosition(), _backRight.getPosition(),
           _backLeft.getPosition()},
-      new Pose2d(), VecBuilder.fill(0.01, 0.01, 0.01), VecBuilder.fill(0.9, 0.9, 999999)); // note: LL heading std was 0.9 
+      new Pose2d(), VecBuilder.fill(0.01, 0.01, 0.01), VecBuilder.fill(0.9, 0.9, 9999999)); // note: LL heading std was 0.9 
 
   // OTHER POSSIBLE STD DEV VALUES:
   // VecBuilder.fill(0.006, 0.006, 0.007), VecBuilder.fill(0.52, 0.52, 1.35)
@@ -180,6 +180,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     Optional<Pose2d> visionBotpose = _visionSubsystem.getBotpose();
     if (visionBotpose.isPresent()) {
+      SmartDashboard.putNumber("X LL", visionBotpose.get().getX());
       _estimator.addVisionMeasurement(visionBotpose.get(), _visionSubsystem.getLatency());
     }
 
@@ -332,6 +333,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     double ySpeakerAngle;
 
     Pose3d speakerPose = UtilFuncs.GetAlliance() == Alliance.Red ? FieldConstants.SPEAKER_POSE_RED : FieldConstants.SPEAKER_POSE_BLUE;
+
+    SmartDashboard.putBoolean("IS RED", UtilFuncs.GetAlliance() == Alliance.Red);
 
     Translation2d speakerTranslation = new Translation2d(speakerPose.getX(), speakerPose.getY());
     Translation2d botTranslation = getPose().getTranslation();

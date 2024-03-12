@@ -169,6 +169,8 @@ public class RobotContainer {
     _driveController.cross().whileTrue(new BrakeSwerve(_swerveSubsystem, _ledSubsystem));
     _driveController.L2().onTrue(Commands.runOnce(_swerveSubsystem::toggleSpeed, _swerveSubsystem));
     
+    _driveController.triangle().onTrue(Commands.runOnce(_swerveSubsystem::resetGyro, _swerveSubsystem));
+
     _driveController.R2().whileTrue(
       new AutoAim(
         _shooterSubsystem,

@@ -38,6 +38,7 @@ public class VisionSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putBoolean("VISISBLE", isApriltagVisible());
     // This method will be called once per scheduler run
 
     // SmartDashboard.putNumber("retrieved botpose",
@@ -78,10 +79,13 @@ public class VisionSubsystem extends SubsystemBase {
 
     double[] botpose_array = botpose_entry.getDoubleArray(new double[11]);
 
-    int tags = (int) botpose_array[8];
+    int tags = (int) botpose_array[7];
     double distance = botpose_array[9];
 
-    if (tags <= 2) return Optional.empty();
+    SmartDashboard.putNumber("TAGS", tags);
+    SmartDashboard.putNumber("DISTANCE", distance);
+
+    if (tags < 2) return Optional.empty();
     if (distance > FieldConstants.TAG_DISTANCE_THRESHOLD) return Optional.empty();
 
     double botposeX = _xFilter.calculate(botpose_array[0]); // to get rid of the weird origin outlier

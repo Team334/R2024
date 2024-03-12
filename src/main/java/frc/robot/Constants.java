@@ -60,7 +60,7 @@ public final class Constants {
     public static final double SWERVE_DRIVE_MAX_ANGULAR_SPEED = Math.PI * 1; // TODO: Get this value
 
     public static final double SHOOTER_FAST_SPIN_SPEED = .85; // TODO: Get this
-    public static final double SHOOTER_SLOW_SPIN_SPEED = .75;
+    public static final double SHOOTER_SLOW_SPIN_SPEED = .85;
     public static final double SHOOTER_AMP_SPEED = 0.33;
 
     public static final double SHOOTER_ANGLE_MAX_SPEED = 0.3;
@@ -83,7 +83,7 @@ public final class Constants {
 
     public static final double SHOOTER_ANGLE_GEAR_RATIO = 112;
     
-    public static final double ELEVATOR_LOWEST_HEIGHT = 0.343; // TODO: Get this value
+    public static final double ELEVATOR_LOWEST_HEIGHT = 0.4; // TODO: Get this value
     public static final double ELEVATOR_MAX_SHOOT_HEIGHT = .44; // TODO: Get this value
 
     public static final double ELEVATOR_GEAR_RATIO = 25;
@@ -96,7 +96,7 @@ public final class Constants {
 
   public static class Encoders {
     public static final int INTAKE_STOWED = 0;
-    public static final int INTAKE_OUT = 13;
+    public static final int INTAKE_OUT = 16;
 
     public static final int SHOOTER_SHOOT_VEL = 10; // TODO: get this?
   }
@@ -111,9 +111,9 @@ public final class Constants {
   }
 
   public static class PID {
-    // public static final double MODULE_DRIVE_KP = 0.015;
-    public static final double MODULE_DRIVE_KP = 0;
-    public static final double MODULE_ROTATION_KP = 0.01;
+    public static final double MODULE_DRIVE_KP = 0.015;
+    // public static final double MODULE_DRIVE_KP = 0;
+    public static final double MODULE_ROTATION_KP = 0.009;
 
     public static final double SHOOTER_ANGLE_KP = 0.08;
 
@@ -148,7 +148,7 @@ public final class Constants {
 
   // static field constants
   public static class FieldConstants {
-    public static final double SPEAKER_HEIGHT = 2.24;
+    public static final double SPEAKER_HEIGHT = 2.27;
 
     public static final double SHOOTER_SLOW_THRESHOLD = 2;
     public static final double TAG_DISTANCE_THRESHOLD = 2;

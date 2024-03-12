@@ -44,7 +44,7 @@ public class AutonShoot extends SequentialCommandGroup {
         new SpinShooter(shooter, ShooterState.SHOOT).unless(() -> shooter.isState(ShooterState.SHOOT)).withTimeout(1.5),
         new AutoAim(shooter, elevator, leds, swerve, Presets.CLOSE_SHOOTER_ANGLE, Presets.CLOSE_ELEVATOR_HEIGHT, this::headingPreset).onlyIf(
           () -> !_isAimed
-        ).withTimeout(3).andThen(() -> _isAimed = true),
+        ).withTimeout(2).andThen(() -> _isAimed = true),
         new FeedActuate(intake, FeedMode.INTAKE).unless(() -> intake.isFeedMode(FeedMode.INTAKE)).withTimeout(1)
       ),
       // pre-shooting (rev up if needed, while auto aiming, while feeding in for squish)

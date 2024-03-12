@@ -4,6 +4,7 @@ package frc.robot.utils;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.utils.helpers.AllianceHelper;
 
@@ -24,6 +25,7 @@ public final class UtilFuncs {
    * Whether to shoot fast based on distance of bot from speaker shot point.
    */
   public static boolean ShootFast() {
+    SmartDashboard.putNumber("DISTANCE SHOOTING", _distanceSupplier.getAsDouble());
     if (_distanceSupplier.getAsDouble() > FieldConstants.SHOOTER_SLOW_THRESHOLD) return true;
     
     return false;

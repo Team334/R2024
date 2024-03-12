@@ -38,7 +38,7 @@ public class SpinShooter extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("SPINNING");
+    _shooter.setShooterState(_state);
   }
 
   // Called once the command ends or is interrupted.

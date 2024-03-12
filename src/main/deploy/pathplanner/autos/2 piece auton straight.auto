@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.308995050422533,
-      "y": 5.509843091758257
+      "x": 1.35,
+      "y": 5.55
     },
     "rotation": 180.0
   },
@@ -20,31 +20,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "get mid"
+            "pathName": "get bot note"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "shoot mid"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "shoot"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "REAL AUTON OUT"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "REAL AUTON IN"
+            "pathName": "shoot bot note"
           }
         },
         {

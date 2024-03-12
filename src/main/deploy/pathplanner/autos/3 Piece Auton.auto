@@ -46,6 +46,12 @@
           "data": {
             "pathName": "shoot mid note"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shoot"
+          }
         }
       ]
     }
