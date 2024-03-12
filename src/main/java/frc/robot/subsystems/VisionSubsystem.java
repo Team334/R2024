@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 
 import java.util.Optional;
 
+import javax.swing.text.html.Option;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
@@ -62,30 +64,34 @@ public class VisionSubsystem extends SubsystemBase {
   /**
    * Returns the "wpiblue" botpose of the robot from the limelight.
    *
-   * @return An Optional of Pose2d which is necessary if no value is found from
-   *         the limelight.
+   * @return An Optional of Pose2d which is necessary if no valid (at least 2 tags, good distance) data is found from
+   * the limelight.
+   * 
    * @see Optional
    */
   public Optional<Pose2d> getBotpose() {
+    if (!isApriltagVisible()) return Optional.empty();
+
     NetworkTableEntry botpose_entry = _limelight.getEntry("botpose_wpiblue");
 
-    if (!botpose_entry.exists()) {
-      return Optional.empty();
-    } else {
-      double[] botpose_array = botpose_entry.getDoubleArray(new double[6]);
+    if (!botpose_entry.exists()) return Optional.empty();
 
-      double botposeX = _xFilter.calculate(botpose_array[0]); // to get rid of the weird origin outlier
-      double botposeY = _yFilter.calculate(botpose_array[1]); // to get rid of the weird origin outlier
-      double botposeYaw = _yawFilter.calculate(botpose_array[5]); // to get rid of weird 0 heading outlier
-      // double botposeX = botpose_array[0];
-      // double botposeY = botpose_array[1];
-      // double botposeYaw = botpose_array[5];
-      Rotation2d botposeRotation = Rotation2d.fromDegrees(botposeYaw);
+    double[] botpose_array = botpose_entry.getDoubleArray(new double[11]);
 
-      Pose2d botPose2D = new Pose2d(botposeX, botposeY, botposeRotation);
+    int tags = (int) botpose_array[8];
+    double distance = botpose_array[9];
 
-      return Optional.of(botPose2D);
-    }
+    if (tags <= 2) return Optional.empty();
+    if (distance > FieldConstants.TAG_DISTANCE_THRESHOLD) return Optional.empty();
+
+    double botposeX = _xFilter.calculate(botpose_array[0]); // to get rid of the weird origin outlier
+    double botposeY = _yFilter.calculate(botpose_array[1]); // to get rid of the weird origin outlier
+    double botposeYaw = _yawFilter.calculate(botpose_array[5]); // to get rid of weird 0 heading outlier
+    Rotation2d botposeRotation = Rotation2d.fromDegrees(botposeYaw);
+
+    Pose2d botpose2D = new Pose2d(botposeX, botposeY, botposeRotation);
+
+    return Optional.of(botpose2D);
   }
 
   /**
@@ -93,20 +99,19 @@ public class VisionSubsystem extends SubsystemBase {
    * must be looking at at least one apriltag, and the apriltag must be in the specific distance range.
    */
   public boolean isValid() {
-    if (isApriltagVisible()) return true;
-    return false;
+    if (!isApriltagVisible()) return false;
 
-    // JsonNode tags = _limelight.getTags();
+    JsonNode tags = _limelight.getTags();
     
-    // for (JsonNode tag : tags) {
-    //   double distance = ((ArrayNode) tag.get("t6t_cs")).get(2).asDouble();
-    //   if (distance <= FieldConstants.TAG_DISTANCE_THRESHOLD) {
-    //     SmartDashboard.putNumber("TAG DISTANCE", distance);
-    //     return true;
-    //   }
-    // }
+    for (JsonNode tag : tags) {
+      double distance = ((ArrayNode) tag.get("t6t_cs")).get(2).asDouble();
+      if (distance <= FieldConstants.TAG_DISTANCE_THRESHOLD) {
+        SmartDashboard.putNumber("TAG DISTANCE", distance);
+        return true;
+      }
+    }
     
-    // return false;
+    return false;
   }
 
   /** Return a boolean for whether a tag is seen. */
