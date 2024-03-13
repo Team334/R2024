@@ -92,24 +92,6 @@ public class IntakeSubsystem extends SubsystemBase {
   // }
 
   /**
-   * Check if the FeedMode has last been set to the desired value.
-   * 
-   * @param feedMode The FeedMode to check.
-   */
-  public boolean isFeedMode(FeedMode feedMode) {
-    return _feedMode == feedMode;
-  }
-
-  /**
-   * Check if the ActuatorState has been set to the desired value.
-   * 
-   * @param actuatorState The ActuatorState to check.
-   */
-  public boolean isActuatorState(ActuatorState actuatorState) {
-    return _actuatorState == actuatorState;
-  }
-
-  /**
    * Toggle reverse soft limit.
    */
   public void toggleReverseSoftLimit() {
@@ -157,8 +139,6 @@ public class IntakeSubsystem extends SubsystemBase {
    *            The state to set the actuator to.
    */
   public void actuate(ActuatorState actuatorState) {    
-    _actuatorState = actuatorState;
-
     switch (actuatorState) {
       case STOWED :
         actuate(_actuatorController.calculate(getActuator(), Constants.Encoders.INTAKE_STOWED));
@@ -195,8 +175,6 @@ public class IntakeSubsystem extends SubsystemBase {
    *            How to feed.
    */
   public void feed(FeedMode feedMode) {
-    _feedMode = feedMode;
-
     switch (feedMode) {
       case INTAKE :
         _feedMotor.set(Constants.Speeds.INTAKE_FEED_SPEED);

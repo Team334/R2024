@@ -136,6 +136,8 @@ public class AutoAim extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    _swerve.fieldOriented = true;
+
     _reachedSwerveHeading = false;
     _reachedShooterAngle = false;
     _reachedElevatorHeight = false;

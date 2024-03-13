@@ -34,6 +34,7 @@ public class DriveDistance extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    _swerve.fieldOriented = false;
     _endX = _swerve.getPose().getX() + _distance;
   }
 

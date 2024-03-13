@@ -37,8 +37,6 @@ public class ShooterSubsystem extends SubsystemBase {
   private final ArmFeedforward _angleFeed = new ArmFeedforward(0, 0, 0);
   private final PIDController _angleController = new PIDController(PID.SHOOTER_ANGLE_KP, 0, 0);
 
-  private ShooterState _shooterState = ShooterState.NONE;
-
   /** Represents the state of the shooter's flywheels (speaker shoot, amp, nothing). */
   public enum ShooterState {
     SHOOT,
@@ -74,15 +72,6 @@ public class ShooterSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("SHOOTER ANGLE", getAngle());
 
     // SmartDashboard.putNumber("SHOOTER PERCENT OUTPUT", _leftMotor.get());
-  }
-
-  /**
-   * Returns true if the shooter's set state matches the supplied one.
-   * 
-   * @param state Check if the shooter spin been set to this state.
-   */
-  public boolean isState(ShooterState state) {
-    return _shooterState == state;
   }
 
   /** Returns true if the shooter is at the last desired angle setpoint. */
@@ -126,8 +115,6 @@ public class ShooterSubsystem extends SubsystemBase {
 
   /** Sets the state of the shooter. */
   public void setShooterState(ShooterState state) {
-    _shooterState = state;
-
     switch (state) {
       case SHOOT:
         if (UtilFuncs.ShootFast()) { 
