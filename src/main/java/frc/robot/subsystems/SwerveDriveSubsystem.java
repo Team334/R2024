@@ -4,6 +4,7 @@ package frc.robot.subsystems;
 import java.util.Optional;
 
 import com.ctre.phoenix6.Orchestra;
+import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.ReplanningConfig;
@@ -63,8 +64,11 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       new SwerveModuleState(_backRight.getDriveVelocity(), Rotation2d.fromDegrees(_frontLeft.getAngle())),
       new SwerveModuleState(_backLeft.getDriveVelocity(), Rotation2d.fromDegrees(_frontLeft.getAngle()))};
 
-  private final BNO055 _gyro = BNO055.getInstance(BNO055.opmode_t.OPERATION_MODE_IMUPLUS,
-      BNO055.vector_type_t.VECTOR_EULER);
+  // private final BNO055 _gyro = BNO055.getInstance(BNO055.opmode_t.OPERATION_MODE_IMUPLUS,
+  //     BNO055.vector_type_t.VECTOR_EULER);
+  
+  // private final AHRS _gyro = new AHRS();
+  private final AHRS _gyro = new AHRS();
 
   private VisionSubsystem _visionSubsystem;
 
@@ -74,11 +78,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   String song = "output.chrp";
 
   private DrivingSpeeds _drivingState = DrivingSpeeds.SLOW;
-
-  public enum DrivingSpeeds{
-    FAST,
-    SLOW
-  }
 
   private Field2d _field = new Field2d();
 
@@ -99,6 +98,11 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   // OTHER POSSIBLE STD DEV VALUES:
   // VecBuilder.fill(0.006, 0.006, 0.007), VecBuilder.fill(0.52, 0.52, 1.35)
   // VecBuilder.fill(0.006, 0.006, 0.007), VecBuilder.fill(0.5, 0.5, 1.3)
+
+  public enum DrivingSpeeds {
+    FAST,
+    SLOW
+  }
 
   /** Return the estimated pose of the swerve chassis. */
   public Pose2d getPose() {
@@ -304,7 +308,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   /** Get heading DIRECTLY from the BNO055 gyro as a Rotation2d. */
   public Rotation2d getHeadingRaw() {
-    return Rotation2d.fromDegrees(-Math.IEEEremainder(_gyro.getHeading(), 360));
+    return Rotation2d.fromDegrees(-Math.IEEEremainder(_gyro.getAngle(), 360));
   }
 
   /**
