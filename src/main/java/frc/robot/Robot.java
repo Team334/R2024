@@ -45,6 +45,7 @@ public class Robot extends TimedRobot {
     PortForwarder.add(5805, "limelight.local", 5805);
 
     CameraServer.startAutomaticCapture(0);
+    UtilFuncs.LoadField();
 
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our
@@ -71,8 +72,6 @@ public class Robot extends TimedRobot {
     // robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-
-    // CameraServer.putVideo("INTAKE CAM", 1080, 920);
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -105,7 +104,6 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    // UtilFuncs.LoadField();
     m_robotContainer.teleopInit();
 
     if (m_autonomousCommand != null) {
