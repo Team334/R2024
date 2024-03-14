@@ -50,7 +50,7 @@ public class ShooterSubsystem extends SubsystemBase {
     NeoConfig.configureFollowerNeo(_rightMotor, _leftMotor, true);
 
     TalonFXConfig.configureFalcon(_angleMotor, true);
-    _angleMotor.setPosition(69 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360);
+    _angleMotor.setPosition(0  * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360);
     // _angleMotor.setPosition(0);
 
     // soft limits
