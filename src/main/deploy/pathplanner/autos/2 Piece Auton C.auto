@@ -20,13 +20,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "REAL AUTON OUT"
+            "pathName": "get bot c"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "REAL AUTON IN"
+            "pathName": "shoot bot c"
           }
         },
         {
@@ -38,6 +38,6 @@
       ]
     }
   },
-  "folder": null,
+  "folder": "curved",
   "choreoAuto": false
 }
