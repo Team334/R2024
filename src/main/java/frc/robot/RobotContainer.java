@@ -10,6 +10,8 @@ import com.revrobotics.CANSparkBase.FaultID;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -145,30 +147,16 @@ public class RobotContainer {
     _operatorController.triangle().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.OUTTAKE));
     _operatorController.cross().whileTrue(new FeedActuate(_intakeSubsystem, FeedMode.INTAKE));
 
-    // _operatorController.R2().whileTrue(
-    //   Commands.runOnce(_intakeSubsystem::disableReverseSoftLimit, _intakeSubsystem).andThen(
-    //     Commands.run(() -> _intakeSubsystem.actuate(-0.3), _intakeSubsystem).handleInterrupt(() -> _intakeSubsystem.actuate(0))
-    // ));
-
-    // _operatorController.R2().onTrue(
-    //   Commands.runOnce(_intakeSubsystem::toggleReverseSoftLimit, _intakeSubsystem)
-    // );
-
-    // _operatorController.R1().onTrue(
-    //   Commands.run(() -> _intakeSubsystem.actuate(-0.1), _intakeSubsystem).handleInterrupt(
-    //     _intakeSubsystem::resetActuatorEncoder
-    //   )
-    // );
-
-    // _operatorController.R1().onTrue(
-    //   Commands.runOnce(_intakeSubsystem::resetReverseSoftLimit, _intakeSubsystem)
-    // );
-
     // driver bindings
     _driveController.L1().onTrue(Commands.runOnce(_swerveSubsystem::toggleSpeed, _swerveSubsystem));
     _driveController.R1().onTrue(Commands.runOnce(() -> _swerveSubsystem.fieldOriented = !_swerveSubsystem.fieldOriented, _swerveSubsystem));
     _driveController.triangle().onTrue(Commands.runOnce(_swerveSubsystem::resetGyro, _swerveSubsystem));
     _driveController.cross().whileTrue(new BrakeSwerve(_swerveSubsystem, _ledSubsystem));
+
+    // TESTING ONLY!!!
+    _driveController.circle().onTrue(Commands.runOnce(() -> _swerveSubsystem.resetPose(
+      new Pose2d(new Translation2d(1.31, 5.51), Rotation2d.fromDegrees(180))
+    ), _swerveSubsystem));
 
     _driveController.L2().whileTrue(
       new AutoAim(

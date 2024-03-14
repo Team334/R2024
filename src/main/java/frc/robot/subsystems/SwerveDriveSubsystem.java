@@ -64,11 +64,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       new SwerveModuleState(_backRight.getDriveVelocity(), Rotation2d.fromDegrees(_frontLeft.getAngle())),
       new SwerveModuleState(_backLeft.getDriveVelocity(), Rotation2d.fromDegrees(_frontLeft.getAngle()))};
 
-  // private final BNO055 _gyro = BNO055.getInstance(BNO055.opmode_t.OPERATION_MODE_IMUPLUS,
-  //     BNO055.vector_type_t.VECTOR_EULER);
+  private final BNO055 _gyro = BNO055.getInstance(BNO055.opmode_t.OPERATION_MODE_IMUPLUS,
+      BNO055.vector_type_t.VECTOR_EULER);
   
   // private final AHRS _gyro = new AHRS();
-  private final AHRS _gyro = new AHRS();
 
   private VisionSubsystem _visionSubsystem;
 
@@ -301,7 +300,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   /** Get heading DIRECTLY from the BNO055 gyro as a Rotation2d. */
   public Rotation2d getHeadingRaw() {
-    return Rotation2d.fromDegrees(-Math.IEEEremainder(_gyro.getAngle(), 360));
+    return Rotation2d.fromDegrees(-Math.IEEEremainder(_gyro.getHeading(), 360));
+    // return Rotation2d.fromDegrees(-Math.IEEEremainder(_gyro.getAngle(), 360));
   }
 
   /**
