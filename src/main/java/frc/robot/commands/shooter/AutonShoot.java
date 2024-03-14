@@ -46,7 +46,7 @@ public class AutonShoot extends SequentialCommandGroup {
       new ParallelRaceGroup(
         new SpinShooter(shooter, ShooterState.SHOOT).withTimeout(1.5),
         new AutoAim(shooter, elevator, leds, swerve, Presets.CLOSE_SHOOTER_ANGLE, Presets.CLOSE_ELEVATOR_HEIGHT, this::headingPreset).withTimeout(2),
-        new FeedActuate(intake, FeedMode.INTAKE).withTimeout(1)
+        new FeedActuate(intake, FeedMode.INTAKE).withTimeout(4)
       ).onlyIf(() -> !_preloadShot).andThen(() -> _preloadShot = true),
 
       new FeedActuate(intake, FeedMode.OUTTAKE).withTimeout(1),

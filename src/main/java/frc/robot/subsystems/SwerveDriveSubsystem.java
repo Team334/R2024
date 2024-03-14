@@ -237,7 +237,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   public void driveChassis(ChassisSpeeds chassisSpeeds) {
     // IMPORTANT: X-axis and Y-axis are flipped (based on wpilib coord system)
     if (fieldOriented) {
-      chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(chassisSpeeds, getHeading());
+      double relativeHeading = getHeading().getDegrees() + (UtilFuncs.GetAlliance() == Alliance.Red ? 180 : 0);
+      chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(chassisSpeeds, Rotation2d.fromDegrees(relativeHeading));
     }
 
     SwerveModuleState[] moduleStates = Constants.Physical.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds,

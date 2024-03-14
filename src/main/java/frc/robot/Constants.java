@@ -160,8 +160,8 @@ public final class Constants {
     // FIELD WIDTH: 651.223 INCHES
 
     // x: .2472 y: 5.5946 (USE THIS)
-    public static final Pose3d SPEAKER_POSE_BLUE = new Pose3d(0.25, 5.59, SPEAKER_HEIGHT, new Rotation3d(0, 0, 180));
-    public static final Pose3d SPEAKER_POSE_RED = new Pose3d(16.29, 5.59, SPEAKER_HEIGHT, new Rotation3d(0, 0, 0)); // TODO: fix X here
+    public static final Pose3d SPEAKER_POSE_BLUE = new Pose3d(0.17, 5.3, SPEAKER_HEIGHT, new Rotation3d(0, 0, 180));
+    public static final Pose3d SPEAKER_POSE_RED = new Pose3d(16.37, 5.3, SPEAKER_HEIGHT, new Rotation3d(0, 0, 0)); // TODO: fix X here
   }
 
   public static class LEDColors {

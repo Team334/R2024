@@ -150,7 +150,7 @@ public class RobotContainer {
     // driver bindings
     _driveController.L1().onTrue(Commands.runOnce(_swerveSubsystem::toggleSpeed, _swerveSubsystem));
     _driveController.R1().onTrue(Commands.runOnce(() -> _swerveSubsystem.fieldOriented = !_swerveSubsystem.fieldOriented, _swerveSubsystem));
-    _driveController.triangle().onTrue(Commands.runOnce(_swerveSubsystem::resetGyro, _swerveSubsystem));
+    _driveController.triangle().onTrue(Commands.runOnce(() -> _swerveSubsystem.resetGyro(), _swerveSubsystem));
     _driveController.cross().whileTrue(new BrakeSwerve(_swerveSubsystem, _ledSubsystem));
 
     // TESTING ONLY!!!
@@ -172,7 +172,7 @@ public class RobotContainer {
       )
     );
 
-    _driveController.R2().whileTrue(
+    _operatorController.R2().whileTrue(
       new AutoAim(
         _shooterSubsystem,
         _elevatorSubsystem,
