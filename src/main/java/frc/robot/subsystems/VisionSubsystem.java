@@ -38,17 +38,6 @@ public class VisionSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putBoolean("VISISBLE", isApriltagVisible());
-    // This method will be called once per scheduler run
-
-    // SmartDashboard.putNumber("retrieved botpose",
-    // getBotpose().getTranslation().getX());
-
-    // System.out.println(isApriltagVisible(6));
-
-    // _field.setRobotPose(getBotpose());
-
-    // SmartDashboard.putData("Limelight Field", _field);
   }
 
   /**
@@ -82,9 +71,6 @@ public class VisionSubsystem extends SubsystemBase {
     int tags = (int) botpose_array[7];
     double distance = botpose_array[9];
 
-    SmartDashboard.putNumber("TAGS", tags);
-    SmartDashboard.putNumber("DISTANCE", distance);
-
     if (tags < 2) return Optional.empty();
     if (distance > FieldConstants.TAG_DISTANCE_THRESHOLD) return Optional.empty();
 
@@ -110,7 +96,6 @@ public class VisionSubsystem extends SubsystemBase {
     for (JsonNode tag : tags) {
       double distance = ((ArrayNode) tag.get("t6t_cs")).get(2).asDouble();
       if (distance <= FieldConstants.TAG_DISTANCE_THRESHOLD) {
-        SmartDashboard.putNumber("TAG DISTANCE", distance);
         return true;
       }
     }

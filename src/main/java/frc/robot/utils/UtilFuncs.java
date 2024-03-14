@@ -25,7 +25,6 @@ public final class UtilFuncs {
    * Whether to shoot fast based on distance of bot from speaker shot point.
    */
   public static boolean ShootFast() {
-    SmartDashboard.putNumber("DISTANCE SHOOTING", _distanceSupplier.getAsDouble());
     if (_distanceSupplier.getAsDouble() > FieldConstants.SHOOTER_SLOW_THRESHOLD) return true;
     
     return false;

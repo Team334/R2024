@@ -186,8 +186,6 @@ public class AutoAim extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("AIMING");
-    
     double currentSwerveHeading = _swerve.getHeading().getDegrees();
 
     if (!_overrideDesired) {
@@ -205,8 +203,6 @@ public class AutoAim extends Command {
     );
 
     if (_reachedSwerveHeading) rotationVelocity = 0;
-
-    SmartDashboard.putNumber("Y", _desiredSwerveHeading);
 
     // if (_reachedSwerveHeading && _reachedShooterAngle) {
     //   _leds.setColor(Constants.LEDColors.GREEN);

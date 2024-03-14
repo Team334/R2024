@@ -41,9 +41,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     _leftMotor.getConfigurator().apply(softLimits);
 
-    _heightController.setTolerance(0.01);
-    
-    SmartDashboard.putData("ELEVATOR PID", _heightController);
+    _heightController.setTolerance(0.02);
   }
 
   @Override
@@ -51,7 +49,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     // harry chen code maybe fix
 
-    SmartDashboard.putNumber("ELEVATOR HEIGHT FROM GROUND", getHeight() + Physical.ELEVATOR_LOWEST_HEIGHT);
     SmartDashboard.putNumber("ELEVATOR HEIGHT METERS", getHeight());
   }
 
