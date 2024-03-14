@@ -73,7 +73,7 @@ public class VisionSubsystem extends SubsystemBase {
     int tags = (int) botpose_array[7];
     double distance = botpose_array[9];
 
-    // if (tags < 2) return Optional.empty();
+    if (tags < 2) return Optional.empty();
     if (distance > FieldConstants.TAG_DISTANCE_THRESHOLD) return Optional.empty();
 
     double botposeX = _xFilter.calculate(botpose_array[0]); // to get rid of the weird origin outlier

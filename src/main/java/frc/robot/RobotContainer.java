@@ -172,7 +172,7 @@ public class RobotContainer {
       )
     );
 
-    _operatorController.R2().whileTrue(
+    _driveController.R2().whileTrue(
       new AutoAim(
         _shooterSubsystem,
         _elevatorSubsystem,
