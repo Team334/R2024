@@ -12,12 +12,6 @@
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "get bot c top"
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "shoot"
@@ -39,12 +33,6 @@
           "type": "named",
           "data": {
             "name": "shoot"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "initiate"
           }
         }
       ]

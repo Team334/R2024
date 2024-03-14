@@ -1,6 +1,7 @@
 /* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot;
 
+import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.MediaSize.NA;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -146,6 +147,13 @@ public class RobotContainer {
     _operatorController.circle().whileTrue(feedOut);
     _operatorController.triangle().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.OUTTAKE));
     _operatorController.cross().whileTrue(new FeedActuate(_intakeSubsystem, FeedMode.INTAKE));
+
+    _operatorController.R1().whileTrue(
+      Commands.parallel(
+        new SetShooter(_shooterSubsystem, () -> Presets.SHOOTER_AMP_HANDOFF),
+        new SetElevator(_elevatorSubsystem, () -> Presets.ELEVATOR_AMP_HANDOFF)
+      )
+    );
 
     // driver bindings
     _driveController.L1().onTrue(Commands.runOnce(_swerveSubsystem::toggleSpeed, _swerveSubsystem));

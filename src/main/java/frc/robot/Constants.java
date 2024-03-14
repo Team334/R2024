@@ -138,6 +138,9 @@ public final class Constants {
     public static final double ACTUATE_SHOOTER_ANGLE = 52;
 
     public static final double ELEVATOR_HEIGHT_RATE = -0.025;
+
+    public static final double SHOOTER_AMP_HANDOFF = 50;
+    public static final double ELEVATOR_AMP_HANDOFF = 0.04;
   }
 
   public static class Ports {

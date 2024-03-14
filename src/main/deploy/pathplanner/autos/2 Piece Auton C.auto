@@ -34,12 +34,6 @@
           "data": {
             "name": "shoot"
           }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "initiate"
-          }
         }
       ]
     }
