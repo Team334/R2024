@@ -70,10 +70,8 @@ public class ShooterSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("SHOOTER ANGLE ENCODER", _angleMotor.getPosition().getValueAsDouble());
     SmartDashboard.putNumber("SHOOTER ANGLE", getAngle());
-
-    // SmartDashboard.putNumber("SHOOTER PERCENT OUTPUT", _leftMotor.get());
+    SmartDashboard.putNumber("SHOOTER PERCENT OUTPUT", _leftMotor.get());
   }
 
   /**
@@ -133,7 +131,6 @@ public class ShooterSubsystem extends SubsystemBase {
         if (UtilFuncs.ShootFast()) { 
           spinShooter(Speeds.SHOOTER_FAST_SPIN_SPEED); 
         } else {
-          System.out.println("FAR");
           spinShooter(Speeds.SHOOTER_SLOW_SPIN_SPEED);
         }
         break;

@@ -147,26 +147,19 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         _frontRight.displayInfo(builder);
         _backRight.displayInfo(builder);
         _backLeft.displayInfo(builder);
-        builder.addDoubleProperty("Robot Angle", () -> getHeading().getDegrees(), null);
-        builder.addDoubleProperty("Swerve Speed", () -> Constants.Speeds.SWERVE_DRIVE_SLOW_COEFF, null);
+        builder.addBooleanProperty("Swerve FAST", () -> _drivingState == DrivingSpeeds.FAST, null);
       }
     });
-
-    SmartDashboard.putData("Swerve/Built-in Accelerometer", new BuiltInAccelerometer());
   }
 
   @Override
   public void periodic() {
     publisher.set(states);
 
-    SmartDashboard.putNumber("Gyro 180/-180", getHeading().getDegrees());
-
+    SmartDashboard.putNumber("Gyro RAW", getHeadingRaw().getDegrees());
     SmartDashboard.putBoolean("Field Oriented", fieldOriented);
-    SmartDashboard.putNumber("CAN Utilization %", RobotController.getCANStatus().percentBusUtilization * 100.0);
-    SmartDashboard.putNumber("Voltage", RobotController.getBatteryVoltage());
-    SmartDashboard.putNumber("CPU Temperature", RobotController.getCPUTemp());
-    SmartDashboard.putBoolean("RSL", RobotController.getRSLState());
     SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
+    SmartDashboard.putNumber("Speaker Distance", speakerDistance());
 
     // Update the bot's pose
     _estimator.update(getHeadingRaw(), new SwerveModulePosition[]{
@@ -176,11 +169,11 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       _backLeft.getPosition()
     });
 
-    SmartDashboard.putBoolean("IN RANGE", _visionSubsystem.isValid());
-
     Optional<Pose2d> visionBotpose = _visionSubsystem.getBotpose();
+
+    SmartDashboard.putBoolean("VISION VALID", visionBotpose.isPresent());
+
     if (visionBotpose.isPresent()) {
-      SmartDashboard.putNumber("X LL", visionBotpose.get().getX());
       _estimator.addVisionMeasurement(visionBotpose.get(), _visionSubsystem.getLatency());
     }
 
@@ -334,14 +327,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     Pose3d speakerPose = UtilFuncs.GetAlliance() == Alliance.Red ? FieldConstants.SPEAKER_POSE_RED : FieldConstants.SPEAKER_POSE_BLUE;
 
-    SmartDashboard.putBoolean("IS RED", UtilFuncs.GetAlliance() == Alliance.Red);
-
     Translation2d speakerTranslation = new Translation2d(speakerPose.getX(), speakerPose.getY());
     Translation2d botTranslation = getPose().getTranslation();
 
     Translation2d distanceVec = speakerTranslation.minus(botTranslation);
-
-    SmartDashboard.putNumber("DISTANCE", distanceVec.getNorm());
 
     double elevatorHeight = Physical.ELEVATOR_MAX_SHOOT_HEIGHT + (distanceVec.getNorm() * Presets.ELEVATOR_HEIGHT_RATE); // TODO: get values and test
 

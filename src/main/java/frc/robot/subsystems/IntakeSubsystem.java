@@ -73,24 +73,6 @@ public class IntakeSubsystem extends SubsystemBase {
     _actuatorMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
   }
 
-  // /** 
-  //  * Creates a safety if the intake is moving against a note.
-  //  * 
-  //  * @return True if the intake is moving against a note, else False.
-  //  */
-
-  // // TODO: why not working?
-  // public boolean noteSafety() {
-  //   SmartDashboard.putNumber("FEED OUTPUT", Math.abs(_feedMotor.get()));
-  //   SmartDashboard.putNumber("FEED VEL", Math.abs(_feedEncoder.getVelocity()));
-
-  //   if (Math.abs(_feedMotor.get()) > 0 && Math.abs(_feedEncoder.getVelocity()) < 2) {
-  //     return true;
-  //   }
-
-  //   return false;
-  // }
-
   /**
    * Check if the FeedMode has last been set to the desired value.
    * 
@@ -127,8 +109,6 @@ public class IntakeSubsystem extends SubsystemBase {
    * Returns true if the actuator is at the last desired state.
    */
   public boolean atDesiredActuatorState() {
-    if (_actuatorController.atSetpoint()) System.out.println("s" + _actuatorController.getSetpoint());
-
     return _actuatorController.atSetpoint();
   }
 
@@ -219,11 +199,6 @@ public class IntakeSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("ACTUATOR ENCODER", getActuator());
-    SmartDashboard.putData("ACTUATOR PID", _actuatorController);
-    SmartDashboard.putNumber("ACTUATOR OUT", _actuatorMotor.get());
-
-    // SmartDashboard.putBoolean("NOTE SAFETY", noteSafety());
-
-    // if (noteSafety()) { feed(FeedMode.NONE); }
+    SmartDashboard.putNumber("ACTUATOR OUTPUT", _actuatorMotor.get());
   }
 }
