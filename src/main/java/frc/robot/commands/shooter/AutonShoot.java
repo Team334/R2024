@@ -43,7 +43,7 @@ public class AutonShoot extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       // Parallel command group that aims, revs, and squeezes note. ONLY APPLIES TO PRELOADED NOTE.
-      new ParallelRaceGroup(
+      new ParallelCommandGroup(
         new SpinShooter(shooter, ShooterState.SHOOT).withTimeout(3),
         new AutoAim(shooter, elevator, leds, swerve, Presets.CLOSE_SHOOTER_ANGLE, Presets.CLOSE_ELEVATOR_HEIGHT, this::headingPreset).withTimeout(2),
         new FeedActuate(intake, FeedMode.INTAKE).withTimeout(4)
