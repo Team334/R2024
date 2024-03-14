@@ -90,8 +90,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("brake", new BrakeSwerve(_swerveSubsystem, _ledSubsystem));
     
     NamedCommands.registerCommand("actuateOut", new SetShooter(_shooterSubsystem, () -> Presets.ACTUATE_SHOOTER_ANGLE).andThen(
-      new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE)
-    ));
+      new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE))
+    );
 
     NamedCommands.registerCommand("actuateIn", new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.INTAKE).alongWith(
       new SpinShooter(_shooterSubsystem, ShooterState.SHOOT, true)

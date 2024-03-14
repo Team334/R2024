@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 /**
@@ -57,7 +58,7 @@ public final class Constants {
     public static final double SWERVE_DRIVE_FAST_COEFF = 1;
 
     public static final double SWERVE_DRIVE_MAX_SPEED = 4; // meters per second
-    public static final double SWERVE_DRIVE_MAX_ANGULAR_SPEED = Math.PI * 1; // TODO: Get this value
+    public static final double SWERVE_DRIVE_MAX_ANGULAR_SPEED = Math.PI * 1.5; // TODO: Get this value
 
     public static final double SHOOTER_FAST_SPIN_SPEED = .85; // TODO: Get this
     public static final double SHOOTER_SLOW_SPIN_SPEED = .85;
@@ -159,6 +160,8 @@ public final class Constants {
 
     public static final int SPEAKER_TAG_BLUE = 7;
     public static final int SPEAKER_TAG_RED = 4;
+
+    public static final double SPEAKER_TAG_OFFSET = Units.inchesToMeters(23);
 
     // FIELD WIDTH: 651.223 INCHES
 

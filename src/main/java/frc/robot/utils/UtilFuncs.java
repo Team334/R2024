@@ -3,6 +3,13 @@ package frc.robot.utils;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.FieldConstants;
@@ -11,6 +18,26 @@ import frc.robot.utils.helpers.AllianceHelper;
 /** Any utility functions are here. */
 public final class UtilFuncs {
   private static DoubleSupplier _distanceSupplier;
+  private static AprilTagFieldLayout _field;
+
+  public static void LoadField() {
+    _field = AprilTagFieldLayout.loadField(AprilTagFields.k2024Crescendo);
+  }
+
+  public static Pose3d GetSpeakerPose() {
+    Pose3d pose;
+
+    if (GetAlliance() == Alliance.Red) {
+      pose =  _field.getTagPose(FieldConstants.SPEAKER_TAG_RED).get();
+    }
+
+    pose = _field.getTagPose(FieldConstants.SPEAKER_TAG_BLUE).get();
+
+    return new Pose3d(
+      new Translation3d(pose.getX(), pose.getY(), pose.getZ() + FieldConstants.SPEAKER_TAG_OFFSET),
+      new Rotation3d()
+    );
+  }
 
   /**
    * Supply the ShootFast function with a distance supplier.

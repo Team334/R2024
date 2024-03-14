@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.utils.UtilFuncs;
 import frc.robot.utils.helpers.AllianceHelper;
 
 /**
@@ -104,6 +105,7 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+    // UtilFuncs.LoadField();
     m_robotContainer.teleopInit();
 
     if (m_autonomousCommand != null) {

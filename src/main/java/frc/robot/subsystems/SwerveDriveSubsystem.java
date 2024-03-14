@@ -312,6 +312,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
    */
   public double speakerDistance() {
     Pose3d speakerPose = UtilFuncs.GetAlliance() == Alliance.Red ? FieldConstants.SPEAKER_POSE_RED : FieldConstants.SPEAKER_POSE_BLUE;
+    // Pose3d speakerPose = UtilFuncs.GetSpeakerPose();
 
     Translation2d speakerTranslation = new Translation2d(speakerPose.getX(), speakerPose.getY());
     Translation2d botTranslation = getPose().getTranslation();
@@ -331,6 +332,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     double ySpeakerAngle;
 
     Pose3d speakerPose = UtilFuncs.GetAlliance() == Alliance.Red ? FieldConstants.SPEAKER_POSE_RED : FieldConstants.SPEAKER_POSE_BLUE;
+    // Pose3d speakerPose = UtilFuncs.GetSpeakerPose();
 
     Translation2d speakerTranslation = new Translation2d(speakerPose.getX(), speakerPose.getY());
     Translation2d botTranslation = getPose().getTranslation();

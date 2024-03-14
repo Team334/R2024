@@ -74,20 +74,6 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   /**
-   * Toggle reverse soft limit.
-   */
-  public void toggleReverseSoftLimit() {
-    _actuatorMotor.enableSoftLimit(SoftLimitDirection.kReverse, !_actuatorMotor.isSoftLimitEnabled(SoftLimitDirection.kReverse));
-  }
-
-  /**
-   * Resets the reverse soft limit (and encoder) of the actuator.
-   */
-  public void resetActuatorEncoder() {
-    _actuatorEncoder.setPosition(0);
-  }
-
-  /**
    * Returns true if the actuator is at the last desired state.
    */
   public boolean atDesiredActuatorState() {
