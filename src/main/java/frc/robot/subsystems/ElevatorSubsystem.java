@@ -50,6 +50,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     // harry chen code maybe fix
 
     SmartDashboard.putNumber("ELEVATOR HEIGHT METERS", getHeight());
+    SmartDashboard.putNumber("ELEVATOR PERCENT OUTPUT", _leftMotor.get());
   }
 
   /**
