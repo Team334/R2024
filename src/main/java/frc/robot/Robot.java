@@ -36,11 +36,14 @@ public class Robot extends TimedRobot {
     // FIRST THING THAT HAPPENS
     addPeriodic(() -> AllianceHelper.getInstance().updateAlliance(DriverStation.getAlliance()), 0.5);
 
-    for (int port = 5800; port <= 5807; port++) {
-      PortForwarder.add(port, "limelight.local", port);
-    }
+    // for (int port = 5800; port <= 5807; port++) {
+    //   PortForwarder.add(port, "limelight.local", port);
+    // }
+    PortForwarder.add(5800, "limelight.local", 5800);
+    PortForwarder.add(5801, "limelight.local", 5801);
+    PortForwarder.add(5805, "limelight.local", 5805);
 
-    // CameraServer.startAutomaticCapture();
+    CameraServer.startAutomaticCapture(0);
 
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our
