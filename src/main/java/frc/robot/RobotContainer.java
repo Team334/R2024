@@ -184,6 +184,13 @@ public class RobotContainer {
     );
   }
 
+  /**
+   * Updates all subsystems on teleop init.
+   */
+  public void teleopInit() {
+    _swerveSubsystem.fieldOriented = true;
+  }
+
   /** @return The Command to schedule for auton. */
   public Command getAutonCommand() {
     _swerveSubsystem.fieldOriented = false; // make sure swerve is robot-relative for pathplanner to work

@@ -57,8 +57,8 @@ public class ShooterSubsystem extends SubsystemBase {
     softLimits.ForwardSoftLimitThreshold = 55 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360;
     softLimits.ReverseSoftLimitThreshold = -25 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360;
 
-    softLimits.ForwardSoftLimitEnable = true;
-    softLimits.ReverseSoftLimitEnable = true;
+    softLimits.ForwardSoftLimitEnable = false;
+    softLimits.ReverseSoftLimitEnable = false;
 
     _angleMotor.getConfigurator().apply(softLimits);
 
