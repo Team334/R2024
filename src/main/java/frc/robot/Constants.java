@@ -54,7 +54,7 @@ public final class Constants {
 
   public static class Speeds {
     public static final double SWERVE_DRIVE_SLOW_COEFF = .6; // Default driving speed
-    public static final double SWERVE_DRIVE_FAST_COEFF = .85;
+    public static final double SWERVE_DRIVE_FAST_COEFF = 1;
 
     public static final double SWERVE_DRIVE_MAX_SPEED = 4; // meters per second
     public static final double SWERVE_DRIVE_MAX_ANGULAR_SPEED = Math.PI * 1; // TODO: Get this value
@@ -149,7 +149,7 @@ public final class Constants {
   // static field constants
   public static class FieldConstants {
     // z: 2.2456 (USE THIS)
-    public static final double SPEAKER_HEIGHT = 2.25;
+    public static final double SPEAKER_HEIGHT = 2.13;
 
     public static final double SHOOTER_SLOW_THRESHOLD = 2;
     public static final double TAG_DISTANCE_THRESHOLD = 2;
