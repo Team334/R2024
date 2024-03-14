@@ -50,15 +50,16 @@ public class ShooterSubsystem extends SubsystemBase {
     NeoConfig.configureFollowerNeo(_rightMotor, _leftMotor, true);
 
     TalonFXConfig.configureFalcon(_angleMotor, true);
-    
+    _angleMotor.setPosition(67 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360);
+
     // soft limits
     SoftwareLimitSwitchConfigs softLimits = new SoftwareLimitSwitchConfigs();
 
-    softLimits.ForwardSoftLimitThreshold = 55 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360;
+    softLimits.ForwardSoftLimitThreshold = 67 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360;
     softLimits.ReverseSoftLimitThreshold = -25 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360;
 
-    softLimits.ForwardSoftLimitEnable = false;
-    softLimits.ReverseSoftLimitEnable = false;
+    softLimits.ForwardSoftLimitEnable = true;
+    softLimits.ReverseSoftLimitEnable = true;
 
     _angleMotor.getConfigurator().apply(softLimits);
 
@@ -104,6 +105,7 @@ public class ShooterSubsystem extends SubsystemBase {
    */
   public void driveAngle(double speed) {
     _angleMotor.set(UtilFuncs.FromVolts(_angleFeed.calculate(Math.toRadians(getAngle()), 0)) + speed);
+    // _angleMotor.set(speed);
   }
 
   /** Stops the shooter's angular movement. */
