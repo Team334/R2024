@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.308995050422533,
-        "y": 5.509843091758257
+        "x": 2.41,
+        "y": 4.32
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.4199314885116257,
-        "y": 6.083014688551899
+        "x": 1.7342513964307205,
+        "y": 4.936671494964612
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.4276041344875483,
-        "y": 7.007485005961003
+        "x": 1.35,
+        "y": 5.546821904454621
       },
       "prevControl": {
-        "x": 1.669538474212084,
-        "y": 6.998240302786911
+        "x": 1.503133817078445,
+        "y": 4.945916198138703
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,11 +32,11 @@
   "constraintZones": [
     {
       "name": "New Constraints Zone",
-      "minWaypointRelativePos": 0.7,
+      "minWaypointRelativePos": 0.8,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 1.0,
-        "maxAcceleration": 1.0,
+        "maxVelocity": 4.67,
+        "maxAcceleration": 1.5,
         "maxAngularVelocity": 180.0,
         "maxAngularAcceleration": 360.0
       }
@@ -45,7 +45,7 @@
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0.0,
+      "waypointRelativePos": 0.15,
       "command": {
         "type": "sequential",
         "data": {
@@ -53,7 +53,7 @@
             {
               "type": "named",
               "data": {
-                "name": "actuateOut"
+                "name": "actuateIn"
               }
             }
           ]
@@ -62,7 +62,7 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
+    "maxVelocity": 4.67,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 180.0,
     "maxAngularAcceleration": 360.0
@@ -73,10 +73,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "straight pickup",
-  "previewStartingState": {
-    "rotation": 0,
-    "velocity": 0
-  },
-  "useDefaultConstraints": true
+  "folder": "straight paths",
+  "previewStartingState": null,
+  "useDefaultConstraints": false
 }

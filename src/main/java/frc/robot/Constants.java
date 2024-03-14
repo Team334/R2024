@@ -148,7 +148,8 @@ public final class Constants {
 
   // static field constants
   public static class FieldConstants {
-    public static final double SPEAKER_HEIGHT = 2.27;
+    // z: 2.2456 (USE THIS)
+    public static final double SPEAKER_HEIGHT = 2.25;
 
     public static final double SHOOTER_SLOW_THRESHOLD = 2;
     public static final double TAG_DISTANCE_THRESHOLD = 2;
@@ -156,8 +157,11 @@ public final class Constants {
     public static final int SPEAKER_TAG_BLUE = 7;
     public static final int SPEAKER_TAG_RED = 4;
 
-    public static final Pose3d SPEAKER_POSE_BLUE = new Pose3d(0.17, 5.3, SPEAKER_HEIGHT, new Rotation3d(0, 0, 180));
-    public static final Pose3d SPEAKER_POSE_RED = new Pose3d(16.8, 5.3, SPEAKER_HEIGHT, new Rotation3d(0, 0, 0)); // TODO: fix X here
+    // FIELD WIDTH: 651.223 INCHES
+
+    // x: .2472 y: 5.5946 (USE THIS)
+    public static final Pose3d SPEAKER_POSE_BLUE = new Pose3d(0.25, 5.59, SPEAKER_HEIGHT, new Rotation3d(0, 0, 180));
+    public static final Pose3d SPEAKER_POSE_RED = new Pose3d(16.29, 5.59, SPEAKER_HEIGHT, new Rotation3d(0, 0, 0)); // TODO: fix X here
   }
 
   public static class LEDColors {

@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.38,
-        "y": 5.51
+        "x": 2.35364650909482,
+        "y": 4.113892912470511
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.398359431313457,
-        "y": 5.530598388584164
+        "x": 1.8998078443331146,
+        "y": 4.113892912470511
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.35,
-        "y": 5.55
+        "x": 1.31,
+        "y": 5.51
       },
       "prevControl": {
-        "x": 1.3683594313134575,
-        "y": 5.570598388584164
+        "x": 1.1353783204258805,
+        "y": 5.526568109803206
       },
       "nextControl": null,
       "isLocked": false,
@@ -35,8 +35,8 @@
       "minWaypointRelativePos": 0.7,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 4.67,
-        "maxAcceleration": 1.5,
+        "maxVelocity": 1.0,
+        "maxAcceleration": 1.0,
         "maxAngularVelocity": 180.0,
         "maxAngularAcceleration": 360.0
       }
@@ -62,7 +62,7 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 4.67,
+    "maxVelocity": 4.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 180.0,
     "maxAngularAcceleration": 360.0
@@ -73,7 +73,10 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "reg paths",
-  "previewStartingState": null,
-  "useDefaultConstraints": false
+  "folder": "curved paths",
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
 }

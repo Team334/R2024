@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.308995050422533,
-        "y": 5.509843091758257
+        "x": 2.38,
+        "y": 5.51
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.9653689757829964,
-        "y": 5.537577201280529
+        "x": 1.9261613352382945,
+        "y": 5.51
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.3813806186170927,
-        "y": 5.509843091758257
+        "x": 1.31,
+        "y": 5.51
       },
       "prevControl": {
-        "x": 1.6233149583416284,
-        "y": 5.500598388584165
+        "x": 1.1353783204258805,
+        "y": 5.526568109803206
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,7 +45,7 @@
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0.0,
+      "waypointRelativePos": 0.15,
       "command": {
         "type": "sequential",
         "data": {
@@ -53,7 +53,7 @@
             {
               "type": "named",
               "data": {
-                "name": "actuateOut"
+                "name": "actuateIn"
               }
             }
           ]
@@ -62,7 +62,7 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
+    "maxVelocity": 4.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 180.0,
     "maxAngularAcceleration": 360.0
@@ -73,7 +73,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "straight pickup",
+  "folder": "curved paths",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

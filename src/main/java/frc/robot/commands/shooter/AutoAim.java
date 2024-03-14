@@ -89,6 +89,44 @@ public class AutoAim extends Command {
   }
 
   /**
+   * Constructs an AutoAim that does NOT finish when reaching setpoints.
+   * It DOES NOT calculate angle/height/heading setpoints.
+   * 
+   * (USE FOR TELEOP)
+   * 
+   * @param shooter Shooter subsystem.
+   * @param elevator Elevator subsystem.
+   * @param leds Led subsystem.
+   * @param swerve Swerve subsystem.
+   * @param xSpeed X joystick speed.
+   * @param ySpeed Y joystick speed.
+   * 
+   * @param shooterAngle Desired shooter angle.
+   * @param elevatorHeight Desired elevator height.
+   * @param swerveHeadingSupplier Desired swerve heading supplier. This is a supplier since heading could change based on alliance.
+   */
+  public AutoAim(
+    ShooterSubsystem shooter, 
+    ElevatorSubsystem elevator, 
+    LEDSubsystem leds, 
+    SwerveDriveSubsystem swerve,
+    DoubleSupplier xSpeed,
+    DoubleSupplier ySpeed,
+    double shooterAngle,
+    double elevatorHeight,
+    DoubleSupplier swerveHeadingSupplier
+  ) {
+    this(shooter, elevator, leds, swerve, xSpeed, ySpeed);
+
+    _desiredShooterAngle = shooterAngle;
+    _desiredElevatorHeight = elevatorHeight;
+    _swerveHeadingSupplier = swerveHeadingSupplier;
+
+    _overrideDesired = true;
+  }
+
+
+  /**
    * Constructs an AutoAim that finishes when it reaches its initial setpoints.
    * It calculates angle/height/heading setpoints.
    * 
@@ -136,6 +174,8 @@ public class AutoAim extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    _swerve.fieldOriented = true;
+
     _reachedSwerveHeading = false;
     _reachedShooterAngle = false;
     _reachedElevatorHeight = false;

@@ -10,6 +10,7 @@ import com.revrobotics.CANSparkBase.FaultID;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -164,18 +165,30 @@ public class RobotContainer {
     // );
 
     // driver bindings
+    _driveController.L1().onTrue(Commands.runOnce(_swerveSubsystem::toggleSpeed, _swerveSubsystem));
     _driveController.R1().onTrue(Commands.runOnce(() -> _swerveSubsystem.fieldOriented = !_swerveSubsystem.fieldOriented, _swerveSubsystem));
-    _driveController.L1().onTrue(Commands.runOnce(() -> _swerveSubsystem.resetPose(new Pose2d()), _swerveSubsystem));
-    _driveController.cross().whileTrue(new BrakeSwerve(_swerveSubsystem, _ledSubsystem));
-    _driveController.L2().onTrue(Commands.runOnce(_swerveSubsystem::toggleSpeed, _swerveSubsystem));
-    
     _driveController.triangle().onTrue(Commands.runOnce(_swerveSubsystem::resetGyro, _swerveSubsystem));
+    _driveController.cross().whileTrue(new BrakeSwerve(_swerveSubsystem, _ledSubsystem));
+
+    _driveController.L2().whileTrue(
+      new AutoAim(
+        _shooterSubsystem, 
+        _elevatorSubsystem, 
+        _ledSubsystem, 
+        _swerveSubsystem,
+        () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.05),
+        () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.05),
+        Presets.CLOSE_SHOOTER_ANGLE, 
+        Presets.CLOSE_ELEVATOR_HEIGHT,
+        () -> (UtilFuncs.GetAlliance() == Alliance.Red) ? 0 : 180
+      )
+    );
 
     _driveController.R2().whileTrue(
       new AutoAim(
         _shooterSubsystem,
         _elevatorSubsystem,
-        null,
+        _ledSubsystem,
         _swerveSubsystem,
         () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.05),
         () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.05)

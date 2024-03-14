@@ -20,13 +20,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "get mid"
+            "pathName": "get mid c"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "shoot mid"
+            "pathName": "shoot mid c"
           }
         },
         {
@@ -38,13 +38,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "REAL AUTON OUT"
+            "pathName": "get bot c"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "REAL AUTON IN"
+            "pathName": "shoot bot c"
           }
         },
         {
@@ -56,13 +56,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "get top"
+            "pathName": "get top c"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "shoot top"
+            "pathName": "shoot top c"
           }
         },
         {
@@ -74,6 +74,6 @@
       ]
     }
   },
-  "folder": null,
+  "folder": "curved",
   "choreoAuto": false
 }

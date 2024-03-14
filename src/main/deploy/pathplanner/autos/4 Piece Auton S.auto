@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.35,
-      "y": 5.55
+      "x": 1.3459738631188973,
+      "y": 5.546821904454621
     },
     "rotation": 180.0
   },
@@ -20,13 +20,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "get bot note"
+            "pathName": "get bot s"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "shoot bot note"
+            "pathName": "shoot bot s"
           }
         },
         {
@@ -38,13 +38,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "get mid note"
+            "pathName": "get mid s"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "shoot mid note"
+            "pathName": "shoot mid s"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "get top s"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "shoot top s"
           }
         },
         {
@@ -56,6 +74,6 @@
       ]
     }
   },
-  "folder": null,
+  "folder": "straight",
   "choreoAuto": false
 }
