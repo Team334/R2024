@@ -70,7 +70,7 @@ public class IntakeSubsystem extends SubsystemBase {
     NeoConfig.configureNeo(_feedMotor, false);
     NeoConfig.configureNeo(_actuatorMotor, false);
 
-    _feedMotor.setSmartCurrentLimit(80);
+    // _feedMotor.setSmartCurrentLimit(80);
 
     _actuatorMotor.setSoftLimit(SoftLimitDirection.kForward, Constants.Encoders.INTAKE_OUT);
     _actuatorMotor.setSoftLimit(SoftLimitDirection.kReverse, Constants.Encoders.INTAKE_STOWED);

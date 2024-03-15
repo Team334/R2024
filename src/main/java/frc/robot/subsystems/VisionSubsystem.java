@@ -106,13 +106,16 @@ public class VisionSubsystem extends SubsystemBase {
 
   /**
    * If the limelight is in perfect condition with the apriltags to reset the robot's pose.
+   * 
+   * @return The pose to reset to.
    */
-  public boolean canResetPose() {
+  public Optional<Pose2d> resetPose() {
     Optional<double[]> botpose = getValidBotpose();
-    if (botpose.isEmpty()) return false;
-    if (botpose.get()[9] <= FieldConstants.TAG_DISTANCE_RESET_THRESHOLD) return true;
+    if (botpose.isEmpty()) return Optional.empty();
+    if (botpose.get()[7] < 2) return Optional.empty();
+    if (botpose.get()[9] <= FieldConstants.TAG_DISTANCE_RESET_THRESHOLD) return Optional.empty();
 
-    return false;
+    return getBotpose();
   }
 
   /**

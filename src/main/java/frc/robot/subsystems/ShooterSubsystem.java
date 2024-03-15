@@ -10,6 +10,8 @@ import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -36,6 +38,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private final ArmFeedforward _angleFeed = new ArmFeedforward(0, 0, 0);
   private final PIDController _angleController = new PIDController(PID.SHOOTER_ANGLE_KP, 0, 0);
+
+  private final Debouncer _revDebouncer = new Debouncer(0.5, DebounceType.kRising);
 
   /** Represents the state of the shooter's flywheels (speaker shoot, amp, nothing). */
   public enum ShooterState {

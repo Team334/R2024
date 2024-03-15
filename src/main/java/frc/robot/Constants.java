@@ -86,7 +86,7 @@ public final class Constants {
     public static final double SHOOTER_ANGLE_GEAR_RATIO = 112;
     
     public static final double ELEVATOR_LOWEST_HEIGHT = 0.4; // TODO: Get this value
-    public static final double ELEVATOR_MAX_SHOOT_HEIGHT = .44; // TODO: Get this value
+    public static final double ELEVATOR_MAX_SHOOT_HEIGHT = .48; // TODO: Get this value
 
     public static final double ELEVATOR_GEAR_RATIO = 25;
     public static final double ELEVATOR_DISTANCE_PER_ROTATION = .09;
