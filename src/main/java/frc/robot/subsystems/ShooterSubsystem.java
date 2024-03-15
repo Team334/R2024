@@ -41,6 +41,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public enum ShooterState {
     SHOOT,
     AMP,
+    INTAKE,
     NONE
   }
 
@@ -128,6 +129,9 @@ public class ShooterSubsystem extends SubsystemBase {
       case AMP:
         spinShooter(Speeds.SHOOTER_AMP_SPEED);
         break;
+
+      case INTAKE:
+        spinShooter(Speeds.SHOOTER_INTAKE_SPEED);
 
       case NONE:
         stopShooter();

@@ -140,6 +140,7 @@ public class RobotContainer {
     // operator bindings
     _operatorController.L1().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.SHOOT).handleInterrupt(stopShooter));
     _operatorController.L2().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.AMP).handleInterrupt(stopShooter));
+    _operatorController.R2().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.INTAKE).handleInterrupt(stopShooter));
 
     _operatorController.square().whileTrue(safeFeedIn);
     _operatorController.circle().whileTrue(feedOut);
