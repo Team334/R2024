@@ -86,9 +86,7 @@ public class RobotContainer {
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
-  public RobotContainer() {
-    NamedCommands.registerCommand("brake", new BrakeSwerve(_swerveSubsystem, _ledSubsystem));
-    
+  public RobotContainer() {    
     NamedCommands.registerCommand("actuateOut", new SetShooter(_shooterSubsystem, () -> Presets.ACTUATE_SHOOTER_ANGLE).andThen(
       new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE))
     );
@@ -180,7 +178,7 @@ public class RobotContainer {
       )
     );
 
-    _operatorController.R2().whileTrue(
+    _driveController.R2().whileTrue(
       new AutoAim(
         _shooterSubsystem,
         _elevatorSubsystem,

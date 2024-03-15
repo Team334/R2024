@@ -76,7 +76,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   private final Orchestra _orchestra = new Orchestra();
   String song = "output.chrp";
 
-  private DrivingSpeeds _drivingState = DrivingSpeeds.SLOW;
+  private DrivingSpeeds _drivingState = DrivingSpeeds.FAST;
 
   private Field2d _field = new Field2d();
 

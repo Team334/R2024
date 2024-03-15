@@ -156,7 +156,9 @@ public final class Constants {
     public static final double SPEAKER_HEIGHT = 2.13;
 
     public static final double SHOOTER_SLOW_THRESHOLD = 2;
+
     public static final double TAG_DISTANCE_THRESHOLD = 2;
+    public static final double TAG_DISTANCE_RESET_THRESHOLD = 1;
 
     public static final int SPEAKER_TAG_BLUE = 7;
     public static final int SPEAKER_TAG_RED = 4;
