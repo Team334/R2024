@@ -12,6 +12,8 @@ import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -37,6 +39,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
   private final RelativeEncoder _actuatorEncoder;
   private final RelativeEncoder _feedEncoder;
+
+  private final Debouncer _intakedDebouncer = new Debouncer(0.3, DebounceType.kRising);
 
   /** How to feed (in or out). */
   public enum FeedMode {
@@ -85,6 +89,10 @@ public class IntakeSubsystem extends SubsystemBase {
    */
   public double getActuator() {
     return _actuatorEncoder.getPosition();
+  }
+
+  public boolean isIntaked() {
+    return _intakedDebouncer.calculate(_feedMotor.getOutputCurrent() > 7);
   }
 
   /**

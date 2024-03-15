@@ -47,6 +47,10 @@ public class FeedActuate extends Command {
   @Override
   public void execute() {
     _intake.actuate(_actuatorState);
+
+    // if (_intake.isIntaked()) {
+    //   _intake.feed(FeedMode.NONE);
+    // }
   }
 
   // Called once the command ends or is interrupted.
