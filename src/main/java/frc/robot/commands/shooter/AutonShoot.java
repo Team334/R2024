@@ -42,6 +42,8 @@ public class AutonShoot extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
+      new FeedActuate(intake, FeedMode.INTAKE).onlyIf(() -> _preloadShot).withTimeout(1),
+
       // Parallel command group that aims, revs, and squeezes note. ONLY APPLIES TO PRELOADED NOTE.
       new ParallelCommandGroup(
         new SpinShooter(shooter, ShooterState.SHOOT).withTimeout(2),
@@ -49,7 +51,6 @@ public class AutonShoot extends SequentialCommandGroup {
         new FeedActuate(intake, FeedMode.INTAKE).withTimeout(1)
       ).onlyIf(() -> !_preloadShot).andThen(() -> _preloadShot = true),
 
-      new FeedActuate(intake, FeedMode.INTAKE).onlyIf(() -> _preloadShot).withTimeout(1),
       new FeedActuate(intake, FeedMode.OUTTAKE).withTimeout(1),
       new SpinShooter(shooter, ShooterState.NONE, true)
     );
