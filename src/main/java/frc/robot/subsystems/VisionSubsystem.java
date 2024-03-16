@@ -28,8 +28,8 @@ import frc.robot.utils.helpers.LimelightHelper;
 public class VisionSubsystem extends SubsystemBase {
   private final LimelightHelper _limelight = LimelightHelper.getInstance();
 
-  private final MedianFilter _xFilter = new MedianFilter(10); // TODO: was changed
-  private final MedianFilter _yFilter = new MedianFilter(10);
+  private final MedianFilter _xFilter = new MedianFilter(20); // TODO: change?
+  private final MedianFilter _yFilter = new MedianFilter(20);
   private final MedianFilter _yawFilter = new MedianFilter(20);
 
   private boolean _shouldResetPose = true;
@@ -112,7 +112,7 @@ public class VisionSubsystem extends SubsystemBase {
   public Optional<Pose2d> resetPose() {
     Optional<double[]> botpose = getValidNTEntry();
 
-    if (botpose.isEmpty()) return Optional.empty();
+    if (botpose.isEmpty()) { _shouldResetPose = true; return Optional.empty(); }
     // if (botpose.get()[7] < 2) return Optional.empty(); // tag count?
 
     int centerTag = UtilFuncs.GetAlliance() == Alliance.Red ? FieldConstants.SPEAKER_TAG_RED : FieldConstants.SPEAKER_TAG_BLUE;

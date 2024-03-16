@@ -180,9 +180,9 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("VISION VALID", visionBotpose.isPresent());
 
     // RESET BOTPOSE COMPLETELY
-    if (resetBotpose.isPresent() && DriverStation.isTeleopEnabled()) {
-      resetPose(new Pose2d(resetBotpose.get().getX(), resetBotpose.get().getY(), getHeading()));
-    }
+    // if (resetBotpose.isPresent() && DriverStation.isTeleopEnabled()) {
+    //   resetPose(new Pose2d(resetBotpose.get().getX(), resetBotpose.get().getY(), getHeading()));
+    // }
 
     // UPDATE BOTPOSE WITH VISION
     if (visionBotpose.isPresent()) {
