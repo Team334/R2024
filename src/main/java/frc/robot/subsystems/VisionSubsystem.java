@@ -28,9 +28,11 @@ import frc.robot.utils.helpers.LimelightHelper;
 public class VisionSubsystem extends SubsystemBase {
   private final LimelightHelper _limelight = LimelightHelper.getInstance();
 
-  private final MedianFilter _xFilter = new MedianFilter(20);
-  private final MedianFilter _yFilter = new MedianFilter(20);
+  private final MedianFilter _xFilter = new MedianFilter(10); // TODO: was changed
+  private final MedianFilter _yFilter = new MedianFilter(10);
   private final MedianFilter _yawFilter = new MedianFilter(20);
+
+  private boolean _shouldResetPose = true;
 
   // private double[] _botpose = new double[6];
 
@@ -113,15 +115,16 @@ public class VisionSubsystem extends SubsystemBase {
     if (botpose.isEmpty()) return Optional.empty();
     // if (botpose.get()[7] < 2) return Optional.empty(); // tag count?
 
-    // center speaker tag
-    if (isApriltagVisible(UtilFuncs.GetAlliance() == Alliance.Red ? FieldConstants.SPEAKER_TAG_RED : FieldConstants.SPEAKER_TAG_BLUE)) {
+    int centerTag = UtilFuncs.GetAlliance() == Alliance.Red ? FieldConstants.SPEAKER_TAG_RED : FieldConstants.SPEAKER_TAG_BLUE;
+    int offsetTag = UtilFuncs.GetAlliance() == Alliance.Red ? FieldConstants.SPEAKER_TAG_RED_OFF : FieldConstants.SPEAKER_TAG_BLUE_OFF; 
+
+    if (isApriltagVisible(centerTag) || isApriltagVisible(offsetTag)) {
+      if (!_shouldResetPose) return Optional.empty();
+      _shouldResetPose = false;
       return getBotpose();
     }
 
-    // off-center speaker tag
-    if (isApriltagVisible(UtilFuncs.GetAlliance() == Alliance.Red ? FieldConstants.SPEAKER_TAG_RED_OFF : FieldConstants.SPEAKER_TAG_BLUE_OFF)) {
-      return getBotpose();
-    }
+    _shouldResetPose = true;
 
     return Optional.empty();
   }
