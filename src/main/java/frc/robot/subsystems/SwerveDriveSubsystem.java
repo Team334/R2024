@@ -1,6 +1,7 @@
 /* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot.subsystems;
 
+import java.sql.Driver;
 import java.util.Optional;
 
 import com.ctre.phoenix6.Orchestra;
@@ -24,6 +25,7 @@ import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -173,9 +175,16 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     });
 
     Optional<Pose2d> visionBotpose = _visionSubsystem.getBotpose();
+    Optional<Pose2d> resetBotpose = _visionSubsystem.resetPose();
 
     SmartDashboard.putBoolean("VISION VALID", visionBotpose.isPresent());
 
+    // RESET BOTPOSE COMPLETELY
+    if (resetBotpose.isPresent() && DriverStation.isTeleopEnabled()) {
+      resetPose(new Pose2d(resetBotpose.get().getX(), resetBotpose.get().getY(), getHeading()));
+    }
+
+    // UPDATE BOTPOSE WITH VISION
     if (visionBotpose.isPresent()) {
       _estimator.addVisionMeasurement(visionBotpose.get(), _visionSubsystem.getLatency());
     }

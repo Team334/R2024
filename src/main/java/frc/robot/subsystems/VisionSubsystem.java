@@ -13,9 +13,11 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.FieldConstants;
+import frc.robot.utils.UtilFuncs;
 import frc.robot.utils.helpers.LimelightHelper;
 
 /**
@@ -80,25 +82,21 @@ public class VisionSubsystem extends SubsystemBase {
   }
 
   /**
-   * Returns the botpose as an array from the limelight if it is valid (at least 2 tags, good distance). 
+   * Returns the NT "botpose_wpiblue" as an array from the limelight if it is valid (good distance). 
    * 
    * @return NT "botpose_wpiblue" limelight topic.
    * 
    * @see Optional
    */
-  public Optional<double[]> getValidBotpose() {
+  public Optional<double[]> getValidNTEntry() {
     if (!isApriltagVisible()) return Optional.empty();
 
     NetworkTableEntry botpose_entry = _limelight.getEntry("botpose_wpiblue");
-
     if (!botpose_entry.exists()) return Optional.empty();
 
     double[] botpose_array = botpose_entry.getDoubleArray(new double[11]);
 
-    int tags = (int) botpose_array[7];
     double distance = botpose_array[9];
-
-    // if (tags < 2) return Optional.empty();
     if (distance > FieldConstants.TAG_DISTANCE_THRESHOLD) return Optional.empty();
 
     return Optional.of(botpose_array);
@@ -107,15 +105,25 @@ public class VisionSubsystem extends SubsystemBase {
   /**
    * If the limelight is in perfect condition with the apriltags to reset the robot's pose.
    * 
-   * @return The pose to reset to.
+   * @return The pose to reset to (USE GYRO FOR HEADING).
    */
   public Optional<Pose2d> resetPose() {
-    Optional<double[]> botpose = getValidBotpose();
-    if (botpose.isEmpty()) return Optional.empty();
-    if (botpose.get()[7] < 2) return Optional.empty();
-    if (botpose.get()[9] <= FieldConstants.TAG_DISTANCE_RESET_THRESHOLD) return Optional.empty();
+    Optional<double[]> botpose = getValidNTEntry();
 
-    return getBotpose();
+    if (botpose.isEmpty()) return Optional.empty();
+    // if (botpose.get()[7] < 2) return Optional.empty(); // tag count?
+
+    // center speaker tag
+    if (isApriltagVisible(UtilFuncs.GetAlliance() == Alliance.Red ? FieldConstants.SPEAKER_TAG_RED : FieldConstants.SPEAKER_TAG_BLUE)) {
+      return getBotpose();
+    }
+
+    // off-center speaker tag
+    if (isApriltagVisible(UtilFuncs.GetAlliance() == Alliance.Red ? FieldConstants.SPEAKER_TAG_RED_OFF : FieldConstants.SPEAKER_TAG_BLUE_OFF)) {
+      return getBotpose();
+    }
+
+    return Optional.empty();
   }
 
   /**
@@ -127,7 +135,7 @@ public class VisionSubsystem extends SubsystemBase {
    * @see Optional
    */
   public Optional<Pose2d> getBotpose() {
-    Optional<double[]> botpose = getValidBotpose();
+    Optional<double[]> botpose = getValidNTEntry();
     if (botpose.isEmpty()) return Optional.empty();
 
     double[] botpose_array = botpose.get();

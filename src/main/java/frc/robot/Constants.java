@@ -164,6 +164,9 @@ public final class Constants {
     public static final int SPEAKER_TAG_BLUE = 7;
     public static final int SPEAKER_TAG_RED = 4;
 
+    public static final int SPEAKER_TAG_BLUE_OFF = 8;
+    public static final int SPEAKER_TAG_RED_OFF = 3;
+
     public static final double SPEAKER_TAG_OFFSET = Units.inchesToMeters(33);
 
     // FIELD WIDTH: 651.223 INCHES

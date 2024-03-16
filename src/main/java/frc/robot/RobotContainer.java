@@ -163,9 +163,6 @@ public class RobotContainer {
     _driveController.cross().whileTrue(new BrakeSwerve(_swerveSubsystem, _ledSubsystem));
 
     // TESTING ONLY!!!
-    // _driveController.circle().onTrue(Commands.runOnce(() -> _swerveSubsystem.resetPose(
-    //   new Pose2d(new Translation2d(1.31, 5.51), Rotation2d.fromDegrees(180))
-    // ), _swerveSubsystem));
     _driveController.circle().onTrue(Commands.runOnce(() -> {
       Optional<Pose2d> pose = _visionSubsystem.getBotpose();
       _swerveSubsystem.resetPose(pose.isPresent() ? pose.get() : new Pose2d());
