@@ -124,6 +124,7 @@ public class RobotContainer {
     UtilFuncs.ShootFast(_swerveSubsystem::speakerDistance);
 
     _autonChooser = AutoBuilder.buildAutoChooser();
+
     SmartDashboard.putData("AUTON CHOOSER", _autonChooser);
   }
 
