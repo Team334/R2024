@@ -58,7 +58,7 @@ public final class Constants {
     public static final double SWERVE_DRIVE_FAST_COEFF = 1;
 
     public static final double SWERVE_DRIVE_MAX_SPEED = 4; // meters per second
-    public static final double SWERVE_DRIVE_MAX_ANGULAR_SPEED = Math.PI * 1.5; // TODO: Get this value
+    public static final double SWERVE_DRIVE_MAX_ANGULAR_SPEED = Math.PI * 1.8; // TODO: Get this value
 
     public static final double SHOOTER_FAST_SPIN_SPEED = 1; // TODO: Get this
     public static final double SHOOTER_SLOW_SPIN_SPEED = 1;
