@@ -26,11 +26,6 @@ public class SetElevator extends Command {
     addRequirements(_elevator);
   }
 
-  /** Set elevator that sets the elevator to its lowest height. */
-  public SetElevator(ElevatorSubsystem elevator) {
-    this(elevator, () -> 0);
-  }
-
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
