@@ -79,6 +79,13 @@ public class ShooterSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("SHOOTER PERCENT OUTPUT", _leftMotor.get());
   }
 
+  /**
+   * Get the calculated angle needed to aim at the speaker.
+   */
+  public double speakerAngle() {
+    return 0;
+  }
+
   /** Returns true if the shooter is at the last desired angle setpoint. */
   public boolean atDesiredAngle() {
     return _angleController.atSetpoint();

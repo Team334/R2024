@@ -19,48 +19,102 @@ public class AutoAim2 extends ParallelCommandGroup {
   /** 
    * Creates a new AutoAim2.
    * 
+   * (THIS IS THE MAIN CONSTRUCTOR, USEABLE CONSTRUCTORS ARE BELOW)
+   * 
    * @param swerve The swerve drive.
    * @param shooter The shooter.
    * @param elevator The elevator.
    * 
-   * @param swerveHeading The heading to set the chassis to (only valid if overrideCalculated is true).
-   * @param shooterAngle The angle to set the shooter to (only valid if overrideCalculated is true).
-   * @param elevatorHeight The height to set the elevator to (only valid if overrideCalculated is true).
+   * @param xSpeed The x speed of the drive joystick.
+   * @param ySpeed The y speed of the drive joystick.
    * 
-   * @param overrideCalculated Ignore calculated setpoints, and override them with different supplied setpoints.
+   * @param swerveHeading The heading to set the chassis to.
+   * @param shooterAngle The angle to set the shooter to.
+   * @param elevatorHeight The height to set the elevator to.
+   * 
    * @param runOnce Run the command for only a single set of aiming setpoints.
   */
+  private AutoAim2(
+    SwerveDriveSubsystem swerve,
+    ShooterSubsystem shooter,
+    ElevatorSubsystem elevator,
+    DoubleSupplier xSpeed,
+    DoubleSupplier ySpeed,
+    DoubleSupplier swerveHeading,
+    DoubleSupplier shooterAngle,
+    DoubleSupplier elevatorHeight,
+    boolean runOnce
+  ) {
+
+    // Add your commands in the addCommands() call, e.g.
+    // addCommands(new FooCommand(), new BarCommand());
+    addCommands(
+      // swerve heading command here
+      new SetShooter(shooter, shooterAngle, runOnce),
+      new SetElevator(elevator, elevatorHeight, runOnce)
+      // led command here
+    );
+  }
+
+  /** 
+   * Creates a new AutoAim2. <strong>(CALCULATED TELEOP)</strong>
+   * 
+   * This command will auto-aim to calculated setpoints repeatedly.
+   */
+  public AutoAim2(
+    SwerveDriveSubsystem swerve,
+    ShooterSubsystem shooter,
+    ElevatorSubsystem elevator,
+    DoubleSupplier xSpeed,
+    DoubleSupplier ySpeed
+  ) {
+    this(swerve, shooter, elevator, xSpeed, ySpeed, () -> 0, shooter::speakerAngle, elevator::speakerHeight, false);
+  }
+
+  /** 
+   * Creates a new AutoAim2. <strong>(PRESET TELEOP)</strong>
+   * 
+   * This command will auto-aim to preset setpoints repeatedly.
+   */
+  public AutoAim2(
+    SwerveDriveSubsystem swerve,
+    ShooterSubsystem shooter,
+    ElevatorSubsystem elevator,
+    DoubleSupplier xSpeed,
+    DoubleSupplier ySpeed,
+    DoubleSupplier swerveHeading,
+    DoubleSupplier shooterAngle,
+    DoubleSupplier elevatorHeight
+  ) {
+    this(swerve, shooter, elevator, xSpeed, ySpeed, swerveHeading, shooterAngle, elevatorHeight, false);
+  }
+
+  /** 
+   * Creates a new AutoAim2. <strong>(CALCULATED AUTON)</strong>
+   * 
+   * This command will auto-aim to calculated setpoints once.
+   */
+  public AutoAim2(
+    SwerveDriveSubsystem swerve,
+    ShooterSubsystem shooter,
+    ElevatorSubsystem elevator
+  ) {
+    this(swerve, shooter, elevator, () -> 0, () -> 0, () -> 0, shooter::speakerAngle, elevator::speakerHeight, true);
+  }
+
+  /** 
+   * Creates a new AutoAim2. <strong>(PRESET AUTON)</strong>
+   * 
+   * This command will auto-aim to preset setpoints once.
+   */
   public AutoAim2(
     SwerveDriveSubsystem swerve,
     ShooterSubsystem shooter,
     ElevatorSubsystem elevator,
     DoubleSupplier swerveHeading,
     DoubleSupplier shooterAngle,
-    DoubleSupplier elevatorHeight,
-    boolean overrideCalculated,
-    boolean runOnce
+    DoubleSupplier elevatorHeight
   ) {
-    DoubleSupplier heading;
-    DoubleSupplier angle;
-    DoubleSupplier height;
-
-    if (overrideCalculated) {
-      heading = swerveHeading;
-      angle = shooterAngle;
-      height = elevatorHeight;
-    } else {
-      heading = () -> 0; // TODO: function that'll return auto-aimed angle
-      angle = () -> 0;  // TODO: function that'll return auto-aimed height
-      height = () -> 0; // TODO: function that'll return auto-aimed heading
-    }
-
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
-    addCommands(
-      // swerve heading command here
-      new SetShooter(shooter, angle).until(() -> (runOnce && shooter.atDesiredAngle())),
-      new SetElevator(elevator, height).until(() -> (runOnce && elevator.atDesiredHeight()))
-      // led command here
-    );
+    this(swerve, shooter, elevator, () -> 0, () -> 0, swerveHeading, shooterAngle, elevatorHeight, true);
   }
 }

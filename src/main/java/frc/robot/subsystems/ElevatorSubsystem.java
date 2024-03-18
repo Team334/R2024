@@ -54,6 +54,13 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   /**
+   * Get the calculated height needed to aim at the speaker.
+   */
+  public double speakerHeight() {
+    return 0;
+  }
+
+  /**
    * Whether using the climb feed forward or not (different gravity constant).
    * 
    * @param useFeed If true, use climb feed, if false, use elevator feed.
