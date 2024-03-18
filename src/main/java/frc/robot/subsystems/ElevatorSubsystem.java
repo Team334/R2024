@@ -57,6 +57,8 @@ public class ElevatorSubsystem extends SubsystemBase {
    * Get the calculated height needed to aim at the speaker.
    */
   public double speakerHeight() {
+    double distance = UtilFuncs.ShotDistance();
+    
     return 0;
   }
 

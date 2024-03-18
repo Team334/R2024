@@ -315,6 +315,15 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   }
 
   /**
+   * Get the distance between the chassis and the speaker for shooting the note.
+   * 
+   * (could be modified to shoot while moving)
+   */
+  public double speakerShotDistance() {
+    return speakerDistance();
+  }
+
+  /**
    * Get the distance of the chassis from the speaker shot point.
    * 
    * @return Norm of the distance vector.

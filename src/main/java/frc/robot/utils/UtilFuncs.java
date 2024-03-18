@@ -18,7 +18,9 @@ import frc.robot.utils.helpers.AllianceHelper;
 
 /** Any utility functions are here. */
 public final class UtilFuncs {
+  private static DoubleSupplier _shotDistanceSupplier;
   private static DoubleSupplier _distanceSupplier;
+  
   private static AprilTagFieldLayout _field;
 
   /**
@@ -47,6 +49,14 @@ public final class UtilFuncs {
       new Translation3d(pose.getX(), pose.getY(), pose.getZ() + FieldConstants.SPEAKER_TAG_OFFSET),
       new Rotation3d()
     );
+  }
+
+  public static void ShotDistance(DoubleSupplier distance) {
+    _shotDistanceSupplier = distance;
+  }
+
+  public static double ShotDistance() {
+    return _shotDistanceSupplier.getAsDouble();
   }
 
   /**

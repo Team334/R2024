@@ -83,6 +83,8 @@ public class ShooterSubsystem extends SubsystemBase {
    * Get the calculated angle needed to aim at the speaker.
    */
   public double speakerAngle() {
+    double distance = UtilFuncs.ShotDistance();
+
     return 0;
   }
 
