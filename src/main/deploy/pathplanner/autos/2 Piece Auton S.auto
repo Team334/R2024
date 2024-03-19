@@ -20,13 +20,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "get bot s"
+            "pathName": "c get bot s"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "shoot bot s"
+            "pathName": "c shoot bot s"
           }
         },
         {
@@ -38,6 +38,6 @@
       ]
     }
   },
-  "folder": "straight",
+  "folder": "center",
   "choreoAuto": false
 }

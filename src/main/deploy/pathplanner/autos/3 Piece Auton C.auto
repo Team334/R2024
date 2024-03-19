@@ -20,13 +20,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "get mid c"
+            "pathName": "c get mid c"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "shoot mid c"
+            "pathName": "c shoot mid c"
           }
         },
         {
@@ -38,13 +38,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "get bot c"
+            "pathName": "c get bot c"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "shoot bot c"
+            "pathName": "c shoot bot c"
           }
         },
         {
@@ -56,6 +56,6 @@
       ]
     }
   },
-  "folder": "curved",
+  "folder": "center",
   "choreoAuto": false
 }
