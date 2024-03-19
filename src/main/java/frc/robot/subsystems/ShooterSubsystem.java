@@ -89,6 +89,14 @@ public class ShooterSubsystem extends SubsystemBase {
     return 0;
   }
 
+
+  /**
+   * Boolean for whether the beam break is currently tripped.
+   */
+  public boolean beamTripped() {
+    return false;
+  }
+
   /** Returns true if the shooter is at the last desired angle setpoint. */
   public boolean atDesiredAngle() {
     return _angleController.atSetpoint();

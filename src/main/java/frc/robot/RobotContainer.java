@@ -60,10 +60,10 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final VisionSubsystem _visionSubsystem = new VisionSubsystem();
   private final SwerveDriveSubsystem _swerveSubsystem = new SwerveDriveSubsystem(_visionSubsystem);
-  private final ShooterSubsystem _shooterSubsystem = new ShooterSubsystem();
   private final ElevatorSubsystem _elevatorSubsystem = new ElevatorSubsystem();
   private final IntakeSubsystem _intakeSubsystem = new IntakeSubsystem();
   private final LEDSubsystem _ledSubsystem = new LEDSubsystem(Constants.Ports.LEDS, 20);
+  private final ShooterSubsystem _shooterSubsystem = new ShooterSubsystem();
 
   // controllers (for driver and operator)
   private final CommandPS4Controller _driveController = new CommandPS4Controller(Constants.Ports.DRIVER_CONTROLLER);

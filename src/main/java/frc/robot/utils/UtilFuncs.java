@@ -23,7 +23,12 @@ public final class UtilFuncs {
    * Loads the AprilTag field.
    */
   public static void LoadField() {
-    _field = AprilTagFieldLayout.loadField(AprilTagFields.k2024Crescendo);
+    try {
+      _field = AprilTagFieldLayout.loadFromResource("/edu/wpi/first/apriltag/2024-crescendo.json");
+    } catch (Exception e) {
+      throw new Error(e.getMessage());
+    }
+
     _field.setOrigin(OriginPosition.kBlueAllianceWallRightSide);
   }
 
