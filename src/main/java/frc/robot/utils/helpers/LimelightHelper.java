@@ -9,24 +9,14 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 
 /** Singleton class that helps retrieve limelight info from network tables. */
 public class LimelightHelper {
-  private static LimelightHelper _instance;
-
-  /** Get the single instance of the LimelightHelper. */
-  public static final LimelightHelper getInstance() {
-    if (_instance == null) {
-      _instance = new LimelightHelper();
-    }
-
-    return _instance;
-  }
-
   private final NetworkTableInstance _inst = NetworkTableInstance.getDefault();
-  private final NetworkTable _limelight = _inst.getTable("limelight");
+  private final NetworkTable _limelight;
 
   private final ObjectMapper _objectMapper = new ObjectMapper();
 
-  private LimelightHelper() {
-  } // private constructor makes this a singleton
+  public LimelightHelper(String name) {
+    _limelight = _inst.getTable(name);
+  }
 
   /**
    * Returns a NetworkTableEntry from the limelight network table.

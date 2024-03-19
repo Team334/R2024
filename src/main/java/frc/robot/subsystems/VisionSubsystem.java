@@ -26,7 +26,7 @@ import frc.robot.utils.helpers.LimelightHelper;
  * @author Peter Gutkovich
  */
 public class VisionSubsystem extends SubsystemBase {
-  private final LimelightHelper _limelight = LimelightHelper.getInstance();
+  private final LimelightHelper _main = new LimelightHelper("main");
 
   private final MedianFilter _xFilter = new MedianFilter(20); // TODO: change?
   private final MedianFilter _yFilter = new MedianFilter(20);
@@ -49,15 +49,15 @@ public class VisionSubsystem extends SubsystemBase {
    * should be used in the pose estimator.
    */
   public double getLatency() {
-    double tl = _limelight.getEntry("tl").getDouble(0);
-    double cl = _limelight.getEntry("cl").getDouble(0);
+    double tl = _main.getEntry("tl").getDouble(0);
+    double cl = _main.getEntry("cl").getDouble(0);
 
     return Timer.getFPGATimestamp() - (tl / 1000.0) - (cl / 1000.0);
   }
 
   /** Return a boolean for whether a tag is seen. */
   public boolean isApriltagVisible() {
-    double tv = _limelight.getEntry("tv").getDouble(0);
+    double tv = _main.getEntry("tv").getDouble(0);
 
     if (tv == 0) {
       return false;
@@ -80,7 +80,7 @@ public class VisionSubsystem extends SubsystemBase {
     if (!isApriltagVisible())
       return false;
 
-    return _limelight.getTag(ID) != null;
+    return _main.getTag(ID) != null;
   }
 
   /**
@@ -93,7 +93,7 @@ public class VisionSubsystem extends SubsystemBase {
   public Optional<double[]> getValidNTEntry() {
     if (!isApriltagVisible()) return Optional.empty();
 
-    NetworkTableEntry botpose_entry = _limelight.getEntry("botpose_wpiblue");
+    NetworkTableEntry botpose_entry = _main.getEntry("botpose_wpiblue");
     if (!botpose_entry.exists()) return Optional.empty();
 
     double[] botpose_array = botpose_entry.getDoubleArray(new double[11]);
@@ -165,7 +165,7 @@ public class VisionSubsystem extends SubsystemBase {
     if (!isApriltagVisible(ID))
       return null;
 
-    JsonNode tag = _limelight.getTag(ID);
+    JsonNode tag = _main.getTag(ID);
 
     double tx = tag.get("tx").asDouble();
     double ty = tag.get("ty").asDouble();
