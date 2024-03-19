@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.308995050422533,
-      "y": 5.509843091758257
+      "x": 0.71,
+      "y": 4.47
     },
-    "rotation": 180.0
+    "rotation": 118.09974438759726
   },
   "command": {
     "type": "sequential",
@@ -20,13 +20,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "c get mid c"
+            "pathName": "b get bot c"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "c shoot mid c"
+            "pathName": "b shoot bot c"
           }
         },
         {
@@ -38,31 +38,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "c get bot c"
+            "pathName": "b get cen c"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "c shoot bot c"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "shoot"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "c get top c"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "c shoot top c"
+            "pathName": "b shoot cen c"
           }
         },
         {
@@ -74,6 +56,6 @@
       ]
     }
   },
-  "folder": "center",
+  "folder": "bottom",
   "choreoAuto": false
 }

@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.41,
-        "y": 4.32
+        "x": 1.31,
+        "y": 5.51
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7342513964307205,
-        "y": 4.936671494964612
+        "x": 1.6890328301377324,
+        "y": 5.51
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.35,
-        "y": 5.546821904454621
+        "x": 2.38,
+        "y": 5.51
       },
       "prevControl": {
-        "x": 1.503133817078445,
-        "y": 4.945916198138703
+        "x": 1.9453689757829964,
+        "y": 5.519244703174091
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,7 +32,7 @@
   "constraintZones": [
     {
       "name": "New Constraints Zone",
-      "minWaypointRelativePos": 0.8,
+      "minWaypointRelativePos": 0.7,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
         "maxVelocity": 4.67,
@@ -45,7 +45,7 @@
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0.15,
+      "waypointRelativePos": 0.0,
       "command": {
         "type": "sequential",
         "data": {
@@ -53,7 +53,7 @@
             {
               "type": "named",
               "data": {
-                "name": "actuateIn"
+                "name": "actuateOut"
               }
             }
           ]
@@ -73,7 +73,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "straight paths",
+  "folder": "center",
   "previewStartingState": null,
   "useDefaultConstraints": false
 }

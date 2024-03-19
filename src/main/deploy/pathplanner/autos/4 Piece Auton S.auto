@@ -20,13 +20,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "get bot s"
+            "pathName": "c get bot s"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "shoot bot s"
+            "pathName": "c shoot bot s"
           }
         },
         {
@@ -38,13 +38,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "get mid s"
+            "pathName": "c get mid s"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "shoot mid s"
+            "pathName": "c shoot mid s"
           }
         },
         {
@@ -56,13 +56,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "get top s"
+            "pathName": "c get top s"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "shoot top s"
+            "pathName": "c shoot top s"
           }
         },
         {
@@ -74,6 +74,6 @@
       ]
     }
   },
-  "folder": "straight",
+  "folder": "center",
   "choreoAuto": false
 }
