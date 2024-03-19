@@ -69,7 +69,7 @@ public class AutoAim2 extends ParallelCommandGroup {
     DoubleSupplier xSpeed,
     DoubleSupplier ySpeed
   ) {
-    this(swerve, shooter, elevator, xSpeed, ySpeed, () -> 0, shooter::speakerAngle, elevator::speakerHeight, false);
+    this(swerve, shooter, elevator, xSpeed, ySpeed, swerve::speakerHeading, shooter::speakerAngle, elevator::speakerHeight, false);
   }
 
   /** 
@@ -100,7 +100,7 @@ public class AutoAim2 extends ParallelCommandGroup {
     ShooterSubsystem shooter,
     ElevatorSubsystem elevator
   ) {
-    this(swerve, shooter, elevator, () -> 0, () -> 0, () -> 0, shooter::speakerAngle, elevator::speakerHeight, true);
+    this(swerve, shooter, elevator, () -> 0, () -> 0, swerve::speakerHeading, shooter::speakerAngle, elevator::speakerHeight, true);
   }
 
   /** 

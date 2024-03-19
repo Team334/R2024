@@ -359,6 +359,15 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     return offsets;
   }
 
+  /**
+   * Get the calculated heading to aim the chassis at the speaker shot point.
+   */
+  public double speakerHeading() {
+    Translation2d distance = shotVector();
+    
+    return 0;
+  }
+
   public void pivotMotor(Translation2d pivotPoint) {
     _pivotPoint = pivotPoint;
   }
