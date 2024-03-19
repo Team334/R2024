@@ -2,7 +2,6 @@
 package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.Speeds;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.ShooterSubsystem.ShooterState;
 
@@ -14,12 +13,12 @@ import frc.robot.subsystems.ShooterSubsystem.ShooterState;
 public class SpinShooter extends Command {
   private final ShooterSubsystem _shooter;
   private final ShooterState _state;
-  private final boolean _instant;
+  private final boolean _runOnce;
 
-  public SpinShooter(ShooterSubsystem shooter, ShooterState state, boolean instant) {
+  public SpinShooter(ShooterSubsystem shooter, ShooterState state, boolean runOnce) {
     _shooter = shooter;
     _state = state;
-    _instant = instant;
+    _runOnce = runOnce;
 
     // NO SHOOTER SUBSYSTEM REQUIREMENT TO NOT MESS WITH SHOOTER ANGLING COMMANDS
   }
@@ -48,6 +47,6 @@ public class SpinShooter extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return _instant;
+    return _runOnce;
   }
 }

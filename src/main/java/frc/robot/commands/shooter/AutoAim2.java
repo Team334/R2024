@@ -8,6 +8,7 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.commands.elevator.SetElevator;
+import frc.robot.commands.swerve.SetHeading;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
@@ -49,7 +50,7 @@ public class AutoAim2 extends ParallelCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      // swerve heading command here
+      new SetHeading(swerve, xSpeed, ySpeed, swerveHeading, runOnce),
       new SetShooter(shooter, shooterAngle, runOnce),
       new SetElevator(elevator, elevatorHeight, runOnce)
       // led command here
