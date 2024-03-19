@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.FeedForward;
+import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.PID;
 import frc.robot.Constants.Speeds;
 import frc.robot.utils.UtilFuncs;
@@ -83,7 +84,7 @@ public class ShooterSubsystem extends SubsystemBase {
    * Get the calculated angle needed to aim at the speaker.
    */
   public double speakerAngle() {
-    double distance = UtilFuncs.ShotDistance();
+    double distance = UtilFuncs.ShotVector().getNorm();
 
     return 0;
   }
@@ -132,7 +133,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public void setShooterState(ShooterState state) {
     switch (state) {
       case SHOOT:
-        if (UtilFuncs.ShootFast()) { 
+        if (UtilFuncs.ShotVector().getNorm() > FieldConstants.SHOOTER_SLOW_THRESHOLD) { 
           spinShooter(Speeds.SHOOTER_FAST_SPIN_SPEED); 
         } else {
           spinShooter(Speeds.SHOOTER_SLOW_SPIN_SPEED);

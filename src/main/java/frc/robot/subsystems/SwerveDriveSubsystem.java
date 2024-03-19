@@ -164,7 +164,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Gyro RAW", getHeadingRaw().getDegrees());
     SmartDashboard.putBoolean("Field Oriented", fieldOriented);
     SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
-    SmartDashboard.putNumber("Speaker Distance", speakerDistance());
+    SmartDashboard.putNumber("Shot Distance", shotVector().getNorm());
 
     // Update the bot's pose
     _estimator.update(getHeadingRaw(), new SwerveModulePosition[]{
@@ -319,17 +319,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
    * 
    * (could be modified to shoot while moving)
    */
-  public double speakerShotDistance() {
-    return speakerDistance();
-  }
-
-  /**
-   * Get the distance of the chassis from the speaker shot point.
-   * 
-   * @return Norm of the distance vector.
-   */
-  public double speakerDistance() {
-    // Pose3d speakerPose = UtilFuncs.GetAlliance() == Alliance.Red ? FieldConstants.SPEAKER_POSE_RED : FieldConstants.SPEAKER_POSE_BLUE;
+  public Translation2d shotVector() {
     Pose3d speakerPose = UtilFuncs.GetSpeakerPose();
 
     Translation2d speakerTranslation = new Translation2d(speakerPose.getX(), speakerPose.getY());
@@ -337,7 +327,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     Translation2d distanceVec = speakerTranslation.minus(botTranslation);
 
-    return distanceVec.getNorm();
+    return distanceVec;
   }
 
   /**

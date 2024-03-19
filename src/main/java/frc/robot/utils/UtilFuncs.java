@@ -1,27 +1,23 @@
 /* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot.utils;
 
-import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.utils.helpers.AllianceHelper;
 
 /** Any utility functions are here. */
 public final class UtilFuncs {
-  private static DoubleSupplier _shotDistanceSupplier;
-  private static DoubleSupplier _distanceSupplier;
-  
   private static AprilTagFieldLayout _field;
+  private static Supplier<Translation2d> _shotVectorSupplier;
 
   /**
    * Loads the AprilTag field.
@@ -51,30 +47,20 @@ public final class UtilFuncs {
     );
   }
 
-  public static void ShotDistance(DoubleSupplier distance) {
-    _shotDistanceSupplier = distance;
-  }
-
-  public static double ShotDistance() {
-    return _shotDistanceSupplier.getAsDouble();
-  }
-
   /**
-   * Supply the ShootFast function with a distance supplier.
+   * Supply UtilFuncs with a shot vector supplier.
    * 
-   * @param distance Distance supplier - chassis distance from speaker shot point.
+   * @param shotVectorSupplier A supplier that returns the vector from the chassis to the shot point.
    */
-  public static void ShootFast(DoubleSupplier distance) {
-    _distanceSupplier = distance;
+  public static void ShotVector(Supplier<Translation2d> shotVectorSupplier) {
+    _shotVectorSupplier = shotVectorSupplier;
   }
 
   /**
-   * Whether to shoot fast based on distance of bot from speaker shot point.
+   * The vector between the chassis pose and the specific shot point.
    */
-  public static boolean ShootFast() {
-    if (_distanceSupplier.getAsDouble() > FieldConstants.SHOOTER_SLOW_THRESHOLD) return true;
-    
-    return false;
+  public static Translation2d ShotVector() {
+    return _shotVectorSupplier.get();
   }
 
   /**

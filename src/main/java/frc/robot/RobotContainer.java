@@ -121,8 +121,7 @@ public class RobotContainer {
 
     configureBindings();
 
-    UtilFuncs.ShotDistance(_swerveSubsystem::speakerShotDistance);
-    UtilFuncs.ShootFast(_swerveSubsystem::speakerDistance);
+    UtilFuncs.ShotVector(_swerveSubsystem::shotVector);
 
     _autonChooser = AutoBuilder.buildAutoChooser();
 
