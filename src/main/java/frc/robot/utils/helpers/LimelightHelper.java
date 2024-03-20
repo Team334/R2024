@@ -3,6 +3,8 @@ package frc.robot.utils.helpers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -28,21 +30,33 @@ public class LimelightHelper {
     return _limelight.getEntry(name);
   }
 
+  /** Return json from limelight. */
+  public JsonNode getJson() {
+    String jsonString = getEntry("json").getString("");
+    try {
+      return _objectMapper.readTree(jsonString);
+    } catch (Exception e) {
+      throw new Error("Cannot Read JSON From Limelight.");
+    }
+  }
+
+  /** 
+   * Returns the neural target from the limelight.
+   * 
+   */
+  public JsonNode getNeuralTarget() {
+    ArrayNode targets = (ArrayNode) getJson().get("Results").get("Detector");
+
+    return targets.get(0);
+  }
+
   /**
    * Returns a JsonNode array containing found tags and their info.
    *
    * @see JsonNode
    */
   public JsonNode getTags() {
-    String jsonString = getEntry("json").getString("");
-
-    JsonNode tags;
-
-    try {
-      tags = _objectMapper.readTree(jsonString).get("Results").get("Fiducial");
-    } catch (Exception e) {
-      throw new Error("Cannot Read JSON From Limelight.");
-    }
+    JsonNode tags = getJson().get("Results").get("Fiducial");
 
     return tags;
   }

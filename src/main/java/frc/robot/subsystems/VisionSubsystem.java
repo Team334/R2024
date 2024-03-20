@@ -27,6 +27,8 @@ import frc.robot.utils.helpers.LimelightHelper;
  */
 public class VisionSubsystem extends SubsystemBase {
   private final LimelightHelper _main = new LimelightHelper("main");
+  private final LimelightHelper _intake = new LimelightHelper("intake");
+
 
   private final MedianFilter _xFilter = new MedianFilter(20); // TODO: change?
   private final MedianFilter _yFilter = new MedianFilter(20);
@@ -171,6 +173,13 @@ public class VisionSubsystem extends SubsystemBase {
     double ty = tag.get("ty").asDouble();
 
     double[] angles = {tx, ty};
+
+    return angles;
+  }
+
+  public double[] getNoteAngles() {
+    JsonNode target = _intake.getNeuralTarget();
+    double[] angles = {target.get("tx").asDouble(), target.get("ty").asDouble()};
 
     return angles;
   }
