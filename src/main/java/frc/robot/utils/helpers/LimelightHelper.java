@@ -7,7 +7,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
-/** Singleton class that helps retrieve limelight info from network tables. */
+/** A class that helps retrieve limelight info from network tables. */
 public class LimelightHelper {
   private final NetworkTableInstance _inst = NetworkTableInstance.getDefault();
   private final NetworkTable _limelight;

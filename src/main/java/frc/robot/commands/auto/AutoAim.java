@@ -1,5 +1,5 @@
 /* Copyright (C) 2024 Team 334. All Rights Reserved.*/
-package frc.robot.commands.shooter;
+package frc.robot.commands.auto;
 
 import java.util.function.DoubleSupplier;
 
