@@ -96,7 +96,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     return _leftMotor.getPosition().getValueAsDouble() / Physical.ELEVATOR_GEAR_RATIO * Physical.ELEVATOR_DISTANCE_PER_ROTATION;
   }
 
-  /** Returns the current velocity of the elevator motor. */
+  /** Returns the current velocity of the elevator motor. (m/s)*/
   public double getVelocity() {
     return _leftMotor.getVelocity().getValueAsDouble() / Physical.ELEVATOR_GEAR_RATIO * Physical.ELEVATOR_DISTANCE_PER_ROTATION;
   }
@@ -108,14 +108,16 @@ public class ElevatorSubsystem extends SubsystemBase {
     double ff = 0;
 
     if (_usingClimberFeed)
-      ff = _climbFeed.calculate(speed);
+      // ff = _climbFeed.calculate(speed);
+      ff = _elevatorFeed.calculate(0);
     else {
-      ff = _elevatorFeed.calculate(speed);
+      // ff = _elevatorFeed.calculate(speed);
+      ff = _elevatorFeed.calculate(0);
     }
 
     ff = UtilFuncs.FromVolts(ff);
 
-    _leftMotor.set(ff);
+    _leftMotor.set(ff + speed);
   }
 
   /** Stops elevator movement. */
