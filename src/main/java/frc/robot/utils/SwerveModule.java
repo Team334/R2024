@@ -103,8 +103,9 @@ public class SwerveModule {
   }
 
   /** Get the absolute angle of the module as an int (-180 to 180 degrees). */
-  public int getAngle() {
-    return Double.valueOf(_encoder.getAbsolutePosition().getValueAsDouble() * 2 * 180).intValue(); // ctre update
+  public double getAngle() {
+    return _encoder.getAbsolutePosition().getValueAsDouble();
+    // return Double.valueOf(_encoder.getAbsolutePosition().getValueAsDouble() * 2 * 180).intValue(); // ctre update
   }
 
   /** Get the velocity of the drive wheel (meters per second). */
