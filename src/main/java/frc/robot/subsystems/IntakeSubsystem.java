@@ -174,5 +174,7 @@ public class IntakeSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("ACTUATOR ENCODER", getActuator());
     SmartDashboard.putNumber("ACTUATOR PERCENT OUTPUT", _actuatorMotor.get());
+    SmartDashboard.putNumber("FEED CURRENT OUTPUT", _feedMotor.getOutputCurrent());
+
   }
 }
