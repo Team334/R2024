@@ -93,7 +93,7 @@ public class ShooterSubsystem extends SubsystemBase {
   /**
    * Boolean for whether the beam break is currently tripped.
    */
-  public boolean beamTripped() { //TODO: Add Logic
+  public boolean isBeamTripped() { //TODO: Add Logic
     return false;
   }
 
