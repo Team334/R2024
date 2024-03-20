@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.Encoders;
 import frc.robot.Constants.Physical;
+import frc.robot.Constants.Presets;
 import frc.robot.utils.UtilFuncs;
 import frc.robot.utils.configs.TalonFXConfig;
 
@@ -57,9 +58,11 @@ public class ElevatorSubsystem extends SubsystemBase {
    * Get the calculated height needed to aim at the speaker.
    */
   public double speakerHeight() {
+    // TODO: make this using lerp
     double distance = UtilFuncs.ShotVector().getNorm();
-    
-    return 0;
+    double height = Physical.ELEVATOR_MAX_SHOOT_HEIGHT + (distance * Presets.ELEVATOR_HEIGHT_RATE);
+
+    return height;
   }
 
   /**

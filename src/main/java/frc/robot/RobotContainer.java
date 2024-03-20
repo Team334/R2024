@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandStadiaController;
 import frc.robot.Constants.Presets;
 import frc.robot.commands.auto.AutoAim;
+import frc.robot.commands.auto.AutoAim2;
 import frc.robot.commands.auto.AutonShoot;
 import frc.robot.commands.elevator.OperateElevator;
 import frc.robot.commands.elevator.SetElevator;
@@ -172,25 +173,25 @@ public class RobotContainer {
     }, _swerveSubsystem));
 
     _driveController.L2().whileTrue(
-      new AutoAim(
+      new AutoAim2( // TODO: test
+        _swerveSubsystem,
         _shooterSubsystem, 
         _elevatorSubsystem, 
-        _ledSubsystem, 
-        _swerveSubsystem,
+        // _ledSubsystem,
         () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.05),
         () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.05),
-        Presets.CLOSE_SHOOTER_ANGLE, 
-        Presets.CLOSE_ELEVATOR_HEIGHT,
-        () -> (UtilFuncs.GetAlliance() == Alliance.Red) ? 0 : 180
+        () -> (UtilFuncs.GetAlliance() == Alliance.Red) ? 0 : 180,
+        () -> Presets.CLOSE_SHOOTER_ANGLE, 
+        () -> Presets.CLOSE_ELEVATOR_HEIGHT
       )
     );
 
     _driveController.R2().whileTrue(
       new AutoAim(
+        _swerveSubsystem,
         _shooterSubsystem,
         _elevatorSubsystem,
         _ledSubsystem,
-        _swerveSubsystem,
         () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.05),
         () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.05)
       )

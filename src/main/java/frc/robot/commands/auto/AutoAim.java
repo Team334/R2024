@@ -64,10 +64,10 @@ public class AutoAim extends Command {
    * @param ySpeed Y joystick speed.
    */
   public AutoAim(
+    SwerveDriveSubsystem swerve,
     ShooterSubsystem shooter,
     ElevatorSubsystem elevator,
     LEDSubsystem leds, 
-    SwerveDriveSubsystem swerve,
     DoubleSupplier xSpeed,
     DoubleSupplier ySpeed
   ) {
@@ -106,17 +106,17 @@ public class AutoAim extends Command {
    * @param swerveHeadingSupplier Desired swerve heading supplier. This is a supplier since heading could change based on alliance.
    */
   public AutoAim(
+    SwerveDriveSubsystem swerve,
     ShooterSubsystem shooter, 
     ElevatorSubsystem elevator, 
     LEDSubsystem leds, 
-    SwerveDriveSubsystem swerve,
     DoubleSupplier xSpeed,
     DoubleSupplier ySpeed,
     double shooterAngle,
     double elevatorHeight,
     DoubleSupplier swerveHeadingSupplier
   ) {
-    this(shooter, elevator, leds, swerve, xSpeed, ySpeed);
+    this(swerve, shooter, elevator, leds, xSpeed, ySpeed);
 
     _desiredShooterAngle = shooterAngle;
     _desiredElevatorHeight = elevatorHeight;
@@ -137,8 +137,8 @@ public class AutoAim extends Command {
    * @param leds Led subsystem.
    * @param swerve Swerve subsystem.
    */
-  public AutoAim(ShooterSubsystem shooter, ElevatorSubsystem elevator, LEDSubsystem leds, SwerveDriveSubsystem swerve) {
-    this(shooter, elevator, leds, swerve, () -> 0, () -> 0);
+  public AutoAim(SwerveDriveSubsystem swerve, ShooterSubsystem shooter, ElevatorSubsystem elevator, LEDSubsystem leds) {
+    this(swerve, shooter, elevator, leds, () -> 0, () -> 0);
 
     _runOnce = true;
   }
@@ -154,15 +154,15 @@ public class AutoAim extends Command {
    * @param swerveHeadingSupplier Desired swerve heading supplier. This is a supplier since heading could change based on alliance.
    */
   public AutoAim(
+    SwerveDriveSubsystem swerve,
     ShooterSubsystem shooter, 
     ElevatorSubsystem elevator, 
     LEDSubsystem leds, 
-    SwerveDriveSubsystem swerve,
     double shooterAngle,
     double elevatorHeight,
     DoubleSupplier swerveHeadingSupplier
   ) {
-    this(shooter, elevator, leds, swerve);
+    this(swerve, shooter, elevator, leds);
 
     _desiredShooterAngle = shooterAngle;
     _desiredElevatorHeight = elevatorHeight;

@@ -12,12 +12,14 @@ import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.FeedForward;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.PID;
+import frc.robot.Constants.Physical;
 import frc.robot.Constants.Speeds;
 import frc.robot.utils.UtilFuncs;
 import frc.robot.utils.configs.NeoConfig;
@@ -80,13 +82,25 @@ public class ShooterSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("SHOOTER PERCENT OUTPUT", _leftMotor.get());
   }
 
-  /**
-   * Get the calculated angle needed to aim at the speaker.
-   */
   public double speakerAngle() {
     double distance = UtilFuncs.ShotVector().getNorm();
 
     return 0;
+  }
+
+  /**
+   * Get the calculated angle needed to aim at the speaker. <strong>(TRIG SOLUTION)</strong>
+   * 
+   * @param elevatorHeight The height of the elevator.
+   */
+  public double speakerAngle(double elevatorHeight) {
+    double distance = UtilFuncs.ShotVector().getNorm();
+    Pose3d speakerPose = UtilFuncs.GetSpeakerPose();
+
+    double zDifference = speakerPose.getZ() - (elevatorHeight + Physical.ELEVATOR_LOWEST_HEIGHT);
+    double speakerAngle = Math.toDegrees(Math.atan(zDifference / distance));
+
+    return speakerAngle;
   }
 
 

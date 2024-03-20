@@ -363,9 +363,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
    * Get the calculated heading to aim the chassis at the speaker shot point.
    */
   public double speakerHeading() {
-    Translation2d distance = shotVector();
+    Translation2d distanceVec = shotVector();
+    double heading = MathUtil.inputModulus(distanceVec.getAngle().getDegrees(), -180, 180);
     
-    return 0;
+    return heading;
   }
 
   public void pivotMotor(Translation2d pivotPoint) {
