@@ -4,6 +4,7 @@ package frc.robot.commands.swerve;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.SwerveDriveSubsystem;
@@ -46,9 +47,11 @@ public class TeleopDrive extends Command {
     // apply controller deadband
     // drive the swerve chassis subsystem
 
+    SmartDashboard.putNumber("DESIRED X SPEED", _xSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * _swerveDrive.getDriveCoeff());
+
     _swerveDrive.driveChassis(new ChassisSpeeds(
         _xSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * _swerveDrive.getDriveCoeff(),
-        _ySpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * _swerveDrive.getDriveCoeff(),
+        _ySpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * _swerveDrive.getDriveCoeff() * 0,
         _rotationSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED));
   }
 

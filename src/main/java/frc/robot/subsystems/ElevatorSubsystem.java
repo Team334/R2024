@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.Encoders;
+import frc.robot.Constants.FeedForward;
 import frc.robot.Constants.Physical;
 import frc.robot.Constants.Presets;
 import frc.robot.utils.UtilFuncs;
@@ -20,7 +21,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   private final TalonFX _leftMotor = new TalonFX(Constants.CAN.ELEVATOR_LEFT);
   private final TalonFX _rightMotor = new TalonFX(Constants.CAN.ELEVATOR_RIGHT);
 
-  private final ElevatorFeedforward _elevatorFeed = new ElevatorFeedforward(0, 0, 0);
+  private final ElevatorFeedforward _elevatorFeed = new ElevatorFeedforward(0, 0, FeedForward.ELEVATOR_KV);
   private final ElevatorFeedforward _climbFeed = new ElevatorFeedforward(0, 0, 0); // TODO: Get this value
 
   private final PIDController _heightController = new PIDController(Constants.PID.ELEVATOR_KP, 0, 0);
@@ -105,19 +106,20 @@ public class ElevatorSubsystem extends SubsystemBase {
    * Drives the elevator at a desired percent output (feedforward is included).
    */
   public void driveElevator(double speed) {
+    SmartDashboard.putNumber("ELEVATOR DESIRED SPEED", speed);
     double ff = 0;
 
-    if (_usingClimberFeed)
-      // ff = _climbFeed.calculate(speed);
-      ff = _elevatorFeed.calculate(0);
-    else {
-      // ff = _elevatorFeed.calculate(speed);
-      ff = _elevatorFeed.calculate(0);
-    }
+    // if (_usingClimberFeed)
+    //   // ff = _climbFeed.calculate(speed);
+    //   ff = _elevatorFeed.calculate(speed);
+    // else {
+    //   // ff = _elevatorFeed.calculate(speed);
+    //   ff = _elevatorFeed.calculate(speed);
+    // }
 
-    ff = UtilFuncs.FromVolts(ff);
+    ff = UtilFuncs.FromVolts(_elevatorFeed.calculate(speed));
 
-    _leftMotor.set(ff + speed);
+    _leftMotor.set(ff);
   }
 
   /** Stops elevator movement. */

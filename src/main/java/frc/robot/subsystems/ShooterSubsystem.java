@@ -39,7 +39,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private final RelativeEncoder _leftEncoder = _leftMotor.getEncoder();
 
-  private final ArmFeedforward _angleFeed = new ArmFeedforward(0, 0, 0);
+  private final ArmFeedforward _angleFeed = new ArmFeedforward(0, FeedForward.SHOOTER_ANGLE_KG, FeedForward.SHOOTER_ANGLE_KV);
   private final PIDController _angleController = new PIDController(PID.SHOOTER_ANGLE_KP, 0, 0);
 
   private final Debouncer _revDebouncer = new Debouncer(0.5, DebounceType.kRising);
@@ -135,7 +135,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   /** Returns the angular velocity of the motor. (deg/sec) */
-  public double getAngularVelocity(){
+  public double getAngularVelocity() {
     return _angleMotor.getVelocity().getValueAsDouble() / Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO * 360;
   }
 
@@ -149,7 +149,8 @@ public class ShooterSubsystem extends SubsystemBase {
    * included).
    */
   public void driveAngle(double speed) {
-    _angleMotor.set(UtilFuncs.FromVolts(_angleFeed.calculate(Math.toRadians(getAngle()), 0)) + speed);
+    SmartDashboard.putNumber("SHOOTER DESIRED SPEED", speed);
+    _angleMotor.set(UtilFuncs.FromVolts(_angleFeed.calculate(Math.toRadians(getAngle()), Math.toRadians(speed))));
     // _angleMotor.set(speed);
   }
 

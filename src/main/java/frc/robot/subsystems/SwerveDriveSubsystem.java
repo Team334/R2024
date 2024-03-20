@@ -165,6 +165,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("Field Oriented", fieldOriented);
     SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
     SmartDashboard.putNumber("Shot Distance", shotVector().getNorm());
+    SmartDashboard.putNumber("X SPEED", getRobotRelativeSpeeds().vxMetersPerSecond);
 
     // Update the bot's pose
     _estimator.update(getHeadingRaw(), new SwerveModulePosition[]{
@@ -227,11 +228,13 @@ public class SwerveDriveSubsystem extends SubsystemBase {
    * Get drive coeff based on toggled speed.
    */
   public double getDriveCoeff() {
-    if (_drivingState == DrivingSpeeds.FAST) {
-      return Constants.Speeds.SWERVE_DRIVE_FAST_COEFF;
-    } else {
-      return Constants.Speeds.SWERVE_DRIVE_SLOW_COEFF;
-    }
+    return 0.85;
+
+    // if (_drivingState == DrivingSpeeds.FAST) {
+    //   return Constants.Speeds.SWERVE_DRIVE_FAST_COEFF;
+    // } else {
+    //   return Constants.Speeds.SWERVE_DRIVE_SLOW_COEFF;
+    // }
   }
 
   /**

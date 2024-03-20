@@ -13,6 +13,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
+import frc.robot.Constants.FeedForward;
 import frc.robot.Constants.PID;
 import frc.robot.Constants.Physical;
 import frc.robot.utils.configs.TalonFXConfig;
@@ -29,7 +30,7 @@ public class SwerveModule {
   private final PIDController _rotationController;
 
   private final SimpleMotorFeedforward _driveFeedforward = new SimpleMotorFeedforward(
-      Constants.FeedForward.MODULE_DRIVE_KS, Constants.FeedForward.MODULE_DRIVE_KV);
+      Constants.FeedForward.MODULE_DRIVE_KS, FeedForward.MODULE_DRIVE_KV);
 
   private final CANcoder _encoder;
 
@@ -104,7 +105,7 @@ public class SwerveModule {
 
   /** Get the absolute angle of the module as an int (-180 to 180 degrees). */
   public double getAngle() {
-    return _encoder.getAbsolutePosition().getValueAsDouble();
+    return _encoder.getAbsolutePosition().getValueAsDouble() * 2 * 180;
     // return Double.valueOf(_encoder.getAbsolutePosition().getValueAsDouble() * 2 * 180).intValue(); // ctre update
   }
 
@@ -150,6 +151,8 @@ public class SwerveModule {
     double speed = MathUtil.clamp(state.speedMetersPerSecond, -Constants.Speeds.SWERVE_DRIVE_MAX_SPEED,
         Constants.Speeds.SWERVE_DRIVE_MAX_SPEED);
 
+    SmartDashboard.putNumber("MODULE SPEED", speed);
+
     double rotation_pid = MathUtil.clamp(_rotationController.calculate(getAngle(), state.angle.getDegrees()),
         -0.150, 0.150);
 
@@ -157,7 +160,7 @@ public class SwerveModule {
     double drive_feedforward = UtilFuncs.FromVolts(_driveFeedforward.calculate(speed));
     double drive_pid = _driveController.calculate(getDriveVelocity(), speed);
 
-    drive_pid = 0;
+    // drive_pid = 0;
 
     rotate(rotation_pid);
     drive(drive_feedforward + drive_pid);

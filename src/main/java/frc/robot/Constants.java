@@ -66,8 +66,8 @@ public final class Constants {
     public static final double SHOOTER_AMP_SPEED = 0.33;
     public static final double SHOOTER_INTAKE_SPEED = -.15;
 
-    public static final double SHOOTER_ANGLE_MAX_SPEED = 0.3;
-    public static final double ELEVATOR_MAX_SPEED = 1;
+    public static final double SHOOTER_ANGLE_MAX_SPEED = 5;
+    public static final double ELEVATOR_MAX_SPEED = .2;
 
     public static final double INTAKE_FEED_SPEED = 0.6; // TODO: Get this
     public static final double OUTTAKE_FEED_SPEED = -0.4;
@@ -101,21 +101,24 @@ public final class Constants {
     public static final int INTAKE_STOWED = 0;
     public static final int INTAKE_OUT = 16;
 
+
     public static final int SHOOTER_SHOOT_VEL = 10; // TODO: get this?
   }
 
   public static class FeedForward {
     public static final double ELEVATOR_KG = 0.0;
+    public static final double ELEVATOR_KV = 35;
 
-    public static final double MODULE_DRIVE_KS = 0.32;
-    public static final double MODULE_DRIVE_KV = 2.15;
+    public static final double MODULE_DRIVE_KS = .5;
+    public static final double MODULE_DRIVE_KV = 1.9;
 
     public static final double SHOOTER_ANGLE_KG = 0.001;
+    public static final double SHOOTER_ANGLE_KV = 10;
   }
 
   public static class PID {
-    public static final double MODULE_DRIVE_KP = 0.015;
-    // public static final double MODULE_DRIVE_KP = 0;
+    // public static final double MODULE_DRIVE_KP = 0.005;
+    public static final double MODULE_DRIVE_KP = 0;
     public static final double MODULE_ROTATION_KP = 0.009;
 
     public static final double SHOOTER_ANGLE_KP = 0.08;
