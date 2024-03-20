@@ -5,6 +5,7 @@ import com.pathplanner.lib.util.PIDConstants;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -143,6 +144,9 @@ public final class Constants {
 
     public static final double SHOOTER_AMP_HANDOFF = 50;
     public static final double ELEVATOR_AMP_HANDOFF = 0.04;
+
+    public static final InterpolatingDoubleTreeMap SHOOTER_DISTANCE_ANGLE = new InterpolatingDoubleTreeMap() {};
+    public static final InterpolatingDoubleTreeMap ELEVATOR_DISTANCE_HEIGHT = new InterpolatingDoubleTreeMap() {};
   }
 
   public static class Ports {
