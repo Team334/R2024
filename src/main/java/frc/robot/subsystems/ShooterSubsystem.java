@@ -80,6 +80,8 @@ public class ShooterSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("SHOOTER ANGLE", getAngle());
     SmartDashboard.putNumber("SHOOTER PERCENT OUTPUT", _leftMotor.get());
+    SmartDashboard.putNumber("SHOOTER ANGULAR VELOCITY", getAngularVelocity());
+
   }
 
   public double speakerAngle() {
@@ -130,6 +132,11 @@ public class ShooterSubsystem extends SubsystemBase {
   /** Get the angle of the shooter in degrees. */
   public double getAngle() {
     return _angleMotor.getPosition().getValueAsDouble() / Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO * 360;
+  }
+
+  /** Returns the angular velocity of the motor. (deg/sec) */
+  public double getAngularVelocity(){
+    return _angleMotor.getVelocity().getValueAsDouble() / Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO * 360;
   }
 
   /** Get velocity of the shooter flywheel in encoder val. */
@@ -188,4 +195,5 @@ public class ShooterSubsystem extends SubsystemBase {
   public void stopShooter() {
     spinShooter(0);
   }
+
 }

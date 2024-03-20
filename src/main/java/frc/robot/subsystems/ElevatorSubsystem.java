@@ -52,6 +52,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("ELEVATOR HEIGHT METERS", getHeight());
     SmartDashboard.putNumber("ELEVATOR PERCENT OUTPUT", _leftMotor.get());
+    SmartDashboard.putNumber("ELEVATOR VELOCITY", getVelocity());
   }
 
   /**
@@ -95,6 +96,11 @@ public class ElevatorSubsystem extends SubsystemBase {
     return _leftMotor.getPosition().getValueAsDouble() / Physical.ELEVATOR_GEAR_RATIO * Physical.ELEVATOR_DISTANCE_PER_ROTATION;
   }
 
+  /** Returns the current velocity of the elevator motor. */
+  public double getVelocity() {
+    return _leftMotor.getVelocity().getValueAsDouble() / Physical.ELEVATOR_GEAR_RATIO * Physical.ELEVATOR_DISTANCE_PER_ROTATION;
+  }
+
   /**
    * Drives the elevator at a desired percent output (feedforward is included).
    */
@@ -102,14 +108,14 @@ public class ElevatorSubsystem extends SubsystemBase {
     double ff = 0;
 
     if (_usingClimberFeed)
-      ff = _climbFeed.calculate(0);
+      ff = _climbFeed.calculate(speed);
     else {
-      ff = _elevatorFeed.calculate(0);
+      ff = _elevatorFeed.calculate(speed);
     }
 
     ff = UtilFuncs.FromVolts(ff);
 
-    _leftMotor.set(ff + speed);
+    _leftMotor.set(ff);
   }
 
   /** Stops elevator movement. */
