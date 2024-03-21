@@ -10,20 +10,16 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
-import frc.robot.Constants.PID;
 import frc.robot.Constants.Speeds;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 public class NoteAlign extends Command {
-
   private SwerveDriveSubsystem _swerve;
   private VisionSubsystem _vision;
 
   private DoubleSupplier _xSpeed;
   private DoubleSupplier _ySpeed;
-
 
   private PIDController _headingController = new PIDController(0, 0, 0);
 

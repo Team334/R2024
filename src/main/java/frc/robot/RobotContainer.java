@@ -103,7 +103,7 @@ public class RobotContainer {
     _elevatorSubsystem.setDefaultCommand(new OperateElevator(
       _elevatorSubsystem,
       () -> -_operatorFilterLeftY.calculate(MathUtil.applyDeadband(_operatorController.getLeftY(), 0.05))
-    ));
+    ).alongWith(Commands.runOnce(() -> _shooterSubsystem.resetHoldNote())));
 
     // Non drive/operate default commands
     _intakeSubsystem.setDefaultCommand(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.NONE));

@@ -52,10 +52,7 @@ public class IntakeSubsystem extends SubsystemBase {
     STOWED, OUT, NONE
   }
 
-  private FeedMode _feedMode = FeedMode.NONE;
-  private ActuatorState _actuatorState = ActuatorState.NONE;
-
-  private boolean _feedStalled = false;
+  private boolean _hasNote = false;
 
   /** Creates a new IntakeSubsystem. */
   public IntakeSubsystem() {
@@ -96,10 +93,17 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   /**
-   * Boolean for whether the intake is currently stalling.
+   * Resets the feed's knowledge of the note.
    */
-  public boolean isFeedStalled() {
-    return _feedStalled;
+  public void resetHasNote() {
+    _hasNote = false;
+  }
+
+  /**
+   * Boolean for whether the intake is has the note.
+   */
+  public boolean hasNote() {
+    return _hasNote;
   }
 
   /**
@@ -176,7 +180,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    _feedStalled = _feedDebouncer.calculate(_feedMotor.getOutputCurrent() > 7);
+    boolean stalling = _feedDebouncer.calculate(_feedMotor.getOutputCurrent() > 7);
+    _hasNote = stalling ? true : _hasNote;
 
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("ACTUATOR ENCODER", getActuator());

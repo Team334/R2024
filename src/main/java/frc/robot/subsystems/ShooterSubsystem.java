@@ -42,7 +42,9 @@ public class ShooterSubsystem extends SubsystemBase {
   private final ArmFeedforward _angleFeed = new ArmFeedforward(0, FeedForward.SHOOTER_ANGLE_KG, 0);
   private final PIDController _angleController = new PIDController(PID.SHOOTER_ANGLE_KP, 0, 0);
 
-  private final Debouncer _revDebouncer = new Debouncer(0.5, DebounceType.kRising);
+  private final Debouncer _beamDebouncer = new Debouncer(0.3, DebounceType.kRising);
+
+  private boolean _holdNote = false;
 
   /** Represents the state of the shooter's flywheels (speaker shoot, amp, nothing). */
   public enum ShooterState {
@@ -77,11 +79,13 @@ public class ShooterSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    boolean beamBroken = _beamDebouncer.calculate(true) ? true : _holdNote; // TODO: beam break input here
+    _holdNote = beamBroken;
+
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("SHOOTER ANGLE", getAngle());
     SmartDashboard.putNumber("SHOOTER PERCENT OUTPUT", _leftMotor.get());
     SmartDashboard.putNumber("SHOOTER ANGULAR VELOCITY", getAngularVelocity());
-
   }
 
   public double speakerAngle() {
@@ -107,10 +111,17 @@ public class ShooterSubsystem extends SubsystemBase {
 
 
   /**
-   * Boolean for whether the beam break is currently tripped.
+   * Reset the shooter's hold note, allowing it to shoot freely with a note.
    */
-  public boolean isBeamTripped() { //TODO: Add Logic
-    return false;
+  public void resetHoldNote() {
+    _holdNote = false;
+  }
+
+  /**
+   * Boolean for whether the shooter is preventing the note from coming out.
+   */
+  public boolean holdNote() { 
+    return _holdNote;
   }
 
   /** Returns true if the shooter is at the last desired angle setpoint. */

@@ -41,6 +41,8 @@ public class FeedActuate extends Command {
   public void initialize() {
     _intake.feed(_feedMode);
     _intake.actuate(_actuatorState);
+
+    if (_feedMode == FeedMode.OUTTAKE) _intake.resetHasNote();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -48,7 +50,7 @@ public class FeedActuate extends Command {
   public void execute() {
     _intake.actuate(_actuatorState);
 
-    if (_feedMode == FeedMode.INTAKE && _intake.isFeedStalled()) _intake.feed(FeedMode.NONE);
+    if (_feedMode == FeedMode.INTAKE && _intake.hasNote()) _intake.feed(FeedMode.NONE);
   }
 
   // Called once the command ends or is interrupted.
