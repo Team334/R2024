@@ -45,6 +45,6 @@ public class SpinShooter extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return _runOnce || (_state == ShooterState.AMP && _shooter.holdNote());
+    return _runOnce /**|| (_state == ShooterState.AMP && _shooter.holdNote())*/;
   }
 }
