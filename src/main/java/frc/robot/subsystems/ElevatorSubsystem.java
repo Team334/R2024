@@ -20,7 +20,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   private final TalonFX _leftMotor = new TalonFX(Constants.CAN.ELEVATOR_LEFT);
   private final TalonFX _rightMotor = new TalonFX(Constants.CAN.ELEVATOR_RIGHT);
 
-  private final ElevatorFeedforward _elevatorFeed = new ElevatorFeedforward(0, 0, 0);
+  private final ElevatorFeedforward _elevatorFeed = new ElevatorFeedforward(0.001, 0, 0);
   private final ElevatorFeedforward _climbFeed = new ElevatorFeedforward(0, 0, 0); // TODO: Get this value
 
   private final PIDController _heightController = new PIDController(Constants.PID.ELEVATOR_KP, 0, 0);
@@ -42,14 +42,14 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     _leftMotor.getConfigurator().apply(softLimits);
 
-    _heightController.setTolerance(0.02);
+    _heightController.setTolerance(0.01);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     // harry chen code maybe fix
-
+    SmartDashboard.putNumber("ELEVATOR SETPOINT", _heightController.getSetpoint());
     SmartDashboard.putNumber("ELEVATOR HEIGHT METERS", getHeight());
     SmartDashboard.putNumber("ELEVATOR PERCENT OUTPUT", _leftMotor.get());
     SmartDashboard.putNumber("ELEVATOR VELOCITY", getVelocity());
@@ -109,10 +109,10 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     if (_usingClimberFeed)
       // ff = _climbFeed.calculate(speed);
-      ff = _elevatorFeed.calculate(0);
+      ff = _climbFeed.calculate(0);
     else {
       // ff = _elevatorFeed.calculate(speed);
-      ff = _elevatorFeed.calculate(0);
+      ff = _elevatorFeed.calculate(speed);
     }
 
     ff = UtilFuncs.FromVolts(ff);

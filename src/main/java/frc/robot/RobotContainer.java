@@ -162,6 +162,7 @@ public class RobotContainer {
     }, _swerveSubsystem));
 
     _driveController.L2().whileTrue(
+      Commands.runOnce(() -> SmartDashboard.putBoolean("REACHED", false)).andThen(
       new AutoAim2( // TODO: test
         _swerveSubsystem,
         _shooterSubsystem, 
@@ -172,7 +173,7 @@ public class RobotContainer {
         () -> (UtilFuncs.GetAlliance() == Alliance.Red) ? 0 : 180,
         () -> Presets.CLOSE_SHOOTER_ANGLE, 
         () -> Presets.CLOSE_ELEVATOR_HEIGHT
-      )
+      ).andThen(Commands.runOnce(() -> SmartDashboard.putBoolean("REACHED", true))))
     );
 
     _driveController.R2().whileTrue(
