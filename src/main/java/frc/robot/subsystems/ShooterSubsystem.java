@@ -13,6 +13,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -36,6 +37,8 @@ public class ShooterSubsystem extends SubsystemBase {
   private final CANSparkMax _rightMotor = new CANSparkMax(Constants.CAN.SHOOTER_RIGHT, MotorType.kBrushless);
 
   private final TalonFX _angleMotor = new TalonFX(Constants.CAN.SHOOTER_ANGLE);
+  
+  private final DutyCycleEncoder _angleEncoder = new DutyCycleEncoder(Constants.Ports.ANGLE_ENCODER);
 
   private final RelativeEncoder _leftEncoder = _leftMotor.getEncoder();
 
@@ -69,12 +72,15 @@ public class ShooterSubsystem extends SubsystemBase {
     softLimits.ForwardSoftLimitThreshold = 69 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360;
     softLimits.ReverseSoftLimitThreshold = -25 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360;
 
-    softLimits.ForwardSoftLimitEnable = true;
-    softLimits.ReverseSoftLimitEnable = true;
+    softLimits.ForwardSoftLimitEnable = false;
+    softLimits.ReverseSoftLimitEnable = false;
 
     _angleMotor.getConfigurator().apply(softLimits);
 
     _angleController.setTolerance(0.2);
+
+    _angleEncoder.setDistancePerRotation(360);
+    // _angleEncoder.reset();
   }
 
   @Override
@@ -143,7 +149,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
   /** Get the angle of the shooter in degrees. */
   public double getAngle() {
-    return _angleMotor.getPosition().getValueAsDouble() / Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO * 360;
+    // return _angleMotor.getPosition().getValueAsDouble() / Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO * 360;
+    return _angleEncoder.getDistance();
   }
 
   /** Returns the angular velocity of the motor. (deg/sec) */
@@ -161,6 +168,10 @@ public class ShooterSubsystem extends SubsystemBase {
    * included).
    */
   public void driveAngle(double speed) {
+    if ((getAngle() >= 65 && speed > 0) || (getAngle() <= -25 && speed < 0)) {
+      speed = 0;
+    }
+
     _angleMotor.set(UtilFuncs.FromVolts(_angleFeed.calculate(Math.toRadians(getAngle()), 0)) + speed);
     // _angleMotor.set(speed);
   }
@@ -207,5 +218,4 @@ public class ShooterSubsystem extends SubsystemBase {
   public void stopShooter() {
     spinShooter(0);
   }
-
 }

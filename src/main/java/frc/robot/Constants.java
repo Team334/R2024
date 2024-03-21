@@ -153,6 +153,8 @@ public final class Constants {
     public static final int DRIVER_CONTROLLER = 0;
     public static final int OPERATOR_CONTROLLER = 1;
     public static final int LEDS = 0; // pwm port
+
+    public static final int ANGLE_ENCODER = 0; // TODO: GET REAL VALUE
   }
 
   // static field constants
