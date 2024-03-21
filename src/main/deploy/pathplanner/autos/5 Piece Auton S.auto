@@ -20,24 +20,6 @@
         {
           "type": "path",
           "data": {
-            "pathName": "c get bot s"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "c shoot bot s"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "shoot"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
             "pathName": "c get mid s"
           }
         },

@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.31,
-      "y": 5.51
+      "x": 1.308995050422533,
+      "y": 5.509843091758257
     },
     "rotation": 180.0
   },
@@ -20,13 +20,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "c get bot s"
+            "pathName": "c get mid c"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "c shoot bot s"
+            "name": "actuateIn"
           }
         },
         {
@@ -38,6 +38,6 @@
       ]
     }
   },
-  "folder": "center",
+  "folder": "line",
   "choreoAuto": false
 }

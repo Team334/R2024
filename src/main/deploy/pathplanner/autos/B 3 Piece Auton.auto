@@ -20,13 +20,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "b get bot c"
+            "pathName": "b get cen c"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "b shoot bot c"
+            "pathName": "b shoot cen c"
           }
         },
         {
@@ -38,13 +38,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "b get cen c"
+            "pathName": "b get bot c"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "b shoot cen c"
+            "pathName": "b shoot bot c"
           }
         },
         {
