@@ -88,7 +88,7 @@ public class RobotContainer {
     ));
 
     NamedCommands.registerCommand("shoot", new AutonShoot(_shooterSubsystem, _elevatorSubsystem, _ledSubsystem, _swerveSubsystem, _intakeSubsystem));
-
+    SmartDashboard.putBoolean("REACHED", false);
     // Drive/Operate default commands
     _swerveSubsystem.setDefaultCommand(new TeleopDrive(_swerveSubsystem,
         () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.05),
@@ -104,6 +104,7 @@ public class RobotContainer {
       _elevatorSubsystem,
       () -> -_operatorFilterLeftY.calculate(MathUtil.applyDeadband(_operatorController.getLeftY(), 0.05))
     ));
+
 
     // Non drive/operate default commands
     _intakeSubsystem.setDefaultCommand(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.NONE));
@@ -161,15 +162,15 @@ public class RobotContainer {
       );
     }, _swerveSubsystem));
 
-    _driveController.L2().whileTrue(
+    _driveController.L2().onTrue(
       Commands.runOnce(() -> SmartDashboard.putBoolean("REACHED", false)).andThen(
       new AutoAim2( // TODO: test
         _swerveSubsystem,
         _shooterSubsystem, 
         _elevatorSubsystem, 
         // _ledSubsystem,
-        () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.05),
-        () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.05),
+        // () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.05),
+        // () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.05),
         () -> (UtilFuncs.GetAlliance() == Alliance.Red) ? 0 : 180,
         () -> Presets.CLOSE_SHOOTER_ANGLE, 
         () -> Presets.CLOSE_ELEVATOR_HEIGHT
@@ -177,11 +178,10 @@ public class RobotContainer {
     );
 
     _driveController.R2().whileTrue(
-      new AutoAim(
+      new AutoAim2(
         _swerveSubsystem,
         _shooterSubsystem,
         _elevatorSubsystem,
-        _ledSubsystem,
         () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.05),
         () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.05)
       )

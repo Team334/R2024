@@ -285,7 +285,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   public void resetGyro() {
     Pose2d current_pose = getPose();
     Pose2d new_pose = new Pose2d(current_pose.getTranslation().getX(), current_pose.getTranslation().getY(),
-        Rotation2d.fromDegrees(0));
+        Rotation2d.fromDegrees(180));
 
     resetPose(new_pose);
   }

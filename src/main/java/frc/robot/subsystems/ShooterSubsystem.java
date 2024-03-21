@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.Encoders;
 import frc.robot.Constants.FeedForward;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.PID;
@@ -43,6 +44,8 @@ public class ShooterSubsystem extends SubsystemBase {
   private final RelativeEncoder _leftEncoder = _leftMotor.getEncoder();
 
   private final ArmFeedforward _angleFeed = new ArmFeedforward(0, FeedForward.SHOOTER_ANGLE_KG, 0);
+  // private final ArmFeedforward _angleFeed = new ArmFeedforward(0, 0, 0);
+
   private final PIDController _angleController = new PIDController(PID.SHOOTER_ANGLE_KP, 0, 0);
 
   private final Debouncer _beamDebouncer = new Debouncer(0.3, DebounceType.kRising);
@@ -77,10 +80,10 @@ public class ShooterSubsystem extends SubsystemBase {
 
     _angleMotor.getConfigurator().apply(softLimits);
 
-    _angleController.setTolerance(0.2);
+    _angleController.setTolerance(1);
 
-    _angleEncoder.setDistancePerRotation(360);
-    // _angleEncoder.reset();
+    _angleEncoder.setDistancePerRotation(1024);
+    _angleEncoder.setPositionOffset(Encoders.SHOOTER_ANGLE_OFFSET);
   }
 
   @Override
@@ -150,7 +153,7 @@ public class ShooterSubsystem extends SubsystemBase {
   /** Get the angle of the shooter in degrees. */
   public double getAngle() {
     // return _angleMotor.getPosition().getValueAsDouble() / Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO * 360;
-    return _angleEncoder.getDistance();
+    return (_angleEncoder.getDistance() / 1024) / Physical.SHOOTER_ANGLE_GEAR_RATIO * 360;
   }
 
   /** Returns the angular velocity of the motor. (deg/sec) */

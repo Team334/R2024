@@ -40,7 +40,7 @@ public class IntakeSubsystem extends SubsystemBase {
   private final RelativeEncoder _actuatorEncoder;
   private final RelativeEncoder _feedEncoder;
 
-  private final Debouncer _feedDebouncer = new Debouncer(0.3, DebounceType.kRising);
+  private final Debouncer _feedDebouncer = new Debouncer(0.2, DebounceType.kRising);
 
   /** How to feed (in or out). */
   public enum FeedMode {
@@ -180,12 +180,13 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    boolean stalling = _feedDebouncer.calculate(_feedMotor.getOutputCurrent() > 7);
+    boolean stalling = _feedDebouncer.calculate(_feedMotor.getOutputCurrent() > 50);
     _hasNote = stalling ? true : _hasNote;
 
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("ACTUATOR ENCODER", getActuator());
     SmartDashboard.putNumber("ACTUATOR PERCENT OUTPUT", _actuatorMotor.get());
     SmartDashboard.putNumber("FEED CURRENT OUTPUT", _feedMotor.getOutputCurrent());
+    SmartDashboard.putBoolean("HAS NOTE", hasNote());
   }
 }

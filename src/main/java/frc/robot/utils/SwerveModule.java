@@ -104,7 +104,7 @@ public class SwerveModule {
 
   /** Get the absolute angle of the module as an int (-180 to 180 degrees). */
   public double getAngle() {
-    return _encoder.getAbsolutePosition().getValueAsDouble();
+    return _encoder.getAbsolutePosition().getValueAsDouble() * 2 * 180;
     // return Double.valueOf(_encoder.getAbsolutePosition().getValueAsDouble() * 2 * 180).intValue(); // ctre update
   }
 

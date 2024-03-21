@@ -51,9 +51,9 @@ public class AutoAim2 extends ParallelCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      // new SetHeading(swerve, xSpeed, ySpeed, swerveHeading, runOnce),
-      new SetShooter(shooter, shooterAngle, runOnce),
-      new SetElevator(elevator, elevatorHeight, runOnce)
+      new SetHeading(swerve, xSpeed, ySpeed, swerveHeading, runOnce)
+      // new SetShooter(shooter, shooterAngle, runOnce),
+      // new SetElevator(elevator, elevatorHeight, runOnce)
       // led command here
     );
   }

@@ -26,8 +26,8 @@ import frc.robot.utils.helpers.LimelightHelper;
  * @author Peter Gutkovich
  */
 public class VisionSubsystem extends SubsystemBase {
-  private final LimelightHelper _main = new LimelightHelper("main");
-  private final LimelightHelper _intake = new LimelightHelper("intake");
+  private final LimelightHelper _main = new LimelightHelper("limelight-main");
+  private final LimelightHelper _intake = new LimelightHelper("limelight-intake");
 
 
   private final MedianFilter _xFilter = new MedianFilter(20); // TODO: change?
@@ -101,6 +101,7 @@ public class VisionSubsystem extends SubsystemBase {
     double[] botpose_array = botpose_entry.getDoubleArray(new double[11]);
 
     double distance = botpose_array[9];
+    SmartDashboard.putNumber("DISTANCEZ", distance);
     if (distance > FieldConstants.TAG_DISTANCE_THRESHOLD) return Optional.empty();
 
     return Optional.of(botpose_array);
@@ -145,9 +146,13 @@ public class VisionSubsystem extends SubsystemBase {
 
     double[] botpose_array = botpose.get();
 
-    double botposeX = _xFilter.calculate(botpose_array[0]); // to get rid of the weird origin outlier
-    double botposeY = _yFilter.calculate(botpose_array[1]); // to get rid of the weird origin outlier
-    double botposeYaw = _yawFilter.calculate(botpose_array[5]); // to get rid of weird 0 heading outlier
+    // double botposeX = _xFilter.calculate(botpose_array[0]); // to get rid of the weird origin outlier
+    // double botposeY = _yFilter.calculate(botpose_array[1]); // to get rid of the weird origin outlier
+    // double botposeYaw = _yawFilter.calculate(botpose_array[5]); // to get rid of weird 0 heading outlier
+    double botposeX = botpose_array[0];
+    double botposeY = botpose_array[1];
+    double botposeYaw = botpose_array[5];
+
     Rotation2d botposeRotation = Rotation2d.fromDegrees(botposeYaw);
 
     Pose2d botpose2D = new Pose2d(botposeX, botposeY, botposeRotation);

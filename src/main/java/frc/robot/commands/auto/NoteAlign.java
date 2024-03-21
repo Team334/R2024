@@ -45,9 +45,9 @@ public class NoteAlign extends Command {
     double noteX = _vision.getNoteAngles()[0];
     
     double rotationVelocity = MathUtil.clamp(
+      _headingController.calculate(noteX, 0),
       -Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED,
-      Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED,
-      _headingController.calculate(noteX, 0)
+      Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED
     );
 
     _swerve.driveChassis(new ChassisSpeeds(

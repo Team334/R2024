@@ -20,7 +20,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   private final TalonFX _leftMotor = new TalonFX(Constants.CAN.ELEVATOR_LEFT);
   private final TalonFX _rightMotor = new TalonFX(Constants.CAN.ELEVATOR_RIGHT);
 
-  private final ElevatorFeedforward _elevatorFeed = new ElevatorFeedforward(0.001, 0, 0);
+  private final ElevatorFeedforward _elevatorFeed = new ElevatorFeedforward(0.3, 0, 0);
   private final ElevatorFeedforward _climbFeed = new ElevatorFeedforward(0, 0, 0); // TODO: Get this value
 
   private final PIDController _heightController = new PIDController(Constants.PID.ELEVATOR_KP, 0, 0);

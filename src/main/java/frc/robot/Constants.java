@@ -84,7 +84,7 @@ public final class Constants {
     public static final double SWERVE_DRIVE_WHEEL_RADIUS = 0.05;
     public static final double SWERVE_DRIVE_WHEEL_CIRCUMFERENCE = 2 * Math.PI * SWERVE_DRIVE_WHEEL_RADIUS;
 
-    public static final double SHOOTER_ANGLE_GEAR_RATIO = 112;
+    public static final double SHOOTER_ANGLE_GEAR_RATIO = 84/30;
     
     public static final double ELEVATOR_LOWEST_HEIGHT = 0.4; // TODO: Get this value
     public static final double ELEVATOR_MAX_SHOOT_HEIGHT = .48; // TODO: Get this value
@@ -102,6 +102,8 @@ public final class Constants {
     public static final int INTAKE_OUT = 16;
 
     public static final int SHOOTER_SHOOT_VEL = 10; // TODO: get this?
+
+    public static final double SHOOTER_ANGLE_OFFSET = 0.6359508158987704;
   }
 
   public static class FeedForward {
@@ -118,7 +120,7 @@ public final class Constants {
     // public static final double MODULE_DRIVE_KP = 0;
     public static final double MODULE_ROTATION_KP = 0.009;
 
-    public static final double SHOOTER_ANGLE_KP = 0.08;
+    public static final double SHOOTER_ANGLE_KP = 0.04;
 
     public static final double INTAKE_ACTUATE_KP = 0.08;
 
@@ -127,7 +129,8 @@ public final class Constants {
 
     public static final double SHOOTER_FLYWHEEL_KP = 0;
 
-    public static final double ELEVATOR_KP = 6;
+    public static final double ELEVATOR_KP = 5.2;
+    public static final double ELEVATOR_KD = 0.2;
 
     public static final double SWERVE_HEADING_KP = 0.025;
     public static final double SWERVE_HEADING_KD = 0.0025;
@@ -164,7 +167,7 @@ public final class Constants {
 
     public static final double SHOOTER_SLOW_THRESHOLD = 2;
 
-    public static final double TAG_DISTANCE_THRESHOLD = 2;
+    public static final double TAG_DISTANCE_THRESHOLD = 3;
     public static final double TAG_DISTANCE_RESET_THRESHOLD = 1;
 
     public static final int SPEAKER_TAG_BLUE = 7;

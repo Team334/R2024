@@ -22,7 +22,7 @@ public class SetHeading extends Command {
   private DoubleSupplier _xSpeed;
   private DoubleSupplier _ySpeed;
 
-  private PIDController _headingController = new PIDController(Constants.PID.SWERVE_HEADING_KP, 0, Constants.PID.SWERVE_HEADING_KD);
+  private PIDController _headingController = new PIDController(Constants.PID.SWERVE_HEADING_KP, 0, 0);
 
   /**
    * Creates a new SetHeading.
@@ -47,6 +47,9 @@ public class SetHeading extends Command {
     _xSpeed = xSpeed;
     _ySpeed = ySpeed;
 
+    _headingController.setTolerance(2);
+    _headingController.enableContinuousInput(-180, 180);
+
     addRequirements(_swerve);
   }
 
@@ -68,9 +71,9 @@ public class SetHeading extends Command {
   @Override
   public void execute() {
     double rotationVelocity = MathUtil.clamp(
+      _headingController.calculate(_swerve.getHeading().getDegrees(), _heading.getAsDouble()),
       -Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED,
-      Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED,
-      _headingController.calculate(_heading.getAsDouble())
+      Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED
     );
 
     _swerve.driveChassis(new ChassisSpeeds(
