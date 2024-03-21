@@ -79,8 +79,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    boolean beamBroken = _beamDebouncer.calculate(true) ? true : _holdNote; // TODO: beam break input here
-    _holdNote = beamBroken;
+    boolean beamBroken = _beamDebouncer.calculate(true); // TODO: beam break input here
+    _holdNote = beamBroken ? true : _holdNote;
 
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("SHOOTER ANGLE", getAngle());
