@@ -40,7 +40,7 @@ public class IntakeSubsystem extends SubsystemBase {
   private final RelativeEncoder _actuatorEncoder;
   private final RelativeEncoder _feedEncoder;
 
-  private final Debouncer _intakedDebouncer = new Debouncer(0.3, DebounceType.kRising);
+  private final Debouncer _feedDebouncer = new Debouncer(0.3, DebounceType.kRising);
 
   /** How to feed (in or out). */
   public enum FeedMode {
@@ -54,6 +54,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
   private FeedMode _feedMode = FeedMode.NONE;
   private ActuatorState _actuatorState = ActuatorState.NONE;
+
+  private boolean _feedStalled = false;
 
   /** Creates a new IntakeSubsystem. */
   public IntakeSubsystem() {
@@ -93,8 +95,11 @@ public class IntakeSubsystem extends SubsystemBase {
     return _actuatorEncoder.getPosition();
   }
 
-  public boolean isIntaked() {
-    return _intakedDebouncer.calculate(_feedMotor.getOutputCurrent() > 7);
+  /**
+   * Boolean for whether the intake is currently stalling.
+   */
+  public boolean isFeedStalled() {
+    return _feedStalled;
   }
 
   /**
@@ -171,10 +176,11 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    _feedStalled = _feedDebouncer.calculate(_feedMotor.getOutputCurrent() > 7);
+
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("ACTUATOR ENCODER", getActuator());
     SmartDashboard.putNumber("ACTUATOR PERCENT OUTPUT", _actuatorMotor.get());
     SmartDashboard.putNumber("FEED CURRENT OUTPUT", _feedMotor.getOutputCurrent());
-
   }
 }

@@ -3,28 +3,18 @@ package frc.robot;
 
 import java.util.Optional;
 
-import javax.print.attribute.PrintRequestAttributeSet;
-import javax.print.attribute.standard.MediaSize.NA;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.revrobotics.CANSparkBase.FaultID;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
-import edu.wpi.first.wpilibj2.command.button.CommandStadiaController;
 import frc.robot.Constants.Presets;
 import frc.robot.commands.auto.AutoAim;
 import frc.robot.commands.auto.AutoAim2;
@@ -37,7 +27,6 @@ import frc.robot.commands.shooter.OperateShooter;
 import frc.robot.commands.shooter.SetShooter;
 import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.commands.swerve.BrakeSwerve;
-import frc.robot.commands.swerve.PivotMotor;
 import frc.robot.commands.swerve.TeleopDrive;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -89,7 +78,7 @@ public class RobotContainer {
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
-  public RobotContainer() {    
+  public RobotContainer() {
     NamedCommands.registerCommand("actuateOut", new SetShooter(_shooterSubsystem, () -> Presets.ACTUATE_SHOOTER_ANGLE).andThen(
       new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE))
     );

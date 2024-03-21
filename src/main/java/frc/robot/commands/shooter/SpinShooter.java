@@ -36,11 +36,7 @@ public class SpinShooter extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    if (_state == ShooterState.AMP && _shooter.isBeamTripped()) {
-      cancel();
-    }
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
@@ -49,6 +45,6 @@ public class SpinShooter extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return _runOnce;
+    return _runOnce || (_state == ShooterState.AMP && _shooter.isBeamTripped());
   }
 }
