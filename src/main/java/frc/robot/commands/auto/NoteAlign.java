@@ -16,7 +16,7 @@ import frc.robot.Constants.Speeds;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
-public class NoteAllign extends Command {
+public class NoteAlign extends Command {
 
   private SwerveDriveSubsystem _swerve;
   private VisionSubsystem _vision;
@@ -27,8 +27,8 @@ public class NoteAllign extends Command {
 
   private PIDController _headingController = new PIDController(0, 0, 0);
 
-  /** Creates a new NoteAllign. */
-  public NoteAllign(SwerveDriveSubsystem swerve, VisionSubsystem vision, DoubleSupplier xSpeed, DoubleSupplier ySpeed) {
+  /** Creates a new NoteAlign. */
+  public NoteAlign(SwerveDriveSubsystem swerve, VisionSubsystem vision, DoubleSupplier xSpeed, DoubleSupplier ySpeed) {
     // Use addRequirements() here to declare subsystem dependencies.
     _swerve = swerve;
     _vision = vision;

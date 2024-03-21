@@ -39,7 +39,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private final RelativeEncoder _leftEncoder = _leftMotor.getEncoder();
 
-  private final ArmFeedforward _angleFeed = new ArmFeedforward(0, 0, 0);
+  private final ArmFeedforward _angleFeed = new ArmFeedforward(0, FeedForward.SHOOTER_ANGLE_KG, 0);
   private final PIDController _angleController = new PIDController(PID.SHOOTER_ANGLE_KP, 0, 0);
 
   private final Debouncer _revDebouncer = new Debouncer(0.5, DebounceType.kRising);
