@@ -63,7 +63,7 @@ public final class Constants {
 
     public static final double SHOOTER_FAST_SPIN_SPEED = 1; // TODO: Get this
     public static final double SHOOTER_SLOW_SPIN_SPEED = 1;
-    public static final double SHOOTER_AMP_SPEED = 0.33;
+    public static final double SHOOTER_AMP_SPEED = 0.2;
     public static final double SHOOTER_INTAKE_SPEED = -.15;
 
     public static final double SHOOTER_ANGLE_MAX_SPEED = 0.3;

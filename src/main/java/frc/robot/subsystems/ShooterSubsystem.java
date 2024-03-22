@@ -2,6 +2,9 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
+
+import javax.sound.sampled.Port;
+
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
@@ -22,6 +25,7 @@ import frc.robot.Constants.FeedForward;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.PID;
 import frc.robot.Constants.Physical;
+import frc.robot.Constants.Ports;
 import frc.robot.Constants.Presets;
 import frc.robot.Constants.Speeds;
 import frc.robot.utils.UtilFuncs;
@@ -40,7 +44,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private final TalonFX _angleMotor = new TalonFX(Constants.CAN.SHOOTER_ANGLE);
   
-  private final DutyCycleEncoder _angleEncoder = new DutyCycleEncoder(Constants.Ports.ANGLE_ENCODER);
+  private final DutyCycleEncoder _angleEncoder = new DutyCycleEncoder(Ports.ANGLE_ENCODER);
 
   private final RelativeEncoder _leftEncoder = _leftMotor.getEncoder();
 
@@ -85,7 +89,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     // for resetting
     // _angleEncoder.reset();
-    // _angleEncoder.setPositionOffset(_angleEncoder.getPositionOffset());
+    // SmartDashboard.putNumber("ENC OFFSET", _angleEncoder.getPositionOffset());
 
     _angleEncoder.setPositionOffset(Encoders.SHOOTER_ANGLE_OFFSET);
     _angleEncoder.setDistancePerRotation(1024);
@@ -171,6 +175,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     _angleMotor.set(UtilFuncs.FromVolts(_angleFeed.calculate(Math.toRadians(getAngle()), 0)) + speed);
     // _angleMotor.set(speed);
+    // _angleMotor.set(0);
   }
 
   /** Stops the shooter's angular movement. */

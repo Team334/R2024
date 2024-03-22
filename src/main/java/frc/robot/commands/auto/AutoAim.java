@@ -52,7 +52,7 @@ public class AutoAim extends ParallelCommandGroup {
     DoubleSupplier elevatorHeight,
     boolean runOnce
   ) {
-    handleInterrupt(() -> SmartDashboard.putBoolean("AUTOAIM REACHED", true));
+    // handleInterrupt(() -> SmartDashboard.putBoolean("AUTOAIM REACHED", true));
 
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
