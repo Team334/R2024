@@ -59,9 +59,8 @@ public class ElevatorSubsystem extends SubsystemBase {
    * Get the calculated height needed to aim at the speaker.
    */
   public double speakerHeight() {
-    // TODO: make this using lerp
     double distance = UtilFuncs.ShotVector().getNorm();
-    double height = Physical.ELEVATOR_MAX_SHOOT_HEIGHT + (distance * Presets.ELEVATOR_HEIGHT_RATE);
+    double height = Presets.ELEVATOR_DISTANCE_HEIGHT.get(distance);
 
     return height;
   }

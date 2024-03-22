@@ -87,7 +87,7 @@ public class RobotContainer {
     ));
 
     NamedCommands.registerCommand("shoot", new AutonShoot(_shooterSubsystem, _elevatorSubsystem, _ledSubsystem, _swerveSubsystem, _intakeSubsystem));
-    SmartDashboard.putBoolean("REACHED", false);
+
     // Drive/Operate default commands
     _swerveSubsystem.setDefaultCommand(new TeleopDrive(_swerveSubsystem,
         () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.05),
@@ -116,6 +116,7 @@ public class RobotContainer {
     _autonChooser = AutoBuilder.buildAutoChooser();
 
     SmartDashboard.putData("AUTON CHOOSER", _autonChooser);
+    SmartDashboard.putBoolean("AUTOAIM REACHED", false);
   }
 
   // to configure button bindings
@@ -162,7 +163,6 @@ public class RobotContainer {
     }, _swerveSubsystem));
 
     _driveController.L2().onTrue(
-      Commands.runOnce(() -> SmartDashboard.putBoolean("REACHED", false)).andThen(
       new AutoAim( // TODO: test
         _swerveSubsystem,
         _shooterSubsystem, 
@@ -173,7 +173,7 @@ public class RobotContainer {
         () -> (UtilFuncs.GetAlliance() == Alliance.Red) ? 0 : 180,
         () -> Presets.CLOSE_SHOOTER_ANGLE, 
         () -> Presets.CLOSE_ELEVATOR_HEIGHT
-      ).andThen(Commands.runOnce(() -> SmartDashboard.putBoolean("REACHED", true))))
+      )
     );
 
     _driveController.R2().whileTrue(

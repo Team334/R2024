@@ -22,6 +22,7 @@ import frc.robot.Constants.FeedForward;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.PID;
 import frc.robot.Constants.Physical;
+import frc.robot.Constants.Presets;
 import frc.robot.Constants.Speeds;
 import frc.robot.utils.UtilFuncs;
 import frc.robot.utils.configs.NeoConfig;
@@ -98,27 +99,15 @@ public class ShooterSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("SHOOTER ANGULAR VELOCITY", getAngularVelocity());
   }
 
+  /**
+   * Get the calculated angle needed to aim at the speaker.
+   */
   public double speakerAngle() {
     double distance = UtilFuncs.ShotVector().getNorm();
+    double angle = Presets.SHOOTER_DISTANCE_ANGLE.get(distance);
 
-    return 0;
+    return angle;
   }
-
-  /**
-   * Get the calculated angle needed to aim at the speaker. <strong>(TRIG SOLUTION)</strong>
-   * 
-   * @param elevatorHeight The height of the elevator.
-   */
-  public double speakerAngle(double elevatorHeight) {
-    double distance = UtilFuncs.ShotVector().getNorm();
-    Pose3d speakerPose = UtilFuncs.GetSpeakerPose();
-
-    double zDifference = speakerPose.getZ() - (elevatorHeight + Physical.ELEVATOR_LOWEST_HEIGHT);
-    double speakerAngle = Math.toDegrees(Math.atan(zDifference / distance));
-
-    return speakerAngle;
-  }
-
 
   /**
    * Reset the shooter's hold note, allowing it to shoot freely with a note.

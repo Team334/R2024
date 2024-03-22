@@ -6,6 +6,8 @@ package frc.robot.commands.auto;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.commands.elevator.SetElevator;
 import frc.robot.commands.shooter.SetShooter;
@@ -50,13 +52,15 @@ public class AutoAim extends ParallelCommandGroup {
     DoubleSupplier elevatorHeight,
     boolean runOnce
   ) {
+    handleInterrupt(() -> SmartDashboard.putBoolean("AUTOAIM REACHED", true));
 
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new SetHeading(swerve, xSpeed, ySpeed, swerveHeading, runOnce)
-      // new SetShooter(shooter, shooterAngle, runOnce),
-      // new SetElevator(elevator, elevatorHeight, runOnce)
+      Commands.runOnce(() -> SmartDashboard.putBoolean("AUTOAIM REACHED", false)),
+      new SetHeading(swerve, xSpeed, ySpeed, swerveHeading, runOnce),
+      new SetShooter(shooter, shooterAngle, runOnce),
+      new SetElevator(elevator, elevatorHeight, runOnce)
       // led command here
     );
   }
@@ -74,7 +78,7 @@ public class AutoAim extends ParallelCommandGroup {
     DoubleSupplier xSpeed,
     DoubleSupplier ySpeed
   ) {
-    this(swerve, shooter, elevator, leds, xSpeed, ySpeed, swerve::speakerHeading, () -> shooter.speakerAngle(elevator.speakerHeight()), elevator::speakerHeight, false);
+    this(swerve, shooter, elevator, leds, xSpeed, ySpeed, swerve::speakerHeading, shooter::speakerAngle, elevator::speakerHeight, false);
   }
 
   /** 
@@ -107,7 +111,7 @@ public class AutoAim extends ParallelCommandGroup {
     ElevatorSubsystem elevator,
     LEDSubsystem leds
   ) {
-    this(swerve, shooter, elevator, leds, () -> 0, () -> 0, swerve::speakerHeading, () -> shooter.speakerAngle(elevator.speakerHeight()), elevator::speakerHeight, true);
+    this(swerve, shooter, elevator, leds, () -> 0, () -> 0, swerve::speakerHeading, shooter::speakerAngle, elevator::speakerHeight, true);
   }
 
   /** 
