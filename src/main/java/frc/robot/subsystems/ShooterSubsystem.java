@@ -82,8 +82,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
     _angleController.setTolerance(1);
 
-    _angleEncoder.setDistancePerRotation(1024);
     _angleEncoder.setPositionOffset(Encoders.SHOOTER_ANGLE_OFFSET);
+    _angleEncoder.setDistancePerRotation(1024);
   }
 
   @Override

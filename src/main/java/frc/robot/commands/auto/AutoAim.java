@@ -1,240 +1,129 @@
-/* Copyright (C) 2024 Team 334. All Rights Reserved.*/
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
 package frc.robot.commands.auto;
 
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
-import frc.robot.Constants.FieldConstants;
-import frc.robot.Constants.Physical;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import frc.robot.commands.elevator.SetElevator;
+import frc.robot.commands.shooter.SetShooter;
+import frc.robot.commands.swerve.SetHeading;
 import frc.robot.subsystems.ElevatorSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
-import frc.robot.utils.UtilFuncs;
 
-/**
- * @author Elvis Osmanov
- * @author Peter Gutkovich
- * @author Cherine Soewingjo
- */
-public class AutoAim extends Command {
-  private final ShooterSubsystem _shooter;
-  private final ElevatorSubsystem  _elevator;
-  private final SwerveDriveSubsystem _swerve;
-  private final LEDSubsystem _leds;
-
-  private final DoubleSupplier _xSpeed;
-  private final DoubleSupplier _ySpeed;
-
-  private boolean _reachedSwerveHeading;
-  private boolean _reachedShooterAngle;
-  private boolean _reachedElevatorHeight;
-
-  private double _desiredSwerveHeading = 0;
-  private double _desiredShooterAngle = 0;
-  private double _desiredElevatorHeight = 0;
-
-  private DoubleSupplier _swerveHeadingSupplier;
-
-  private boolean _runOnce;
-  private boolean _overrideDesired;
-
-  private PIDController _headingController = new PIDController(Constants.PID.SWERVE_HEADING_KP, 0,
-      Constants.PID.SWERVE_HEADING_KD);
-
-  /**
-   * Constructs an AutoAim that does NOT finish when reaching setpoints.
-   * It calculates angle/height/heading setpoints.
+// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
+// information, see:
+// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+public class AutoAim extends ParallelCommandGroup {
+  /** 
+   * Creates a new AutoAim.
    * 
-   * (USE FOR TELEOP)
+   * (THIS IS THE MAIN CONSTRUCTOR, USEABLE CONSTRUCTORS ARE BELOW)
    * 
-   * @param shooter Shooter subsystem.
-   * @param elevator Elevator subsystem.
-   * @param leds Led subsystem.
-   * @param swerve Swerve subsystem.
-   * @param xSpeed X joystick speed.
-   * @param ySpeed Y joystick speed.
+   * @param swerve The swerve drive.
+   * @param shooter The shooter.
+   * @param elevator The elevator.
+   * @param leds The led strip.
+   * 
+   * @param xSpeed The x speed of the drive joystick.
+   * @param ySpeed The y speed of the drive joystick.
+   * 
+   * @param swerveHeading The heading to set the chassis to.
+   * @param shooterAngle The angle to set the shooter to.
+   * @param elevatorHeight The height to set the elevator to.
+   * 
+   * @param runOnce Run the command for only a single set of aiming setpoints.
+  */
+  private AutoAim(
+    SwerveDriveSubsystem swerve,
+    ShooterSubsystem shooter,
+    ElevatorSubsystem elevator,
+    LEDSubsystem leds,
+    DoubleSupplier xSpeed,
+    DoubleSupplier ySpeed,
+    DoubleSupplier swerveHeading,
+    DoubleSupplier shooterAngle,
+    DoubleSupplier elevatorHeight,
+    boolean runOnce
+  ) {
+
+    // Add your commands in the addCommands() call, e.g.
+    // addCommands(new FooCommand(), new BarCommand());
+    addCommands(
+      new SetHeading(swerve, xSpeed, ySpeed, swerveHeading, runOnce)
+      // new SetShooter(shooter, shooterAngle, runOnce),
+      // new SetElevator(elevator, elevatorHeight, runOnce)
+      // led command here
+    );
+  }
+
+  /** 
+   * Creates a new AutoAim2. <strong>(CALCULATED TELEOP)</strong>
+   * 
+   * This command will auto-aim to calculated setpoints repeatedly.
    */
   public AutoAim(
     SwerveDriveSubsystem swerve,
     ShooterSubsystem shooter,
     ElevatorSubsystem elevator,
-    LEDSubsystem leds, 
+    LEDSubsystem leds,
     DoubleSupplier xSpeed,
     DoubleSupplier ySpeed
   ) {
-    _leds = leds;
-    _shooter = shooter;
-    _elevator = elevator;
-    _swerve = swerve;
-
-    _xSpeed = xSpeed;
-    _ySpeed = ySpeed;
-
-    _runOnce = false;
-    _overrideDesired = false;
-
-    _headingController.setTolerance(2);
-    _headingController.enableContinuousInput(-180, 180);
-
-    addRequirements(_swerve, _shooter, _elevator);
+    this(swerve, shooter, elevator, leds, xSpeed, ySpeed, swerve::speakerHeading, () -> shooter.speakerAngle(elevator.speakerHeight()), elevator::speakerHeight, false);
   }
 
-  /**
-   * Constructs an AutoAim that does NOT finish when reaching setpoints.
-   * It DOES NOT calculate angle/height/heading setpoints.
+  /** 
+   * Creates a new AutoAim2. <strong>(PRESET TELEOP)</strong>
    * 
-   * (USE FOR TELEOP)
-   * 
-   * @param shooter Shooter subsystem.
-   * @param elevator Elevator subsystem.
-   * @param leds Led subsystem.
-   * @param swerve Swerve subsystem.
-   * @param xSpeed X joystick speed.
-   * @param ySpeed Y joystick speed.
-   * 
-   * @param shooterAngle Desired shooter angle.
-   * @param elevatorHeight Desired elevator height.
-   * @param swerveHeadingSupplier Desired swerve heading supplier. This is a supplier since heading could change based on alliance.
+   * This command will auto-aim to preset setpoints repeatedly.
    */
   public AutoAim(
     SwerveDriveSubsystem swerve,
-    ShooterSubsystem shooter, 
-    ElevatorSubsystem elevator, 
-    LEDSubsystem leds, 
+    ShooterSubsystem shooter,
+    ElevatorSubsystem elevator,
+    LEDSubsystem leds,
     DoubleSupplier xSpeed,
     DoubleSupplier ySpeed,
-    double shooterAngle,
-    double elevatorHeight,
-    DoubleSupplier swerveHeadingSupplier
+    DoubleSupplier swerveHeading,
+    DoubleSupplier shooterAngle,
+    DoubleSupplier elevatorHeight
   ) {
-    this(swerve, shooter, elevator, leds, xSpeed, ySpeed);
-
-    _desiredShooterAngle = shooterAngle;
-    _desiredElevatorHeight = elevatorHeight;
-    _swerveHeadingSupplier = swerveHeadingSupplier;
-
-    _overrideDesired = true;
+    this(swerve, shooter, elevator, leds, xSpeed, ySpeed, swerveHeading, shooterAngle, elevatorHeight, false);
   }
 
-
-  /**
-   * Constructs an AutoAim that finishes when it reaches its initial setpoints.
-   * It calculates angle/height/heading setpoints.
+  /** 
+   * Creates a new AutoAim2. <strong>(CALCULATED AUTON)</strong>
    * 
-   * (USE FOR AUTON)
-   * 
-   * @param shooter Shooter subsystem.
-   * @param elevator Elevator subsystem.
-   * @param leds Led subsystem.
-   * @param swerve Swerve subsystem.
-   */
-  public AutoAim(SwerveDriveSubsystem swerve, ShooterSubsystem shooter, ElevatorSubsystem elevator, LEDSubsystem leds) {
-    this(swerve, shooter, elevator, leds, () -> 0, () -> 0);
-
-    _runOnce = true;
-  }
-
-  /**
-   * Constructs an AutoAim that finishes when it reaches its initial setpoint. 
-   * It does NOT calculate angle/height/heading setpoints, and overrides them with supplied setpoints instead.
-   * 
-   * (USE FOR AUTON)
-   * 
-   * @param shooterAngle Desired shooter angle.
-   * @param elevatorHeight Desired elevator height.
-   * @param swerveHeadingSupplier Desired swerve heading supplier. This is a supplier since heading could change based on alliance.
+   * This command will auto-aim to calculated setpoints once.
    */
   public AutoAim(
     SwerveDriveSubsystem swerve,
-    ShooterSubsystem shooter, 
-    ElevatorSubsystem elevator, 
-    LEDSubsystem leds, 
-    double shooterAngle,
-    double elevatorHeight,
-    DoubleSupplier swerveHeadingSupplier
+    ShooterSubsystem shooter,
+    ElevatorSubsystem elevator,
+    LEDSubsystem leds
   ) {
-    this(swerve, shooter, elevator, leds);
-
-    _desiredShooterAngle = shooterAngle;
-    _desiredElevatorHeight = elevatorHeight;
-    _swerveHeadingSupplier = swerveHeadingSupplier;
-
-    _overrideDesired = true;
+    this(swerve, shooter, elevator, leds, () -> 0, () -> 0, swerve::speakerHeading, () -> shooter.speakerAngle(elevator.speakerHeight()), elevator::speakerHeight, true);
   }
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    _reachedSwerveHeading = false;
-    _reachedShooterAngle = false;
-    _reachedElevatorHeight = false;
-
-    if (_overrideDesired) _desiredSwerveHeading = _swerveHeadingSupplier.getAsDouble();
-  }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    double currentSwerveHeading = _swerve.getHeading().getDegrees();
-
-    if (!_overrideDesired) {
-      double[] setpoints = _swerve.speakerSetpoints();
-
-      _desiredSwerveHeading = setpoints[0];
-      _desiredShooterAngle = setpoints[1];
-      _desiredElevatorHeight = setpoints[2];
-    }
-    
-    double rotationVelocity = MathUtil.clamp(
-      _headingController.calculate(currentSwerveHeading, _desiredSwerveHeading),
-      -Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED,
-      Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED
-    );
-
-    if (_reachedSwerveHeading) rotationVelocity = 0;
-
-    // if (_reachedSwerveHeading && _reachedShooterAngle) {
-    //   _leds.setColor(Constants.LEDColors.GREEN);
-    // } else {
-    //   _leds.blink(Constants.LEDColors.YELLOW, Constants.LEDColors.NOTHING, 0.2);
-    // }
-
-    _swerve.driveChassis(
-      new ChassisSpeeds(
-        _xSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * _swerve.getDriveCoeff(),
-        _ySpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * _swerve.getDriveCoeff(),
-        rotationVelocity
-      )
-    );
-
-    _shooter.setAngle(_desiredShooterAngle);
-    _elevator.setHeight(_desiredElevatorHeight);
-
-    _reachedSwerveHeading = _headingController.atSetpoint();
-    _reachedShooterAngle = _shooter.atDesiredAngle();
-    _reachedElevatorHeight = _elevator.atDesiredHeight();
-  }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-    _swerve.driveChassis(new ChassisSpeeds());
-    _elevator.stopElevator();;
-    _shooter.stopAngle();
-  }
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return _runOnce && _reachedSwerveHeading && _reachedShooterAngle && _reachedElevatorHeight;
+  /** 
+   * Creates a new AutoAim2. <strong>(PRESET AUTON)</strong>
+   * 
+   * This command will auto-aim to preset setpoints once.
+   */
+  public AutoAim(
+    SwerveDriveSubsystem swerve,
+    ShooterSubsystem shooter,
+    ElevatorSubsystem elevator,
+    LEDSubsystem leds,
+    DoubleSupplier swerveHeading,
+    DoubleSupplier shooterAngle,
+    DoubleSupplier elevatorHeight
+  ) {
+    this(swerve, shooter, elevator, leds, () -> 0, () -> 0, swerveHeading, shooterAngle, elevatorHeight, true);
   }
 }

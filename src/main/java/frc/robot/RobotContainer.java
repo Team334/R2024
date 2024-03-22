@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import frc.robot.Constants.Presets;
 import frc.robot.commands.auto.AutoAim;
-import frc.robot.commands.auto.AutoAim2;
 import frc.robot.commands.auto.AutonShoot;
 import frc.robot.commands.elevator.OperateElevator;
 import frc.robot.commands.elevator.SetElevator;
@@ -164,11 +163,11 @@ public class RobotContainer {
 
     _driveController.L2().onTrue(
       Commands.runOnce(() -> SmartDashboard.putBoolean("REACHED", false)).andThen(
-      new AutoAim2( // TODO: test
+      new AutoAim( // TODO: test
         _swerveSubsystem,
         _shooterSubsystem, 
-        _elevatorSubsystem, 
-        // _ledSubsystem,
+        _elevatorSubsystem,
+        _ledSubsystem,
         // () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.05),
         // () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.05),
         () -> (UtilFuncs.GetAlliance() == Alliance.Red) ? 0 : 180,
@@ -178,10 +177,11 @@ public class RobotContainer {
     );
 
     _driveController.R2().whileTrue(
-      new AutoAim2(
+      new AutoAim(
         _swerveSubsystem,
         _shooterSubsystem,
         _elevatorSubsystem,
+        _ledSubsystem,
         () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.05),
         () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.05)
       )
