@@ -40,7 +40,7 @@ public class IntakeSubsystem extends SubsystemBase {
   private final RelativeEncoder _actuatorEncoder;
   private final RelativeEncoder _feedEncoder;
 
-  private final Debouncer _feedDebouncer = new Debouncer(0.2, DebounceType.kRising);
+  private final Debouncer _feedDebouncer = new Debouncer(0.3, DebounceType.kRising);
 
   /** How to feed (in or out). */
   public enum FeedMode {
@@ -69,7 +69,7 @@ public class IntakeSubsystem extends SubsystemBase {
     NeoConfig.configureNeo(_feedMotor, false);
     NeoConfig.configureNeo(_actuatorMotor, false);
 
-    // _feedMotor.setSmartCurrentLimit(80);
+    _feedMotor.setSmartCurrentLimit(80);
 
     _actuatorMotor.setSoftLimit(SoftLimitDirection.kForward, Constants.Encoders.INTAKE_OUT);
     _actuatorMotor.setSoftLimit(SoftLimitDirection.kReverse, Constants.Encoders.INTAKE_STOWED);
