@@ -108,6 +108,7 @@ public final class Constants {
 
   public static class FeedForward {
     public static final double ELEVATOR_KG = 0.0;
+    public static final double ELEVATOR_KS = 0.3;
 
     public static final double MODULE_DRIVE_KS = 0.32;
     public static final double MODULE_DRIVE_KV = 2.15;
