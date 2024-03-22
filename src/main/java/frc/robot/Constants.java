@@ -103,7 +103,7 @@ public final class Constants {
 
     public static final int SHOOTER_SHOOT_VEL = 10; // TODO: get this?
 
-    public static final double SHOOTER_ANGLE_OFFSET = 0.6359508158987704;
+    public static final double SHOOTER_ANGLE_OFFSET = 0.6311790157794754;
   }
 
   public static class FeedForward {

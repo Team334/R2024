@@ -91,8 +91,8 @@ public class ShooterSubsystem extends SubsystemBase {
     // _angleEncoder.reset();
     // SmartDashboard.putNumber("ENC OFFSET", _angleEncoder.getPositionOffset());
 
-    _angleEncoder.setPositionOffset(Encoders.SHOOTER_ANGLE_OFFSET);
     _angleEncoder.setDistancePerRotation(1024);
+    _angleEncoder.setPositionOffset(Encoders.SHOOTER_ANGLE_OFFSET);
   }
 
   @Override
