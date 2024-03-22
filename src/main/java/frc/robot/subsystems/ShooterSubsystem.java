@@ -55,6 +55,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private final Debouncer _beamDebouncer = new Debouncer(0.3, DebounceType.kRising);
 
+  private boolean _wasDisconnected = false;
   private boolean _holdNote = false;
 
   /** Represents the state of the shooter's flywheels (speaker shoot, amp, nothing). */
@@ -91,8 +92,10 @@ public class ShooterSubsystem extends SubsystemBase {
     // _angleEncoder.reset();
     // SmartDashboard.putNumber("ENC OFFSET", _angleEncoder.getPositionOffset());
 
-    _angleEncoder.setDistancePerRotation(1024);
-    _angleEncoder.setPositionOffset(Encoders.SHOOTER_ANGLE_OFFSET);
+    _angleEncoder.setDutyCycleRange(1.0/1024.0, 1023.0/1024.0);
+    _angleEncoder.setDistancePerRotation(360 / Physical.SHOOTER_ANGLE_GEAR_RATIO);
+    _angleEncoder.setConnectedFrequencyThreshold(500);
+    // _angleEncoder.setPositionOffset(Encoders.SHOOTER_ANGLE_OFFSET);
   }
 
   @Override
@@ -100,12 +103,15 @@ public class ShooterSubsystem extends SubsystemBase {
     boolean beamBroken = _beamDebouncer.calculate(true); // TODO: beam break input here
     _holdNote = beamBroken ? true : _holdNote;
 
+    if (!_wasDisconnected) _wasDisconnected = _angleEncoder.isConnected();
+
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("SHOOTER SETPOINT", _angleController.getSetpoint());
     SmartDashboard.putNumber("SHOOTER ANGLE", getAngle());
     SmartDashboard.putNumber("SHOOTER ANGLE ENCODER", _angleEncoder.getDistance());
     SmartDashboard.putNumber("SHOOTER PERCENT OUTPUT", _leftMotor.get());
     SmartDashboard.putNumber("SHOOTER ANGULAR VELOCITY", getAngularVelocity());
+    SmartDashboard.putBoolean("ENCODER CONNECTED", _angleEncoder.isConnected());
   }
 
   /**
@@ -145,13 +151,16 @@ public class ShooterSubsystem extends SubsystemBase {
       Constants.Speeds.SHOOTER_ANGLE_MAX_SPEED
     );
 
+    if (!_angleEncoder.isConnected()) pid = 0;
+
     driveAngle(pid);
   }
 
-  /** Get the angle of the shooter in degrees. */
+  /** Get the nglengle of the shooter in degrees. */
   public double getAngle() {
     // return _angleMotor.getPosition().getValueAsDouble() / Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO * 360;
-    return (_angleEncoder.getDistance() / 1024) / Physical.SHOOTER_ANGLE_GEAR_RATIO * 360;
+    // return (_angleEncoder.getDistance() / 1024) / Physical.SHOOTER_ANGLE_GEAR_RATIO * 360;
+    return _angleEncoder.getDistance() - 80;
   }
 
   /** Returns the angular velocity of the motor. (deg/sec) */
@@ -173,8 +182,11 @@ public class ShooterSubsystem extends SubsystemBase {
       speed = 0;
     }
 
-    _angleMotor.set(UtilFuncs.FromVolts(_angleFeed.calculate(Math.toRadians(getAngle()), 0)) + speed);
-    // _angleMotor.set(speed);
+    double ff = UtilFuncs.FromVolts(_angleFeed.calculate(Math.toRadians(getAngle()), 0));
+
+    if (!_angleEncoder.isConnected()) ff = 0;
+
+    _angleMotor.set(ff + speed);
     // _angleMotor.set(0);
   }
 

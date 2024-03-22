@@ -84,7 +84,7 @@ public final class Constants {
     public static final double SWERVE_DRIVE_WHEEL_RADIUS = 0.05;
     public static final double SWERVE_DRIVE_WHEEL_CIRCUMFERENCE = 2 * Math.PI * SWERVE_DRIVE_WHEEL_RADIUS;
 
-    public static final double SHOOTER_ANGLE_GEAR_RATIO = 84/30;
+    public static final double SHOOTER_ANGLE_GEAR_RATIO = 2.8;
     
     public static final double ELEVATOR_LOWEST_HEIGHT = 0.4; // TODO: Get this value
     public static final double ELEVATOR_MAX_SHOOT_HEIGHT = .48; // TODO: Get this value
@@ -159,7 +159,7 @@ public final class Constants {
     public static final int OPERATOR_CONTROLLER = 1;
     public static final int LEDS = 0; // pwm port
 
-    public static final int ANGLE_ENCODER = 0; // TODO: GET REAL VALUE
+    public static final int ANGLE_ENCODER = 1; // TODO: GET REAL VALUE
   }
 
   // static field constants
