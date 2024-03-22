@@ -83,6 +83,10 @@ public class ShooterSubsystem extends SubsystemBase {
 
     _angleController.setTolerance(1);
 
+    // for resetting
+    // _angleEncoder.reset();
+    // _angleEncoder.setPositionOffset(_angleEncoder.getPositionOffset());
+
     _angleEncoder.setPositionOffset(Encoders.SHOOTER_ANGLE_OFFSET);
     _angleEncoder.setDistancePerRotation(1024);
   }
@@ -95,6 +99,7 @@ public class ShooterSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("SHOOTER SETPOINT", _angleController.getSetpoint());
     SmartDashboard.putNumber("SHOOTER ANGLE", getAngle());
+    SmartDashboard.putNumber("SHOOTER ANGLE ENCODER", _angleEncoder.getDistance());
     SmartDashboard.putNumber("SHOOTER PERCENT OUTPUT", _leftMotor.get());
     SmartDashboard.putNumber("SHOOTER ANGULAR VELOCITY", getAngularVelocity());
   }
