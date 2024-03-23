@@ -135,7 +135,7 @@ public class RobotContainer {
     _operatorController.L2().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.AMP).handleInterrupt(stopShooter));
     _operatorController.R2().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.INTAKE).handleInterrupt(stopShooter));
 
-    _operatorController.square().whileTrue(safeFeedIn);
+    _operatorController.square().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE));
     _operatorController.circle().whileTrue(feedOut);
     _operatorController.triangle().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.OUTTAKE));
     _operatorController.cross().whileTrue(new FeedActuate(_intakeSubsystem, FeedMode.INTAKE));

@@ -166,6 +166,9 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
     SmartDashboard.putNumber("Shot Distance", shotVector().getNorm());
 
+    SmartDashboard.putNumber("ROBOT X POSE", getPose().getX());
+    SmartDashboard.putNumber("ROBOT Y POSE", getPose().getY());
+
     // Update the bot's pose
     _estimator.update(getHeadingRaw(), new SwerveModulePosition[]{
       _frontLeft.getPosition(),

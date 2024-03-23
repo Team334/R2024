@@ -149,8 +149,21 @@ public final class Constants {
     public static final double ELEVATOR_AMP_HANDOFF = 0.04;
 
     // TODO: get values for these
-    public static final InterpolatingDoubleTreeMap SHOOTER_DISTANCE_ANGLE = new InterpolatingDoubleTreeMap() {};
-    public static final InterpolatingDoubleTreeMap ELEVATOR_DISTANCE_HEIGHT = new InterpolatingDoubleTreeMap() {};
+    public static final InterpolatingDoubleTreeMap SHOOTER_DISTANCE_ANGLE = new InterpolatingDoubleTreeMap();
+    
+    static {
+      SHOOTER_DISTANCE_ANGLE.put(1.755, 43.78);
+
+      SHOOTER_DISTANCE_ANGLE.put(3.500, 28.27);
+    };
+
+    public static final InterpolatingDoubleTreeMap ELEVATOR_DISTANCE_HEIGHT = new InterpolatingDoubleTreeMap();
+
+    static {
+      ELEVATOR_DISTANCE_HEIGHT.put(1.755, 0.061);
+
+      ELEVATOR_DISTANCE_HEIGHT.put(3.500, 0.010);
+    }
   }
 
   public static class Ports {
@@ -168,7 +181,7 @@ public final class Constants {
 
     public static final double SHOOTER_SLOW_THRESHOLD = 2;
 
-    public static final double TAG_DISTANCE_THRESHOLD = 3;
+    public static final double TAG_DISTANCE_THRESHOLD = 3.5;
     public static final double TAG_DISTANCE_RESET_THRESHOLD = 1;
 
     public static final int SPEAKER_TAG_BLUE = 7;
