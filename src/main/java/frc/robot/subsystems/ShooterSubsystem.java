@@ -44,18 +44,14 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private final TalonFX _angleMotor = new TalonFX(Constants.CAN.SHOOTER_ANGLE);
   
-  private final DutyCycleEncoder _angleEncoder = new DutyCycleEncoder(Ports.ANGLE_ENCODER);
-
   private final RelativeEncoder _leftEncoder = _leftMotor.getEncoder();
+  private final DutyCycleEncoder _angleEncoderAbsolute = new DutyCycleEncoder(Ports.ANGLE_ENCODER);
 
   private final ArmFeedforward _angleFeed = new ArmFeedforward(0, FeedForward.SHOOTER_ANGLE_KG, 0);
-  // private final ArmFeedforward _angleFeed = new ArmFeedforward(0, 0, 0);
-
   private final PIDController _angleController = new PIDController(PID.SHOOTER_ANGLE_KP, 0, 0);
 
   private final Debouncer _beamDebouncer = new Debouncer(0.3, DebounceType.kRising);
 
-  private boolean _wasDisconnected = false;
   private boolean _holdNote = false;
 
   /** Represents the state of the shooter's flywheels (speaker shoot, amp, nothing). */
@@ -72,8 +68,15 @@ public class ShooterSubsystem extends SubsystemBase {
     NeoConfig.configureFollowerNeo(_rightMotor, _leftMotor, true);
 
     TalonFXConfig.configureFalcon(_angleMotor, true);
-    _angleMotor.setPosition(0  * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360);
-    // _angleMotor.setPosition(0);
+
+    // for resetting absolute angle
+    // _angleEncoder.reset();
+    // SmartDashboard.putNumber("ENC OFFSET", _angleEncoder.getPositionOffset());
+
+    _angleEncoderAbsolute.setDutyCycleRange(1.0/1024.0, 1023.0/1024.0);
+    _angleEncoderAbsolute.setDistancePerRotation(360 / Physical.SHOOTER_ENCODER_ANGLE_GEAR_RATIO);
+
+    resetAngle();
 
     // soft limits
     SoftwareLimitSwitchConfigs softLimits = new SoftwareLimitSwitchConfigs();
@@ -81,21 +84,12 @@ public class ShooterSubsystem extends SubsystemBase {
     softLimits.ForwardSoftLimitThreshold = 69 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360;
     softLimits.ReverseSoftLimitThreshold = -25 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360;
 
-    softLimits.ForwardSoftLimitEnable = false;
-    softLimits.ReverseSoftLimitEnable = false;
+    softLimits.ForwardSoftLimitEnable = true;
+    softLimits.ReverseSoftLimitEnable = true;
 
     _angleMotor.getConfigurator().apply(softLimits);
 
     _angleController.setTolerance(1);
-
-    // for resetting
-    // _angleEncoder.reset();
-    // SmartDashboard.putNumber("ENC OFFSET", _angleEncoder.getPositionOffset());
-
-    _angleEncoder.setDutyCycleRange(1.0/1024.0, 1023.0/1024.0);
-    _angleEncoder.setDistancePerRotation(360 / Physical.SHOOTER_ANGLE_GEAR_RATIO);
-    _angleEncoder.setConnectedFrequencyThreshold(500);
-    // _angleEncoder.setPositionOffset(Encoders.SHOOTER_ANGLE_OFFSET);
   }
 
   @Override
@@ -103,15 +97,18 @@ public class ShooterSubsystem extends SubsystemBase {
     boolean beamBroken = _beamDebouncer.calculate(true); // TODO: beam break input here
     _holdNote = beamBroken ? true : _holdNote;
 
-    if (!_wasDisconnected) _wasDisconnected = _angleEncoder.isConnected();
-
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("SHOOTER SETPOINT", _angleController.getSetpoint());
     SmartDashboard.putNumber("SHOOTER ANGLE", getAngle());
-    SmartDashboard.putNumber("SHOOTER ANGLE ENCODER", _angleEncoder.getDistance());
+    SmartDashboard.putNumber("SHOOTER ANGLE ENCODER", _angleEncoderAbsolute.getDistance());
     SmartDashboard.putNumber("SHOOTER PERCENT OUTPUT", _leftMotor.get());
     SmartDashboard.putNumber("SHOOTER ANGULAR VELOCITY", getAngularVelocity());
-    SmartDashboard.putBoolean("ENCODER CONNECTED", _angleEncoder.isConnected());
+  }
+
+  // for resetting the shooter's angle
+  private void resetAngle() {
+    double absolutePosition = _angleEncoderAbsolute.getDistance() - 80;
+    _angleMotor.setPosition(absolutePosition * Physical.SHOOTER_ANGLE_GEAR_RATIO / 360);
   }
 
   /**
@@ -146,21 +143,17 @@ public class ShooterSubsystem extends SubsystemBase {
   /** Set the angle of the shooter in degrees. MUST be called repeatedly. */
   public void setAngle(double angleDegrees) {
     double pid = MathUtil.clamp(
-      _angleController.calculate(getAngle(), angleDegrees), // test
+      _angleController.calculate(getAngle(), angleDegrees),
       -Constants.Speeds.SHOOTER_ANGLE_MAX_SPEED,
       Constants.Speeds.SHOOTER_ANGLE_MAX_SPEED
     );
-
-    if (!_angleEncoder.isConnected()) pid = 0;
 
     driveAngle(pid);
   }
 
   /** Get the nglengle of the shooter in degrees. */
   public double getAngle() {
-    // return _angleMotor.getPosition().getValueAsDouble() / Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO * 360;
-    // return (_angleEncoder.getDistance() / 1024) / Physical.SHOOTER_ANGLE_GEAR_RATIO * 360;
-    return _angleEncoder.getDistance() - 80;
+    return _angleMotor.getPosition().getValueAsDouble() / Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO * 360;
   }
 
   /** Returns the angular velocity of the motor. (deg/sec) */
@@ -178,14 +171,7 @@ public class ShooterSubsystem extends SubsystemBase {
    * included).
    */
   public void driveAngle(double speed) {
-    if ((getAngle() >= 65 && speed > 0) || (getAngle() <= -25 && speed < 0)) {
-      speed = 0;
-    }
-
     double ff = UtilFuncs.FromVolts(_angleFeed.calculate(Math.toRadians(getAngle()), 0));
-
-    if (!_angleEncoder.isConnected()) ff = 0;
-
     _angleMotor.set(ff + speed);
     // _angleMotor.set(0);
   }
