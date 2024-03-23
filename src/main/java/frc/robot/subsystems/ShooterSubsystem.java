@@ -54,7 +54,7 @@ public class ShooterSubsystem extends SubsystemBase {
   private final Debouncer _beamDebouncer = new Debouncer(0.3, DebounceType.kRising);
   private final Encoder _incremental = new Encoder(1, 2, false, Encoder.EncodingType.k2X);
 
-  private double _shooterTrim = 0;
+  private double _shooterTrim = 1.55;
 
   private boolean _holdNote = false;
 
@@ -193,7 +193,7 @@ public class ShooterSubsystem extends SubsystemBase {
    */
   public void driveAngle(double speed) {
     double ff = UtilFuncs.FromVolts(_angleFeed.calculate(Math.toRadians(getAngle()), 0));
-    System.out.println(ff + speed);
+    // System.out.println(ff + speed);
     _angleMotor.set(ff + speed);
     // _angleMotor.set(0);
   }
@@ -205,6 +205,9 @@ public class ShooterSubsystem extends SubsystemBase {
 
   /** Sets the state of the shooter. */
   public void setShooterState(ShooterState state) {
+    SmartDashboard.putString("SHOOTER STATE", state.toString());
+    spinShooter(0.3);
+
     switch (state) {
       case SHOOT:
         if (UtilFuncs.ShotVector().getNorm() > FieldConstants.SHOOTER_SLOW_THRESHOLD) { 
@@ -220,9 +223,12 @@ public class ShooterSubsystem extends SubsystemBase {
 
       case INTAKE:
         spinShooter(Speeds.SHOOTER_INTAKE_SPEED);
+        break;
 
       case IDLE:
-        spinShooter(0);
+        // spinShooter(0);
+        spinShooter(Speeds.SHOOTER_IDLE_SPEED);
+        break;
 
       case NONE:
         stopShooter();

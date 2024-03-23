@@ -9,6 +9,7 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.PID;
 import frc.robot.Constants.Speeds;
@@ -47,7 +48,7 @@ public class SetHeading extends Command {
     _xSpeed = xSpeed;
     _ySpeed = ySpeed;
 
-    _headingController.setTolerance(2);
+    _headingController.setTolerance(3);
     _headingController.enableContinuousInput(-180, 180);
 
     addRequirements(_swerve);
@@ -70,6 +71,8 @@ public class SetHeading extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    SmartDashboard.putData(_headingController);
+
     double rotationVelocity = MathUtil.clamp(
       _headingController.calculate(_swerve.getHeading().getDegrees(), _heading.getAsDouble()),
       -Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED,

@@ -178,9 +178,7 @@ public class RobotContainer {
         _swerveSubsystem,
         _shooterSubsystem,
         _elevatorSubsystem,
-        _ledSubsystem,
-        () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.05),
-        () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.05)
+        _ledSubsystem
       )
     );
   }

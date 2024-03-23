@@ -56,7 +56,7 @@ public final class Constants {
 
   public static class Speeds {
     public static final double SWERVE_DRIVE_SLOW_COEFF = .6; // Default driving speed
-    public static final double SWERVE_DRIVE_FAST_COEFF = 1;
+    public static final double SWERVE_DRIVE_FAST_COEFF = .95;
 
     public static final double SWERVE_DRIVE_MAX_SPEED = 4; // meters per second
     public static final double SWERVE_DRIVE_MAX_ANGULAR_SPEED = Math.PI * 1.8; // TODO: Get this value
@@ -65,7 +65,7 @@ public final class Constants {
     public static final double SHOOTER_SLOW_SPIN_SPEED = 1;
     public static final double SHOOTER_AMP_SPEED = 0.2;
     public static final double SHOOTER_INTAKE_SPEED = -.15;
-    public static final double SHOOTER_IDLE_SPEED = 0.1;
+    public static final double SHOOTER_IDLE_SPEED = 0.45;
 
     public static final double SHOOTER_ANGLE_MAX_SPEED = 0.3;
     public static final double ELEVATOR_MAX_SPEED = 1;
@@ -133,8 +133,8 @@ public final class Constants {
     public static final double ELEVATOR_KP = 5.2;
     public static final double ELEVATOR_KD = 0.2;
 
-    public static final double SWERVE_HEADING_KP = 0.025;
-    public static final double SWERVE_HEADING_KD = 0.0025;
+    public static final double SWERVE_HEADING_KP = 0.15;
+    public static final double SWERVE_HEADING_KD = 0.01;
   }
 
 
