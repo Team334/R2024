@@ -85,6 +85,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   /** A boolean for whether the swerve is field oriented or not. */
   public boolean fieldOriented = false;
 
+  private double _swerveTrim = 0;
+
   StructArrayPublisher<SwerveModuleState> publisher = NetworkTableInstance.getDefault()
       .getStructArrayTopic("MyStates", SwerveModuleState.struct).publish();
 
@@ -155,6 +157,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         builder.addBooleanProperty("Swerve FAST", () -> _drivingState == DrivingSpeeds.FAST, null);
       }
     });
+
+    SmartDashboard.putNumber("SWERVE TRIM", _swerveTrim);
   }
 
   @Override
@@ -168,6 +172,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("ROBOT X POSE", getPose().getX());
     SmartDashboard.putNumber("ROBOT Y POSE", getPose().getY());
+
+    _swerveTrim = SmartDashboard.getNumber("SWERVE TRIM", _swerveTrim);
 
     // Update the bot's pose
     _estimator.update(getHeadingRaw(), new SwerveModulePosition[]{
@@ -369,7 +375,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     Translation2d distanceVec = shotVector();
     double heading = MathUtil.inputModulus(distanceVec.getAngle().getDegrees(), -180, 180);
     
-    return heading;
+    return heading + _swerveTrim;
   }
 
   public void pivotMotor(Translation2d pivotPoint) {

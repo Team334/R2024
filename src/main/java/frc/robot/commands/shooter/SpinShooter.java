@@ -40,7 +40,10 @@ public class SpinShooter extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    if (!_runOnce && _state != ShooterState.AMP) _shooter.setShooterState(ShooterState.IDLE);
+    if (!_runOnce && _state == ShooterState.AMP) _shooter.setShooterState(ShooterState.NONE);
+  }
 
   // Returns true when the command should end.
   @Override

@@ -128,12 +128,10 @@ public class RobotContainer {
       new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.OUTTAKE)
     );
 
-    Runnable stopShooter = () -> _shooterSubsystem.stopShooter();
-
     // operator bindings
-    _operatorController.L1().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.SHOOT).handleInterrupt(stopShooter));
-    _operatorController.L2().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.AMP).handleInterrupt(stopShooter));
-    _operatorController.R2().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.INTAKE).handleInterrupt(stopShooter));
+    _operatorController.L1().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.SHOOT));
+    _operatorController.L2().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.AMP));
+    _operatorController.R2().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.INTAKE));
 
     _operatorController.square().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE));
     _operatorController.circle().whileTrue(feedOut);
@@ -192,6 +190,7 @@ public class RobotContainer {
    */
   public void teleopInit() {
     _swerveSubsystem.fieldOriented = true;
+    _shooterSubsystem.setShooterState(ShooterState.IDLE);
   }
 
   /** @return The Command to schedule for auton. */

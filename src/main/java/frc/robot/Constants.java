@@ -65,6 +65,7 @@ public final class Constants {
     public static final double SHOOTER_SLOW_SPIN_SPEED = 1;
     public static final double SHOOTER_AMP_SPEED = 0.2;
     public static final double SHOOTER_INTAKE_SPEED = -.15;
+    public static final double SHOOTER_IDLE_SPEED = 0.1;
 
     public static final double SHOOTER_ANGLE_MAX_SPEED = 0.3;
     public static final double ELEVATOR_MAX_SPEED = 1;
@@ -153,16 +154,22 @@ public final class Constants {
     
     static {
       SHOOTER_DISTANCE_ANGLE.put(1.755, 43.78);
-
+      SHOOTER_DISTANCE_ANGLE.put(1.823, 43.44);
+      SHOOTER_DISTANCE_ANGLE.put(2.543, 38.15);
+      SHOOTER_DISTANCE_ANGLE.put(3.149, 35.13);
       SHOOTER_DISTANCE_ANGLE.put(3.500, 28.27);
+      SHOOTER_DISTANCE_ANGLE.put(3.807, 33.56);
     };
 
     public static final InterpolatingDoubleTreeMap ELEVATOR_DISTANCE_HEIGHT = new InterpolatingDoubleTreeMap();
 
     static {
       ELEVATOR_DISTANCE_HEIGHT.put(1.755, 0.061);
-
+      ELEVATOR_DISTANCE_HEIGHT.put(1.823, 0.031);
+      ELEVATOR_DISTANCE_HEIGHT.put(2.543, 0.024);
+      ELEVATOR_DISTANCE_HEIGHT.put(3.149, 0.029);
       ELEVATOR_DISTANCE_HEIGHT.put(3.500, 0.010);
+      ELEVATOR_DISTANCE_HEIGHT.put(3.807, 0.009);
     }
   }
 

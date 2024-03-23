@@ -27,6 +27,8 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   private boolean _usingClimberFeed = false;
 
+  private double _elevatorTrim = 0;
+
   /** Creates a new ElevatorSubsystem . */
   public ElevatorSubsystem() {
     TalonFXConfig.configureFalcon(_leftMotor, true);
@@ -43,6 +45,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     _leftMotor.getConfigurator().apply(softLimits);
 
     _heightController.setTolerance(0.01);
+
+    SmartDashboard.putNumber("ELEVATOR TRIM", _elevatorTrim);
   }
 
   @Override
@@ -52,6 +56,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("ELEVATOR SETPOINT", _heightController.getSetpoint());
     SmartDashboard.putNumber("ELEVATOR HEIGHT METERS", getHeight());
     SmartDashboard.putNumber("ELEVATOR PERCENT OUTPUT", _leftMotor.get());
+
+    _elevatorTrim = SmartDashboard.getNumber("ELEVATOR TRIM", _elevatorTrim);
   }
 
   /**
@@ -61,7 +67,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     double distance = UtilFuncs.ShotVector().getNorm();
     double height = Presets.ELEVATOR_DISTANCE_HEIGHT.get(distance);
 
-    return height;
+    return height + _elevatorTrim;
   }
 
   /**

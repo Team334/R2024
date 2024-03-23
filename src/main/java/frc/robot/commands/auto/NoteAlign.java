@@ -37,7 +37,9 @@ public class NoteAlign extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    _swerve.fieldOriented = false;
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -51,9 +53,9 @@ public class NoteAlign extends Command {
     );
 
     _swerve.driveChassis(new ChassisSpeeds(
-      _xSpeed.getAsDouble(),
+      -_xSpeed.getAsDouble(),
       _ySpeed.getAsDouble(),
-      rotationVelocity 
+      rotationVelocity
     ));
   }
 
@@ -61,6 +63,7 @@ public class NoteAlign extends Command {
   @Override
   public void end(boolean interrupted) {
     _swerve.driveChassis(new ChassisSpeeds());
+    _swerve.fieldOriented = true;
   }
 
   // Returns true when the command should end.
