@@ -54,6 +54,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private boolean _holdNote = false;
 
+  private final boolean ABSOLUTE_RESET = false;
+
   /** Represents the state of the shooter's flywheels (speaker shoot, amp, nothing). */
   public enum ShooterState {
     SHOOT,
@@ -100,15 +102,21 @@ public class ShooterSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("SHOOTER SETPOINT", _angleController.getSetpoint());
     SmartDashboard.putNumber("SHOOTER ANGLE", getAngle());
-    SmartDashboard.putNumber("SHOOTER ANGLE ENCODER", _angleEncoderAbsolute.getDistance());
+    SmartDashboard.putNumber("SHOOTER ABSOLUTE ENCODER", _angleEncoderAbsolute.getDistance() - 80);
     SmartDashboard.putNumber("SHOOTER PERCENT OUTPUT", _leftMotor.get());
-    SmartDashboard.putNumber("SHOOTER ANGULAR VELOCITY", getAngularVelocity());
   }
 
   // for resetting the shooter's angle
   private void resetAngle() {
-    double absolutePosition = _angleEncoderAbsolute.getDistance() - 80;
-    _angleMotor.setPosition(absolutePosition * Physical.SHOOTER_ANGLE_GEAR_RATIO / 360);
+    double resetAngle;
+  
+    if (ABSOLUTE_RESET) {
+      resetAngle = _angleEncoderAbsolute.getDistance() - 80;
+    } else {
+      resetAngle = 0;
+    }
+
+    _angleMotor.setPosition(resetAngle * Physical.SHOOTER_ANGLE_GEAR_RATIO / 360);
   }
 
   /**

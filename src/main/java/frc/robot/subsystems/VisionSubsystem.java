@@ -101,7 +101,7 @@ public class VisionSubsystem extends SubsystemBase {
     double[] botpose_array = botpose_entry.getDoubleArray(new double[11]);
 
     double distance = botpose_array[9];
-    SmartDashboard.putNumber("DISTANCEZ", distance);
+    SmartDashboard.putNumber("TAG DISTANCE", distance);
     if (distance > FieldConstants.TAG_DISTANCE_THRESHOLD) return Optional.empty();
 
     return Optional.of(botpose_array);

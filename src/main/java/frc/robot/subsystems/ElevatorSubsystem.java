@@ -52,7 +52,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("ELEVATOR SETPOINT", _heightController.getSetpoint());
     SmartDashboard.putNumber("ELEVATOR HEIGHT METERS", getHeight());
     SmartDashboard.putNumber("ELEVATOR PERCENT OUTPUT", _leftMotor.get());
-    SmartDashboard.putNumber("ELEVATOR VELOCITY", getVelocity());
   }
 
   /**

@@ -116,7 +116,6 @@ public class RobotContainer {
     _autonChooser = AutoBuilder.buildAutoChooser();
 
     SmartDashboard.putData("AUTON CHOOSER", _autonChooser);
-    SmartDashboard.putBoolean("AUTOAIM REACHED", false);
   }
 
   // to configure button bindings
