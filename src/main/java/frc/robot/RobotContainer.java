@@ -136,7 +136,7 @@ public class RobotContainer {
     _operatorController.square().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE));
     _operatorController.circle().whileTrue(feedOut);
     _operatorController.triangle().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.OUTTAKE));
-    _operatorController.cross().whileTrue(new FeedActuate(_intakeSubsystem, FeedMode.INTAKE));
+    _operatorController.cross().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.INTAKE));
 
     _operatorController.R1().whileTrue(
       Commands.parallel(
