@@ -1,6 +1,7 @@
 /* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot.utils;
 
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.MathUtil;
@@ -51,17 +52,7 @@ public class SwerveModule {
   public SwerveModule(String name, int driveMotorId, int rotationMotorId, int encoderId) {
     _driveMotor = new TalonFX(driveMotorId);
     _rotationMotor = new TalonFX(rotationMotorId);
-
-    // NO NEED FOR THIS CODE ANYMORE, FIGURED HOW TO DO OFFSETS IN PHOENIX TUNER
-    // new stuff because CTRE update
-    // MagnetSensorConfigs encoderConfig = new MagnetSensorConfigs();
-    // encoderConfig.AbsoluteSensorRange =
-    // AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
-    // encoderConfig.MagnetOffset = (angleOffset / 180) / 2;
-
     _encoder = new CANcoder(encoderId);
-
-    // _encoder.getConfigurator().apply(encoderConfig);
 
     _name = name;
 
@@ -72,12 +63,29 @@ public class SwerveModule {
 
     TalonFXConfig.configureFalcon(_driveMotor, false);
     TalonFXConfig.configureFalcon(_rotationMotor, true);
+
+    // TODO: make sure this works
+    CurrentLimitsConfigs currentConfig = new CurrentLimitsConfigs();
+
+    currentConfig.SupplyCurrentLimit = 60;
+    currentConfig.SupplyCurrentThreshold = 30;
+    currentConfig.SupplyTimeThreshold = 0.9;
+
+    currentConfig.StatorCurrentLimit = 120;
+
+    currentConfig.SupplyCurrentLimitEnable = false;
+    currentConfig.StatorCurrentLimitEnable = false;
+
+    _driveMotor.getConfigurator().apply(currentConfig);
   }
 
   /** Display's this module's info on SmartDashboard through a supplied builder. */
   public void displayInfo(SendableBuilder builder) {
     builder.addDoubleProperty(_name + " Angle", () -> getAngle(), null);
     builder.addDoubleProperty(_name + " Velocity", () -> getDriveVelocity(), null);
+
+    builder.addDoubleProperty(_name + " Drive Supply Current", () -> _driveMotor.getSupplyCurrent().getValueAsDouble(), null);
+    builder.addDoubleProperty(_name + " Drive Stator Current", () -> _driveMotor.getStatorCurrent().getValueAsDouble(), null);
   }
 
   /**

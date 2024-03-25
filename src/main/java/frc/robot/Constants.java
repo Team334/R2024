@@ -149,7 +149,6 @@ public final class Constants {
     public static final double SHOOTER_AMP_HANDOFF = 50;
     public static final double ELEVATOR_AMP_HANDOFF = 0.04;
 
-    // TODO: get values for these
     public static final InterpolatingDoubleTreeMap SHOOTER_DISTANCE_ANGLE = new InterpolatingDoubleTreeMap();
     
     static {
