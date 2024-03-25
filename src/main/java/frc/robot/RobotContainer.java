@@ -59,7 +59,6 @@ public class RobotContainer {
   // private final CommandPS4Controller _operatorController = new CommandPS4Controller(Constants.Ports.OPERATOR_CONTROLLER);
   private final CommandPS5Controller _operatorController = new CommandPS5Controller(Constants.Ports.OPERATOR_CONTROLLER);
 
-  // private final Command
 
   // slew rate limiters applied to joysticks
   private final SlewRateLimiter _driveFilterLeftX = new SlewRateLimiter(4);
@@ -120,10 +119,6 @@ public class RobotContainer {
 
   // to configure button bindings
   private void configureBindings() {
-    Command safeFeedIn = new SetShooter(_shooterSubsystem, () -> Presets.ACTUATE_SHOOTER_ANGLE).andThen(
-      new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE)
-    );
-
     Command feedOut = new FeedActuate(_intakeSubsystem, ActuatorState.OUT).onlyWhile(() -> !_intakeSubsystem.atDesiredActuatorState()).andThen(
       new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.OUTTAKE)
     );
@@ -148,9 +143,11 @@ public class RobotContainer {
     // driver bindings
     _driveController.L1().onTrue(Commands.runOnce(_swerveSubsystem::toggleSpeed, _swerveSubsystem));
     _driveController.R1().onTrue(Commands.runOnce(() -> _swerveSubsystem.fieldOriented = !_swerveSubsystem.fieldOriented, _swerveSubsystem));
-    _driveController.triangle().onTrue(Commands.runOnce(() -> _swerveSubsystem.resetGyro(), _swerveSubsystem));
     _driveController.cross().whileTrue(new BrakeSwerve(_swerveSubsystem, _ledSubsystem));
 
+    // TESTING ONLY!!!
+    _driveController.triangle().onTrue(Commands.runOnce(() -> _swerveSubsystem.resetGyro(180), _swerveSubsystem));
+    
     // TESTING ONLY!!!
     _driveController.circle().onTrue(Commands.runOnce(() -> {
       Optional<Pose2d> pose = _visionSubsystem.getBotpose();
@@ -165,8 +162,6 @@ public class RobotContainer {
         _shooterSubsystem, 
         _elevatorSubsystem,
         _ledSubsystem,
-        // () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.05),
-        // () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.05),
         () -> (UtilFuncs.GetAlliance() == Alliance.Red) ? 0 : 180,
         () -> Presets.CLOSE_SHOOTER_ANGLE, 
         () -> Presets.CLOSE_ELEVATOR_HEIGHT

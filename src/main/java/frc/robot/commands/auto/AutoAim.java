@@ -64,7 +64,7 @@ public class AutoAim extends ParallelCommandGroup {
   }
 
   /** 
-   * Creates a new AutoAim2. <strong>(CALCULATED TELEOP)</strong>
+   * Creates a new AutoAim2. <strong>(FOR CALCULATED TELEOP)</strong>
    * 
    * This command will auto-aim to calculated setpoints repeatedly.
    */
@@ -80,7 +80,7 @@ public class AutoAim extends ParallelCommandGroup {
   }
 
   /** 
-   * Creates a new AutoAim2. <strong>(PRESET TELEOP)</strong>
+   * Creates a new AutoAim2. <strong>(FOR PRESET TELEOP)</strong>
    * 
    * This command will auto-aim to preset setpoints repeatedly.
    */
@@ -99,7 +99,7 @@ public class AutoAim extends ParallelCommandGroup {
   }
 
   /** 
-   * Creates a new AutoAim2. <strong>(CALCULATED AUTON)</strong>
+   * Creates a new AutoAim2. <strong>(FOR CALCULATED AUTON)</strong>
    * 
    * This command will auto-aim to calculated setpoints once.
    */
@@ -113,7 +113,7 @@ public class AutoAim extends ParallelCommandGroup {
   }
 
   /** 
-   * Creates a new AutoAim2. <strong>(PRESET AUTON)</strong>
+   * Creates a new AutoAim2. <strong>(FOR PRESET AUTON)</strong>
    * 
    * This command will auto-aim to preset setpoints once.
    */

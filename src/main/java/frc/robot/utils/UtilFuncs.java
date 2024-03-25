@@ -4,7 +4,6 @@ package frc.robot.utils;
 import java.util.function.Supplier;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -19,6 +18,9 @@ public final class UtilFuncs {
   private static AprilTagFieldLayout _field;
   private static Supplier<Translation2d> _shotVectorSupplier;
 
+  private static Pose3d SPEAKER_RED_POSE;
+  private static Pose3d SPEAKER_BLUE_POSE;
+
   /**
    * Loads the AprilTag field.
    */
@@ -30,6 +32,9 @@ public final class UtilFuncs {
     }
 
     _field.setOrigin(OriginPosition.kBlueAllianceWallRightSide);
+
+    SPEAKER_RED_POSE = _field.getTagPose(FieldConstants.SPEAKER_TAG_RED).get();
+    SPEAKER_BLUE_POSE = _field.getTagPose(FieldConstants.SPEAKER_TAG_BLUE).get();
   }
 
   /**
@@ -41,9 +46,9 @@ public final class UtilFuncs {
     Pose3d pose;
 
     if (GetAlliance() == Alliance.Red) {
-      pose =  _field.getTagPose(FieldConstants.SPEAKER_TAG_RED).get();
+      pose =  SPEAKER_RED_POSE;
     } else {
-      pose = _field.getTagPose(FieldConstants.SPEAKER_TAG_BLUE).get();
+      pose = SPEAKER_BLUE_POSE;
     }
 
     return new Pose3d(

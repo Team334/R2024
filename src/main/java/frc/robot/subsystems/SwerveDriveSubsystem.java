@@ -290,11 +290,11 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     return states;
   }
 
-  /** Resets the pose estimator's heading of the drive to 0. */
-  public void resetGyro() {
+  /** Resets the pose estimator's heading of the drive. */
+  public void resetGyro(double heading) {
     Pose2d current_pose = getPose();
     Pose2d new_pose = new Pose2d(current_pose.getTranslation().getX(), current_pose.getTranslation().getY(),
-        Rotation2d.fromDegrees(180));
+        Rotation2d.fromDegrees(heading));
 
     resetPose(new_pose);
   }

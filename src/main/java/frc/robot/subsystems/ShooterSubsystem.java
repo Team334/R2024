@@ -3,8 +3,6 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import javax.sound.sampled.Port;
-
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
@@ -15,18 +13,14 @@ import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Constants.Encoders;
 import frc.robot.Constants.FeedForward;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.PID;
 import frc.robot.Constants.Physical;
-import frc.robot.Constants.Ports;
 import frc.robot.Constants.Presets;
 import frc.robot.Constants.Speeds;
 import frc.robot.utils.UtilFuncs;
@@ -46,19 +40,16 @@ public class ShooterSubsystem extends SubsystemBase {
   private final TalonFX _angleMotor = new TalonFX(Constants.CAN.SHOOTER_ANGLE);
   
   private final RelativeEncoder _leftEncoder = _leftMotor.getEncoder();
-  // private final DutyCycleEncoder _angleEncoderAbsolute = new DutyCycleEncoder(Ports.ANGLE_ENCODER);
+  private final Encoder _revShooterEncoder = new Encoder(1, 2, false, Encoder.EncodingType.k2X);
 
   private final ArmFeedforward _angleFeed = new ArmFeedforward(0, FeedForward.SHOOTER_ANGLE_KG, 0);
   private final PIDController _angleController = new PIDController(PID.SHOOTER_ANGLE_KP, 0, 0);
 
   private final Debouncer _beamDebouncer = new Debouncer(0.3, DebounceType.kRising);
-  private final Encoder _incremental = new Encoder(1, 2, false, Encoder.EncodingType.k2X);
 
   private double _shooterTrim = 1.55;
 
   private boolean _holdNote = false;
-
-  private final boolean ABSOLUTE_RESET = false;
 
   /** Represents the state of the shooter's flywheels (speaker shoot, amp, nothing). */
   public enum ShooterState {
@@ -76,15 +67,9 @@ public class ShooterSubsystem extends SubsystemBase {
 
     TalonFXConfig.configureFalcon(_angleMotor, true);
 
-    _incremental.setDistancePerPulse((360.0 / Physical.SHOOTER_ENCODER_ANGLE_GEAR_RATIO)/8192.0);
-    _incremental.reset();
+    _revShooterEncoder.setDistancePerPulse((360.0 / Physical.SHOOTER_ENCODER_ANGLE_GEAR_RATIO)/8192.0);
+    _revShooterEncoder.reset();
 
-    // for resetting absolute angle
-    // _angleEncoder.reset();
-    // SmartDashboard.putNumber("ENC OFFSET", _angleEncoder.getPositionOffset());
-
-    // _angleEncoderAbsolute.setDutyCycleRange(1.0/1024.0, 1023.0/1024.0);
-    // _angleEncoderAbsolute.setDistancePerRotation(360 / Physical.SHOOTER_ENCODER_ANGLE_GEAR_RATIO);
     resetAngle();
 
     // soft limits
@@ -111,9 +96,8 @@ public class ShooterSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("SHOOTER SETPOINT", _angleController.getSetpoint());
     SmartDashboard.putNumber("SHOOTER ANGLE", getAngle());
-    // SmartDashboard.putNumber("SHOOTER ABSOLUTE ENCODER", _angleEncoderAbsolute.getDistance() - 80);
     SmartDashboard.putNumber("SHOOTER PERCENT OUTPUT", _leftMotor.get());
-    SmartDashboard.putNumber("SHOOTER INCREMENTAL", _incremental.getDistance());
+    SmartDashboard.putNumber("SHOOTER INCREMENTAL ENCODER", _revShooterEncoder.getDistance());
     SmartDashboard.putBoolean("SHOOTER REVVED", false);
 
     _shooterTrim = SmartDashboard.getNumber("SHOOTER TRIM", _shooterTrim);
@@ -121,14 +105,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   // for resetting the shooter's angle
   private void resetAngle() {
-    double resetAngle;
-  
-    if (ABSOLUTE_RESET) {
-      // resetAngle = _angleEncoderAbsolute.getDistance() - 80;
-    } else {
-      resetAngle = 0;
-    }
-
+    double resetAngle = 0;
     _angleMotor.setPosition(resetAngle * Physical.SHOOTER_ANGLE_GEAR_RATIO / 360);
   }
 
