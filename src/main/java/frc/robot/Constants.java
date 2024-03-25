@@ -65,7 +65,7 @@ public final class Constants {
     public static final double SHOOTER_SLOW_SPIN_SPEED = 1;
     public static final double SHOOTER_AMP_SPEED = 0.2;
     public static final double SHOOTER_INTAKE_SPEED = -.15;
-    public static final double SHOOTER_IDLE_SPEED = 0.45;
+    public static final double SHOOTER_IDLE_SPEED = 0.3;
 
     public static final double SHOOTER_ANGLE_MAX_SPEED = 0.3;
     public static final double ELEVATOR_MAX_SPEED = 1;
@@ -73,7 +73,7 @@ public final class Constants {
     public static final double INTAKE_FEED_SPEED = 0.6; // TODO: Get this
     public static final double OUTTAKE_FEED_SPEED = -0.4;
 
-    public static final double INTAKE_ACTUATE_MAX_SPEED = 0.3;
+    public static final double INTAKE_ACTUATE_MAX_SPEED = 0.6;
   }
 
   public static class Physical {
