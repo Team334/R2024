@@ -2,6 +2,7 @@
 package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.auto.AutonShoot;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.IntakeSubsystem.ActuatorState;
 import frc.robot.subsystems.IntakeSubsystem.FeedMode;
@@ -47,15 +48,15 @@ public class FeedActuate extends Command {
     _intake.feed(_feedMode);
     _intake.actuate(_actuatorState);
 
-    if (_feedMode == FeedMode.OUTTAKE) _intake.resetHasNote();
+    // if not squished (and revved), can't shoot, else can 
+    if (_runOnce) AutonShoot.canShoot = false;
+    else AutonShoot.canShoot = true;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     _intake.actuate(_actuatorState);
-
-    // if (_feedMode == FeedMode.INTAKE && _intake.hasNote()) _intake.feed(FeedMode.NONE);
   }
 
   // Called once the command ends or is interrupted.

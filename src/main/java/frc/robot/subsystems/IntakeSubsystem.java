@@ -2,22 +2,15 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkAbsoluteEncoder;
-import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.PID;
@@ -30,17 +23,8 @@ import frc.robot.utils.configs.NeoConfig;
 public class IntakeSubsystem extends SubsystemBase {
   private final CANSparkMax _feedMotor, _actuatorMotor;
   private final PIDController _actuatorController = new PIDController(PID.INTAKE_ACTUATE_KP, 0, 0);
-  // private final ProfiledPIDController _actuatorController = new ProfiledPIDController(
-  //   0.05,
-  //   0,
-  //   0,
-  //   new TrapezoidProfile.Constraints(22, 50)
-  // );
 
   private final RelativeEncoder _actuatorEncoder;
-  private final RelativeEncoder _feedEncoder;
-
-  private final Debouncer _feedDebouncer = new Debouncer(0.3, DebounceType.kRising);
 
   /** How to feed (in or out). */
   public enum FeedMode {
@@ -52,7 +36,6 @@ public class IntakeSubsystem extends SubsystemBase {
     STOWED, OUT, NONE
   }
 
-  private boolean _hasNote = false;
 
   /** Creates a new IntakeSubsystem. */
   public IntakeSubsystem() {
@@ -61,8 +44,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
     _actuatorEncoder = _actuatorMotor.getEncoder();
     _actuatorEncoder.setPosition(0);
-
-    _feedEncoder = _feedMotor.getEncoder();
 
     _actuatorController.setTolerance(0.5);
 
@@ -90,20 +71,6 @@ public class IntakeSubsystem extends SubsystemBase {
    */
   public double getActuator() {
     return _actuatorEncoder.getPosition();
-  }
-
-  /**
-   * Resets the feed's knowledge of the note.
-   */
-  public void resetHasNote() {
-    _hasNote = false;
-  }
-
-  /**
-   * Boolean for whether the intake is has the note.
-   */
-  public boolean hasNote() {
-    return _hasNote;
   }
 
   /**
@@ -142,17 +109,6 @@ public class IntakeSubsystem extends SubsystemBase {
     }
   }
 
-  // public void setAngle(double angle){
-  //   double out = 0;
-
-  //    out = MathUtil.clamp(
-  //         _actuatorController.calculate(getActuator(), angle),
-  //         -Constants.Speeds.INTAKE_ACTUATE_MAX_SPEED,
-  //         Constants.Speeds.INTAKE_ACTUATE_MAX_SPEED);
-
-  //   _actuatorMotor.set(out);
-  // }
-
   /**
    * Feed in/out of the intake.
    *
@@ -180,13 +136,9 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    boolean stalling = _feedDebouncer.calculate(_feedMotor.getOutputCurrent() > 50);
-    _hasNote = stalling ? true : _hasNote;
-
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("ACTUATOR ENCODER", getActuator());
     SmartDashboard.putNumber("ACTUATOR PERCENT OUTPUT", _actuatorMotor.get());
     SmartDashboard.putNumber("FEED CURRENT OUTPUT", _feedMotor.getOutputCurrent());
-    SmartDashboard.putBoolean("HAS NOTE", hasNote());
   }
 }

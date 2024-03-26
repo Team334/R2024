@@ -31,7 +31,11 @@ import frc.robot.utils.UtilFuncs;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutonShoot extends SequentialCommandGroup {
-  private static boolean _preloadShot = false;
+  /** 
+   * Indicates whether the note in the intake can be shot right away, this means that the note is already squished, and
+   * that the shooter is already revved enough.
+   */
+  public static boolean canShoot = false;
 
   /** Creates a new AutonShoot. */
   public AutonShoot(
@@ -45,11 +49,11 @@ public class AutonShoot extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new ParallelCommandGroup(
-        // This parallel command will squeeze the note while revving up the shooter. It will only run for the preloaded note. 
+        // This command will squeeze the note while revving up the shooter. It will only run if the note can't be shot right away. 
         new ParallelCommandGroup(
-          new SpinShooter(shooter, ShooterState.SHOOT, true).andThen(new WaitCommand(3)),
+          new SpinShooter(shooter, ShooterState.SHOOT, true).andThen(new WaitCommand(2)),
           new FeedActuate(intake, FeedMode.INTAKE).withTimeout(1)
-        ).onlyIf(() -> !_preloadShot).andThen(() -> _preloadShot = true),
+        ).onlyIf(() -> !canShoot),
 
         new AutoAim(swerve, shooter, elevator, leds)
       ),

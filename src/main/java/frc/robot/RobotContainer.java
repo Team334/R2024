@@ -77,16 +77,18 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    NamedCommands.registerCommand("actuateOut", new SetShooter(_shooterSubsystem, () -> Presets.ACTUATE_SHOOTER_ANGLE).andThen(
-      new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE))
-    );
+    // brings the actuator out, while intaking in
+    NamedCommands.registerCommand("actuateOut", new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE));
 
+    // brings the actuator in, while intaking and revving up the shooter for a shot, this will take time and is done while driving
     NamedCommands.registerCommand("actuateIn", new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.INTAKE).alongWith(
       new SpinShooter(_shooterSubsystem, ShooterState.SHOOT, true)
     ));
 
-    // NamedCommands.registerCommand("actuateInFast",);
+    // brings the actuator in immediately, this is fast and shooting can't be done immediately 
+    NamedCommands.registerCommand("actuateInFast", new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.NONE, true));
 
+    // revs and intakes if necessary while aiming, then shoots
     NamedCommands.registerCommand("shoot", new AutonShoot(_shooterSubsystem, _elevatorSubsystem, _ledSubsystem, _swerveSubsystem, _intakeSubsystem));
 
     // Drive/Operate default commands
