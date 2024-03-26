@@ -41,13 +41,13 @@ public class LimelightHelper {
   }
 
   /** 
-   * Returns the neural target from the limelight.
+   * Returns the neural targets from the limelight.
    * 
    */
-  public JsonNode getNeuralTarget() {
+  public ArrayNode getNeuralTargets() {
     ArrayNode targets = (ArrayNode) getJson().get("Results").get("Detector");
 
-    return targets.get(0);
+    return targets;
   }
 
   /**

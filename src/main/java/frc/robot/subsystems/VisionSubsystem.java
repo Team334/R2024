@@ -1,6 +1,8 @@
 /* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot.subsystems;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Optional;
 
 import javax.swing.text.html.Option;
@@ -183,8 +185,38 @@ public class VisionSubsystem extends SubsystemBase {
   }
 
   public double[] getNoteAngles() {
-    JsonNode target = _intake.getNeuralTarget();
-    double[] angles = {target.get("tx").asDouble(), target.get("ty").asDouble()};
+    ArrayNode targets = _intake.getNeuralTargets();
+
+    // Collections.sort(
+    //   targets, new Comparator() {
+    //     @Override
+    //     public int compare(JsonNode noteA, JsonNode noteB) {
+    //       double noteA_area = noteA.get("ta").asDouble();
+    //       double noteB_area = noteB.get("ta").asDouble();
+
+    //       if (noteA_area > noteB_area) {
+    //         return 1;
+    //       }
+
+    //       if (noteB_area > noteA_area) {
+    //         return -1;
+    //       }
+
+    //       else {
+    //         return 0;
+    //       }
+    //     }
+    //   }
+    // );
+
+    // return {0, 0};
+
+    JsonNode target = targets.get(0);
+
+    double[] angles = {
+      target.get("tx").asDouble(),
+      target.get("ty").asDouble()
+    };
 
     return angles;
   }
