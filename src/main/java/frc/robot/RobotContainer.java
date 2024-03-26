@@ -85,6 +85,8 @@ public class RobotContainer {
       new SpinShooter(_shooterSubsystem, ShooterState.SHOOT, true)
     ));
 
+    // NamedCommands.registerCommand("actuateInFast",);
+
     NamedCommands.registerCommand("shoot", new AutonShoot(_shooterSubsystem, _elevatorSubsystem, _ledSubsystem, _swerveSubsystem, _intakeSubsystem));
 
     // Drive/Operate default commands
@@ -119,7 +121,7 @@ public class RobotContainer {
 
   // to configure button bindings
   private void configureBindings() {
-    Command feedOut = new FeedActuate(_intakeSubsystem, ActuatorState.OUT).onlyWhile(() -> !_intakeSubsystem.atDesiredActuatorState()).andThen(
+    Command feedOut = new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.NONE, true).andThen(
       new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.OUTTAKE)
     );
 

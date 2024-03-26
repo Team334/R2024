@@ -12,14 +12,23 @@ public class FeedActuate extends Command {
   private final ActuatorState _actuatorState;
   private final FeedMode _feedMode;
 
+  private final boolean _runOnce;
+
   /** Creates a new FeedActuate. */
-  public FeedActuate(IntakeSubsystem intake, ActuatorState actuatorState, FeedMode feedMode) {
+  public FeedActuate(IntakeSubsystem intake, ActuatorState actuatorState, FeedMode feedMode, boolean runOnce) {
     _intake = intake;
 
     _actuatorState = actuatorState;
     _feedMode = feedMode;
 
+    _runOnce = runOnce;
+
     addRequirements(_intake);
+  }
+
+  /** Default FeedActuate that runs forever. */
+  public FeedActuate(IntakeSubsystem intake, ActuatorState actuatorState, FeedMode feedMode) {
+    this(intake, actuatorState, feedMode, false);
   }
 
   /** FeedActuate to only control actuator state. */
@@ -30,10 +39,6 @@ public class FeedActuate extends Command {
   /** FeedActuate to only control feed mode. */
   public FeedActuate(IntakeSubsystem intake, FeedMode feedMode) {
     this(intake, ActuatorState.NONE, feedMode);
-  }
-
-  public FeedActuate(IntakeSubsystem intake) {
-    this(intake, FeedMode.NONE);
   }
 
   // Called when the command is initially scheduled.
@@ -63,6 +68,6 @@ public class FeedActuate extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return _runOnce && _intake.atDesiredActuatorState();
   }
 }

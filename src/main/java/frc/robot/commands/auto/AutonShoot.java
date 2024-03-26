@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.Presets;
 import frc.robot.commands.intake.FeedActuate;
 import frc.robot.commands.shooter.SpinShooter;
@@ -43,14 +44,14 @@ public class AutonShoot extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      // new FeedActuate(intake, FeedMode.INTAKE).onlyIf(() -> _preloadShot).withTimeout(1),
-
-      // Parallel command group that aims, revs, and squeezes note. ONLY APPLIES TO PRELOADED NOTE.
       new ParallelCommandGroup(
-        new SpinShooter(shooter, ShooterState.SHOOT, true).alongWith(new FeedActuate(intake, FeedMode.INTAKE).withTimeout(1)).onlyIf(
-          () -> !_preloadShot
-        ).andThen(() -> _preloadShot = true),
-        new AutoAim(swerve, shooter, elevator, leds)//.withTimeout(3)
+        // This parallel command will squeeze the note while revving up the shooter. It will only run for the preloaded note. 
+        new ParallelCommandGroup(
+          new SpinShooter(shooter, ShooterState.SHOOT, true).andThen(new WaitCommand(3)),
+          new FeedActuate(intake, FeedMode.INTAKE).withTimeout(1)
+        ).onlyIf(() -> !_preloadShot).andThen(() -> _preloadShot = true),
+
+        new AutoAim(swerve, shooter, elevator, leds)
       ),
 
       new FeedActuate(intake, FeedMode.OUTTAKE).withTimeout(1),
