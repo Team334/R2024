@@ -53,7 +53,7 @@ public class AutonShoot extends SequentialCommandGroup {
         new ParallelCommandGroup(
           new SpinShooter(shooter, ShooterState.SHOOT, true).andThen(new WaitCommand(2)),
           new FeedActuate(intake, FeedMode.INTAKE).withTimeout(1)
-        ).onlyIf(() -> !canShoot),
+        ).onlyIf(() -> !canShoot).andThen(() -> canShoot = true),
 
         new AutoAim(swerve, shooter, elevator, leds)
       ),

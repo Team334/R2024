@@ -70,8 +70,8 @@ public class SwerveModule {
 
     currentConfig.StatorCurrentLimit = 120;
 
-    currentConfig.SupplyCurrentLimitEnable = false;
-    currentConfig.StatorCurrentLimitEnable = false;
+    currentConfig.SupplyCurrentLimitEnable = true;
+    currentConfig.StatorCurrentLimitEnable = true;
 
     _driveMotor.getConfigurator().apply(currentConfig);
   }

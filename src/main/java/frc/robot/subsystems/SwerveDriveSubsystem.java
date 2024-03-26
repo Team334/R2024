@@ -85,7 +85,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   /** A boolean for whether the swerve is field oriented or not. */
   public boolean fieldOriented = false;
 
-  private double _swerveTrim = 0;
+  private double _swerveTrim = 8;
 
   StructArrayPublisher<SwerveModuleState> publisher = NetworkTableInstance.getDefault()
       .getStructArrayTopic("MyStates", SwerveModuleState.struct).publish();

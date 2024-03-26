@@ -47,7 +47,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private final Debouncer _beamDebouncer = new Debouncer(0.3, DebounceType.kRising);
 
-  private double _shooterTrim = 1.55;
+  private double _shooterTrim = 3;
 
   private boolean _holdNote = false;
 

@@ -73,7 +73,7 @@ public final class Constants {
     public static final double INTAKE_FEED_SPEED = 0.6; // TODO: Get this
     public static final double OUTTAKE_FEED_SPEED = -0.4;
 
-    public static final double INTAKE_ACTUATE_MAX_SPEED = 0.6;
+    public static final double INTAKE_ACTUATE_MAX_SPEED = 0.4;
   }
 
   public static class Physical {
@@ -152,7 +152,7 @@ public final class Constants {
     public static final InterpolatingDoubleTreeMap SHOOTER_DISTANCE_ANGLE = new InterpolatingDoubleTreeMap();
     
     static {
-      SHOOTER_DISTANCE_ANGLE.put(1.359, 48.75);
+      SHOOTER_DISTANCE_ANGLE.put(0.735, 57.50);
       SHOOTER_DISTANCE_ANGLE.put(1.755, 43.78);
       SHOOTER_DISTANCE_ANGLE.put(1.823, 43.44);
       SHOOTER_DISTANCE_ANGLE.put(2.543, 38.15);
@@ -164,7 +164,7 @@ public final class Constants {
     public static final InterpolatingDoubleTreeMap ELEVATOR_DISTANCE_HEIGHT = new InterpolatingDoubleTreeMap();
 
     static {
-      ELEVATOR_DISTANCE_HEIGHT.put(1.359, 0.078);
+      ELEVATOR_DISTANCE_HEIGHT.put(0.735, 0.078);
       ELEVATOR_DISTANCE_HEIGHT.put(1.755, 0.061);
       ELEVATOR_DISTANCE_HEIGHT.put(1.823, 0.031);
       ELEVATOR_DISTANCE_HEIGHT.put(2.543, 0.024);
