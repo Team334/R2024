@@ -51,7 +51,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private boolean _holdNote = false;
 
-  /** Represents the state of the shooter's flywheels (speaker shoot, amp, nothing). */
+  /** Represents the state of the shooter's flywheels (speaker shoot, amp, idle, nothing). */
   public enum ShooterState {
     SHOOT,
     AMP,
@@ -182,9 +182,6 @@ public class ShooterSubsystem extends SubsystemBase {
 
   /** Sets the state of the shooter. */
   public void setShooterState(ShooterState state) {
-    SmartDashboard.putString("SHOOTER STATE", state.toString());
-    spinShooter(0.3);
-
     switch (state) {
       case SHOOT:
         if (UtilFuncs.ShotVector().getNorm() > FieldConstants.SHOOTER_SLOW_THRESHOLD) { 
@@ -203,7 +200,6 @@ public class ShooterSubsystem extends SubsystemBase {
         break;
 
       case IDLE:
-        // spinShooter(0);
         spinShooter(Speeds.SHOOTER_IDLE_SPEED);
         break;
 

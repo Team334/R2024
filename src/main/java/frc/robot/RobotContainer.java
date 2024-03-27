@@ -148,7 +148,6 @@ public class RobotContainer {
     _driveController.L1().onTrue(Commands.runOnce(_swerveSubsystem::toggleSpeed, _swerveSubsystem));
     _driveController.R1().onTrue(Commands.runOnce(() -> _swerveSubsystem.fieldOriented = !_swerveSubsystem.fieldOriented, _swerveSubsystem));
     _driveController.cross().whileTrue(new BrakeSwerve(_swerveSubsystem, _ledSubsystem));
-    _driveController.square().onTrue(Commands.runOnce(() -> AutonShoot.canShoot = false));
 
     // TESTING ONLY!!!
     _driveController.triangle().onTrue(Commands.runOnce(() -> _swerveSubsystem.resetGyro(180), _swerveSubsystem));
@@ -193,8 +192,9 @@ public class RobotContainer {
 
   /** @return The Command to schedule for auton. */
   public Command getAutonCommand() {
+    AutonShoot.reset();
     _swerveSubsystem.fieldOriented = false; // make sure swerve is robot-relative for pathplanner to work
-    _shooterSubsystem.setShooterState(ShooterState.IDLE);
+    _shooterSubsystem.setShooterState(ShooterState.SHOOT);
 
     return _autonChooser.getSelected();
     // return null;
