@@ -46,15 +46,9 @@ public class LimelightHelper {
    * Returns the neural targets from the limelight.
    * 
    */
-  public ArrayList<JsonNode> getNeuralTargets() {
+  public ArrayNode getNeuralTargets() {
     ArrayNode targets = (ArrayNode) getJson().get("Results").get("Detector");
-    ArrayList<JsonNode> out = new ArrayList<>();
-
-    for (JsonNode t : targets) {
-      out.add(t);
-    }
-
-    return out;
+    return targets;
   }
 
   /**

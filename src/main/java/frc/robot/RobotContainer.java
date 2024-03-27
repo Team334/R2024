@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import frc.robot.Constants.Presets;
 import frc.robot.commands.auto.AutoAim;
 import frc.robot.commands.auto.AutonShoot;
+import frc.robot.commands.auto.NoteAlign;
 import frc.robot.commands.elevator.OperateElevator;
 import frc.robot.commands.elevator.SetElevator;
 import frc.robot.commands.intake.FeedActuate;
@@ -159,6 +160,13 @@ public class RobotContainer {
         new Pose2d(pose.get().getX(), pose.get().getY(), _swerveSubsystem.getHeading())
       );
     }, _swerveSubsystem));
+
+    _driveController.options().whileTrue(new NoteAlign(
+      _swerveSubsystem,
+      _visionSubsystem,
+      () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.05),
+      () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.05)
+    ));
 
     _driveController.L2().whileTrue(
       new AutoAim(

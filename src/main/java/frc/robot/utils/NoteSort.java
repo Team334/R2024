@@ -12,8 +12,8 @@ public class NoteSort implements Comparator<JsonNode> {
     @Override
     public int compare(JsonNode noteA, JsonNode noteB)
     {
-        double ta_A = noteA.get("ta").asDouble();
-        double ta_B = noteB.get("ta").asDouble();
+        double ta_A = noteA.get("ta").asDouble(0);
+        double ta_B = noteB.get("ta").asDouble(0);
 
         return (int) Math.signum(ta_A - ta_B);
     }

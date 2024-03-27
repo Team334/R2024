@@ -1,6 +1,7 @@
 /* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot.subsystems;
 
+import java.beans.beancontext.BeanContextProxy;
 import java.sql.Driver;
 import java.util.Optional;
 
@@ -165,6 +166,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   public void periodic() {
     publisher.set(states);
 
+    updateBotpose();
+
     SmartDashboard.putNumber("Gyro RAW", getHeadingRaw().getDegrees());
     SmartDashboard.putBoolean("Field Oriented", fieldOriented);
     SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
@@ -175,6 +178,12 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     _swerveTrim = SmartDashboard.getNumber("SWERVE TRIM", _swerveTrim);
 
+    // field icon updates
+    _field.setRobotPose(getPose());
+    SmartDashboard.putData("FIELD", _field);
+  }
+
+  private void updateBotpose() {
     // Update the bot's pose
     _estimator.update(getHeadingRaw(), new SwerveModulePosition[]{
       _frontLeft.getPosition(),
@@ -183,24 +192,57 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       _backLeft.getPosition()
     });
 
-    Optional<Pose2d> visionBotpose = _visionSubsystem.getBotpose();
-    Optional<Pose2d> resetBotpose = _visionSubsystem.resetPose();
+    Optional<double[]> visionBotpose = _visionSubsystem.getValidNTEntry();
 
-    SmartDashboard.putBoolean("VISION VALID", visionBotpose.isPresent());
-
-    // RESET BOTPOSE COMPLETELY
-    // if (resetBotpose.isPresent() && DriverStation.isTeleopEnabled()) {
-    //   resetPose(new Pose2d(resetBotpose.get().getX(), resetBotpose.get().getY(), getHeading()));
-    // }
+    SmartDashboard.putBoolean("SEES TAG", false);
 
     // UPDATE BOTPOSE WITH VISION
     if (visionBotpose.isPresent()) {
-      _estimator.addVisionMeasurement(visionBotpose.get(), _visionSubsystem.getLatency());
-    }
+      SmartDashboard.putBoolean("SEES TAG", true);
+      double[] botpose = visionBotpose.get();
 
-    // field icon updates
-    _field.setRobotPose(getPose());
-    SmartDashboard.putData("FIELD", _field);
+      double tagDistance = botpose[9];
+      double tagCount = botpose[7];
+
+      SmartDashboard.putNumber("DISTANCE TAGG", tagDistance);
+      SmartDashboard.putNumber("TAG COUNNTTT", tagCount);
+
+      double xyStds = 0.9;
+      double yawStd = 9999999;
+
+      // really good, low std devs
+      // if (tagCount >= 2) {
+      //   xyStds = 0.5;
+      // }
+
+      // one tag, good distance
+      if (tagDistance <= FieldConstants.TAG_DISTANCE_THRESHOLD) {
+        xyStds = 0.7;
+      }
+
+      // on tag, mid distance
+      else if (tagDistance <= 5) {
+        xyStds = 1;
+      }
+
+      else {
+        return;
+      }
+
+      double botposeX = botpose[0];
+      double botposeY = botpose[1];
+      double botposeYaw = botpose[5];
+
+      SmartDashboard.putNumber("STD", xyStds);
+      
+      System.out.println("UPDATING POSE");
+
+      _estimator.addVisionMeasurement(new Pose2d(
+        botposeX,
+        botposeY,
+        Rotation2d.fromDegrees(botposeYaw)
+      ), _visionSubsystem.getLatency(), VecBuilder.fill(xyStds, xyStds, yawStd));
+    }
   }
 
   // to setup talon orchestra

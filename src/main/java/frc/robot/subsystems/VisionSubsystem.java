@@ -51,6 +51,12 @@ public class VisionSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    Optional<double[]> noteAngles = getNoteAngles();
+
+    if (noteAngles.isPresent()) {
+      SmartDashboard.putNumber("NOTE TX", noteAngles.get()[0]);
+      SmartDashboard.putNumber("NOTE TY", noteAngles.get()[1]);
+    }
   }
 
   /**
@@ -62,6 +68,21 @@ public class VisionSubsystem extends SubsystemBase {
     double cl = _main.getEntry("cl").getDouble(0);
 
     return Timer.getFPGATimestamp() - (tl / 1000.0) - (cl / 1000.0);
+  }
+
+  /** Return a boolean for whether a note is seen. */
+  public boolean isNoteVisible() {
+    double tv = _intake.getEntry("tv").getDouble(0);
+
+    if (tv == 0) {
+      return false;
+    }
+
+    if (tv == 1) {
+      return true;
+    }
+
+    return false;
   }
 
   /** Return a boolean for whether a tag is seen. */
@@ -93,7 +114,7 @@ public class VisionSubsystem extends SubsystemBase {
   }
 
   /**
-   * Returns the NT "botpose_wpiblue" as an array from the limelight if it is valid (good distance). 
+   * Returns the NT "botpose_wpiblue" as an array from the limelight. 
    * 
    * @return NT "botpose_wpiblue" limelight topic.
    * 
@@ -106,10 +127,6 @@ public class VisionSubsystem extends SubsystemBase {
     if (!botpose_entry.exists()) return Optional.empty();
 
     double[] botpose_array = botpose_entry.getDoubleArray(new double[11]);
-
-    double distance = botpose_array[9];
-    SmartDashboard.putNumber("TAG DISTANCE", distance);
-    if (distance > FieldConstants.TAG_DISTANCE_THRESHOLD) return Optional.empty();
 
     return Optional.of(botpose_array);
   }
@@ -189,17 +206,19 @@ public class VisionSubsystem extends SubsystemBase {
     return angles;
   }
 
-  public double[] getNoteAngles() {
-    ArrayList<JsonNode> targets = _intake.getNeuralTargets();
-    Arrays.sort(targets.toArray(new JsonNode[targets.size()]), new NoteSort());
+  public Optional<double[]> getNoteAngles() {
+    if (!isNoteVisible()) return Optional.empty();
 
+    ArrayNode targets = _intake.getNeuralTargets();
     JsonNode target = targets.get(0);
 
+    if (target == null) return Optional.empty();
+
     double[] angles = {
-      target.get("tx").asDouble(),
-      target.get("ty").asDouble()
+      target.get("tx").asDouble(0),
+      target.get("ty").asDouble(0)
     };
 
-    return angles;
+    return Optional.of(angles);
   }
 }
