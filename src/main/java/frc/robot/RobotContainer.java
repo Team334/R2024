@@ -51,7 +51,7 @@ public class RobotContainer {
   private final SwerveDriveSubsystem _swerveSubsystem = new SwerveDriveSubsystem(_visionSubsystem);
   private final ElevatorSubsystem _elevatorSubsystem = new ElevatorSubsystem();
   private final IntakeSubsystem _intakeSubsystem = new IntakeSubsystem();
-  private final LEDSubsystem _ledSubsystem = new LEDSubsystem(1, 20);
+  private final LEDSubsystem _ledSubsystem = new LEDSubsystem(0, 100);
   private final ShooterSubsystem _shooterSubsystem = new ShooterSubsystem();
 
   // controllers (for driver and operator)
