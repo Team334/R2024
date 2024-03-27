@@ -17,14 +17,10 @@ public class SpinShooter extends Command {
   private final ShooterState _state;
   private final boolean _runOnce;
 
-  private final Timer _revTimer;
-
   public SpinShooter(ShooterSubsystem shooter, ShooterState state, boolean runOnce) {
     _shooter = shooter;
     _state = state;
     _runOnce = runOnce;
-
-    _revTimer = new Timer();
 
     // NO SHOOTER SUBSYSTEM REQUIREMENT TO NOT MESS WITH SHOOTER ANGLING COMMANDS
   }
@@ -38,18 +34,11 @@ public class SpinShooter extends Command {
   @Override
   public void initialize() {
     _shooter.setShooterState(_state);
-
-    _revTimer.start();
-
-    // If not set to shoot state then not revved (AUTON ONLY).
-    if (_runOnce && _state != ShooterState.SHOOT) _revTimer.stop();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    AutonShoot.isRevved = _revTimer.hasElapsed(2);
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
