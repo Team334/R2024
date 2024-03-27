@@ -253,6 +253,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
    * @see ChassisSpeeds (wpilib chassis speeds class)
    */
   public void driveChassis(ChassisSpeeds chassisSpeeds) {
+    chassisSpeeds.vxMetersPerSecond = MathUtil.applyDeadband(chassisSpeeds.vxMetersPerSecond, .01);
+    chassisSpeeds.vyMetersPerSecond = MathUtil.applyDeadband(chassisSpeeds.vyMetersPerSecond, .01);
+    chassisSpeeds.omegaRadiansPerSecond = MathUtil.applyDeadband(chassisSpeeds.omegaRadiansPerSecond, Math.PI / 20);
+
     // IMPORTANT: X-axis and Y-axis are flipped (based on wpilib coord system)
     if (fieldOriented) {
       double relativeHeading = getHeading().getDegrees() + (UtilFuncs.GetAlliance() == Alliance.Red ? 180 : 0);

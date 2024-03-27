@@ -121,6 +121,8 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     ff = UtilFuncs.FromVolts(ff);
 
+    speed = MathUtil.applyDeadband(speed, 0.08);
+
     _leftMotor.set(ff + speed);
   }
 

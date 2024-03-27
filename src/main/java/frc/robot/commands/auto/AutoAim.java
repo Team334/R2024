@@ -76,7 +76,7 @@ public class AutoAim extends ParallelCommandGroup {
     DoubleSupplier xSpeed,
     DoubleSupplier ySpeed
   ) {
-    this(swerve, shooter, elevator, leds, xSpeed, ySpeed, swerve::speakerHeading, shooter::speakerAngle, elevator::speakerHeight, true);
+    this(swerve, shooter, elevator, leds, xSpeed, ySpeed, swerve::speakerHeading, shooter::speakerAngle, elevator::speakerHeight, false);
   }
 
   /** 

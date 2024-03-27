@@ -160,8 +160,8 @@ public class RobotContainer {
       );
     }, _swerveSubsystem));
 
-    _driveController.L2().onTrue(
-      new AutoAim( // TODO: test
+    _driveController.L2().whileTrue(
+      new AutoAim(
         _swerveSubsystem,
         _shooterSubsystem, 
         _elevatorSubsystem,
@@ -177,7 +177,9 @@ public class RobotContainer {
         _swerveSubsystem,
         _shooterSubsystem,
         _elevatorSubsystem,
-        _ledSubsystem
+        _ledSubsystem,
+        () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.05),
+        () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.05)
       )
     );
   }

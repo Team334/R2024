@@ -1,6 +1,8 @@
 /* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot.utils.helpers;
 
+import java.util.ArrayList;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -44,10 +46,15 @@ public class LimelightHelper {
    * Returns the neural targets from the limelight.
    * 
    */
-  public ArrayNode getNeuralTargets() {
+  public ArrayList<JsonNode> getNeuralTargets() {
     ArrayNode targets = (ArrayNode) getJson().get("Results").get("Detector");
+    ArrayList<JsonNode> out = new ArrayList<>();
 
-    return targets;
+    for (JsonNode t : targets) {
+      out.add(t);
+    }
+
+    return out;
   }
 
   /**

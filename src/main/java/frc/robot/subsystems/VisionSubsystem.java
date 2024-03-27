@@ -1,8 +1,12 @@
 /* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot.subsystems;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 
 import javax.swing.text.html.Option;
@@ -19,6 +23,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.FieldConstants;
+import frc.robot.utils.NoteSort;
 import frc.robot.utils.UtilFuncs;
 import frc.robot.utils.helpers.LimelightHelper;
 
@@ -185,31 +190,8 @@ public class VisionSubsystem extends SubsystemBase {
   }
 
   public double[] getNoteAngles() {
-    ArrayNode targets = _intake.getNeuralTargets();
-
-    // Collections.sort(
-    //   targets, new Comparator() {
-    //     @Override
-    //     public int compare(JsonNode noteA, JsonNode noteB) {
-    //       double noteA_area = noteA.get("ta").asDouble();
-    //       double noteB_area = noteB.get("ta").asDouble();
-
-    //       if (noteA_area > noteB_area) {
-    //         return 1;
-    //       }
-
-    //       if (noteB_area > noteA_area) {
-    //         return -1;
-    //       }
-
-    //       else {
-    //         return 0;
-    //       }
-    //     }
-    //   }
-    // );
-
-    // return {0, 0};
+    ArrayList<JsonNode> targets = _intake.getNeuralTargets();
+    Arrays.sort(targets.toArray(new JsonNode[targets.size()]), new NoteSort());
 
     JsonNode target = targets.get(0);
 
