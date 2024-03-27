@@ -20,7 +20,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "c get bot c"
+            "pathName": "c get mid c"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "actuateInFast"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "l get top c"
           }
         },
         {

@@ -38,7 +38,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "l get top"
+            "pathName": "l get top s"
           }
         },
         {
@@ -56,6 +56,6 @@
       ]
     }
   },
-  "folder": "line",
+  "folder": "MAIN",
   "choreoAuto": false
 }
