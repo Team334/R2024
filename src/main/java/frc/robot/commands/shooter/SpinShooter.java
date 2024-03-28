@@ -1,9 +1,7 @@
 /* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot.commands.shooter;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.auto.AutonShoot;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.ShooterSubsystem.ShooterState;
 

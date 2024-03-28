@@ -1,8 +1,6 @@
 /* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot.utils.helpers;
 
-import java.util.ArrayList;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -45,6 +43,7 @@ public class LimelightHelper {
   /** 
    * Returns the neural targets from the limelight.
    * 
+   * @see ArrayNode
    */
   public ArrayNode getNeuralTargets() {
     ArrayNode targets = (ArrayNode) getJson().get("Results").get("Detector");
@@ -52,12 +51,12 @@ public class LimelightHelper {
   }
 
   /**
-   * Returns a JsonNode array containing found tags and their info.
+   * Returns the AprilTag targets from the limelight.
    *
-   * @see JsonNode
+   * @see ArrayNode
    */
-  public JsonNode getTags() {
-    JsonNode tags = getJson().get("Results").get("Fiducial");
+  public ArrayNode getTagTargets() {
+    ArrayNode tags = (ArrayNode) getJson().get("Results").get("Fiducial");
 
     return tags;
   }
@@ -70,7 +69,7 @@ public class LimelightHelper {
    * @see JsonNode
    */
   public JsonNode getTag(int ID) {
-    JsonNode tags = getTags();
+    JsonNode tags = getTagTargets();
 
     for (JsonNode tag : tags) {
       if (tag.get("fID").asInt() == ID) {

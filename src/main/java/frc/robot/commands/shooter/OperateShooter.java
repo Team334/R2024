@@ -9,7 +9,6 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.ShooterSubsystem.ShooterState;
 
 public class OperateShooter extends Command {
   private final ShooterSubsystem _shooter;

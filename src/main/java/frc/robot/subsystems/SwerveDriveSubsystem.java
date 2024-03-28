@@ -1,8 +1,6 @@
 /* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot.subsystems;
 
-import java.beans.beancontext.BeanContextProxy;
-import java.sql.Driver;
 import java.util.Optional;
 
 import com.ctre.phoenix6.Orchestra;
@@ -24,20 +22,13 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.FieldConstants;
-import frc.robot.Constants.Physical;
-import frc.robot.Constants.Presets;
-import frc.robot.subsystems.ShooterSubsystem.ShooterState;
-import frc.robot.utils.BNO055;
 import frc.robot.utils.SwerveModule;
 import frc.robot.utils.UtilFuncs;
 
@@ -192,7 +183,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       _backLeft.getPosition()
     });
 
-    Optional<double[]> visionBotpose = _visionSubsystem.getValidNTEntry();
+    Optional<double[]> visionBotpose = _visionSubsystem.getBotposeBlue();
 
     SmartDashboard.putBoolean("SEES TAG", false);
 
@@ -202,46 +193,30 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       double[] botpose = visionBotpose.get();
 
       double tagDistance = botpose[9];
-      double tagCount = botpose[7];
 
       SmartDashboard.putNumber("DISTANCE TAGG", tagDistance);
-      SmartDashboard.putNumber("TAG COUNNTTT", tagCount);
 
-      double xyStds = 0.9;
+      double xyStds;
       double yawStd = 9999999;
 
-      // really good, low std devs
-      // if (tagCount >= 2) {
-      //   xyStds = 0.5;
-      // }
-
-      // one tag, good distance
-      if (tagDistance <= FieldConstants.TAG_DISTANCE_THRESHOLD) {
-        xyStds = 0.7;
+      // good distance
+      if (tagDistance <= FieldConstants.CLOSE_TAG_DISTANCE_THRESHOLD) {
+        xyStds = 0.65;
       }
 
-      // on tag, mid distance
-      else if (tagDistance <= 5) {
-        xyStds = 1;
+      // mid distance
+      else if (tagDistance <= FieldConstants.FAR_TAG_DISTANCE_THRESHOLD) {
+        xyStds = 0.95;
       }
 
       else {
         return;
       }
 
-      double botposeX = botpose[0];
-      double botposeY = botpose[1];
-      double botposeYaw = botpose[5];
-
       SmartDashboard.putNumber("STD", xyStds);
-      
       System.out.println("UPDATING POSE");
 
-      _estimator.addVisionMeasurement(new Pose2d(
-        botposeX,
-        botposeY,
-        Rotation2d.fromDegrees(botposeYaw)
-      ), _visionSubsystem.getLatency(), VecBuilder.fill(xyStds, xyStds, yawStd));
+      _estimator.addVisionMeasurement(UtilFuncs.ToPose(botpose), _visionSubsystem.getLatency(), VecBuilder.fill(xyStds, xyStds, yawStd));
     }
   }
 
@@ -383,35 +358,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     Translation2d distanceVec = speakerTranslation.minus(botTranslation);
 
     return distanceVec;
-  }
-
-  /**
-   * Get the setpoint x and y angles as well as elevater height for auto-aim.
-   * 
-   * @return [xSpeakerAngle, ySpeakerAngle, elevatorHeight]
-   */
-  public double[] speakerSetpoints() {
-    double xSpeakerAngle;
-    double ySpeakerAngle;
-
-    // Pose3d speakerPose = UtilFuncs.GetAlliance() == Alliance.Red ? FieldConstants.SPEAKER_POSE_RED : FieldConstants.SPEAKER_POSE_BLUE;
-    Pose3d speakerPose = UtilFuncs.GetSpeakerPose();
-
-    Translation2d speakerTranslation = new Translation2d(speakerPose.getX(), speakerPose.getY());
-    Translation2d botTranslation = getPose().getTranslation();
-
-    Translation2d distanceVec = speakerTranslation.minus(botTranslation);
-
-    double elevatorHeight = Physical.ELEVATOR_MAX_SHOOT_HEIGHT + (distanceVec.getNorm() * Presets.ELEVATOR_HEIGHT_RATE); // TODO: get values and test
-
-    xSpeakerAngle = MathUtil.inputModulus(distanceVec.getAngle().getDegrees(), -180, 180);
-
-    double zDifference = speakerPose.getZ() - elevatorHeight;
-    ySpeakerAngle = Math.toDegrees(Math.atan(zDifference / distanceVec.getNorm()));
-
-    double[] offsets = {xSpeakerAngle, ySpeakerAngle, elevatorHeight - Physical.ELEVATOR_LOWEST_HEIGHT};
-
-    return offsets;
   }
 
   /**

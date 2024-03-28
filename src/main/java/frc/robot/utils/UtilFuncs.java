@@ -5,7 +5,9 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -21,6 +23,21 @@ public final class UtilFuncs {
   private static Pose3d SPEAKER_RED_POSE;
   private static Pose3d SPEAKER_BLUE_POSE;
 
+  /**
+   * Converts limelight pose data into wpilib "Pose2d".
+   * 
+   * @see Pose2d
+   * 
+   * @param botpose The "wpi_blue" botpose from the limelight.
+   */
+  public static Pose2d ToPose(double[] botpose) {
+    return new Pose2d(
+      botpose[0],
+      botpose[1],
+      Rotation2d.fromDegrees(botpose[5])
+    );
+  }
+  
   /**
    * Loads the AprilTag field.
    */
