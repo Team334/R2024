@@ -45,7 +45,7 @@ public final class Constants {
     public static final int SHOOTER_RIGHT = 13;
     public static final int SHOOTER_ANGLE = 15; // make sure settings are right. something got messed up when trying to fix intake sparkmax
 
-    public static final int ELEVATOR_LEFT = 16; // TODO: Get right can ID's
+    public static final int ELEVATOR_LEFT = 16; 
     public static final int ELEVATOR_RIGHT = 17;
 
     public static final int INTAKE_ACTUATOR = 18; // double check this because we are switching out for a new sparkmax
@@ -58,10 +58,10 @@ public final class Constants {
     public static final double SWERVE_DRIVE_SLOW_COEFF = .6; // Default driving speed
     public static final double SWERVE_DRIVE_FAST_COEFF = .95;
 
-    public static final double SWERVE_DRIVE_MAX_SPEED = 4; // meters per second
+    public static final double SWERVE_DRIVE_MAX_SPEED = 4;
     public static final double SWERVE_DRIVE_MAX_ANGULAR_SPEED = Math.PI * 2.5; // TODO: Get this value
 
-    public static final double SHOOTER_FAST_SPIN_SPEED = 1; // TODO: Get this
+    public static final double SHOOTER_FAST_SPIN_SPEED = 1;
     public static final double SHOOTER_SLOW_SPIN_SPEED = 1;
     public static final double SHOOTER_AMP_SPEED = 0.2;
     public static final double SHOOTER_INTAKE_SPEED = -.15;
@@ -70,7 +70,7 @@ public final class Constants {
     public static final double SHOOTER_ANGLE_MAX_SPEED = 0.3;
     public static final double ELEVATOR_MAX_SPEED = 1;
 
-    public static final double INTAKE_FEED_SPEED = 0.6; // TODO: Get this
+    public static final double INTAKE_FEED_SPEED = 0.6;
     public static final double OUTTAKE_FEED_SPEED = -0.4;
 
     public static final double INTAKE_ACTUATE_MAX_SPEED = 0.4;
@@ -87,9 +87,6 @@ public final class Constants {
 
     public static final double SHOOTER_ANGLE_GEAR_RATIO = 112;
     public static final double SHOOTER_ENCODER_ANGLE_GEAR_RATIO = 2.8;
-    
-    public static final double ELEVATOR_LOWEST_HEIGHT = 0.4; // TODO: Get this value
-    public static final double ELEVATOR_MAX_SHOOT_HEIGHT = .48; // TODO: Get this value
 
     public static final double ELEVATOR_GEAR_RATIO = 25;
     public static final double ELEVATOR_DISTANCE_PER_ROTATION = .09;
@@ -102,8 +99,6 @@ public final class Constants {
   public static class Encoders {
     public static final int INTAKE_STOWED = 0;
     public static final int INTAKE_OUT = 16;
-
-    public static final int SHOOTER_SHOOT_VEL = 10; // TODO: get this?
   }
 
   public static class FeedForward {
@@ -118,7 +113,6 @@ public final class Constants {
 
   public static class PID {
     public static final double MODULE_DRIVE_KP = 0.015;
-    // public static final double MODULE_DRIVE_KP = 0;
     public static final double MODULE_ROTATION_KP = 0.009;
 
     public static final double SHOOTER_ANGLE_KP = 0.04;
@@ -132,6 +126,8 @@ public final class Constants {
 
     public static final double ELEVATOR_KP = 5.2;
     public static final double ELEVATOR_KD = 0.2;
+
+    public static final double NOTE_HEADING_KP = 0.1;
 
     public static final double SWERVE_HEADING_KP = 0.15;
     public static final double SWERVE_HEADING_KD = 0.01;
@@ -178,8 +174,6 @@ public final class Constants {
     public static final int DRIVER_CONTROLLER = 0;
     public static final int OPERATOR_CONTROLLER = 1;
     public static final int LEDS = 0; // pwm port
-
-    public static final int ANGLE_ENCODER = 1; // TODO: GET REAL VALUE
   }
 
   // static field constants

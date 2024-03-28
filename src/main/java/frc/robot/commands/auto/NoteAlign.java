@@ -10,8 +10,8 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.PID;
 import frc.robot.Constants.Speeds;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
@@ -23,7 +23,7 @@ public class NoteAlign extends Command {
   private DoubleSupplier _xSpeed;
   private DoubleSupplier _ySpeed;
 
-  private PIDController _headingController = new PIDController(0.1, 0, 0);
+  private PIDController _headingController = new PIDController(PID.NOTE_HEADING_KP, 0, 0);
 
   /** Creates a new NoteAlign. */
   public NoteAlign(SwerveDriveSubsystem swerve, VisionSubsystem vision, DoubleSupplier xSpeed, DoubleSupplier ySpeed) {
@@ -33,8 +33,6 @@ public class NoteAlign extends Command {
 
     _xSpeed = xSpeed;
     _ySpeed = ySpeed;
-
-    SmartDashboard.putData(_headingController);
 
     addRequirements(_swerve, _vision);
   }
