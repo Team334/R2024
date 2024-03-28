@@ -55,6 +55,10 @@ public class DefaultLED extends Command {
 
       default:
         break;
+      
+      case BRAKE:
+        _leds.blink(Constants.LEDColors.RED, Constants.LEDColors.NOTHING, 0.1);
+        break;
     }
   }
 

@@ -25,7 +25,8 @@ public class LEDSubsystem extends SubsystemBase {
 
   public enum LEDState {
     DEFAULT,
-    AIM
+    AIM,
+    BRAKE
   }
 
   /** Creates a new LEDSubsystem. */
