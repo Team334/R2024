@@ -4,6 +4,7 @@ package frc.robot.subsystems;
 import java.util.Optional;
 
 import com.ctre.phoenix6.Orchestra;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentric;
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
@@ -193,24 +194,36 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     // UPDATE BOTPOSE WITH VISION
     if (visionBotpose.isPresent()) {
       SmartDashboard.putBoolean("SEES TAG", true);
-      double[] botpose = visionBotpose.get();
+      double[] llBotpose = visionBotpose.get();
 
-      double tagDistance = botpose[9];
+      double tagDistance = llBotpose[9];
+      double tagCount = llBotpose[7];
+
+      Pose2d botpose = UtilFuncs.ToPose(llBotpose);
+      double poseDifference = botpose.getTranslation().getDistance(botpose.getTranslation());
 
       SmartDashboard.putNumber("DISTANCE TAGG", tagDistance);
 
       double xyStds;
       double yawStd = 9999999;
 
+      if (tagDistance > FieldConstants.TAG_DISTANCE_THRESHOLD) {
+        return;
+      }
+
+      // good distance, multiple tags
+      if (tagCount >= 2) {
+        xyStds = 0.55;
+      }
+
       // good distance
-      if (tagDistance <= FieldConstants.CLOSE_TAG_DISTANCE_THRESHOLD) {
+      else if (tagDistance > 0.8 && poseDifference >= 0.5) {
         xyStds = 0.65;
       }
 
-      // mid distance
-      else if (tagDistance <= FieldConstants.FAR_TAG_DISTANCE_THRESHOLD) {
-        xyStds = 0.95;
-      }
+      // else if (tagDistance > 0.3 && poseDifference >= 0.3) {
+
+      // }
 
       else {
         return;
@@ -219,7 +232,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       SmartDashboard.putNumber("STD", xyStds);
       System.out.println("UPDATING POSE");
 
-      _estimator.addVisionMeasurement(UtilFuncs.ToPose(botpose), _visionSubsystem.getLatency(), VecBuilder.fill(xyStds, xyStds, yawStd));
+      _estimator.addVisionMeasurement(UtilFuncs.ToPose(llBotpose), _visionSubsystem.getLatency(), VecBuilder.fill(xyStds, xyStds, yawStd));
     }
   }
 
