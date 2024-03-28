@@ -1,33 +1,22 @@
 /* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot.commands.leds;
 
-import java.util.function.BooleanSupplier;
-
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
 import frc.robot.Constants.LEDColors;
 import frc.robot.subsystems.LEDSubsystem;
-import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.utils.UtilFuncs;
 
 /**
  * @author Lucas Ou
  */
 public class DefaultLED extends Command {
-  private final LEDSubsystem _leds;
-
-  private final BooleanSupplier _isAimed;
+  private LEDSubsystem _leds;
 
   /** Creates a new TestLED. */
-  public DefaultLED(
-    LEDSubsystem leds,
-    BooleanSupplier isAimed
-  ) {
+  public DefaultLED(LEDSubsystem leds) {
     // Use addRequirements() here to declare subsystem dependencies.
     _leds = leds;
-    _isAimed = isAimed;
-
     addRequirements(_leds);
   }
 
@@ -39,28 +28,7 @@ public class DefaultLED extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    switch (UtilFuncs.GetLEDs()) {
-      case DEFAULT:
-        _leds.setColor(UtilFuncs.GetAlliance() == Alliance.Red ? LEDColors.RED : LEDColors.BLUE);
-        // 16 side | 19 back
-        // leds.rainbow();
-        break;
-    
-      case AIM:
-        if (!_isAimed.getAsBoolean()) {
-          _leds.blink(Constants.LEDColors.YELLOW, Constants.LEDColors.NOTHING, 0.2);
-        } else {
-          _leds.setColor(Constants.LEDColors.GREEN);
-        }
-        break;
-
-      default:
-        break;
-      
-      case BRAKE:
-        _leds.blink(Constants.LEDColors.RED, Constants.LEDColors.NOTHING, 0.1);
-        break;
-    }
+    _leds.setColor(UtilFuncs.GetAlliance() == Alliance.Red ? LEDColors.RED : LEDColors.BLUE);
   }
 
   // Called once the command ends or is interrupted.

@@ -6,11 +6,7 @@ package frc.robot.commands.auto;
 
 import java.util.function.DoubleSupplier;
 
-import org.ejml.dense.row.decomposition.UtilDecompositons_FDRM;
-
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.elevator.SetElevator;
 import frc.robot.commands.shooter.SetShooter;
 import frc.robot.commands.swerve.SetHeading;
@@ -18,8 +14,6 @@ import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
-import frc.robot.subsystems.LEDSubsystem.LEDState;
-import frc.robot.utils.UtilFuncs;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -59,9 +53,10 @@ public class AutoAim extends ParallelCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      // new SetHeading(swerve, xSpeed, ySpeed, swerveHeading, runOnce),
+      new SetHeading(swerve, xSpeed, ySpeed, swerveHeading, runOnce),
       new SetShooter(shooter, shooterAngle, runOnce),
       new SetElevator(elevator, elevatorHeight, runOnce)
+      // some led command here
     );
   }
 

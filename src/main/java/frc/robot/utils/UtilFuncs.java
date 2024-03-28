@@ -13,7 +13,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Constants.FieldConstants;
-import frc.robot.subsystems.LEDSubsystem.LEDState;
 import frc.robot.utils.helpers.AllianceHelper;
 
 /** Any utility functions are here. */
@@ -23,16 +22,6 @@ public final class UtilFuncs {
 
   private static Pose3d SPEAKER_RED_POSE;
   private static Pose3d SPEAKER_BLUE_POSE;
-
-  private static LEDState _ledState = LEDState.DEFAULT;
-
-  public static void SetLEDs(LEDState ledState) {
-    _ledState = ledState;
-  }
-
-  public static LEDState GetLEDs() {
-    return _ledState;
-  }
 
   /**
    * Converts limelight pose data into wpilib "Pose2d".

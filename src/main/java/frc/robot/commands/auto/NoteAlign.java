@@ -53,12 +53,6 @@ public class NoteAlign extends Command {
       noteX = noteAngles.get()[0];
     }
     
-    if (_headingController.atSetpoint()) {
-
-    } else {
-      
-    }
-
     double rotationVelocity = MathUtil.clamp(
       _headingController.calculate(noteX, 0),
       -Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED,
@@ -82,6 +76,6 @@ public class NoteAlign extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return _headingController.atSetpoint();
   }
 }

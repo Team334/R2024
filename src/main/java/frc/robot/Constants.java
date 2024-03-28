@@ -173,7 +173,7 @@ public final class Constants {
   public static class Ports {
     public static final int DRIVER_CONTROLLER = 0;
     public static final int OPERATOR_CONTROLLER = 1;
-    public static final int LEDS = 1; // pwm port
+    public static final int LEDS = 0; // pwm port
   }
 
   // static field constants
@@ -184,7 +184,6 @@ public final class Constants {
     public static final double SHOOTER_SLOW_THRESHOLD = 2;
 
     public static final double TAG_DISTANCE_THRESHOLD = 3.5;
-    public static final double SINGLE_TAG_DISTANCE_THRESHOLD = 2;
 
     public static final int SPEAKER_TAG_BLUE = 7;
     public static final int SPEAKER_TAG_RED = 4;

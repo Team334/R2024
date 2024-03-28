@@ -8,8 +8,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
-import frc.robot.subsystems.LEDSubsystem.LEDState;
-import frc.robot.utils.UtilFuncs;
 
 /**
  * Creates a natural brake on the swerve drive by facing the modules so they
@@ -49,7 +47,6 @@ public class BrakeSwerve extends Command {
   @Override
   public void initialize() {
     _timer.start();
-    UtilFuncs.SetLEDs(LEDState.BRAKE);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -61,14 +58,13 @@ public class BrakeSwerve extends Command {
         new SwerveModuleState(0, Rotation2d.fromDegrees(-45))};
 
     _swerveDrive.setStates(states);
-    // _leds.blink(Constants.LEDColors.RED, Constants.LEDColors.NOTHING, 0.2); // TESTING ONLY!!!!!!!
+    _leds.blink(Constants.LEDColors.RED, Constants.LEDColors.NOTHING, 0.2); // TESTING ONLY!!!!!!!
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     _timer.stop();
-    UtilFuncs.SetLEDs((LEDState.DEFAULT));
   }
 
   // Returns true when the command should end.

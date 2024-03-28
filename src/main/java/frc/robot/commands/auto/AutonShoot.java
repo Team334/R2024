@@ -6,7 +6,6 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.intake.FeedActuate;
@@ -16,7 +15,6 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
-import frc.robot.subsystems.IntakeSubsystem.ActuatorState;
 import frc.robot.subsystems.IntakeSubsystem.FeedMode;
 import frc.robot.subsystems.ShooterSubsystem.ShooterState;
 import frc.robot.utils.UtilFuncs;
@@ -43,12 +41,16 @@ public class AutonShoot extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new ParallelCommandGroup(
-        new SpinShooter(shooter, ShooterState.SHOOT, true).alongWith(new WaitCommand(2)).andThen(
-          () -> isRevved = true
-        ).andThen(new PrintCommand("DONE REVVING")).onlyIf(() -> !isRevved),
-        // new FeedActuate(intake, ActuatorState.STOWED, FeedMode.INTAKE).withTimeout(1),
+        // This command will squeeze the note while revving up the shooter. It will only run if the note can't be shot right away. 
+        new ParallelCommandGroup(
+          new SpinShooter(shooter, ShooterState.SHOOT, true).andThen(new WaitCommand(2)).andThen(
+            () -> isRevved = true
+          ).onlyIf(() -> !isRevved),
+          new FeedActuate(intake, FeedMode.INTAKE).onlyIf(() -> !isIntaked).withTimeout(1)
+        ),
+
         new AutoAim(swerve, shooter, elevator, leds)
-      ).andThen(new PrintCommand("DONE PRE-SHOT")),
+      ),
 
       new FeedActuate(intake, FeedMode.OUTTAKE).withTimeout(1),
       new SpinShooter(shooter, ShooterState.IDLE, true)
