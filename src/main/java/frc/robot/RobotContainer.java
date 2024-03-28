@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import frc.robot.Constants.Presets;
@@ -141,17 +142,20 @@ public class RobotContainer {
     _operatorController.triangle().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.OUTTAKE));
     _operatorController.cross().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.INTAKE));
 
-    _operatorController.R1().whileTrue(
-      Commands.parallel(
-        new SetShooter(_shooterSubsystem, () -> Presets.SHOOTER_AMP_HANDOFF),
-        new SetElevator(_elevatorSubsystem, () -> Presets.ELEVATOR_AMP_HANDOFF)
-      )
-    );
+    // _operatorController.R1().whileTrue(
+    //   Commands.parallel(
+    //     new SetShooter(_shooterSubsystem, () -> Presets.SHOOTER_AMP_HANDOFF),
+    //     new SetElevator(_elevatorSubsystem, () -> Presets.ELEVATOR_AMP_HANDOFF)
+    //   )
+    // );
 
     // driver bindings
     _driveController.L1().onTrue(Commands.runOnce(_swerveSubsystem::toggleSpeed, _swerveSubsystem));
     _driveController.R1().onTrue(Commands.runOnce(() -> _swerveSubsystem.fieldOriented = !_swerveSubsystem.fieldOriented, _swerveSubsystem));
     _driveController.cross().whileTrue(new BrakeSwerve(_swerveSubsystem, _ledSubsystem));
+    _driveController.square().onTrue(
+      Commands.runOnce(() -> {AutonShoot.isIntaked = false; AutonShoot.isRevved = false;})
+    );
 
     // TESTING ONLY!!!
     _driveController.triangle().onTrue(Commands.runOnce(() -> _swerveSubsystem.resetGyro(180), _swerveSubsystem));

@@ -24,7 +24,7 @@ import frc.robot.utils.UtilFuncs;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class AutoAim extends SequentialCommandGroup {
+public class AutoAim extends ParallelCommandGroup {
   /** 
    * Creates a new AutoAim.
    * 
@@ -59,11 +59,9 @@ public class AutoAim extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new ParallelCommandGroup(
-        new SetHeading(swerve, xSpeed, ySpeed, swerveHeading, runOnce),
-        new SetShooter(shooter, shooterAngle, runOnce),
-        new SetElevator(elevator, elevatorHeight, runOnce)
-      ).beforeStarting(() -> UtilFuncs.SetLEDs(LEDState.AIM)).finallyDo(() -> UtilFuncs.SetLEDs(LEDState.DEFAULT))
+      // new SetHeading(swerve, xSpeed, ySpeed, swerveHeading, runOnce),
+      new SetShooter(shooter, shooterAngle, runOnce),
+      new SetElevator(elevator, elevatorHeight, runOnce)
     );
   }
 
