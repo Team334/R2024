@@ -10,6 +10,7 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -29,6 +30,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.FieldConstants;
+import frc.robot.Constants.PID;
+import frc.robot.Constants.Speeds;
 import frc.robot.utils.SwerveModule;
 import frc.robot.utils.UtilFuncs;
 
@@ -60,7 +63,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   // private final BNO055 _gyro = BNO055.getInstance(BNO055.opmode_t.OPERATION_MODE_IMUPLUS,
   //     BNO055.vector_type_t.VECTOR_EULER);
-  
+  private PIDController _headingController = new PIDController(PID.SWERVE_HEADING_KP, 0, PID.SWERVE_HEADING_KD);
+
   private final AHRS _gyro = new AHRS();
 
   private VisionSubsystem _visionSubsystem;
@@ -113,9 +117,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   public SwerveDriveSubsystem(VisionSubsystem visionSubsystem) {
     _visionSubsystem = visionSubsystem;
 
-    // resetPose(
-    //   new Pose2d(2.52, 5.25, Rotation2d.fromDegrees(180))
-    // ); // for testing
+    _headingController.setTolerance(3);
+    _headingController.enableContinuousInput(-180, 180);
 
     // setupOrchestra();
 
@@ -283,6 +286,35 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     SwerveModuleState[] moduleStates = Constants.Physical.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds,
         _pivotPoint);
     setStates(moduleStates);
+  }
+
+  /**
+   * Return whether the chassis is at the last desired set heading.
+   */
+  public boolean atDesiredHeading() {
+    return _headingController.atSetpoint();
+  }
+
+  /**
+   * Sets the chassis to a desired heading while driving.
+   * 
+   * @param xSpeed X robot speed.
+   * @param ySpeed Y robot speed.
+   * 
+   * @param heading The heading to set to.
+   */
+  public void setHeading(double xSpeed, double ySpeed, double heading) {
+    double rotationVelocity = MathUtil.clamp(
+      _headingController.calculate(getHeading().getDegrees(), heading),
+      -Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED,
+      Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED
+    );
+
+    driveChassis(new ChassisSpeeds(
+      xSpeed,
+      ySpeed,
+      rotationVelocity
+    ));
   }
 
   /**
