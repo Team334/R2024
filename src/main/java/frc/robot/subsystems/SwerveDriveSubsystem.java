@@ -207,6 +207,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       double xyStds;
       double yawStd = 9999999;
 
+      //  bad distance, ignore vision completely
       if (tagDistance > FieldConstants.TAG_DISTANCE_THRESHOLD) {
         return;
       }
@@ -216,14 +217,15 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         xyStds = 0.55;
       }
 
-      // good distance
-      else if (tagDistance > 0.8 && poseDifference >= 0.5) {
-        xyStds = 0.65;
+      // one tag, closer distance, estimated pose is accurate
+      else if (tagDistance <= FieldConstants.SINGLE_TAG_DISTANCE_THRESHOLD && poseDifference >= 0.3) {
+        xyStds = 0.85;
       }
 
-      // else if (tagDistance > 0.3 && poseDifference >= 0.3) {
-
-      // }
+      // one tag, closer distance, estimated pose is inaccurate
+      else if (tagDistance <= FieldConstants.SINGLE_TAG_DISTANCE_THRESHOLD && poseDifference >= 0.5) {
+        xyStds = 0.65;
+      }
 
       else {
         return;
