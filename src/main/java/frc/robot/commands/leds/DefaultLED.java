@@ -42,6 +42,7 @@ public class DefaultLED extends Command {
     switch (UtilFuncs.GetLEDs()) {
       case DEFAULT:
         _leds.setColor(UtilFuncs.GetAlliance() == Alliance.Red ? LEDColors.RED : LEDColors.BLUE);
+        // 16 side | 19 back
         // leds.rainbow();
         break;
     
@@ -54,6 +55,10 @@ public class DefaultLED extends Command {
         break;
 
       default:
+        break;
+      
+      case BRAKE:
+        _leds.blink(Constants.LEDColors.RED, Constants.LEDColors.NOTHING, 0.1);
         break;
     }
   }
