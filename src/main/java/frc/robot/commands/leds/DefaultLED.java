@@ -42,11 +42,12 @@ public class DefaultLED extends Command {
     switch (UtilFuncs.GetLEDs()) {
       case DEFAULT:
         _leds.setColor(UtilFuncs.GetAlliance() == Alliance.Red ? LEDColors.RED : LEDColors.BLUE);
+        // leds.rainbow();
         break;
     
       case AIM:
         if (!_isAimed.getAsBoolean()) {
-          _leds.blink(Constants.LEDColors.YELLOW, Constants.LEDColors.NOTHING, 1);
+          _leds.blink(Constants.LEDColors.YELLOW, Constants.LEDColors.NOTHING, 0.2);
         } else {
           _leds.setColor(Constants.LEDColors.GREEN);
         }
