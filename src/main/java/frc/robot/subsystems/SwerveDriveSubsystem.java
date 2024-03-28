@@ -232,7 +232,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       }
 
       SmartDashboard.putNumber("STD", xyStds);
-      System.out.println("UPDATING POSE");
+      // System.out.println("UPDATING POSE");
 
       _estimator.addVisionMeasurement(UtilFuncs.ToPose(llBotpose), _visionSubsystem.getLatency(), VecBuilder.fill(xyStds, xyStds, yawStd));
     }
