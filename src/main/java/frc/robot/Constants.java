@@ -173,7 +173,7 @@ public final class Constants {
   public static class Ports {
     public static final int DRIVER_CONTROLLER = 0;
     public static final int OPERATOR_CONTROLLER = 1;
-    public static final int LEDS = 0; // pwm port
+    public static final int LEDS = 1; // pwm port
   }
 
   // static field constants

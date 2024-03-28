@@ -23,6 +23,11 @@ public class LEDSubsystem extends SubsystemBase {
 
   private Timer _ledTimer = new Timer();
 
+  public enum LEDState {
+    DEFAULT,
+    AIM
+  }
+
   /** Creates a new LEDSubsystem. */
   public LEDSubsystem(int port, int ledNumber) {
     _ledNumber = ledNumber;
