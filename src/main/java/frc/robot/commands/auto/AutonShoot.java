@@ -23,11 +23,7 @@ import frc.robot.utils.UtilFuncs;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutonShoot extends SequentialCommandGroup {
-  /** If the note is intaked all the way to shoot. */
-  public static boolean isIntaked = false;
-
-  /** If the shooter is revved all the way to shoot. */
-  public static boolean isRevved = false; 
+  public static boolean canShoot = false;
 
   /** Creates a new AutonShoot. */
   public AutonShoot(
@@ -43,13 +39,11 @@ public class AutonShoot extends SequentialCommandGroup {
       new ParallelCommandGroup(
         // This command will squeeze the note while revving up the shooter. It will only run if the note can't be shot right away. 
         new ParallelCommandGroup(
-          new SpinShooter(shooter, ShooterState.SHOOT, true).andThen(new WaitCommand(2)).andThen(
-            () -> isRevved = true
-          ).onlyIf(() -> !isRevved),
-          new FeedActuate(intake, FeedMode.INTAKE).onlyIf(() -> !isIntaked).withTimeout(1)
-        ),
+          new SpinShooter(shooter, ShooterState.SHOOT, true).andThen(new WaitCommand(2)), //.andThen(() -> System.out.println("REVVED")),
+          new FeedActuate(intake, FeedMode.INTAKE).withTimeout(1)//.andThen(() -> System.out.println("INTAKED"))
+        ).onlyIf(() -> !canShoot),
 
-        new AutoAim(swerve, shooter, elevator, leds)
+        new AutoAim(swerve, shooter, elevator, leds) //.withTimeout(1).andThen(() -> System.out.println("AIMED"))
       ),
 
       new FeedActuate(intake, FeedMode.OUTTAKE).withTimeout(1),
@@ -59,8 +53,7 @@ public class AutonShoot extends SequentialCommandGroup {
 
   /** Resets this command for re-testing auton. */
   public static void reset() {
-    isIntaked = false;
-    isRevved  = false;
+    canShoot = false;
   }
 
   private double headingPreset() {

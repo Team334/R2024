@@ -48,9 +48,7 @@ public class FeedActuate extends Command {
     _intake.feed(_feedMode);
     _intake.actuate(_actuatorState);
 
-    // if not squished, can't shoot, else can (FOR AUTON)
-    if (_runOnce && _actuatorState == ActuatorState.STOWED) AutonShoot.isIntaked = false;
-    if (!_runOnce && _actuatorState == ActuatorState.STOWED) AutonShoot.isIntaked = true;
+    AutonShoot.canShoot = !_runOnce;
   }
 
   // Called every time the scheduler runs while the command is scheduled.

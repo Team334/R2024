@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import frc.robot.Constants.Presets;
@@ -205,10 +206,22 @@ public class RobotContainer {
   /** @return The Command to schedule for auton. */
   public Command getAutonCommand() {
     AutonShoot.reset();
-    _swerveSubsystem.fieldOriented = false; // make sure swerve is robot-relative for pathplanner to work
-    _shooterSubsystem.setShooterState(ShooterState.SHOOT);
 
+    _swerveSubsystem.fieldOriented = false; // make sure swerve is robot-relative for pathplanner to work
+    _shooterSubsystem.setShooterState(ShooterState.IDLE);
+
+    // Command test = new SequentialCommandGroup(
+    //   NamedCommands.getCommand("shoot"),
+    //   NamedCommands.getCommand("actuateOut").withTimeout(1),
+    //   NamedCommands.getCommand("actuateInFast"),
+    //   new AutonShoot(_shooterSubsystem, _elevatorSubsystem, _ledSubsystem, _swerveSubsystem, _intakeSubsystem),
+    //   new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE).withTimeout(2),
+    //   NamedCommands.getCommand("actuateIn").withTimeout(2),
+    //   new AutonShoot(_shooterSubsystem, _elevatorSubsystem, _ledSubsystem, _swerveSubsystem, _intakeSubsystem)
+    // );
+
+    // return null
+    // return test;
     return _autonChooser.getSelected();
-    // return null;
   }
 }
