@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.commands.intake.FeedActuate;
 import frc.robot.commands.shooter.SpinShooter;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -36,14 +37,11 @@ public class AutonShoot extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
+      // This command will squeeze the note and rev up the shooter if needed, all while auto-aiming.
       new ParallelCommandGroup(
-        // This command will squeeze the note while revving up the shooter. It will only run if the note can't be shot right away. 
-        new ParallelCommandGroup(
-          new SpinShooter(shooter, ShooterState.SHOOT, true).andThen(new WaitCommand(2)).andThen(() -> System.out.println("REVVED")),
-          new FeedActuate(intake, FeedMode.INTAKE).withTimeout(1).andThen(() -> System.out.println("INTAKED"))
-        ).onlyIf(() -> !intake.hasNoteAuton()),
-
-        new AutoAim(swerve, shooter, elevator, leds).withTimeout(1).andThen(() -> System.out.println("AIMED"))
+        new SpinShooter(shooter, ShooterState.SHOOT, true).andThen(new WaitUntilCommand(shooter::isRevved)),
+        new FeedActuate(intake, FeedMode.INTAKE).withTimeout(1).onlyIf(() -> !intake.hasNoteAuton()),
+        new AutoAim(swerve, shooter, elevator, leds).withTimeout(1)
       ),
 
       new FeedActuate(intake, FeedMode.OUTTAKE).withTimeout(1),

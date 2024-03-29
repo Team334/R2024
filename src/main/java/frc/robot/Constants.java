@@ -62,9 +62,9 @@ public final class Constants {
     public static final double SWERVE_DRIVE_MAX_ANGULAR_SPEED = Math.PI * 2.5; // TODO: Get this value
 
     public static final double SHOOTER_FAST_SPIN_SPEED = 1;
-    public static final double SHOOTER_SLOW_SPIN_SPEED = 1;
+    public static final double SHOOTER_SLOW_SPIN_SPEED = 0.8;
     public static final double SHOOTER_AMP_SPEED = 0.2;
-    public static final double SHOOTER_INTAKE_SPEED = -.15;
+    public static final double SHOOTER_INTAKE_SPEED = -0.15;
     public static final double SHOOTER_IDLE_SPEED = 0.3;
 
     public static final double SHOOTER_ANGLE_MAX_SPEED = 0.3;

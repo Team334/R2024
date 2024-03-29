@@ -14,6 +14,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -46,6 +47,8 @@ public class ShooterSubsystem extends SubsystemBase {
   private final PIDController _angleController = new PIDController(PID.SHOOTER_ANGLE_KP, 0, 0);
 
   private final Debouncer _beamDebouncer = new Debouncer(0.3, DebounceType.kRising);
+
+  private final Timer _revTimer = new Timer();
 
   private double _shooterTrim = 3;
 
@@ -98,7 +101,8 @@ public class ShooterSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("SHOOTER ANGLE", getAngle());
     SmartDashboard.putNumber("SHOOTER PERCENT OUTPUT", _leftMotor.get());
     SmartDashboard.putNumber("SHOOTER INCREMENTAL ENCODER", _revShooterEncoder.getDistance());
-    SmartDashboard.putBoolean("SHOOTER REVVED", false);
+    SmartDashboard.putBoolean("SHOOTER REVVED", isRevved());
+    SmartDashboard.putNumber("SHOOTER MOTOR RPM", getVelocity());
 
     _shooterTrim = SmartDashboard.getNumber("SHOOTER TRIM", _shooterTrim);
   }
@@ -117,6 +121,11 @@ public class ShooterSubsystem extends SubsystemBase {
     double angle = Presets.SHOOTER_DISTANCE_ANGLE.get(distance);
 
     return angle + _shooterTrim;
+  }
+
+  /** Returns whether the shooter (motor) is revved up (if enough time has elapsed). */
+  public boolean isRevved() {
+    return _revTimer.hasElapsed(2);
   }
 
   /**
@@ -159,7 +168,7 @@ public class ShooterSubsystem extends SubsystemBase {
     return _angleMotor.getVelocity().getValueAsDouble() / Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO * 360;
   }
 
-  /** Get velocity of the shooter flywheel in encoder val. */
+  /** Get velocity of the shooter flywheel in encoder RPM. */
   public double getVelocity() {
     return _leftEncoder.getVelocity();
   }
@@ -182,13 +191,15 @@ public class ShooterSubsystem extends SubsystemBase {
 
   /** Sets the state of the shooter. */
   public void setShooterState(ShooterState state) {
+    if (state != ShooterState.SHOOT) {
+      _revTimer.stop();
+      _revTimer.reset();
+    }
+
     switch (state) {
       case SHOOT:
-        if (UtilFuncs.ShotVector().getNorm() > FieldConstants.SHOOTER_SLOW_THRESHOLD) { 
-          spinShooter(Speeds.SHOOTER_FAST_SPIN_SPEED); 
-        } else {
-          spinShooter(Speeds.SHOOTER_SLOW_SPIN_SPEED);
-        }
+        _revTimer.start();
+        spinShooter(Speeds.SHOOTER_FAST_SPIN_SPEED);
         break;
     
       case AMP:

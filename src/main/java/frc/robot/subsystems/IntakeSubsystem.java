@@ -154,5 +154,6 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("ACTUATOR ENCODER", getActuator());
     SmartDashboard.putNumber("ACTUATOR PERCENT OUTPUT", _actuatorMotor.get());
     SmartDashboard.putNumber("FEED CURRENT OUTPUT", _feedMotor.getOutputCurrent());
+    SmartDashboard.putBoolean("HAS NOTE AUTON", _hasNoteAuton);
   }
 }
