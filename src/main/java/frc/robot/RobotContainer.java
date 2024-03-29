@@ -84,11 +84,13 @@ public class RobotContainer {
 
     // brings the actuator in, while intaking and revving up the shooter for a shot, this will take time and is done while driving
     NamedCommands.registerCommand("actuateIn", new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.INTAKE).alongWith(
+      Commands.runOnce(() -> _intakeSubsystem.setHasNoteAuton(true)),
       new SpinShooter(_shooterSubsystem, ShooterState.SHOOT, true)
     ));
 
     // brings the actuator in immediately, this is fast and shooting can't be done immediately 
     NamedCommands.registerCommand("actuateInFast", new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.NONE, true).alongWith(
+      Commands.runOnce(() -> _intakeSubsystem.setHasNoteAuton(false)),
       new SpinShooter(_shooterSubsystem, ShooterState.SHOOT, true)
     ));
 

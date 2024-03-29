@@ -47,8 +47,6 @@ public class FeedActuate extends Command {
   public void initialize() {
     _intake.feed(_feedMode);
     _intake.actuate(_actuatorState);
-
-    AutonShoot.canShoot = !_runOnce;
   }
 
   // Called every time the scheduler runs while the command is scheduled.

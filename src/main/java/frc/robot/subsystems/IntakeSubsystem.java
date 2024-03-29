@@ -24,6 +24,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
   private final RelativeEncoder _actuatorEncoder;
 
+  private boolean _hasNoteAuton = false;
+  
   /** How to feed (in or out). */
   public enum FeedMode {
     INTAKE, OUTTAKE, NONE
@@ -55,6 +57,20 @@ public class IntakeSubsystem extends SubsystemBase {
 
     _actuatorMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
     _actuatorMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+  }
+
+  /**
+   * Whether the intake has a squished note, according to the detector in auton.
+   */
+  public boolean hasNoteAuton() {
+    return _hasNoteAuton;
+  }
+
+  /**
+   * Set whether the intake has a squished note, done by the auton detector.
+   */
+  public void setHasNoteAuton(boolean hasNoteAuton) {
+    _hasNoteAuton = hasNoteAuton;
   }
 
   /**

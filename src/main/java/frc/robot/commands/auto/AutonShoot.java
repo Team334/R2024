@@ -39,11 +39,11 @@ public class AutonShoot extends SequentialCommandGroup {
       new ParallelCommandGroup(
         // This command will squeeze the note while revving up the shooter. It will only run if the note can't be shot right away. 
         new ParallelCommandGroup(
-          new SpinShooter(shooter, ShooterState.SHOOT, true).andThen(new WaitCommand(2)), //.andThen(() -> System.out.println("REVVED")),
-          new FeedActuate(intake, FeedMode.INTAKE).withTimeout(1)//.andThen(() -> System.out.println("INTAKED"))
-        ).onlyIf(() -> !canShoot),
+          new SpinShooter(shooter, ShooterState.SHOOT, true).andThen(new WaitCommand(2)).andThen(() -> System.out.println("REVVED")),
+          new FeedActuate(intake, FeedMode.INTAKE).withTimeout(1).andThen(() -> System.out.println("INTAKED"))
+        ).onlyIf(() -> !intake.hasNoteAuton()),
 
-        new AutoAim(swerve, shooter, elevator, leds) //.withTimeout(1).andThen(() -> System.out.println("AIMED"))
+        new AutoAim(swerve, shooter, elevator, leds).withTimeout(1).andThen(() -> System.out.println("AIMED"))
       ),
 
       new FeedActuate(intake, FeedMode.OUTTAKE).withTimeout(1),
