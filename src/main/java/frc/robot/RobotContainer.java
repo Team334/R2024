@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
+import frc.robot.Constants.Ports;
 import frc.robot.Constants.Presets;
 import frc.robot.commands.auto.AutoAim;
 import frc.robot.commands.auto.AutonShoot;
@@ -53,7 +54,7 @@ public class RobotContainer {
   private final SwerveDriveSubsystem _swerveSubsystem = new SwerveDriveSubsystem(_visionSubsystem);
   private final ElevatorSubsystem _elevatorSubsystem = new ElevatorSubsystem();
   private final IntakeSubsystem _intakeSubsystem = new IntakeSubsystem();
-  private final LEDSubsystem _ledSubsystem = new LEDSubsystem(0, 100);
+  private final LEDSubsystem _ledSubsystem = new LEDSubsystem(Ports.LEDS, 35);
   private final ShooterSubsystem _shooterSubsystem = new ShooterSubsystem();
 
   // controllers (for driver and operator)

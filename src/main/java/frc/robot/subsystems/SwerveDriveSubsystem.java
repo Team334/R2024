@@ -215,15 +215,16 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       if (tagCount >= 2) {
         xyStds = 0.55;
       }
-
-      // good distance
-      else if (tagDistance > 0.8 && poseDifference >= 0.5) {
+      
+      // one tag, closer distance, estimated pose is inaccurate
+      else if (tagDistance <= FieldConstants.SINGLE_TAG_DISTANCE_THRESHOLD && poseDifference <= 3) {
         xyStds = 0.65;
       }
 
-      // else if (tagDistance > 0.3 && poseDifference >= 0.3) {
-
-      // }
+      // one tag, closer distance, estimated pose is accurate
+      else if (tagDistance <= FieldConstants.SINGLE_TAG_DISTANCE_THRESHOLD && poseDifference <= 0.5) {
+        xyStds = 0.85;
+      }
 
       else {
         return;
@@ -288,7 +289,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   public void driveChassis(ChassisSpeeds chassisSpeeds) {
     chassisSpeeds.vxMetersPerSecond = MathUtil.applyDeadband(chassisSpeeds.vxMetersPerSecond, .01);
     chassisSpeeds.vyMetersPerSecond = MathUtil.applyDeadband(chassisSpeeds.vyMetersPerSecond, .01);
-    chassisSpeeds.omegaRadiansPerSecond = MathUtil.applyDeadband(chassisSpeeds.omegaRadiansPerSecond, Math.PI / 20);
+    chassisSpeeds.omegaRadiansPerSecond = MathUtil.applyDeadband(chassisSpeeds.omegaRadiansPerSecond, Math.PI / 30);
 
     // IMPORTANT: X-axis and Y-axis are flipped (based on wpilib coord system)
     if (fieldOriented) {
