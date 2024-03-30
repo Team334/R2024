@@ -217,7 +217,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       }
       
       // one tag, closer distance, estimated pose is inaccurate
-      else if (tagDistance <= FieldConstants.SINGLE_TAG_DISTANCE_THRESHOLD && poseDifference <= 3) {
+      else if (tagDistance <= FieldConstants.SINGLE_TAG_DISTANCE_THRESHOLD && poseDifference <= 1.5) {
         xyStds = 0.65;
       }
 
