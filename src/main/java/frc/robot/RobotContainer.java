@@ -97,6 +97,9 @@ public class RobotContainer {
     // revs and intakes if necessary while aiming, then shoots
     NamedCommands.registerCommand("shoot", new AutonShoot(_shooterSubsystem, _elevatorSubsystem, _ledSubsystem, _swerveSubsystem, _intakeSubsystem));
 
+    // stops the shooter
+    NamedCommands.registerCommand("stopShooter", new SpinShooter(_shooterSubsystem, ShooterState.NONE, false));
+
     // Drive/Operate default commands
     _swerveSubsystem.setDefaultCommand(new TeleopDrive(_swerveSubsystem,
         () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.05),
