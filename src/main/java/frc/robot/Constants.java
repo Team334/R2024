@@ -144,7 +144,7 @@ public final class Constants {
     public static final double ELEVATOR_HEIGHT_RATE = -0.025;
 
     public static final double SHOOTER_AMP_HANDOFF = 50;
-    public static final double ELEVATOR_AMP_HANDOFF = 0.035;
+    public static final double ELEVATOR_AMP_HANDOFF = 0.045;
 
     public static final InterpolatingDoubleTreeMap SHOOTER_DISTANCE_ANGLE = new InterpolatingDoubleTreeMap();
     
@@ -184,7 +184,7 @@ public final class Constants {
 
     public static final double SHOOTER_SLOW_THRESHOLD = 2;
 
-    public static final double TAG_DISTANCE_THRESHOLD = 3.5;
+    public static final double TAG_DISTANCE_THRESHOLD = 3;
     public static final double SINGLE_TAG_DISTANCE_THRESHOLD = 1.5;
 
     public static final int SPEAKER_TAG_BLUE = 7;

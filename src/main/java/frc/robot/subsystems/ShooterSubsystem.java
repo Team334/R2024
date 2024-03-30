@@ -50,7 +50,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private final Timer _revTimer = new Timer();
 
-  private double _shooterTrim = 0;
+  private double _shooterTrim = 3;
 
   private boolean _holdNote = false;
 
@@ -76,6 +76,7 @@ public class ShooterSubsystem extends SubsystemBase {
     _revShooterEncoder.setDistancePerPulse((360.0 / Physical.SHOOTER_ENCODER_ANGLE_GEAR_RATIO)/8192.0);
     _revShooterEncoder.reset();
 
+    
     resetAngle();
 
     // soft limits
@@ -89,7 +90,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     _angleMotor.getConfigurator().apply(softLimits);
 
-    _angleController.setTolerance(1);
+    _angleController.setTolerance(2.5);
 
     SmartDashboard.putNumber("SHOOTER TRIM", _shooterTrim);
   }
@@ -128,7 +129,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   /** Returns whether the shooter (motor) is revved up (if enough time has elapsed). */
   public boolean isRevved() {
-    return _revTimer.hasElapsed(1);
+    return _revTimer.hasElapsed(0.75);
   }
 
   /**

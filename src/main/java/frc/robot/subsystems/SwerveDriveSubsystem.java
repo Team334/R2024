@@ -200,12 +200,14 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       double tagCount = llBotpose[7];
 
       Pose2d botpose = UtilFuncs.ToPose(llBotpose);
-      double poseDifference = botpose.getTranslation().getDistance(botpose.getTranslation());
+      double poseDifference = botpose.getTranslation().getDistance(getPose().getTranslation());
 
       SmartDashboard.putNumber("DISTANCE TAGG", tagDistance);
 
       double xyStds;
       double yawStd = 9999999;
+
+      System.out.println(poseDifference);
 
       if (tagDistance > FieldConstants.TAG_DISTANCE_THRESHOLD) {
         return;
@@ -213,16 +215,19 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
       // good distance, multiple tags
       if (tagCount >= 2) {
+        System.out.println("TWO TAGS");
         xyStds = 0.55;
       }
       
       // one tag, closer distance, estimated pose is inaccurate
       else if (tagDistance <= FieldConstants.SINGLE_TAG_DISTANCE_THRESHOLD && poseDifference <= 1.5) {
+        // System.out.println("ONE TAG CLOSE POSE INNACCURATE");
         xyStds = 0.65;
       }
 
       // one tag, closer distance, estimated pose is accurate
       else if (tagDistance <= FieldConstants.SINGLE_TAG_DISTANCE_THRESHOLD && poseDifference <= 0.5) {
+        // System.out.println("ONE TAG CLOSE POSE ACCURATE");
         xyStds = 0.85;
       }
 

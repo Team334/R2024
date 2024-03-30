@@ -234,7 +234,7 @@ public class RobotContainer {
   /** @return The Command to schedule for auton. */
   public Command getAutonCommand() {
     _swerveSubsystem.fieldOriented = false; // make sure swerve is robot-relative for pathplanner to work
-    _shooterSubsystem.setShooterState(ShooterState.IDLE);
+    _shooterSubsystem.setShooterState(ShooterState.SHOOT);
     _intakeSubsystem.setHasNoteAuton(false);
 
     Command test = new SequentialCommandGroup(
