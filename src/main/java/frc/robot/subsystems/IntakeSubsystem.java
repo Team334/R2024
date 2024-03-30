@@ -8,6 +8,8 @@ import com.revrobotics.CANSparkBase.SoftLimitDirection;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -24,8 +26,11 @@ public class IntakeSubsystem extends SubsystemBase {
 
   private final RelativeEncoder _actuatorEncoder;
 
+  private boolean _hasNote = false;
   private boolean _hasNoteAuton = false;
   
+  private final Debouncer _feedDebouncer = new Debouncer(0.05, DebounceType.kRising);
+
   /** How to feed (in or out). */
   public enum FeedMode {
     INTAKE, OUTTAKE, NONE
@@ -57,6 +62,14 @@ public class IntakeSubsystem extends SubsystemBase {
 
     _actuatorMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
     _actuatorMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+  }
+
+  public boolean hasNote() {
+    return _hasNote;
+  }
+
+  public void resetHasNote() {
+    _hasNote = false;
   }
 
   /**
@@ -150,6 +163,9 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    boolean stalling = _feedDebouncer.calculate(_feedMotor.getOutputCurrent() > 50);
+    _hasNote = stalling ? true : _hasNote;
+
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("ACTUATOR ENCODER", getActuator());
     SmartDashboard.putNumber("ACTUATOR PERCENT OUTPUT", _actuatorMotor.get());

@@ -47,7 +47,7 @@ public class FeedActuate extends Command {
     _intake.feed(_feedMode);
     _intake.actuate(_actuatorState);
 
-    if (_feedMode == FeedMode.OUTTAKE) _intake.setHasNoteAuton(false);
+    if (_feedMode == FeedMode.OUTTAKE) _intake.resetHasNote(); _intake.setHasNoteAuton(false);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

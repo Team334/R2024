@@ -11,14 +11,17 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
+import frc.robot.Constants.LEDColors;
 import frc.robot.Constants.Ports;
 import frc.robot.Constants.Presets;
 import frc.robot.commands.auto.AutoAim;
+import frc.robot.commands.auto.AutoAmp;
 import frc.robot.commands.auto.AutonShoot;
 import frc.robot.commands.auto.NoteAlign;
 import frc.robot.commands.elevator.OperateElevator;
@@ -140,12 +143,21 @@ public class RobotContainer {
     // operator bindings
     _operatorController.L1().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.SHOOT));
     _operatorController.L2().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.AMP));
-    _operatorController.R2().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.INTAKE));
+    _operatorController.create().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.SLOW));
+    // _operatorController.R2().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.INTAKE));
+    _operatorController.R2().whileTrue(new AutoAmp(_shooterSubsystem, _intakeSubsystem));
 
-    _operatorController.square().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE));
+    _operatorController.square().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE)).whileTrue(
+      Commands.run(() -> {
+        if (_intakeSubsystem.hasNote()) _ledSubsystem.blink(LEDColors.GREEN, LEDColors.NOTHING, 0.1);
+        else _ledSubsystem.setColor(LEDColors.ORANGE);
+      }, _ledSubsystem)
+    );
     _operatorController.circle().whileTrue(feedOut);
     _operatorController.triangle().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.OUTTAKE));
     _operatorController.cross().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.INTAKE));
+
+    // _operatorController.circle().onTrue(NamedCommands.getCommand("shoot"));
 
     _operatorController.R1().whileTrue(
       Commands.parallel(
@@ -200,7 +212,15 @@ public class RobotContainer {
         () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.05),
         () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.05)
       )
-    );
+    ).whileTrue(Commands.run(() -> {
+      boolean aimed = _swerveSubsystem.atDesiredHeading() && _shooterSubsystem.atDesiredAngle() && _elevatorSubsystem.atDesiredHeight();
+
+      if (aimed) {
+        _ledSubsystem.setColor(LEDColors.GREEN);
+      } else {
+        _ledSubsystem.blink(LEDColors.RED, LEDColors.NOTHING, 0.1);
+      }
+    }, _ledSubsystem));
   }
 
   /**
@@ -217,15 +237,15 @@ public class RobotContainer {
     _shooterSubsystem.setShooterState(ShooterState.IDLE);
     _intakeSubsystem.setHasNoteAuton(false);
 
-    // Command test = new SequentialCommandGroup(
-    //   NamedCommands.getCommand("shoot"),
-    //   NamedCommands.getCommand("actuateOut").withTimeout(1),
-    //   NamedCommands.getCommand("actuateInFast"),
-    //   new AutonShoot(_shooterSubsystem, _elevatorSubsystem, _ledSubsystem, _swerveSubsystem, _intakeSubsystem),
-    //   new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE).withTimeout(2),
-    //   NamedCommands.getCommand("actuateIn").withTimeout(2),
-    //   new AutonShoot(_shooterSubsystem, _elevatorSubsystem, _ledSubsystem, _swerveSubsystem, _intakeSubsystem)
-    // );
+    Command test = new SequentialCommandGroup(
+      NamedCommands.getCommand("shoot"),
+      NamedCommands.getCommand("actuateOut").withTimeout(1),
+      NamedCommands.getCommand("actuateInFast"),
+      new AutonShoot(_shooterSubsystem, _elevatorSubsystem, _ledSubsystem, _swerveSubsystem, _intakeSubsystem),
+      new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE).withTimeout(2),
+      NamedCommands.getCommand("actuateIn").withTimeout(2),
+      new AutonShoot(_shooterSubsystem, _elevatorSubsystem, _ledSubsystem, _swerveSubsystem, _intakeSubsystem)
+    );
 
     // return null
     // return test;

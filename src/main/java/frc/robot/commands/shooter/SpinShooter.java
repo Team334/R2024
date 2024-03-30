@@ -36,13 +36,20 @@ public class SpinShooter extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    // System.out.println("SPINIING");
+  }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if (!_runOnce && _state != ShooterState.AMP) _shooter.setShooterState(ShooterState.IDLE);
-    if (!_runOnce && _state == ShooterState.AMP) _shooter.setShooterState(ShooterState.NONE);
+    if (!_runOnce && _state == ShooterState.SHOOT) {
+      _shooter.setShooterState(ShooterState.IDLE);
+    } 
+    
+    if (!_runOnce && _state != ShooterState.SHOOT) {
+      _shooter.setShooterState(ShooterState.NONE);
+    }
   }
 
   // Returns true when the command should end.

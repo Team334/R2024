@@ -11,6 +11,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.Constants.PID;
 import frc.robot.Constants.Speeds;
 import frc.robot.subsystems.SwerveDriveSubsystem;
@@ -66,8 +67,8 @@ public class NoteAlign extends Command {
     );
 
     _swerve.driveChassis(new ChassisSpeeds(
-      -_xSpeed.getAsDouble(),
-      _ySpeed.getAsDouble(),
+      -_xSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * _swerve.getDriveCoeff(),
+      _ySpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * _swerve.getDriveCoeff(),
       rotationVelocity
     ));
   }

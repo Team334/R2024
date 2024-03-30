@@ -63,7 +63,7 @@ public final class Constants {
 
     public static final double SHOOTER_FAST_SPIN_SPEED = 1;
     public static final double SHOOTER_SLOW_SPIN_SPEED = 0.8;
-    public static final double SHOOTER_AMP_SPEED = 0.2;
+    public static final double SHOOTER_AMP_SPEED = 1;
     public static final double SHOOTER_INTAKE_SPEED = -0.15;
     public static final double SHOOTER_IDLE_SPEED = 0.3;
 
@@ -74,6 +74,7 @@ public final class Constants {
     public static final double OUTTAKE_FEED_SPEED = -0.4;
 
     public static final double INTAKE_ACTUATE_MAX_SPEED = 0.4;
+    public static final double SHOOTER_SLOW_SPEED = 0.5;
   }
 
   public static class Physical {
@@ -143,7 +144,7 @@ public final class Constants {
     public static final double ELEVATOR_HEIGHT_RATE = -0.025;
 
     public static final double SHOOTER_AMP_HANDOFF = 50;
-    public static final double ELEVATOR_AMP_HANDOFF = 0.04;
+    public static final double ELEVATOR_AMP_HANDOFF = 0.035;
 
     public static final InterpolatingDoubleTreeMap SHOOTER_DISTANCE_ANGLE = new InterpolatingDoubleTreeMap();
     
@@ -173,7 +174,7 @@ public final class Constants {
   public static class Ports {
     public static final int DRIVER_CONTROLLER = 0;
     public static final int OPERATOR_CONTROLLER = 1;
-    public static final int LEDS = 0; // pwm port
+    public static final int LEDS = 1; // pwm port
   }
 
   // static field constants
@@ -204,7 +205,7 @@ public final class Constants {
   public static class LEDColors {
     public static final int[] NOTHING = {0, 0, 0};
     public static final int[] GREEN = {0, 255, 0};
-    public static final int[] ORANGE = {255, 175, 0};
+    public static final int[] ORANGE = {255, 165, 0};
     public static final int[] YELLOW = {255, 255, 0};
     public static final int[] BLUE = {0, 0, 255};
     public static final int[] RED = {255, 0, 0};

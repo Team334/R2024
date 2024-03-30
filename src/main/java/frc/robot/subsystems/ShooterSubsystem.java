@@ -50,14 +50,17 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private final Timer _revTimer = new Timer();
 
-  private double _shooterTrim = 3;
+  private double _shooterTrim = 0;
 
   private boolean _holdNote = false;
+
+  public boolean thenIdle = true;
 
   /** Represents the state of the shooter's flywheels (speaker shoot, amp, idle, nothing). */
   public enum ShooterState {
     SHOOT,
     AMP,
+    SLOW,
     INTAKE,
     IDLE,
     NONE
@@ -78,7 +81,7 @@ public class ShooterSubsystem extends SubsystemBase {
     // soft limits
     SoftwareLimitSwitchConfigs softLimits = new SoftwareLimitSwitchConfigs();
 
-    softLimits.ForwardSoftLimitThreshold = 69 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360;
+    softLimits.ForwardSoftLimitThreshold = 50 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360;
     softLimits.ReverseSoftLimitThreshold = -25 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360;
 
     softLimits.ForwardSoftLimitEnable = true;
@@ -125,7 +128,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   /** Returns whether the shooter (motor) is revved up (if enough time has elapsed). */
   public boolean isRevved() {
-    return _revTimer.hasElapsed(2);
+    return _revTimer.hasElapsed(1);
   }
 
   /**
@@ -204,6 +207,10 @@ public class ShooterSubsystem extends SubsystemBase {
     
       case AMP:
         spinShooter(Speeds.SHOOTER_AMP_SPEED);
+        break;
+
+      case SLOW:
+        spinShooter(Speeds.SHOOTER_SLOW_SPEED);
         break;
 
       case INTAKE:

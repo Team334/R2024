@@ -82,7 +82,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   /** A boolean for whether the swerve is field oriented or not. */
   public boolean fieldOriented = false;
 
-  private double _swerveTrim = 8;
+  private double _swerveTrim = 4;
 
   StructArrayPublisher<SwerveModuleState> publisher = NetworkTableInstance.getDefault()
       .getStructArrayTopic("MyStates", SwerveModuleState.struct).publish();
@@ -231,7 +231,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       }
 
       SmartDashboard.putNumber("STD", xyStds);
-      System.out.println("UPDATING POSE");
+      // System.out.println("UPDATING POSE");
 
       _estimator.addVisionMeasurement(UtilFuncs.ToPose(llBotpose), _visionSubsystem.getLatency(), VecBuilder.fill(xyStds, xyStds, yawStd));
     }
