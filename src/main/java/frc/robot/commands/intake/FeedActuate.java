@@ -2,7 +2,6 @@
 package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.auto.AutonShoot;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.IntakeSubsystem.ActuatorState;
 import frc.robot.subsystems.IntakeSubsystem.FeedMode;

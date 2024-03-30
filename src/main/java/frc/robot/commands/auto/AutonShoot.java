@@ -24,8 +24,6 @@ import frc.robot.utils.UtilFuncs;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutonShoot extends SequentialCommandGroup {
-  public static boolean canShoot = false;
-
   /** Creates a new AutonShoot. */
   public AutonShoot(
     ShooterSubsystem shooter,
@@ -47,11 +45,6 @@ public class AutonShoot extends SequentialCommandGroup {
       new FeedActuate(intake, FeedMode.OUTTAKE).withTimeout(1),
       new SpinShooter(shooter, ShooterState.IDLE, true)
     );
-  }
-
-  /** Resets this command for re-testing auton. */
-  public static void reset() {
-    canShoot = false;
   }
 
   private double headingPreset() {
