@@ -58,7 +58,7 @@ public class RobotContainer {
   private final ShooterSubsystem _shooterSubsystem = new ShooterSubsystem();
 
   // controllers (for driver and operator)
-  private final CommandPS4Controller _driveController = new CommandPS4Controller(Constants.Ports.DRIVER_CONTROLLER);
+  private final CommandPS5Controller _driveController = new CommandPS5Controller(Constants.Ports.DRIVER_CONTROLLER);
   // private final CommandPS4Controller _operatorController = new CommandPS4Controller(Constants.Ports.OPERATOR_CONTROLLER);
   private final CommandPS5Controller _operatorController = new CommandPS5Controller(Constants.Ports.OPERATOR_CONTROLLER);
 
