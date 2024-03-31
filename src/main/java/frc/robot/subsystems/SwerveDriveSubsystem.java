@@ -122,6 +122,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     _headingController.enableContinuousInput(-180, 180);
 
     // setupOrchestra();
+    resetPose(new Pose2d(5, 5, Rotation2d.fromDegrees(180)));
 
     // pathplannerlib setup
     AutoBuilder.configureHolonomic(this::getPose, this::resetPose, this::getRobotRelativeSpeeds, this::driveChassis,
@@ -168,9 +169,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
     SmartDashboard.putNumber("Shot Distance", shotVector().getNorm());
 
-    SmartDashboard.putNumber("ROBOT X POSE", getPose().getX());
-    SmartDashboard.putNumber("ROBOT Y POSE", getPose().getY());
-
     _swerveTrim = SmartDashboard.getNumber("SWERVE TRIM", _swerveTrim);
 
     // field icon updates
@@ -189,7 +187,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     Optional<double[]> visionBotpose = _visionSubsystem.getBotposeBlue();
 
-    SmartDashboard.putBoolean("SEES TAG", false);
+    SmartDashboard.putBoolean("SEES TAG(S)", false);
 
     // UPDATE BOTPOSE WITH VISION
     if (visionBotpose.isPresent()) {
@@ -202,7 +200,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       Pose2d botpose = UtilFuncs.ToPose(llBotpose);
       double poseDifference = botpose.getTranslation().getDistance(getPose().getTranslation());
 
-      SmartDashboard.putNumber("DISTANCE TAGG", tagDistance);
+      SmartDashboard.putNumber("TAG(S) DISTANCE", tagDistance);
 
       double xyStds;
       double yawStd = 9999999;
@@ -215,12 +213,12 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
       // good distance, multiple tags
       if (tagCount >= 2) {
-        System.out.println("TWO TAGS");
+        // System.out.println("TWO TAGS");
         xyStds = 0.55;
       }
       
       // one tag, closer distance, estimated pose is inaccurate
-      else if (tagDistance <= FieldConstants.SINGLE_TAG_DISTANCE_THRESHOLD && poseDifference <= 1.5) {
+      else if (tagDistance <= FieldConstants.SINGLE_TAG_DISTANCE_THRESHOLD && poseDifference <= 2) {
         // System.out.println("ONE TAG CLOSE POSE INNACCURATE");
         xyStds = 0.65;
       }
@@ -235,8 +233,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         return;
       }
 
-      SmartDashboard.putNumber("STD", xyStds);
-      // System.out.println("UPDATING POSE");
+      SmartDashboard.putNumber("VISION STD DEVS", xyStds);
 
       _estimator.addVisionMeasurement(UtilFuncs.ToPose(llBotpose), _visionSubsystem.getLatency(), VecBuilder.fill(xyStds, xyStds, yawStd));
     }

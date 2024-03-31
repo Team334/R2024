@@ -43,7 +43,6 @@ public class LEDSubsystem extends SubsystemBase {
   public void setColor(int[] color) {
     // For every pixel in RGB format!!!
     for (int i = 0; i < _ledBuffer.getLength(); i++) {
-      // System.out.println("COLOR SETTING");
       _ledBuffer.setRGB(i, color[0], color[1], color[2]);
     }
 

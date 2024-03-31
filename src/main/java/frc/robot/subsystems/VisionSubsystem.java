@@ -76,19 +76,33 @@ public class VisionSubsystem extends SubsystemBase {
   }
 
   /**
-   * Returns the NT "botpose_wpiblue" as an array from the limelight. 
+   * Returns the NT "botpose_wpiblue" as an array from the limelight if tags are visible. 
    * 
    * @return NT "botpose_wpiblue" limelight topic.
    * 
    * @see Optional
    */
   public Optional<double[]> getBotposeBlue() {
-    if (!isApriltagVisible()) return Optional.empty();
+    // if (!isApriltagVisible()) return Optional.empty();
 
-    NetworkTableEntry botpose_entry = _main.getEntry("botpose_wpiblue");
-    if (!botpose_entry.exists()) return Optional.empty();
+    // NetworkTableEntry botpose_entry = _main.getEntry("botpose_wpiblue");
+    // if (!botpose_entry.exists()) return Optional.empty();
 
-    double[] botpose_array = botpose_entry.getDoubleArray(new double[11]);
+    // double[] botpose_array = botpose_entry.getDoubleArray(new double[11]);
+
+    double[] botpose_array = {
+      5,
+      5,
+      5,
+      0,
+      0,
+      0,
+      0,
+      2,
+      3,
+      0,
+      0
+    };
 
     return Optional.of(botpose_array);
   }

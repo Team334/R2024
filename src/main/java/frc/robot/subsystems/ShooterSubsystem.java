@@ -106,7 +106,6 @@ public class ShooterSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("SHOOTER PERCENT OUTPUT", _leftMotor.get());
     SmartDashboard.putNumber("SHOOTER INCREMENTAL ENCODER", _revShooterEncoder.getDistance());
     SmartDashboard.putBoolean("SHOOTER REVVED", isRevved());
-    SmartDashboard.putNumber("SHOOTER MOTOR RPM", getVelocity());
 
     _shooterTrim = SmartDashboard.getNumber("SHOOTER TRIM", _shooterTrim);
   }

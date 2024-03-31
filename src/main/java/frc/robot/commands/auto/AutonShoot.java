@@ -40,7 +40,6 @@ public class AutonShoot extends SequentialCommandGroup {
         new SpinShooter(shooter, ShooterState.SHOOT, true).andThen(new WaitUntilCommand(shooter::isRevved)),
         new FeedActuate(intake, FeedMode.INTAKE).withTimeout(0.5).onlyIf(() -> !intake.hasNoteAuton()),
         new AutoAim(swerve, shooter, elevator, leds)
-        // new AutoAim(swerve, shooter, elevator, leds, () -> 0, () -> 50.0, () -> 0.04).andThen(() -> System.out.println("AUTO !! AIMED"))
       ),
 
       new FeedActuate(intake, FeedMode.OUTTAKE).withTimeout(0.5)
