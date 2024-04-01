@@ -175,7 +175,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   public void periodic() {
     publisher.set(states);
 
-    updateBotpose();
+    SmartDashboard.putBoolean("VALID TAG(S)", updateBotpose());
 
     SmartDashboard.putNumber("Gyro RAW", getHeadingRaw().getDegrees());
     SmartDashboard.putBoolean("Field Oriented", fieldOriented);
@@ -189,7 +189,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     SmartDashboard.putData("FIELD", _field);
   }
 
-  private void updateBotpose() {
+  // returns whether valid vision data (for updating pose) has been retrieved
+  private boolean updateBotpose() {
     // Update the bot's pose
     _estimator.update(getHeadingRaw(), new SwerveModulePosition[]{
       _frontLeft.getPosition(),
@@ -209,43 +210,32 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       double tagDistance = llBotpose[9];
       double tagCount = llBotpose[7];
 
-      Pose2d botpose = UtilFuncs.ToPose(llBotpose);
-      double poseDifference = getPose().getTranslation().getDistance(botpose.getTranslation());
-
-      boolean inRange = false;
+      double xyStds = 0;
+      double yawStd = 9999999;
 
       SmartDashboard.putNumber("TAG(S) DISTANCE", tagDistance);
       SmartDashboard.putNumber("TAG COUNT", tagCount);
 
-      System.out.println(poseDifference);
-
-      double xyStds = 0;
-      double yawStd = 9999999;
-
-      // bad distance for any tags, ignore vision
-      if (tagDistance > FieldConstants.TAG_DISTANCE_THRESHOLD) { inRange = false; return; }
-      else inRange = true;
-
-      // (good distance) multiple tags
-      if (tagCount >= 2) xyStds = 0.55;
+      // distance is too high for any tags, ignore
+      if (tagDistance > FieldConstants.TAG_DISTANCE_THRESHOLD) return false;
       
-      // good distance and single tag, use vision
-      else if (tagDistance <= FieldConstants.SINGLE_TAG_DISTANCE_THRESHOLD) {
-        if (poseDifference <= 0.5) xyStds = 0.85; // (good distance, single tag) odom is not very off
-        else xyStds = 0.65; // (good distance, single tag) odom is very off
-
-        inRange = true;
+      // 2 tags, good distance
+      else if (tagCount >= 2) {
+        xyStds = 0.9;
       }
 
-      // bad distance and single tag, ignore vision
-      else { inRange = false; return; }
+      // 1 tag, bad single tag distance, ignore
+      else if (tagDistance > FieldConstants.SINGLE_TAG_DISTANCE_THRESHOLD) return false;
 
-      SmartDashboard.putNumber("VISION STD DEVS", xyStds);
-      SmartDashboard.putBoolean("IN RANGE TAG(S)", inRange);
-      SmartDashboard.putBoolean("HELLO", true);
+      // 1 tag, good single tag distance, use data but with higher std devs
+      else {
+        xyStds = 1.2;
+      }
 
-      // _estimator.addVisionMeasurement(UtilFuncs.ToPose(llBotpose), _visionSubsystem.getLatency(), VecBuilder.fill(xyStds, xyStds, yawStd));
+      _estimator.addVisionMeasurement(UtilFuncs.ToPose(llBotpose), _visionSubsystem.getLatency(), VecBuilder.fill(xyStds, xyStds, yawStd));
     }
+
+    return true;
   }
 
   // to setup talon orchestra

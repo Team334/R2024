@@ -6,6 +6,7 @@ import java.util.Optional;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -82,28 +83,12 @@ public class VisionSubsystem extends SubsystemBase {
    * @see Optional
    */
   public Optional<double[]> getBotposeBlue() {
-    // if (!isApriltagVisible()) return Optional.empty();
+    if (!isApriltagVisible()) return Optional.empty();
 
-    // NetworkTableEntry botpose_entry = _main.getEntry("botpose_wpiblue");
-    // if (!botpose_entry.exists()) return Optional.empty();
+    NetworkTableEntry botpose_entry = _main.getEntry("botpose_wpiblue");
+    if (!botpose_entry.exists()) return Optional.empty();
 
-    // double[] botpose_array = botpose_entry.getDoubleArray(new double[11]);
-
-    double[] botpose_array = {
-      1,
-      0,
-      5,
-      0,
-      0,
-      0,
-      0,
-      1,
-      0,
-      3,
-      0
-    };
-
-    if (!(botpose_array[7] > 0)) return Optional.empty();
+    double[] botpose_array = botpose_entry.getDoubleArray(new double[11]);
 
     return Optional.of(botpose_array);
   }
