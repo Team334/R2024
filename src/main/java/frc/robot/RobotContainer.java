@@ -92,7 +92,7 @@ public class RobotContainer {
     ));
 
     // revs and intakes if necessary while aiming, then shoots
-    NamedCommands.registerCommand("shoot", new AutonShoot(_shooterSubsystem, _elevatorSubsystem, _ledSubsystem, _swerveSubsystem, _intakeSubsystem));
+    NamedCommands.registerCommand("shoot", new AutonShoot(_shooterSubsystem, _elevatorSubsystem, _swerveSubsystem, _intakeSubsystem));
 
     // stops the shooter
     NamedCommands.registerCommand("stopShooter", new SpinShooter(_shooterSubsystem, ShooterState.NONE, false));
@@ -160,7 +160,9 @@ public class RobotContainer {
     // driver bindings
     _driveController.L1().onTrue(Commands.runOnce(_swerveSubsystem::toggleSpeed, _swerveSubsystem));
     _driveController.R1().onTrue(Commands.runOnce(() -> _swerveSubsystem.fieldOriented = !_swerveSubsystem.fieldOriented, _swerveSubsystem));
-    _driveController.cross().whileTrue(new BrakeSwerve(_swerveSubsystem, _ledSubsystem));
+    _driveController.cross().whileTrue(new BrakeSwerve(_swerveSubsystem)).whileTrue(Commands.run(() -> {
+      _ledSubsystem.blink(LEDColors.RED, LEDColors.NOTHING, 0.2);
+    }, _ledSubsystem));
 
     // TESTING ONLY!!!
     _driveController.triangle().onTrue(Commands.runOnce(() -> _swerveSubsystem.resetGyro(180), _swerveSubsystem));
@@ -187,7 +189,6 @@ public class RobotContainer {
         _swerveSubsystem,
         _shooterSubsystem, 
         _elevatorSubsystem,
-        _ledSubsystem,
         () -> (UtilFuncs.GetAlliance() == Alliance.Red) ? 0 : 180,
         () -> Presets.CLOSE_SHOOTER_ANGLE, 
         () -> Presets.CLOSE_ELEVATOR_HEIGHT
@@ -199,7 +200,6 @@ public class RobotContainer {
         _swerveSubsystem,
         _shooterSubsystem,
         _elevatorSubsystem,
-        _ledSubsystem,
         () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.05),
         () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.05)
       )

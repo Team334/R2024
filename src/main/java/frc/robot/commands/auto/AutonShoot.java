@@ -28,7 +28,6 @@ public class AutonShoot extends SequentialCommandGroup {
   public AutonShoot(
     ShooterSubsystem shooter,
     ElevatorSubsystem elevator,
-    LEDSubsystem leds,
     SwerveDriveSubsystem swerve,
     IntakeSubsystem intake
   ) {
@@ -39,7 +38,7 @@ public class AutonShoot extends SequentialCommandGroup {
       new ParallelCommandGroup(
         new SpinShooter(shooter, ShooterState.SHOOT, true).andThen(new WaitUntilCommand(shooter::isRevved)),
         new FeedActuate(intake, FeedMode.INTAKE).withTimeout(0.5).onlyIf(() -> !intake.hasNoteAuton()),
-        new AutoAim(swerve, shooter, elevator, leds)
+        new AutoAim(swerve, shooter, elevator)
       ),
 
       new FeedActuate(intake, FeedMode.OUTTAKE).withTimeout(0.5)

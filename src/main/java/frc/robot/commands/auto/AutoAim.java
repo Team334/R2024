@@ -11,7 +11,6 @@ import frc.robot.commands.elevator.SetElevator;
 import frc.robot.commands.shooter.SetShooter;
 import frc.robot.commands.swerve.SetHeading;
 import frc.robot.subsystems.ElevatorSubsystem;
-import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
@@ -42,7 +41,6 @@ public class AutoAim extends ParallelCommandGroup {
     SwerveDriveSubsystem swerve,
     ShooterSubsystem shooter,
     ElevatorSubsystem elevator,
-    LEDSubsystem leds,
     DoubleSupplier xSpeed,
     DoubleSupplier ySpeed,
     DoubleSupplier swerveHeading,
@@ -56,7 +54,6 @@ public class AutoAim extends ParallelCommandGroup {
       new SetHeading(swerve, xSpeed, ySpeed, swerveHeading, runOnce),
       new SetShooter(shooter, shooterAngle, runOnce),
       new SetElevator(elevator, elevatorHeight, runOnce)
-      // some led command here
     );
   }
 
@@ -69,11 +66,10 @@ public class AutoAim extends ParallelCommandGroup {
     SwerveDriveSubsystem swerve,
     ShooterSubsystem shooter,
     ElevatorSubsystem elevator,
-    LEDSubsystem leds,
     DoubleSupplier xSpeed,
     DoubleSupplier ySpeed
   ) {
-    this(swerve, shooter, elevator, leds, xSpeed, ySpeed, swerve::speakerHeading, shooter::speakerAngle, elevator::speakerHeight, false);
+    this(swerve, shooter, elevator, xSpeed, ySpeed, swerve::speakerHeading, shooter::speakerAngle, elevator::speakerHeight, false);
   }
 
   /** 
@@ -85,14 +81,13 @@ public class AutoAim extends ParallelCommandGroup {
     SwerveDriveSubsystem swerve,
     ShooterSubsystem shooter,
     ElevatorSubsystem elevator,
-    LEDSubsystem leds,
     DoubleSupplier xSpeed,
     DoubleSupplier ySpeed,
     DoubleSupplier swerveHeading,
     DoubleSupplier shooterAngle,
     DoubleSupplier elevatorHeight
   ) {
-    this(swerve, shooter, elevator, leds, xSpeed, ySpeed, swerveHeading, shooterAngle, elevatorHeight, false);
+    this(swerve, shooter, elevator, xSpeed, ySpeed, swerveHeading, shooterAngle, elevatorHeight, false);
   }
 
   /** 
@@ -103,10 +98,9 @@ public class AutoAim extends ParallelCommandGroup {
   public AutoAim(
     SwerveDriveSubsystem swerve,
     ShooterSubsystem shooter,
-    ElevatorSubsystem elevator,
-    LEDSubsystem leds
+    ElevatorSubsystem elevator
   ) {
-    this(swerve, shooter, elevator, leds, () -> 0, () -> 0, swerve::speakerHeading, shooter::speakerAngle, elevator::speakerHeight, true);
+    this(swerve, shooter, elevator, () -> 0, () -> 0, swerve::speakerHeading, shooter::speakerAngle, elevator::speakerHeight, true);
   }
 
   /** 
@@ -118,11 +112,10 @@ public class AutoAim extends ParallelCommandGroup {
     SwerveDriveSubsystem swerve,
     ShooterSubsystem shooter,
     ElevatorSubsystem elevator,
-    LEDSubsystem leds,
     DoubleSupplier swerveHeading,
     DoubleSupplier shooterAngle,
     DoubleSupplier elevatorHeight
   ) {
-    this(swerve, shooter, elevator, leds, () -> 0, () -> 0, swerveHeading, shooterAngle, elevatorHeight, true);
+    this(swerve, shooter, elevator, () -> 0, () -> 0, swerveHeading, shooterAngle, elevatorHeight, true);
   }
 }
