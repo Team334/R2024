@@ -21,6 +21,7 @@ import frc.robot.commands.auto.AutoAim;
 import frc.robot.commands.auto.AutoAmp;
 import frc.robot.commands.auto.AutonShoot;
 import frc.robot.commands.auto.NoteAlign;
+import frc.robot.commands.auto.SaveLerpPoints;
 import frc.robot.commands.elevator.OperateElevator;
 import frc.robot.commands.elevator.SetElevator;
 import frc.robot.commands.intake.FeedActuate;
@@ -71,6 +72,8 @@ public class RobotContainer {
   // sendable chooser for auton commands
   private final SendableChooser<Command> _autonChooser;
 
+  // for recording lerp points and generating code
+  private final SaveLerpPoints _lerpSaver = new SaveLerpPoints(_shooterSubsystem, _elevatorSubsystem);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -147,6 +150,9 @@ public class RobotContainer {
       )
     );
 
+    // _operatorController.options().onTrue(_lerpSaver);
+    // _operatorController.touchpad().onTrue(Commands.runOnce(_lerpSaver::showCode));
+    
     _operatorController.square().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE)).whileTrue(
       Commands.run(() -> {
         if (_intakeSubsystem.hasNote()) _ledSubsystem.blink(LEDColors.GREEN, LEDColors.NOTHING, 0.1);
