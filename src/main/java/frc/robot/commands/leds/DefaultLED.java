@@ -13,7 +13,7 @@ import frc.robot.utils.UtilFuncs;
 public class DefaultLED extends Command {
   private LEDSubsystem _leds;
 
-  /** Creates a new TestLED. */
+  /** Creates a new DefaultLED. */
   public DefaultLED(LEDSubsystem leds) {
     // Use addRequirements() here to declare subsystem dependencies.
     _leds = leds;

@@ -4,7 +4,6 @@ package frc.robot.subsystems;
 import java.util.Optional;
 
 import com.ctre.phoenix6.Orchestra;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentric;
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
@@ -122,7 +121,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     _headingController.enableContinuousInput(-180, 180);
 
     // setupOrchestra();
-    resetPose(new Pose2d(5, 5, Rotation2d.fromDegrees(180)));
 
     // pathplannerlib setup
     AutoBuilder.configureHolonomic(this::getPose, this::resetPose, this::getRobotRelativeSpeeds, this::driveChassis,
@@ -187,55 +185,51 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     Optional<double[]> visionBotpose = _visionSubsystem.getBotposeBlue();
 
-    SmartDashboard.putBoolean("SEES TAG(S)", false);
+    SmartDashboard.putBoolean("SEES TAG(S)", visionBotpose.isPresent());
 
     // UPDATE BOTPOSE WITH VISION
     if (visionBotpose.isPresent()) {
-      SmartDashboard.putBoolean("SEES TAG", true);
       double[] llBotpose = visionBotpose.get();
 
       double tagDistance = llBotpose[9];
       double tagCount = llBotpose[7];
 
       Pose2d botpose = UtilFuncs.ToPose(llBotpose);
-      double poseDifference = botpose.getTranslation().getDistance(getPose().getTranslation());
+      double poseDifference = getPose().getTranslation().getDistance(botpose.getTranslation());
+
+      boolean inRange = false;
 
       SmartDashboard.putNumber("TAG(S) DISTANCE", tagDistance);
-
-      double xyStds;
-      double yawStd = 9999999;
+      SmartDashboard.putNumber("TAG COUNT", tagCount);
 
       System.out.println(poseDifference);
 
-      if (tagDistance > FieldConstants.TAG_DISTANCE_THRESHOLD) {
-        return;
-      }
+      double xyStds = 0;
+      double yawStd = 9999999;
 
-      // good distance, multiple tags
-      if (tagCount >= 2) {
-        // System.out.println("TWO TAGS");
-        xyStds = 0.55;
-      }
+      // bad distance for any tags, ignore vision
+      if (tagDistance > FieldConstants.TAG_DISTANCE_THRESHOLD) { inRange = false; return; }
+      else inRange = true;
+
+      // (good distance) multiple tags
+      if (tagCount >= 2) xyStds = 0.55;
       
-      // one tag, closer distance, estimated pose is inaccurate
-      else if (tagDistance <= FieldConstants.SINGLE_TAG_DISTANCE_THRESHOLD && poseDifference <= 2) {
-        // System.out.println("ONE TAG CLOSE POSE INNACCURATE");
-        xyStds = 0.65;
+      // good distance and single tag, use vision
+      else if (tagDistance <= FieldConstants.SINGLE_TAG_DISTANCE_THRESHOLD) {
+        if (poseDifference <= 0.5) xyStds = 0.85; // (good distance, single tag) odom is not very off
+        else xyStds = 0.65; // (good distance, single tag) odom is very off
+
+        inRange = true;
       }
 
-      // one tag, closer distance, estimated pose is accurate
-      else if (tagDistance <= FieldConstants.SINGLE_TAG_DISTANCE_THRESHOLD && poseDifference <= 0.5) {
-        // System.out.println("ONE TAG CLOSE POSE ACCURATE");
-        xyStds = 0.85;
-      }
-
-      else {
-        return;
-      }
+      // bad distance and single tag, ignore vision
+      else { inRange = false; return; }
 
       SmartDashboard.putNumber("VISION STD DEVS", xyStds);
+      SmartDashboard.putBoolean("IN RANGE TAG(S)", inRange);
+      SmartDashboard.putBoolean("HELLO", true);
 
-      _estimator.addVisionMeasurement(UtilFuncs.ToPose(llBotpose), _visionSubsystem.getLatency(), VecBuilder.fill(xyStds, xyStds, yawStd));
+      // _estimator.addVisionMeasurement(UtilFuncs.ToPose(llBotpose), _visionSubsystem.getLatency(), VecBuilder.fill(xyStds, xyStds, yawStd));
     }
   }
 

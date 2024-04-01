@@ -91,18 +91,20 @@ public class VisionSubsystem extends SubsystemBase {
     // double[] botpose_array = botpose_entry.getDoubleArray(new double[11]);
 
     double[] botpose_array = {
+      1,
+      0,
       5,
-      5,
-      5,
       0,
       0,
       0,
       0,
-      2,
+      1,
+      0,
       3,
-      0,
       0
     };
+
+    if (!(botpose_array[7] > 0)) return Optional.empty();
 
     return Optional.of(botpose_array);
   }
