@@ -288,9 +288,9 @@ public class SwerveDriveSubsystem extends SubsystemBase {
    * @see ChassisSpeeds (wpilib chassis speeds class)
    */
   public void driveChassis(ChassisSpeeds chassisSpeeds) {
-    chassisSpeeds.vxMetersPerSecond = MathUtil.applyDeadband(chassisSpeeds.vxMetersPerSecond, .01);
-    chassisSpeeds.vyMetersPerSecond = MathUtil.applyDeadband(chassisSpeeds.vyMetersPerSecond, .01);
-    chassisSpeeds.omegaRadiansPerSecond = MathUtil.applyDeadband(chassisSpeeds.omegaRadiansPerSecond, Math.PI / 30);
+    chassisSpeeds.vxMetersPerSecond = MathUtil.applyDeadband(chassisSpeeds.vxMetersPerSecond, .01 * Speeds.SWERVE_DRIVE_MAX_SPEED);
+    chassisSpeeds.vyMetersPerSecond = MathUtil.applyDeadband(chassisSpeeds.vyMetersPerSecond, .01 * Speeds.SWERVE_DRIVE_MAX_SPEED);
+    chassisSpeeds.omegaRadiansPerSecond = MathUtil.applyDeadband(chassisSpeeds.omegaRadiansPerSecond, .01 * Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED);
 
     // IMPORTANT: X-axis and Y-axis are flipped (based on wpilib coord system)
     if (fieldOriented) {
