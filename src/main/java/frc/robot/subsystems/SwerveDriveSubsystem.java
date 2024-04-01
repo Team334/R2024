@@ -21,6 +21,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
+import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -86,9 +87,11 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   private double _swerveTrim = 4;
 
-  StructArrayPublisher<SwerveModuleState> publisher = NetworkTableInstance.getDefault()
-      .getStructArrayTopic("MyStates", SwerveModuleState.struct).publish();
+  StructArrayPublisher<SwerveModuleState> swervePublisher = NetworkTableInstance.getDefault()
+      .getStructArrayTopic("/Advantage Swerve Modules", SwerveModuleState.struct).publish();
 
+  StructPublisher<Pose2d> posePublisher = NetworkTableInstance.getDefault()
+    .getStructTopic("/Advantage Robot Pose", Pose2d.struct).publish();
 
   // Pose Estimator -> Has built in odometry and uses supplied vision measurements
   private final SwerveDrivePoseEstimator _estimator = new SwerveDrivePoseEstimator(
@@ -176,7 +179,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    publisher.set(states);
+    swervePublisher.set(states);
+    posePublisher.set(getPose());
 
     SmartDashboard.putBoolean("VALID TAG(S)", updateBotpose());
 
