@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.35,
-      "y": 5.55
+      "x": 1.2786251888293252,
+      "y": 5.582775200638121
     },
     "rotation": 180.0
   },
@@ -20,6 +20,6 @@
       ]
     }
   },
-  "folder": "center",
+  "folder": "New Autons",
   "choreoAuto": false
 }
