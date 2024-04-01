@@ -1,10 +1,12 @@
 /* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot;
 
+import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.utils.UtilFuncs;
 import frc.robot.utils.helpers.AllianceHelper;
 
 /**
@@ -33,6 +35,16 @@ public class Robot extends TimedRobot {
     // for alliance management
     // FIRST THING THAT HAPPENS
     addPeriodic(() -> AllianceHelper.getInstance().updateAlliance(DriverStation.getAlliance()), 0.5);
+
+    // for (int port = 5800; port <= 5807; port++) {
+    //   PortForwarder.add(port, "limelight.local", port);
+    // }
+    PortForwarder.add(5800, "limelight.local", 5800);
+    PortForwarder.add(5801, "limelight.local", 5801);
+    PortForwarder.add(5805, "limelight.local", 5805);
+
+    // CameraServer.startAutomaticCapture(0);
+    UtilFuncs.LoadField();
 
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our
@@ -91,6 +103,7 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+    m_robotContainer.teleopInit();
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();

@@ -3,30 +3,22 @@ package frc.robot.utils.helpers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
-/** Singleton class that helps retrieve limelight info from network tables. */
+/** A class that helps retrieve limelight info from network tables. */
 public class LimelightHelper {
-  private static LimelightHelper _instance;
-
-  /** Get the single instance of the LimelightHelper. */
-  public static final LimelightHelper getInstance() {
-    if (_instance == null) {
-      _instance = new LimelightHelper();
-    }
-
-    return _instance;
-  }
-
   private final NetworkTableInstance _inst = NetworkTableInstance.getDefault();
-  private final NetworkTable _limelight = _inst.getTable("limelight");
+  private final NetworkTable _limelight;
 
   private final ObjectMapper _objectMapper = new ObjectMapper();
 
-  private LimelightHelper() {
-  } // private constructor makes this a singleton
+  public LimelightHelper(String name) {
+    _limelight = _inst.getTable(name);
+  }
 
   /**
    * Returns a NetworkTableEntry from the limelight network table.
@@ -38,21 +30,33 @@ public class LimelightHelper {
     return _limelight.getEntry(name);
   }
 
-  /**
-   * Returns a JsonNode array containing found tags and their info.
-   *
-   * @see JsonNode
-   */
-  public JsonNode getTags() {
+  /** Return json from limelight. */
+  public JsonNode getJson() {
     String jsonString = getEntry("json").getString("");
-
-    JsonNode tags;
-
     try {
-      tags = _objectMapper.readTree(jsonString).get("Results").get("Fiducial");
+      return _objectMapper.readTree(jsonString);
     } catch (Exception e) {
       throw new Error("Cannot Read JSON From Limelight.");
     }
+  }
+
+  /** 
+   * Returns the neural targets from the limelight.
+   * 
+   * @see ArrayNode
+   */
+  public ArrayNode getNeuralTargets() {
+    ArrayNode targets = (ArrayNode) getJson().get("Results").get("Detector");
+    return targets;
+  }
+
+  /**
+   * Returns the AprilTag targets from the limelight.
+   *
+   * @see ArrayNode
+   */
+  public ArrayNode getTagTargets() {
+    ArrayNode tags = (ArrayNode) getJson().get("Results").get("Fiducial");
 
     return tags;
   }
@@ -65,7 +69,7 @@ public class LimelightHelper {
    * @see JsonNode
    */
   public JsonNode getTag(int ID) {
-    JsonNode tags = getTags();
+    JsonNode tags = getTagTargets();
 
     for (JsonNode tag : tags) {
       if (tag.get("fID").asInt() == ID) {

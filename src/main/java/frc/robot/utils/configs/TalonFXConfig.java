@@ -25,7 +25,6 @@ public class TalonFXConfig {
    * @return The configuration object applied to the Falcon.
    */
   public static TalonFXConfiguration configureFalcon(TalonFX falcon, boolean invert) {
-    // TODO: will prob need to add the code to zero encoder
     TalonFXConfiguration config = new TalonFXConfiguration();
 
     falcon.getConfigurator().DefaultTimeoutSeconds = Constants.CAN.CAN_TIMEOUT;
@@ -42,8 +41,6 @@ public class TalonFXConfig {
 
     config.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
     config.SoftwareLimitSwitch.ReverseSoftLimitEnable = false;
-
-    // config.CurrentLimits.StatorCurrentLimit = 50; // TODO: Find
 
     falcon.getConfigurator().apply(config);
     falcon.setPosition(0);

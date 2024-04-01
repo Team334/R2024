@@ -2,20 +2,15 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkAbsoluteEncoder;
-import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.PID;
@@ -28,15 +23,13 @@ import frc.robot.utils.configs.NeoConfig;
 public class IntakeSubsystem extends SubsystemBase {
   private final CANSparkMax _feedMotor, _actuatorMotor;
   private final PIDController _actuatorController = new PIDController(PID.INTAKE_ACTUATE_KP, 0, 0);
-  // private final ProfiledPIDController _actuatorController = new ProfiledPIDController(
-  //   0.05,
-  //   0,
-  //   0,
-  //   new TrapezoidProfile.Constraints(22, 50)
-  // );
 
   private final RelativeEncoder _actuatorEncoder;
-  private final RelativeEncoder _feedEncoder;
+
+  private boolean _hasNote = false;
+  private boolean _hasNoteAuton = false;
+  
+  private final Debouncer _feedDebouncer = new Debouncer(0.05, DebounceType.kRising);
 
   /** How to feed (in or out). */
   public enum FeedMode {
@@ -48,8 +41,6 @@ public class IntakeSubsystem extends SubsystemBase {
     STOWED, OUT, NONE
   }
 
-  private FeedMode _feedMode = FeedMode.NONE;
-  private ActuatorState _actuatorState = ActuatorState.NONE;
 
   /** Creates a new IntakeSubsystem. */
   public IntakeSubsystem() {
@@ -59,12 +50,12 @@ public class IntakeSubsystem extends SubsystemBase {
     _actuatorEncoder = _actuatorMotor.getEncoder();
     _actuatorEncoder.setPosition(0);
 
-    _feedEncoder = _feedMotor.getEncoder();
-
     _actuatorController.setTolerance(0.5);
 
     NeoConfig.configureNeo(_feedMotor, false);
     NeoConfig.configureNeo(_actuatorMotor, false);
+
+    _feedMotor.setSmartCurrentLimit(80);
 
     _actuatorMotor.setSoftLimit(SoftLimitDirection.kForward, Constants.Encoders.INTAKE_OUT);
     _actuatorMotor.setSoftLimit(SoftLimitDirection.kReverse, Constants.Encoders.INTAKE_STOWED);
@@ -73,62 +64,32 @@ public class IntakeSubsystem extends SubsystemBase {
     _actuatorMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
   }
 
-  // /** 
-  //  * Creates a safety if the intake is moving against a note.
-  //  * 
-  //  * @return True if the intake is moving against a note, else False.
-  //  */
+  public boolean hasNote() {
+    return _hasNote;
+  }
 
-  // // TODO: why not working?
-  // public boolean noteSafety() {
-  //   SmartDashboard.putNumber("FEED OUTPUT", Math.abs(_feedMotor.get()));
-  //   SmartDashboard.putNumber("FEED VEL", Math.abs(_feedEncoder.getVelocity()));
-
-  //   if (Math.abs(_feedMotor.get()) > 0 && Math.abs(_feedEncoder.getVelocity()) < 2) {
-  //     return true;
-  //   }
-
-  //   return false;
-  // }
-
-  /**
-   * Check if the FeedMode has last been set to the desired value.
-   * 
-   * @param feedMode The FeedMode to check.
-   */
-  public boolean isFeedMode(FeedMode feedMode) {
-    return _feedMode == feedMode;
+  public void resetHasNote() {
+    _hasNote = false;
   }
 
   /**
-   * Check if the ActuatorState has been set to the desired value.
-   * 
-   * @param actuatorState The ActuatorState to check.
+   * Whether the intake has a squished note, according to the detector in auton.
    */
-  public boolean isActuatorState(ActuatorState actuatorState) {
-    return _actuatorState == actuatorState;
+  public boolean hasNoteAuton() {
+    return _hasNoteAuton;
   }
 
   /**
-   * Toggle reverse soft limit.
+   * Set whether the intake has a squished note, done by the auton detector.
    */
-  public void toggleReverseSoftLimit() {
-    _actuatorMotor.enableSoftLimit(SoftLimitDirection.kReverse, !_actuatorMotor.isSoftLimitEnabled(SoftLimitDirection.kReverse));
-  }
-
-  /**
-   * Resets the reverse soft limit (and encoder) of the actuator.
-   */
-  public void resetActuatorEncoder() {
-    _actuatorEncoder.setPosition(0);
+  public void setHasNoteAuton(boolean hasNoteAuton) {
+    _hasNoteAuton = hasNoteAuton;
   }
 
   /**
    * Returns true if the actuator is at the last desired state.
    */
   public boolean atDesiredActuatorState() {
-    if (_actuatorController.atSetpoint()) System.out.println("s" + _actuatorController.getSetpoint());
-
     return _actuatorController.atSetpoint();
   }
 
@@ -157,8 +118,6 @@ public class IntakeSubsystem extends SubsystemBase {
    *            The state to set the actuator to.
    */
   public void actuate(ActuatorState actuatorState) {    
-    _actuatorState = actuatorState;
-
     switch (actuatorState) {
       case STOWED :
         actuate(_actuatorController.calculate(getActuator(), Constants.Encoders.INTAKE_STOWED));
@@ -177,17 +136,6 @@ public class IntakeSubsystem extends SubsystemBase {
     }
   }
 
-  // public void setAngle(double angle){
-  //   double out = 0;
-
-  //    out = MathUtil.clamp(
-  //         _actuatorController.calculate(getActuator(), angle),
-  //         -Constants.Speeds.INTAKE_ACTUATE_MAX_SPEED,
-  //         Constants.Speeds.INTAKE_ACTUATE_MAX_SPEED);
-
-  //   _actuatorMotor.set(out);
-  // }
-
   /**
    * Feed in/out of the intake.
    *
@@ -195,8 +143,6 @@ public class IntakeSubsystem extends SubsystemBase {
    *            How to feed.
    */
   public void feed(FeedMode feedMode) {
-    _feedMode = feedMode;
-
     switch (feedMode) {
       case INTAKE :
         _feedMotor.set(Constants.Speeds.INTAKE_FEED_SPEED);
@@ -217,13 +163,14 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    boolean stalling = _feedDebouncer.calculate(_feedMotor.getOutputCurrent() > 50);
+    _hasNote = stalling ? true : _hasNote;
+
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("ACTUATOR ENCODER", getActuator());
-    SmartDashboard.putData("ACTUATOR PID", _actuatorController);
-    SmartDashboard.putNumber("ACTUATOR OUT", _actuatorMotor.get());
-
-    // SmartDashboard.putBoolean("NOTE SAFETY", noteSafety());
-
-    // if (noteSafety()) { feed(FeedMode.NONE); }
+    SmartDashboard.putNumber("ACTUATOR PERCENT OUTPUT", _actuatorMotor.get());
+    SmartDashboard.putNumber("FEED CURRENT OUTPUT", _feedMotor.getOutputCurrent());
+    SmartDashboard.putBoolean("HAS NOTE", _hasNote);
+    SmartDashboard.putBoolean("HAS NOTE AUTON", _hasNoteAuton);
   }
 }

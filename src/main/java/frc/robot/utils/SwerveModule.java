@@ -1,6 +1,7 @@
 /* Copyright (C) 2024 Team 334. All Rights Reserved.*/
 package frc.robot.utils;
 
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.MathUtil;
@@ -10,7 +11,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Constants.PID;
 import frc.robot.utils.configs.TalonFXConfig;
@@ -49,17 +49,7 @@ public class SwerveModule {
   public SwerveModule(String name, int driveMotorId, int rotationMotorId, int encoderId) {
     _driveMotor = new TalonFX(driveMotorId);
     _rotationMotor = new TalonFX(rotationMotorId);
-
-    // NO NEED FOR THIS CODE ANYMORE, FIGURED HOW TO DO OFFSETS IN PHOENIX TUNER
-    // new stuff because CTRE update
-    // MagnetSensorConfigs encoderConfig = new MagnetSensorConfigs();
-    // encoderConfig.AbsoluteSensorRange =
-    // AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
-    // encoderConfig.MagnetOffset = (angleOffset / 180) / 2;
-
     _encoder = new CANcoder(encoderId);
-
-    // _encoder.getConfigurator().apply(encoderConfig);
 
     _name = name;
 
@@ -70,12 +60,29 @@ public class SwerveModule {
 
     TalonFXConfig.configureFalcon(_driveMotor, false);
     TalonFXConfig.configureFalcon(_rotationMotor, true);
+
+    // TODO: make sure this works
+    CurrentLimitsConfigs currentConfig = new CurrentLimitsConfigs();
+
+    currentConfig.SupplyCurrentLimit = 60;
+    currentConfig.SupplyCurrentThreshold = 30;
+    currentConfig.SupplyTimeThreshold = 0.9;
+
+    currentConfig.StatorCurrentLimit = 120;
+
+    currentConfig.SupplyCurrentLimitEnable = true;
+    currentConfig.StatorCurrentLimitEnable = true;
+
+    _driveMotor.getConfigurator().apply(currentConfig);
   }
 
   /** Display's this module's info on SmartDashboard through a supplied builder. */
   public void displayInfo(SendableBuilder builder) {
     builder.addDoubleProperty(_name + " Angle", () -> getAngle(), null);
     builder.addDoubleProperty(_name + " Velocity", () -> getDriveVelocity(), null);
+
+    builder.addDoubleProperty(_name + " Drive Supply Current", () -> _driveMotor.getSupplyCurrent().getValueAsDouble(), null);
+    builder.addDoubleProperty(_name + " Drive Stator Current", () -> _driveMotor.getStatorCurrent().getValueAsDouble(), null);
   }
 
   /**
@@ -101,8 +108,9 @@ public class SwerveModule {
   }
 
   /** Get the absolute angle of the module as an int (-180 to 180 degrees). */
-  public int getAngle() {
-    return Double.valueOf(_encoder.getAbsolutePosition().getValueAsDouble() * 2 * 180).intValue(); // ctre update
+  public double getAngle() {
+    return _encoder.getAbsolutePosition().getValueAsDouble() * 2 * 180;
+    // return Double.valueOf(_encoder.getAbsolutePosition().getValueAsDouble() * 2 * 180).intValue(); // ctre update
   }
 
   /** Get the velocity of the drive wheel (meters per second). */
@@ -134,9 +142,11 @@ public class SwerveModule {
    * Set the state of this module. This function must be called repeatedly for the
    * state to be set.
    *
+   * @param isClosedLoop Whether the drive speed control is closed loop or not.
+   * 
    * @see SwerveModuleState
    */
-  public void setState(SwerveModuleState state) {
+  public void setState(SwerveModuleState state, boolean isClosedLoop) {
     // current system for setting the state of a module
     // rotation: pure pid control
     // velocity: feedforward control mainly along with pid control for small
@@ -147,14 +157,14 @@ public class SwerveModule {
     double speed = MathUtil.clamp(state.speedMetersPerSecond, -Constants.Speeds.SWERVE_DRIVE_MAX_SPEED,
         Constants.Speeds.SWERVE_DRIVE_MAX_SPEED);
 
-    double rotation_pid = MathUtil.clamp(_rotationController.calculate(getAngle(), state.angle.getDegrees()),
-        -0.150, 0.150);
+    double rotation_pid = MathUtil.clamp(_rotationController.calculate(getAngle(), state.angle.getDegrees()), -0.150, 0.150);
 
-    // double drive_feedforward = (speed / Constants.Speeds.SWERVE_DRIVE_MAX_SPEED);
     double drive_feedforward = UtilFuncs.FromVolts(_driveFeedforward.calculate(speed));
-    double drive_pid = _driveController.calculate(getDriveVelocity(), speed);
-
-    drive_pid = 0;
+    double drive_pid = 0;
+    
+    if (isClosedLoop) {
+      drive_pid = _driveController.calculate(getDriveVelocity(), speed);
+    }
 
     rotate(rotation_pid);
     drive(drive_feedforward + drive_pid);

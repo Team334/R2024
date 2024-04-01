@@ -38,8 +38,7 @@ public class TeleopDrive extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -48,9 +47,10 @@ public class TeleopDrive extends Command {
     // drive the swerve chassis subsystem
 
     _swerveDrive.driveChassis(new ChassisSpeeds(
-        _xSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * _swerveDrive.getDriveCoeff(),
-        _ySpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * _swerveDrive.getDriveCoeff(),
-        _rotationSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED));
+      _xSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * _swerveDrive.getDriveCoeff(),
+      _ySpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * _swerveDrive.getDriveCoeff(),
+      _rotationSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED)
+    );
   }
 
   // Called once the command ends or is interrupted.

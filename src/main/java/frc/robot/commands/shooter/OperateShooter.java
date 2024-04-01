@@ -31,7 +31,7 @@ public class OperateShooter extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    _shooter.driveAngle(_angleSpeed.getAsDouble() * Constants.Speeds.SHOOTER_ANGLE_MAX_SPEED); // TODO: find speed coeff
+    _shooter.driveAngle(_angleSpeed.getAsDouble() * Constants.Speeds.SHOOTER_ANGLE_MAX_SPEED);
     
   }
 

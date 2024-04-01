@@ -12,21 +12,30 @@ import frc.robot.subsystems.ShooterSubsystem;
  * @author Peter Gutkovich
  */
 public class SetShooter extends Command {
-  /** Creates a new AngleShooter. */
   private ShooterSubsystem _shooter;
-
   private DoubleSupplier _angle;
 
-  public SetShooter(ShooterSubsystem shooter, DoubleSupplier angle) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  private boolean _runOnce;
+
+ /**
+   * Creates a new SetShooter.
+   *
+   * @param angle The double supplier that returns the desired angle of the shooter in degrees.
+   * @param runOnce Used to run this command for changing a setpoint.
+   */
+  public SetShooter(ShooterSubsystem shooter, DoubleSupplier angle, boolean runOnce) {
     _shooter = shooter;
     _angle = angle;
+
+    _runOnce = runOnce;
+
     addRequirements(_shooter);
-  }
-  
-  /** Sets the shooter to its lowest angle (flat). */
-  public SetShooter(ShooterSubsystem shooter) {
-    this(shooter, () -> 0);
+  } 
+
+  /** Creates a new SetShooter that runs once. */
+  public SetShooter(ShooterSubsystem shooter, DoubleSupplier angle) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    this(shooter, angle, true);
   }
 
   // Called when the command is initially scheduled.
@@ -50,6 +59,6 @@ public class SetShooter extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return _shooter.atDesiredAngle();
+    return _runOnce && _shooter.atDesiredAngle();
   }
 }

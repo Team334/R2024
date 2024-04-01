@@ -7,28 +7,30 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ElevatorSubsystem;
 
 public class SetElevator extends Command {
+  private final ElevatorSubsystem _elevator;
+  private final DoubleSupplier _height;
+
+  private boolean _runOnce;
+
   /**
    * Creates a new SetElevator.
    *
-   * @param height
-   *            The double supplier that returns the desired height of the
-   *            elevator in meters.
+   * @param height The double supplier that returns the desired height of the elevator in meters.
+   * @param runOnce Used to run this command for a changing setpoint.
    */
-  private final ElevatorSubsystem _elevator;
-
-  private final DoubleSupplier _height;
-
-  public SetElevator(ElevatorSubsystem elevator, DoubleSupplier height) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  public SetElevator(ElevatorSubsystem elevator, DoubleSupplier height, boolean runOnce) {
     _elevator = elevator;
     _height = height;
 
-    addRequirements(_elevator);
-  }
+    _runOnce = runOnce;
 
-  /** Set elevator that sets the elevator to its lowest height. */
-  public SetElevator(ElevatorSubsystem elevator) {
-    this(elevator, () -> 0);
+    addRequirements(_elevator);
+  } 
+
+  /** Creates a new SetElevator that runs once. */
+  public SetElevator(ElevatorSubsystem elevator, DoubleSupplier height) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    this(elevator, height, true);
   }
 
   // Called when the command is initially scheduled.
@@ -51,6 +53,6 @@ public class SetElevator extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return _elevator.atDesiredHeight();
+    return _runOnce && _elevator.atDesiredHeight();
   }
 }

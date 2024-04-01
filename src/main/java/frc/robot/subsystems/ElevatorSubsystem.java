@@ -9,8 +9,9 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Constants.Encoders;
+import frc.robot.Constants.FeedForward;
 import frc.robot.Constants.Physical;
+import frc.robot.Constants.Presets;
 import frc.robot.utils.UtilFuncs;
 import frc.robot.utils.configs.TalonFXConfig;
 
@@ -19,12 +20,14 @@ public class ElevatorSubsystem extends SubsystemBase {
   private final TalonFX _leftMotor = new TalonFX(Constants.CAN.ELEVATOR_LEFT);
   private final TalonFX _rightMotor = new TalonFX(Constants.CAN.ELEVATOR_RIGHT);
 
-  private final ElevatorFeedforward _elevatorFeed = new ElevatorFeedforward(0, 0, 0);
+  private final ElevatorFeedforward _elevatorFeed = new ElevatorFeedforward(FeedForward.ELEVATOR_KS, 0, 0);
   private final ElevatorFeedforward _climbFeed = new ElevatorFeedforward(0, 0, 0); // TODO: Get this value
 
   private final PIDController _heightController = new PIDController(Constants.PID.ELEVATOR_KP, 0, 0);
 
   private boolean _usingClimberFeed = false;
+
+  private double _elevatorTrim = 0;
 
   /** Creates a new ElevatorSubsystem . */
   public ElevatorSubsystem() {
@@ -41,18 +44,30 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     _leftMotor.getConfigurator().apply(softLimits);
 
-    _heightController.setTolerance(0.01);
-    
-    SmartDashboard.putData("ELEVATOR PID", _heightController);
+    _heightController.setTolerance(0.02);
+
+    SmartDashboard.putNumber("ELEVATOR TRIM", _elevatorTrim);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     // harry chen code maybe fix
-
-    SmartDashboard.putNumber("ELEVATOR HEIGHT FROM GROUND", getHeight() + Physical.ELEVATOR_LOWEST_HEIGHT);
+    SmartDashboard.putNumber("ELEVATOR SETPOINT", _heightController.getSetpoint());
     SmartDashboard.putNumber("ELEVATOR HEIGHT METERS", getHeight());
+    SmartDashboard.putNumber("ELEVATOR PERCENT OUTPUT", _leftMotor.get());
+
+    _elevatorTrim = SmartDashboard.getNumber("ELEVATOR TRIM", _elevatorTrim);
+  }
+
+  /**
+   * Get the calculated height needed to aim at the speaker.
+   */
+  public double speakerHeight() {
+    double distance = UtilFuncs.ShotVector().getNorm();
+    double height = Presets.ELEVATOR_DISTANCE_HEIGHT.get(distance);
+
+    return height + _elevatorTrim;
   }
 
   /**
@@ -85,6 +100,11 @@ public class ElevatorSubsystem extends SubsystemBase {
     return _leftMotor.getPosition().getValueAsDouble() / Physical.ELEVATOR_GEAR_RATIO * Physical.ELEVATOR_DISTANCE_PER_ROTATION;
   }
 
+  /** Returns the current velocity of the elevator motor. (m/s)*/
+  public double getVelocity() {
+    return _leftMotor.getVelocity().getValueAsDouble() / Physical.ELEVATOR_GEAR_RATIO * Physical.ELEVATOR_DISTANCE_PER_ROTATION;
+  }
+
   /**
    * Drives the elevator at a desired percent output (feedforward is included).
    */
@@ -92,12 +112,15 @@ public class ElevatorSubsystem extends SubsystemBase {
     double ff = 0;
 
     if (_usingClimberFeed)
+      // ff = _climbFeed.calculate(speed);
       ff = _climbFeed.calculate(0);
     else {
-      ff = _elevatorFeed.calculate(0);
+      // ff = _elevatorFeed.calculate(speed);
+      ff = _elevatorFeed.calculate(speed);
     }
 
     ff = UtilFuncs.FromVolts(ff);
+    speed = MathUtil.applyDeadband(speed, 0.08);
 
     _leftMotor.set(ff + speed);
   }
