@@ -169,6 +169,9 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     });
 
     SmartDashboard.putNumber("SWERVE TRIM", _swerveTrim);
+    SmartDashboard.putNumber("SPEEDOMETER X", _gyro.getVelocityX()); // Velocity read by the gyro (I added all three bc the axis might be different for the gyro)
+    SmartDashboard.putNumber("SPEEDOMETER Y", _gyro.getVelocityY());
+    SmartDashboard.putNumber("SPEEDOMETER Z", _gyro.getVelocityZ());
   }
 
   @Override
