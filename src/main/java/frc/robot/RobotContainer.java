@@ -86,7 +86,7 @@ public class RobotContainer {
     ));
 
     // brings the actuator in immediately, this is fast and shooting can't be done immediately 
-    NamedCommands.registerCommand("actuateInFast", new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.NONE, true).alongWith(
+    NamedCommands.registerCommand("actuateInFast", new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.INTAKE, true).alongWith(
       Commands.runOnce(() -> _intakeSubsystem.setHasNoteAuton(false)),
       new SpinShooter(_shooterSubsystem, ShooterState.SHOOT, true)
     ));
