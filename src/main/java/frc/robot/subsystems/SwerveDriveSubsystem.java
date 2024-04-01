@@ -122,7 +122,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   public SwerveDriveSubsystem(VisionSubsystem visionSubsystem) {
     _visionSubsystem = visionSubsystem;
 
-    _headingController.setTolerance(3);
+    _headingController.setTolerance(2);
     _headingController.enableContinuousInput(-180, 180);
 
     // setupOrchestra();
@@ -221,15 +221,17 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       
       // 2 tags, good distance
       else if (tagCount >= 2) {
-        xyStds = 0.9;
+        xyStds = 0.8;
       }
+
+      // else return; // if only using 2 tags
 
       // 1 tag, bad single tag distance, ignore
       else if (tagDistance > FieldConstants.SINGLE_TAG_DISTANCE_THRESHOLD) return false;
 
       // 1 tag, good single tag distance, use data but with higher std devs
       else {
-        xyStds = 1.2;
+        xyStds = 1.1;
       }
 
       _estimator.addVisionMeasurement(UtilFuncs.ToPose(llBotpose), _visionSubsystem.getLatency(), VecBuilder.fill(xyStds, xyStds, yawStd));

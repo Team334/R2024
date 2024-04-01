@@ -72,7 +72,6 @@ public class ShooterSubsystem extends SubsystemBase {
 
     _revShooterEncoder.setDistancePerPulse((360.0 / Physical.SHOOTER_ENCODER_ANGLE_GEAR_RATIO)/8192.0);
     _revShooterEncoder.reset();
-
     
     resetAngle();
 
@@ -164,7 +163,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   /** Returns the angular velocity of the motor. (deg/sec) */
-  public double getAngularVelocity(){
+  public double getAngularVelocity() {
     return _angleMotor.getVelocity().getValueAsDouble() / Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO * 360;
   }
 
