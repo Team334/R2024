@@ -95,7 +95,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("shoot", new AutonShoot(_shooterSubsystem, _elevatorSubsystem, _swerveSubsystem, _intakeSubsystem));
 
     // stops the shooter
-    NamedCommands.registerCommand("stopShooter", new SpinShooter(_shooterSubsystem, ShooterState.NONE, false));
+    NamedCommands.registerCommand("stopShooter", new SpinShooter(_shooterSubsystem, ShooterState.NONE, true));
 
     // Drive/Operate default commands
     _swerveSubsystem.setDefaultCommand(new TeleopDrive(
