@@ -1,15 +1,13 @@
 {
-  "robotWidth": 0.82,
-  "robotLength": 0.82,
+  "robotWidth": 0.8,
+  "robotLength": 0.8,
   "holonomicMode": true,
   "pathFolders": [
+    "Continuations",
     "Starting Paths"
   ],
   "autoFolders": [
-    "bottom",
-    "center",
-    "MAIN",
-    "top"
+    "New Autons"
   ],
   "defaultMaxVel": 4.0,
   "defaultMaxAccel": 3.0,

@@ -1,0 +1,61 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.3070140425995143,
+      "y": 5.55593454044051
+    },
+    "rotation": -120.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center Subwoofer to Center Note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "actuateInFast"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center Note to Top Note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "actuateInFast"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shoot"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "New Autons",
+  "choreoAuto": false
+}
