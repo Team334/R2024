@@ -64,6 +64,7 @@ public final class Constants {
     public static final double SHOOTER_FAST_SPIN_SPEED = 1;
     public static final double SHOOTER_SLOW_SPIN_SPEED = 0.8;
     public static final double SHOOTER_AMP_SPEED = 1;
+    public static final double SHOOTER_AMP_SLOW_SPEED = 0.5;
     public static final double SHOOTER_INTAKE_SPEED = -0.15;
     public static final double SHOOTER_IDLE_SPEED = 0.3;
 
@@ -74,12 +75,10 @@ public final class Constants {
     public static final double OUTTAKE_FEED_SPEED = -0.4;
 
     public static final double INTAKE_ACTUATE_MAX_SPEED = 0.4;
-    public static final double SHOOTER_SLOW_SPEED = 0.5;
   }
 
   public static class Physical {
     // GEAR RATIOS ARE: DRIVEN GEAR TEETH / DRIVING GEAR TEETH
-
     public static final double SWERVE_DRIVE_BASE_RADIUS = 0.43;
 
     public static final double SWERVE_DRIVE_GEAR_RATIO = 6.75;
@@ -93,8 +92,11 @@ public final class Constants {
     public static final double ELEVATOR_DISTANCE_PER_ROTATION = .09;
 
     public static final SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(
-        new Translation2d(0.292, 0.292), new Translation2d(0.292, -0.292), new Translation2d(-0.292, -0.292),
-        new Translation2d(-0.292, 0.292));
+      new Translation2d(0.292, 0.292), 
+      new Translation2d(0.292, -0.292), 
+      new Translation2d(-0.292, -0.292),
+      new Translation2d(-0.292, 0.292)
+    );
   }
 
   public static class Encoders {

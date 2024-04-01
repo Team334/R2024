@@ -142,9 +142,11 @@ public class SwerveModule {
    * Set the state of this module. This function must be called repeatedly for the
    * state to be set.
    *
+   * @param isClosedLoop Whether the drive speed control is closed loop or not.
+   * 
    * @see SwerveModuleState
    */
-  public void setState(SwerveModuleState state) {
+  public void setState(SwerveModuleState state, boolean isClosedLoop) {
     // current system for setting the state of a module
     // rotation: pure pid control
     // velocity: feedforward control mainly along with pid control for small
@@ -155,14 +157,14 @@ public class SwerveModule {
     double speed = MathUtil.clamp(state.speedMetersPerSecond, -Constants.Speeds.SWERVE_DRIVE_MAX_SPEED,
         Constants.Speeds.SWERVE_DRIVE_MAX_SPEED);
 
-    double rotation_pid = MathUtil.clamp(_rotationController.calculate(getAngle(), state.angle.getDegrees()),
-        -0.150, 0.150);
+    double rotation_pid = MathUtil.clamp(_rotationController.calculate(getAngle(), state.angle.getDegrees()), -0.150, 0.150);
 
-    // double drive_feedforward = (speed / Constants.Speeds.SWERVE_DRIVE_MAX_SPEED);
     double drive_feedforward = UtilFuncs.FromVolts(_driveFeedforward.calculate(speed));
-    double drive_pid = _driveController.calculate(getDriveVelocity(), speed);
-
-    drive_pid = 0;
+    double drive_pid = 0;
+    
+    if (isClosedLoop) {
+      drive_pid = _driveController.calculate(getDriveVelocity(), speed);
+    }
 
     rotate(rotation_pid);
     drive(drive_feedforward + drive_pid);

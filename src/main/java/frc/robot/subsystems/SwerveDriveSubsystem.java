@@ -55,31 +55,34 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   private final SwerveModule _backLeft = new SwerveModule("Back Left", Constants.CAN.DRIVE_BACK_LEFT,
       Constants.CAN.ROT_BACK_LEFT, Constants.CAN.ENC_BACK_LEFT);
 
-  SwerveModuleState[] states = new SwerveModuleState[]{
-      new SwerveModuleState(_frontLeft.getDriveVelocity(), Rotation2d.fromDegrees(_frontLeft.getAngle())),
-      new SwerveModuleState(_frontRight.getDriveVelocity(), Rotation2d.fromDegrees(_frontLeft.getAngle())),
-      new SwerveModuleState(_backRight.getDriveVelocity(), Rotation2d.fromDegrees(_frontLeft.getAngle())),
-      new SwerveModuleState(_backLeft.getDriveVelocity(), Rotation2d.fromDegrees(_frontLeft.getAngle()))};
+  SwerveModuleState[] states = new SwerveModuleState[] {
+    new SwerveModuleState(_frontLeft.getDriveVelocity(), Rotation2d.fromDegrees(_frontLeft.getAngle())),
+    new SwerveModuleState(_frontRight.getDriveVelocity(), Rotation2d.fromDegrees(_frontLeft.getAngle())),
+    new SwerveModuleState(_backRight.getDriveVelocity(), Rotation2d.fromDegrees(_frontLeft.getAngle())),
+    new SwerveModuleState(_backLeft.getDriveVelocity(), Rotation2d.fromDegrees(_frontLeft.getAngle()))
+  };
+
+  /** A boolean for whether the swerve is field oriented or not. */
+  public boolean fieldOriented = false;
+
+  /** A boolean for whther the swerve drive motor control is closed loop or not.  */
+  public boolean isClosedLoop = false;
 
   // private final BNO055 _gyro = BNO055.getInstance(BNO055.opmode_t.OPERATION_MODE_IMUPLUS,
   //     BNO055.vector_type_t.VECTOR_EULER);
-  private PIDController _headingController = new PIDController(PID.SWERVE_HEADING_KP, 0, PID.SWERVE_HEADING_KD);
-
   private final AHRS _gyro = new AHRS();
 
+  private DrivingSpeeds _drivingState = DrivingSpeeds.FAST;
+
+  private PIDController _headingController = new PIDController(PID.SWERVE_HEADING_KP, 0, PID.SWERVE_HEADING_KD);
   private VisionSubsystem _visionSubsystem;
 
   Translation2d _pivotPoint = new Translation2d(0, 0);
 
   private final Orchestra _orchestra = new Orchestra();
-  String song = "output.chrp";
-
-  private DrivingSpeeds _drivingState = DrivingSpeeds.FAST;
+  private final String _song = "output.chrp";
 
   private Field2d _field = new Field2d();
-
-  /** A boolean for whether the swerve is field oriented or not. */
-  public boolean fieldOriented = false;
 
   private double _swerveTrim = 4;
 
@@ -89,10 +92,12 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   // Pose Estimator -> Has built in odometry and uses supplied vision measurements
   private final SwerveDrivePoseEstimator _estimator = new SwerveDrivePoseEstimator(
-      Constants.Physical.SWERVE_KINEMATICS, getHeadingRaw(),
-      new SwerveModulePosition[]{_frontLeft.getPosition(), _frontRight.getPosition(), _backRight.getPosition(),
-          _backLeft.getPosition()},
-      new Pose2d(), VecBuilder.fill(0.01, 0.01, 0.01), VecBuilder.fill(0.9, 0.9, 9999999)); // note: LL heading std was 0.9 
+    Constants.Physical.SWERVE_KINEMATICS, getHeadingRaw(),
+    new SwerveModulePosition[] {_frontLeft.getPosition(), _frontRight.getPosition(), _backRight.getPosition(), _backLeft.getPosition()},
+    new Pose2d(), 
+    VecBuilder.fill(0.01, 0.01, 0.01), 
+    VecBuilder.fill(0.9, 0.9, 9999999)
+  );
 
   // OTHER POSSIBLE STD DEV VALUES:
   // VecBuilder.fill(0.006, 0.006, 0.007), VecBuilder.fill(0.52, 0.52, 1.35)
@@ -123,16 +128,26 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     // setupOrchestra();
 
     // pathplannerlib setup
-    AutoBuilder.configureHolonomic(this::getPose, this::resetPose, this::getRobotRelativeSpeeds, this::driveChassis,
-        new HolonomicPathFollowerConfig(Constants.PID.PP_TRANSLATION, Constants.PID.PP_ROTATION,
-            Constants.Speeds.SWERVE_DRIVE_MAX_SPEED, Constants.Physical.SWERVE_DRIVE_BASE_RADIUS,
-            new ReplanningConfig()),
-        () -> {
-          if (UtilFuncs.GetAlliance() == Alliance.Red) {
-            return true;
-          }
-          return false;
-        }, this);
+    AutoBuilder.configureHolonomic(
+      this::getPose, 
+      this::resetPose, 
+      this::getRobotRelativeSpeeds, 
+      this::driveChassis,
+      new HolonomicPathFollowerConfig(
+        Constants.PID.PP_TRANSLATION, 
+        Constants.PID.PP_ROTATION,
+        Constants.Speeds.SWERVE_DRIVE_MAX_SPEED, 
+        Constants.Physical.SWERVE_DRIVE_BASE_RADIUS,
+        new ReplanningConfig()
+      ),
+      () -> {
+        if (UtilFuncs.GetAlliance() == Alliance.Red) {
+          return true;
+        }
+        return false;
+      }, 
+      this
+    );
     
     SmartDashboard.putData("Gyro", new Sendable() {
       @Override
@@ -247,7 +262,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       }
     }
 
-    _orchestra.loadMusic(song);
+    _orchestra.loadMusic(_song);
     _orchestra.play();
   }
 
@@ -293,8 +308,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(chassisSpeeds, Rotation2d.fromDegrees(relativeHeading));
     }
 
-    SwerveModuleState[] moduleStates = Constants.Physical.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds,
-        _pivotPoint);
+    SwerveModuleState[] moduleStates = Constants.Physical.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds, _pivotPoint);
     setStates(moduleStates);
   }
 
@@ -334,10 +348,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
    * Order -> front left, front right, back right, back left
    */
   public void setStates(SwerveModuleState[] states) {
-    _frontLeft.setState(states[0]);
-    _frontRight.setState(states[1]);
-    _backRight.setState(states[2]);
-    _backLeft.setState(states[3]);
+    _frontLeft.setState(states[0], isClosedLoop);
+    _frontRight.setState(states[1], isClosedLoop);
+    _backRight.setState(states[2], isClosedLoop);
+    _backLeft.setState(states[3], isClosedLoop);
   }
 
   /**
@@ -371,8 +385,16 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   /** Resets the pose estimator to the supplied new pose. */
   public void resetPose(Pose2d newPose) {
-    _estimator.resetPosition(getHeadingRaw(), new SwerveModulePosition[]{_frontLeft.getPosition(),
-        _frontRight.getPosition(), _backRight.getPosition(), _backLeft.getPosition()}, newPose);
+    _estimator.resetPosition(
+      getHeadingRaw(), 
+      new SwerveModulePosition[]{
+        _frontLeft.getPosition(),
+        _frontRight.getPosition(), 
+        _backRight.getPosition(), 
+        _backLeft.getPosition()
+      }, 
+      newPose
+    );
   }
 
   /** Get heading of the drive from the pose estimator. */

@@ -53,12 +53,6 @@ public class NoteAlign extends Command {
     if (noteAngles.isPresent()) {
       noteX = noteAngles.get()[0];
     }
-    
-    if (!_headingController.atSetpoint()) {
-      
-    } else {
-
-    }
 
     double rotationVelocity = MathUtil.clamp(
       _headingController.calculate(noteX, 0),

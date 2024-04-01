@@ -15,7 +15,6 @@ public class LEDSubsystem extends SubsystemBase {
   private int _hue; // For rainbow
   private int _firstPixelHue; // For rainbow
 
-  private int _value; // For moving pixel pattern.
   private int _firstPixelIndex; // For moving pixel pattern.
 
   // colorOn used to control blinking status.

@@ -19,7 +19,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.FeedForward;
-import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.PID;
 import frc.robot.Constants.Physical;
 import frc.robot.Constants.Presets;
@@ -53,8 +52,6 @@ public class ShooterSubsystem extends SubsystemBase {
   private double _shooterTrim = 3;
 
   private boolean _holdNote = false;
-
-  public boolean thenIdle = true;
 
   /** Represents the state of the shooter's flywheels (speaker shoot, amp, idle, nothing). */
   public enum ShooterState {
@@ -182,9 +179,7 @@ public class ShooterSubsystem extends SubsystemBase {
    */
   public void driveAngle(double speed) {
     double ff = UtilFuncs.FromVolts(_angleFeed.calculate(Math.toRadians(getAngle()), 0));
-    // System.out.println(ff + speed);
     _angleMotor.set(ff + speed);
-    // _angleMotor.set(0);
   }
 
   /** Stops the shooter's angular movement. */
@@ -210,7 +205,7 @@ public class ShooterSubsystem extends SubsystemBase {
         break;
 
       case SLOW:
-        spinShooter(Speeds.SHOOTER_SLOW_SPEED);
+        spinShooter(Speeds.SHOOTER_AMP_SLOW_SPEED);
         break;
 
       case INTAKE:

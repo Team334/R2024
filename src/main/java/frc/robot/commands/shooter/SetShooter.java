@@ -12,7 +12,6 @@ import frc.robot.subsystems.ShooterSubsystem;
  * @author Peter Gutkovich
  */
 public class SetShooter extends Command {
-  /** Creates a new AngleShooter. */
   private ShooterSubsystem _shooter;
   private DoubleSupplier _angle;
 
