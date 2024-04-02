@@ -8,6 +8,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -131,6 +132,7 @@ public class RobotContainer {
 
     _autonChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("AUTON CHOOSER", _autonChooser);
+    SmartDashboard.putNumber("DRIVE VOLTAGE", 0);
   }
 
   private void rumbleControllers(double rumble) {
@@ -181,6 +183,15 @@ public class RobotContainer {
     // TESTING ONLY!!!
     _driveController.triangle().onTrue(Commands.runOnce(() -> _swerveSubsystem.resetGyro(180), _swerveSubsystem));
     
+    _driveController.triangle().onTrue(Commands.run(() -> {
+      _swerveSubsystem.driveChassis(new ChassisSpeeds(
+        SmartDashboard.getNumber("DRIVE VOLTAGE", 0),
+        0,
+        0
+      ));
+    }, _swerveSubsystem));
+
+
     // TESTING ONLY!!!
     _driveController.circle().onTrue(Commands.runOnce(() -> {
       Optional<double[]> pose = _visionSubsystem.getBotposeBlue();
@@ -233,6 +244,7 @@ public class RobotContainer {
    */
   public void teleopInit() {
     _swerveSubsystem.fieldOriented = true;
+    _swerveSubsystem.isClosedLoop = false;
     _shooterSubsystem.setShooterState(ShooterState.IDLE);
   }
 

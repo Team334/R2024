@@ -191,6 +191,9 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
     SmartDashboard.putNumber("Shot Distance", shotVector().getNorm());
 
+    SmartDashboard.putNumber("CHASSIS X SPEED", getRobotRelativeSpeeds().vxMetersPerSecond);
+    SmartDashboard.putNumber("CHASSIS Y SPEED", getRobotRelativeSpeeds().vyMetersPerSecond);
+
     _swerveTrim = SmartDashboard.getNumber("SWERVE TRIM", _swerveTrim);
 
     // field icon updates
