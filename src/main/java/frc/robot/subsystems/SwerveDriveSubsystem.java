@@ -96,6 +96,9 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   StructPublisher<Pose3d> shotPointPublisher = NetworkTableInstance.getDefault()
     .getStructTopic("/Advantage Shot Point", Pose3d.struct).publish();
 
+  StructPublisher<Pose2d> visionPublisher = NetworkTableInstance.getDefault()
+    .getStructTopic("/Advantage Vision Pose", Pose2d.struct).publish();
+
   // Pose Estimator -> Has built in odometry and uses supplied vision measurements
   private final SwerveDrivePoseEstimator _estimator = new SwerveDrivePoseEstimator(
     Constants.Physical.SWERVE_KINEMATICS, getHeadingRaw(),
@@ -247,6 +250,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         xyStds = 1.1;
       }
 
+      visionPublisher.set(UtilFuncs.ToPose(llBotpose));
       _estimator.addVisionMeasurement(UtilFuncs.ToPose(llBotpose), _visionSubsystem.getLatency(), VecBuilder.fill(xyStds, xyStds, yawStd));
     }
 
