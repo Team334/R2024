@@ -334,11 +334,11 @@ public class SwerveDriveSubsystem extends SubsystemBase {
    * @param xSpeed X robot speed.
    * @param ySpeed Y robot speed.
    * 
-   * @param heading The heading to set to.
+   * @param headingChange How much to change the heading by.
    */
-  public void setHeading(double xSpeed, double ySpeed, double heading) {
+  public void setHeading(double xSpeed, double ySpeed, double headingChange) {
     double rotationVelocity = MathUtil.clamp(
-      _headingController.calculate(getHeading().getDegrees(), heading),
+      _headingController.calculate(headingChange, 0),
       -Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED,
       Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED
     );
@@ -423,24 +423,26 @@ public class SwerveDriveSubsystem extends SubsystemBase {
    * (could be modified to shoot while moving)
    */
   public Translation2d shotVector() {
-    Pose3d speakerPose = UtilFuncs.GetSpeakerPose();
+    Optional<Translation2d> distanceVec = _visionSubsystem.getSpeakerDistance();
 
-    Translation2d speakerTranslation = new Translation2d(speakerPose.getX(), speakerPose.getY());
-    Translation2d botTranslation = getPose().getTranslation();
-
-    Translation2d distanceVec = speakerTranslation.minus(botTranslation);
-
-    return distanceVec;
+    if (distanceVec.isPresent()) {
+      return distanceVec.get();
+    } else {
+      return new Translation2d();
+    }
   }
 
   /**
-   * Get the calculated heading to aim the chassis at the speaker shot point.
+   * Get the heading change needed to aim the chassis at the speaker shot point.
    */
-  public double speakerHeading() {
-    Translation2d distanceVec = shotVector();
-    double heading = MathUtil.inputModulus(distanceVec.getAngle().getDegrees(), -180, 180);
-    
-    return heading + _swerveTrim;
+  public double speakerHeading() {    
+    Optional<double[]> tagAngles = _visionSubsystem.getSpeakerAngles();
+
+    if (tagAngles.isPresent()) {
+      return tagAngles.get()[0] + _swerveTrim;
+    } else {
+      return 0;
+    }
   }
 
   public void pivotMotor(Translation2d pivotPoint) {

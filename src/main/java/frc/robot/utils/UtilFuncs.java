@@ -74,6 +74,19 @@ public final class UtilFuncs {
     );
   }
 
+  /** Returns the id of the speaker tag for this alliance. */
+  public static int GetSpeakerTag() {
+    int id;
+
+    if (GetAlliance() == Alliance.Red) {
+      id =  FieldConstants.SPEAKER_TAG_RED;
+    } else {
+      id = FieldConstants.SPEAKER_TAG_BLUE;
+    }
+
+    return id;
+  }
+
   /**
    * Supply UtilFuncs with a shot vector supplier.
    * 

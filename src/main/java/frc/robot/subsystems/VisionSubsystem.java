@@ -6,10 +6,16 @@ import java.util.Optional;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.FieldConstants;
+import frc.robot.utils.UtilFuncs;
 import frc.robot.utils.helpers.LimelightHelper;
 
 /**
@@ -21,8 +27,22 @@ public class VisionSubsystem extends SubsystemBase {
   private final LimelightHelper _main = new LimelightHelper("limelight-main");
   private final LimelightHelper _intake = new LimelightHelper("limelight-intake");
 
+  private int _speakerTag;
+
+  private Alliance _oldAlliance = UtilFuncs.GetAlliance();
+  private final Trigger _allianceChanged = new Trigger(
+    () -> UtilFuncs.GetAlliance() != _oldAlliance
+  );
+
   /** Creates a new VisionSubsystem. */
-  public VisionSubsystem() {}
+  public VisionSubsystem() {
+    setSpeakerTag();
+
+    _allianceChanged.onTrue(Commands.runOnce(() -> {
+      _oldAlliance = UtilFuncs.GetAlliance();
+      setSpeakerTag();
+    }));
+  }
 
   @Override
   public void periodic() {
@@ -32,6 +52,11 @@ public class VisionSubsystem extends SubsystemBase {
       SmartDashboard.putNumber("NOTE TX", noteAngles.get()[0]);
       SmartDashboard.putNumber("NOTE TY", noteAngles.get()[1]);
     }
+  }
+
+  private void setSpeakerTag() {
+    _speakerTag = UtilFuncs.GetSpeakerTag();
+    _main.getEntry("priorityid").setNumber(_speakerTag);
   }
 
   /**
@@ -58,6 +83,15 @@ public class VisionSubsystem extends SubsystemBase {
     }
 
     return false;
+  }
+
+  /** Whether an apriltag of a specific id is visible or not. */
+  public boolean isApriltagVisible(int id) {
+    JsonNode tag = _main.getTag(id);
+
+    if (tag == null) return false;
+    
+    return true;
   }
 
   /** Return a boolean for whether a note is seen by intake cam. */
@@ -91,6 +125,32 @@ public class VisionSubsystem extends SubsystemBase {
     double[] botpose_array = botpose_entry.getDoubleArray(new double[11]);
 
     return Optional.of(botpose_array);
+  }
+
+  /** Return the angles from the speaker AprilTag. */
+  public Optional<double[]> getSpeakerAngles() {
+    if (!isApriltagVisible(_speakerTag)) return Optional.empty();
+
+    double[] angles = {
+      _main.getEntry("tx").getDouble(0),
+      _main.getEntry("ty").getDouble(0)
+    };
+
+    return Optional.of(angles);
+  }
+
+  /** Return the distance vector from the speaker AprilTag. */
+  public Optional<Translation2d> getSpeakerDistance() {
+    if (!isApriltagVisible(_speakerTag)) return Optional.empty();
+
+    double[] botposeArray = _main.getEntry("camerapose_robotspace").getDoubleArray(new double[6]);
+
+    Translation2d distanceVec = new Translation2d(
+      botposeArray[0],
+      botposeArray[1]
+    );
+
+    return Optional.of(distanceVec);
   }
 
   /**
