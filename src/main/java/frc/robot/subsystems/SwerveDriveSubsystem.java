@@ -78,7 +78,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   private Field2d _field = new Field2d();
 
-  private double _swerveTrim = 4;
+  private double _swerveTrim = 0;
 
   StructArrayPublisher<SwerveModuleState> swervePublisher = NetworkTableInstance.getDefault()
       .getStructArrayTopic("/Advantage Swerve Modules", SwerveModuleState.struct).publish();
@@ -97,7 +97,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     Constants.Physical.SWERVE_KINEMATICS, getHeadingRaw(),
     new SwerveModulePosition[] {_frontLeft.getPosition(), _frontRight.getPosition(), _backRight.getPosition(), _backLeft.getPosition()},
     new Pose2d(), 
-    VecBuilder.fill(0.01, 0.01, 0.01), 
+    VecBuilder.fill(0.03, 0.03, 0.01), 
     VecBuilder.fill(0.9, 0.9, 9999999)
   );
 
@@ -127,7 +127,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     _headingController.setTolerance(2);
     _headingController.enableContinuousInput(-180, 180);
 
-    resetPose(new Pose2d(5, 5, Rotation2d.fromDegrees(180)));
+    // resetPose(new Pose2d(5, 5, Rotation2d.fromDegrees(180)));
 
     // setupOrchestra();
 
@@ -176,6 +176,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("SPEEDOMETER X", _gyro.getVelocityX()); // Velocity read by the gyro (I added all three bc the axis might be different for the gyro)
     SmartDashboard.putNumber("SPEEDOMETER Y", _gyro.getVelocityY());
     SmartDashboard.putNumber("SPEEDOMETER Z", _gyro.getVelocityZ());
+    SmartDashboard.putNumber("PROBABLY_SPEED", Math.sqrt(Math.pow(_gyro.getVelocityX(), 2) + Math.pow(_gyro.getVelocityY(), 2)));
+    SmartDashboard.putNumber("PROBABLY_NOT_SPEED", Math.sqrt(Math.pow(_gyro.getVelocityX(), 2) + Math.pow(_gyro.getVelocityZ(), 2)));
+
+
   }
 
   @Override
@@ -228,22 +232,18 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       SmartDashboard.putNumber("TAG(S) DISTANCE", tagDistance);
       SmartDashboard.putNumber("TAG COUNT", tagCount);
 
-      // distance is too high for any tags, ignore
-      if (tagDistance > FieldConstants.TAG_DISTANCE_THRESHOLD) return false;
-      
-      // 2 tags, good distance
-      else if (tagCount >= 2) {
-        xyStds = 0.8;
+      if (tagDistance <= FieldConstants.CLOSE_TAG_DISTANCE_THRESHOLD) {
+        if (tagCount >= 2) { xyStds = 0.25; yawStd = 9000; }
+        else { xyStds = 0.8; yawStd = 10000; }
       }
 
-      // else return; // if only using 2 tags
+      else if (tagDistance <= FieldConstants.FAR_TAG_DISTANCE_THRESHOLD) {
+        if (tagCount >= 2) { xyStds = 0.9; yawStd = 13000; }
+        else { xyStds = 1.2; yawStd = 16000; }
+      }
 
-      // 1 tag, bad single tag distance, ignore
-      else if (tagDistance > FieldConstants.SINGLE_TAG_DISTANCE_THRESHOLD) return false;
-
-      // 1 tag, good single tag distance, use data but with higher std devs
       else {
-        xyStds = 1.1;
+        return false;
       }
 
       visionPublisher.set(UtilFuncs.ToPose(llBotpose));

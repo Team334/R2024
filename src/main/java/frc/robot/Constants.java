@@ -58,10 +58,10 @@ public final class Constants {
     public static final double SWERVE_DRIVE_SLOW_COEFF = .6; // Default driving speed
     public static final double SWERVE_DRIVE_FAST_COEFF = .95;
 
-    public static final double SWERVE_DRIVE_MAX_SPEED = 4;
+    // public static final double SWERVE_DRIVE_MAX_SPEED = 4;
     public static final double SWERVE_DRIVE_MAX_ANGULAR_SPEED = Math.PI * 2.5; // TODO: Get this value
 
-    // public static final double SWERVE_DRIVE_MAX_SPEED = 1000;
+    public static final double SWERVE_DRIVE_MAX_SPEED = 4.6;
 
     public static final double SHOOTER_FAST_SPIN_SPEED = 1;
     public static final double SHOOTER_SLOW_SPIN_SPEED = 0.8;
@@ -90,7 +90,7 @@ public final class Constants {
     public static final double SHOOTER_ANGLE_GEAR_RATIO = 112;
     public static final double SHOOTER_ENCODER_ANGLE_GEAR_RATIO = 2.8;
 
-    public static final double ELEVATOR_GEAR_RATIO = 25;
+    public static final double ELEVATOR_GEAR_RATIO = 15;
     public static final double ELEVATOR_DISTANCE_PER_ROTATION = .09;
 
     public static final SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(
@@ -110,10 +110,8 @@ public final class Constants {
     public static final double ELEVATOR_KG = 0.0;
     public static final double ELEVATOR_KS = 0.3;
 
-    public static final double MODULE_DRIVE_KS = 0.32;
-    public static final double MODULE_DRIVE_KV = 2.15;
-
-    // public static final double MODULE_DRIVE_KV = 1;
+    public static final double MODULE_DRIVE_KS = 0.3;
+    public static final double MODULE_DRIVE_KV = 2.6;
 
     public static final double SHOOTER_ANGLE_KG = 0.001;
   }
@@ -190,8 +188,11 @@ public final class Constants {
 
     public static final double SHOOTER_SLOW_THRESHOLD = 2;
 
-    public static final double TAG_DISTANCE_THRESHOLD = 3.5;
-    public static final double SINGLE_TAG_DISTANCE_THRESHOLD = 1.5;
+    // public static final double TAG_DISTANCE_THRESHOLD = 3.5;
+    // public static final double SINGLE_TAG_DISTANCE_THRESHOLD = 1.5;
+
+    public static final double FAR_TAG_DISTANCE_THRESHOLD = 3.5;
+    public static final double CLOSE_TAG_DISTANCE_THRESHOLD = 2.8;
 
     public static final int SPEAKER_TAG_BLUE = 7;
     public static final int SPEAKER_TAG_RED = 4;

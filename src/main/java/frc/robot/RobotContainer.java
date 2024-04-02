@@ -183,13 +183,15 @@ public class RobotContainer {
     // TESTING ONLY!!!
     _driveController.triangle().onTrue(Commands.runOnce(() -> _swerveSubsystem.resetGyro(180), _swerveSubsystem));
     
-    _driveController.triangle().onTrue(Commands.run(() -> {
-      _swerveSubsystem.driveChassis(new ChassisSpeeds(
-        SmartDashboard.getNumber("DRIVE VOLTAGE", 0),
-        0,
-        0
-      ));
-    }, _swerveSubsystem));
+    // _driveController.triangle().onTrue(Commands.run(() -> {
+    //   SmartDashboard.putNumber("KV", SmartDashboard.getNumber("DRIVE VOLTAGE", 0) / _swerveSubsystem.getRobotRelativeSpeeds().vxMetersPerSecond);
+
+    //   _swerveSubsystem.driveChassis(new ChassisSpeeds(
+    //     SmartDashboard.getNumber("DRIVE VOLTAGE", 0),
+    //     0,
+    //     0
+    //   ));
+    // }, _swerveSubsystem));
 
 
     // TESTING ONLY!!!

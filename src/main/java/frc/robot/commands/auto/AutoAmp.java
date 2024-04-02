@@ -31,7 +31,7 @@ public class AutoAmp extends SequentialCommandGroup {
       new SpinShooter(shooter, ShooterState.NONE, true),
       new PrintCommand("CAN AMP"),
       new FeedActuate(intake, ActuatorState.STOWED, FeedMode.OUTTAKE).withTimeout(0.5),
-      new SpinShooter(shooter, ShooterState.SLOW, false).withTimeout(0.1)
+      new SpinShooter(shooter, ShooterState.SLOW, false).withTimeout(0.2)
 
     );
   }
