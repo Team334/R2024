@@ -93,6 +93,9 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   StructPublisher<Pose2d> posePublisher = NetworkTableInstance.getDefault()
     .getStructTopic("/Advantage Robot Pose", Pose2d.struct).publish();
 
+  StructPublisher<Pose3d> shotPointPublisher = NetworkTableInstance.getDefault()
+    .getStructTopic("/Advantage Shot Point", Pose3d.struct).publish();
+
   // Pose Estimator -> Has built in odometry and uses supplied vision measurements
   private final SwerveDrivePoseEstimator _estimator = new SwerveDrivePoseEstimator(
     Constants.Physical.SWERVE_KINEMATICS, getHeadingRaw(),
@@ -127,6 +130,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     _headingController.setTolerance(2);
     _headingController.enableContinuousInput(-180, 180);
+
+    resetPose(new Pose2d(5, 5, Rotation2d.fromDegrees(180)));
 
     // setupOrchestra();
 
@@ -181,6 +186,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   public void periodic() {
     swervePublisher.set(states);
     posePublisher.set(getPose());
+    shotPointPublisher.set(UtilFuncs.GetSpeakerPose());
 
     SmartDashboard.putBoolean("VALID TAG(S)", updateBotpose());
 
