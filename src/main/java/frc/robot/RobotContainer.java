@@ -9,6 +9,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -132,6 +133,13 @@ public class RobotContainer {
     SmartDashboard.putData("AUTON CHOOSER", _autonChooser);
   }
 
+  private void rumbleControllers(double rumble) {
+    _driveController.getHID().setRumble(RumbleType.kLeftRumble, rumble);
+    _operatorController.getHID().setRumble(RumbleType.kLeftRumble, rumble);
+    _driveController.getHID().setRumble(RumbleType.kRightRumble, rumble);
+    _operatorController.getHID().setRumble(RumbleType.kRightRumble, rumble);
+  }
+
   // to configure button bindings
   private void configureBindings() {
     Command feedOut = new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.NONE, true).andThen(
@@ -155,9 +163,9 @@ public class RobotContainer {
     
     _operatorController.square().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE)).whileTrue(
       Commands.run(() -> {
-        if (_intakeSubsystem.hasNote()) _ledSubsystem.blink(LEDColors.GREEN, LEDColors.NOTHING, 0.1);
-        else _ledSubsystem.setColor(LEDColors.ORANGE);
-      }, _ledSubsystem)
+        if (_intakeSubsystem.hasNote()) { _ledSubsystem.blink(LEDColors.GREEN, LEDColors.NOTHING, 0.1); rumbleControllers(1); }
+        else { _ledSubsystem.setColor(LEDColors.ORANGE); rumbleControllers(0); }
+      }, _ledSubsystem).handleInterrupt(() -> rumbleControllers(0))
     );
     _operatorController.circle().whileTrue(feedOut);
     _operatorController.triangle().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.OUTTAKE));

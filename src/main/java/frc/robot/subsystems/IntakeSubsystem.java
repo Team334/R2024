@@ -29,7 +29,7 @@ public class IntakeSubsystem extends SubsystemBase {
   private boolean _hasNote = false;
   private boolean _hasNoteAuton = false;
   
-  private final Debouncer _feedDebouncer = new Debouncer(0.05, DebounceType.kRising);
+  private final Debouncer _feedDebouncer = new Debouncer(0.08, DebounceType.kRising);
 
   /** How to feed (in or out). */
   public enum FeedMode {
@@ -163,7 +163,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    boolean stalling = _feedDebouncer.calculate(_feedMotor.getOutputCurrent() > 50);
+    boolean stalling = _feedDebouncer.calculate(_feedMotor.getOutputCurrent() > 55);
     _hasNote = stalling ? true : _hasNote;
 
     // This method will be called once per scheduler run
