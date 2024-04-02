@@ -56,13 +56,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   private final SwerveModule _backLeft = new SwerveModule("Back Left", Constants.CAN.DRIVE_BACK_LEFT,
       Constants.CAN.ROT_BACK_LEFT, Constants.CAN.ENC_BACK_LEFT);
 
-  SwerveModuleState[] states = new SwerveModuleState[] {
-    new SwerveModuleState(_frontLeft.getDriveVelocity(), Rotation2d.fromDegrees(_frontLeft.getAngle())),
-    new SwerveModuleState(_frontRight.getDriveVelocity(), Rotation2d.fromDegrees(_frontLeft.getAngle())),
-    new SwerveModuleState(_backRight.getDriveVelocity(), Rotation2d.fromDegrees(_frontLeft.getAngle())),
-    new SwerveModuleState(_backLeft.getDriveVelocity(), Rotation2d.fromDegrees(_frontLeft.getAngle()))
-  };
-
   /** A boolean for whether the swerve is field oriented or not. */
   public boolean fieldOriented = false;
 
@@ -187,7 +180,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    swervePublisher.set(states);
+    swervePublisher.set(getStates());
     posePublisher.set(getPose());
     shotPointPublisher.set(UtilFuncs.GetSpeakerPose());
 
