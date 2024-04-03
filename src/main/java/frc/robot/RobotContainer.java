@@ -204,7 +204,7 @@ public class RobotContainer {
       }
     }, _swerveSubsystem));
 
-    _driveController.options().whileTrue(new NoteAlign(
+    _driveController.R3().whileTrue(new NoteAlign(
       _swerveSubsystem,
       _visionSubsystem,
       () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.05),

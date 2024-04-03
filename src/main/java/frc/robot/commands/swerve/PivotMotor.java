@@ -35,7 +35,7 @@ public class PivotMotor extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    double currentRotation = MathUtil.inputModulus(_swerveDrive.getHeading().getDegrees(), 0, 360);
+    double currentRotation = MathUtil.inputModulus(_swerveDrive.getHeadingRaw().getDegrees(), 0, 360);
 
     Translation2d _frontLeft = new Translation2d(0.292, 0.292);
     Translation2d _frontRight = new Translation2d(0.292, -0.292);
@@ -136,6 +136,7 @@ public class PivotMotor extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    _left = false;
     _swerveDrive.resetPivot();
   }
 
