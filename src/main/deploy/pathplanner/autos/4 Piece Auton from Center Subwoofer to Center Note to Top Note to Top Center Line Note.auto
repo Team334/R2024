@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.308995050422533,
-      "y": 5.509843091758257
+      "x": 1.3070140425995143,
+      "y": 5.55593454044051
     },
     "rotation": 180.0
   },
@@ -56,13 +56,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "l get topcen c"
+            "pathName": "Top Note to Top Center Line Note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "actuateIn"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "l shoot topcen"
+            "pathName": "Top Center Line Note to Shooting at the Center"
           }
         },
         {
@@ -74,6 +80,6 @@
       ]
     }
   },
-  "folder": null,
+  "folder": "New Autons",
   "choreoAuto": false
 }

@@ -407,7 +407,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     return getPose().getRotation();
   }
 
-  /** Get heading DIRECTLY from the BNO055 gyro as a Rotation2d. */
+  /** Get heading DIRECTLY from the NavX gyro as a Rotation2d. */
   public Rotation2d getHeadingRaw() {
     // return Rotation2d.fromDegrees(-Math.IEEEremainder(_gyro.getHeading(), 360));
     return Rotation2d.fromDegrees(-Math.IEEEremainder(_gyro.getAngle(), 360));
