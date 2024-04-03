@@ -173,13 +173,9 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     });
 
     SmartDashboard.putNumber("SWERVE TRIM", _swerveTrim);
-    SmartDashboard.putNumber("SPEEDOMETER X", _gyro.getVelocityX()); // Velocity read by the gyro (I added all three bc the axis might be different for the gyro)
-    SmartDashboard.putNumber("SPEEDOMETER Y", _gyro.getVelocityY());
-    SmartDashboard.putNumber("SPEEDOMETER Z", _gyro.getVelocityZ());
-    SmartDashboard.putNumber("PROBABLY_SPEED", Math.sqrt(Math.pow(_gyro.getVelocityX(), 2) + Math.pow(_gyro.getVelocityY(), 2)));
-    SmartDashboard.putNumber("PROBABLY_NOT_SPEED", Math.sqrt(Math.pow(_gyro.getVelocityX(), 2) + Math.pow(_gyro.getVelocityZ(), 2)));
-
-
+    SmartDashboard.putNumber("SPEEDOMETER X", _gyro.getWorldLinearAccelX() * 9.81); // Velocity read by the gyro (I added all three bc the axis might be different for the gyro)
+    SmartDashboard.putNumber("SPEEDOMETER Y", _gyro.getWorldLinearAccelY() * 9.81);
+    SmartDashboard.putNumber("SPEEDOMETER Z", _gyro.getWorldLinearAccelZ() * 9.81);
   }
 
   @Override

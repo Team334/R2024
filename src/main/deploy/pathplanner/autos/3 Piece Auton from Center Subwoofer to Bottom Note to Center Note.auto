@@ -20,7 +20,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Center Subwoofer to Bottom Note"
+            "pathName": "Center Subwoofer to Center Note"
           }
         },
         {
@@ -38,7 +38,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Bottom Note to Center Note"
+            "pathName": "Center Note to Bottom Note"
           }
         },
         {

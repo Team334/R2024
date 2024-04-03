@@ -76,7 +76,7 @@ public final class Constants {
     public static final double INTAKE_FEED_SPEED = 0.6;
     public static final double OUTTAKE_FEED_SPEED = -0.4;
 
-    public static final double INTAKE_ACTUATE_MAX_SPEED = 0.4;
+    public static final double INTAKE_ACTUATE_MAX_SPEED = 0.6;
   }
 
   public static class Physical {
@@ -212,7 +212,7 @@ public final class Constants {
   public static class LEDColors {
     public static final int[] NOTHING = {0, 0, 0};
     public static final int[] GREEN = {0, 255, 0};
-    public static final int[] ORANGE = {255, 70, 0};
+    public static final int[] ORANGE = {255, 50, 0};
     public static final int[] YELLOW = {255, 255, 0};
 
     public static final int[] BLUE = {0, 0, 255};
