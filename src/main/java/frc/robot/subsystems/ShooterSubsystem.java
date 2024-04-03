@@ -6,6 +6,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ColorSensorV3;
 import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.MathUtil;
@@ -14,8 +15,10 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.FeedForward;
@@ -44,6 +47,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private final ArmFeedforward _angleFeed = new ArmFeedforward(0, FeedForward.SHOOTER_ANGLE_KG, 0);
   private final PIDController _angleController = new PIDController(PID.SHOOTER_ANGLE_KP, 0, 0);
+
+  private final ColorSensorV3 _noteSensor = new ColorSensorV3(I2C.Port.kOnboard);
 
   private final Debouncer _beamDebouncer = new Debouncer(0.3, DebounceType.kRising);
 
@@ -139,6 +144,10 @@ public class ShooterSubsystem extends SubsystemBase {
    */
   public boolean holdNote() { 
     return _holdNote;
+  }
+
+  public boolean hasNote() {
+    return false;
   }
 
   /** Returns true if the shooter is at the last desired angle setpoint. */
