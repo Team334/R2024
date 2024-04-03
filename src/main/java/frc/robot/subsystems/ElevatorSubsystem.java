@@ -20,7 +20,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   private final TalonFX _leftMotor = new TalonFX(Constants.CAN.ELEVATOR_LEFT);
   private final TalonFX _rightMotor = new TalonFX(Constants.CAN.ELEVATOR_RIGHT);
 
-  private final ElevatorFeedforward _elevatorFeed = new ElevatorFeedforward(FeedForward.ELEVATOR_KS, 0, 0);
+  private final ElevatorFeedforward _elevatorFeed = new ElevatorFeedforward(FeedForward.ELEVATOR_KS, FeedForward.ELEVATOR_KG, 0);
   private final ElevatorFeedforward _climbFeed = new ElevatorFeedforward(0, 0, 0); // TODO: Get this value
 
   private final PIDController _heightController = new PIDController(Constants.PID.ELEVATOR_KP, 0, 0);
@@ -44,7 +44,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     _leftMotor.getConfigurator().apply(softLimits);
 
-    _heightController.setTolerance(0.02);
+    _heightController.setTolerance(0.005);
 
     SmartDashboard.putNumber("ELEVATOR TRIM", _elevatorTrim);
   }
@@ -120,8 +120,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     ff = UtilFuncs.FromVolts(ff);
-    speed = MathUtil.applyDeadband(speed, 0.08);
 
+    SmartDashboard.putNumber("FF PERCENT OUTPUT", ff);
     _leftMotor.set(ff + speed);
   }
 

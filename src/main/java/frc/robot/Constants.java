@@ -66,7 +66,7 @@ public final class Constants {
     public static final double SHOOTER_FAST_SPIN_SPEED = 1;
     public static final double SHOOTER_SLOW_SPIN_SPEED = 0.8;
     public static final double SHOOTER_AMP_SPEED = 1;
-    public static final double SHOOTER_AMP_SLOW_SPEED = 0.3;
+    public static final double SHOOTER_AMP_SLOW_SPEED = 0.5;
     public static final double SHOOTER_INTAKE_SPEED = -0.15;
     public static final double SHOOTER_IDLE_SPEED = 0.3;
 
@@ -107,8 +107,8 @@ public final class Constants {
   }
 
   public static class FeedForward {
-    public static final double ELEVATOR_KG = 0.0;
-    public static final double ELEVATOR_KS = 0.3;
+    public static final double ELEVATOR_KG = 0.25;
+    public static final double ELEVATOR_KS = 0.0;
 
     public static final double MODULE_DRIVE_KS = 0.3;
     public static final double MODULE_DRIVE_KV = 2.6;
@@ -212,8 +212,9 @@ public final class Constants {
   public static class LEDColors {
     public static final int[] NOTHING = {0, 0, 0};
     public static final int[] GREEN = {0, 255, 0};
-    public static final int[] ORANGE = {255, 165, 0};
+    public static final int[] ORANGE = {255, 70, 0};
     public static final int[] YELLOW = {255, 255, 0};
+
     public static final int[] BLUE = {0, 0, 255};
     public static final int[] RED = {255, 0, 0};
   }

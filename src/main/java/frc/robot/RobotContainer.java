@@ -236,7 +236,7 @@ public class RobotContainer {
       if (aimed) {
         _ledSubsystem.setColor(LEDColors.GREEN);
       } else {
-        _ledSubsystem.blink(LEDColors.RED, LEDColors.NOTHING, 0.1);
+        _ledSubsystem.blink(LEDColors.YELLOW, LEDColors.NOTHING, 0.1);
       }
     }, _ledSubsystem));
   }
@@ -247,7 +247,7 @@ public class RobotContainer {
   public void teleopInit() {
     _swerveSubsystem.fieldOriented = true;
     _swerveSubsystem.isClosedLoop = false;
-    // _shooterSubsystem.setShooterState(ShooterState.IDLE)
+    _shooterSubsystem.setShooterState(ShooterState.NONE);
   }
 
   /** @return The Command to schedule for auton. */
