@@ -247,7 +247,7 @@ public class RobotContainer {
   public void teleopInit() {
     _swerveSubsystem.fieldOriented = true;
     _swerveSubsystem.isClosedLoop = false;
-    _shooterSubsystem.setShooterState(ShooterState.IDLE);
+    // _shooterSubsystem.setShooterState(ShooterState.IDLE)
   }
 
   /** @return The Command to schedule for auton. */

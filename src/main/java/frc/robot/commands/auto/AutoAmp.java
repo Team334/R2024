@@ -26,12 +26,12 @@ public class AutoAmp extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new SpinShooter(shooter, ShooterState.AMP, false).withTimeout(0.15),
+      new SpinShooter(shooter, ShooterState.AMP, false).withTimeout(0.2),
       new PrintCommand("REVVED"),
       new SpinShooter(shooter, ShooterState.NONE, true),
       new PrintCommand("CAN AMP"),
       new FeedActuate(intake, ActuatorState.STOWED, FeedMode.OUTTAKE).withTimeout(0.5),
-      new SpinShooter(shooter, ShooterState.SLOW, false).withTimeout(0.2)
+      new SpinShooter(shooter, ShooterState.SLOW, false).withTimeout(0.3)
 
     );
   }
