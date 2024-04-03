@@ -38,6 +38,6 @@
       ]
     }
   },
-  "folder": "bottom",
+  "folder": null,
   "choreoAuto": false
 }
