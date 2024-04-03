@@ -1,0 +1,55 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.6,
+      "y": 4.39
+    },
+    "rotation": 120.77810145894425
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Bottom Subwoofer to Bottom Center Line Note"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Bottom Center Line Note to Shooting at the Bottom"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Shooting at the Bottom to Middle Center Line Note"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Middle Bottom Center Line Note to Shooting at the Bottom"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "3 Piece",
+  "choreoAuto": false
+}
