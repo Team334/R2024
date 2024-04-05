@@ -26,7 +26,6 @@ public class AutoAim extends ParallelCommandGroup {
    * @param swerve The swerve drive.
    * @param shooter The shooter.
    * @param elevator The elevator.
-   * @param leds The led strip.
    * 
    * @param xSpeed The x speed of the drive joystick.
    * @param ySpeed The y speed of the drive joystick.
