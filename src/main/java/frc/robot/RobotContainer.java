@@ -183,7 +183,7 @@ public class RobotContainer {
     }, _ledSubsystem));
 
     // TESTING ONLY!!!
-    _driveController.triangle().onTrue(Commands.runOnce(() -> _swerveSubsystem.resetGyro(180), _swerveSubsystem));
+    // _driveController.triangle().onTrue(Commands.runOnce(() -> _swerveSubsystem.resetGyro(180), _swerveSubsystem));
     
     // _driveController.triangle().onTrue(Commands.run(() -> {
     //   SmartDashboard.putNumber("KV", SmartDashboard.getNumber("DRIVE VOLTAGE", 0) / _swerveSubsystem.getRobotRelativeSpeeds().vxMetersPerSecond);
@@ -197,12 +197,12 @@ public class RobotContainer {
 
 
     // TESTING ONLY!!!
-    _driveController.circle().onTrue(Commands.runOnce(() -> {
+    _driveController.povUp().onTrue(Commands.runOnce(() -> {
       Optional<PoseEstimate> pose = _visionSubsystem.getBotposeBlue();
       
       if (pose.isPresent()) {
         Pose2d botpose = pose.get().pose;
-        _swerveSubsystem.resetPose(new Pose2d(botpose.getX(), botpose.getY(), _swerveSubsystem.getHeading()));
+        _swerveSubsystem.resetPose(botpose);
       }
     }, _swerveSubsystem));
 
