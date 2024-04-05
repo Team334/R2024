@@ -31,10 +31,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.FieldConstants;
+import frc.robot.Constants.Limelights;
 import frc.robot.Constants.PID;
 import frc.robot.Constants.Speeds;
 import frc.robot.utils.SwerveModule;
 import frc.robot.utils.UtilFuncs;
+import frc.robot.utils.helpers.LimelightHelper;
+import frc.robot.utils.helpers.LimelightHelper.PoseEstimate;
 
 /**
  * @author Peter Gutkovich
@@ -98,7 +101,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     new SwerveModulePosition[] {_frontLeft.getPosition(), _frontRight.getPosition(), _backRight.getPosition(), _backLeft.getPosition()},
     new Pose2d(), 
     VecBuilder.fill(0.03, 0.03, 0.01), 
-    VecBuilder.fill(0.9, 0.9, 9999999)
+    VecBuilder.fill(0.4, 0.4, 9999999)
   );
 
   // OTHER POSSIBLE STD DEV VALUES:
@@ -211,39 +214,32 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       _backLeft.getPosition()
     });
 
-    Optional<double[]> visionBotpose = _visionSubsystem.getBotposeBlue();
+    Optional<PoseEstimate> visionBotpose = _visionSubsystem.getBotposeBlue();
 
     SmartDashboard.putBoolean("SEES TAG(S)", visionBotpose.isPresent());
 
     // UPDATE BOTPOSE WITH VISION
     if (visionBotpose.isPresent()) {
-      double[] llBotpose = visionBotpose.get();
+      System.out.println("PRESENT");
 
-      double tagDistance = llBotpose[9];
-      double tagCount = llBotpose[7];
+      LimelightHelper.SetRobotOrientation(
+        Limelights.MAIN,
+        getHeading().getDegrees(),
+        0,
+        0,
+        0,
+        0,
+        0
+      );
 
-      double xyStds = 0;
-      double yawStd = 9999999;
+      if (Math.abs(_gyro.getRate()) >= 500) return false;
 
-      SmartDashboard.putNumber("TAG(S) DISTANCE", tagDistance);
-      SmartDashboard.putNumber("TAG COUNT", tagCount);
+      visionPublisher.set(visionBotpose.get().pose);
 
-      if (tagDistance <= FieldConstants.CLOSE_TAG_DISTANCE_THRESHOLD) {
-        if (tagCount >= 2) { xyStds = 0.25; yawStd = 9000; }
-        else { xyStds = 0.8; yawStd = 10000; }
-      }
-
-      else if (tagDistance <= FieldConstants.FAR_TAG_DISTANCE_THRESHOLD) {
-        if (tagCount >= 2) { xyStds = 0.9; yawStd = 13000; }
-        else { xyStds = 1.2; yawStd = 16000; }
-      }
-
-      else {
-        return false;
-      }
-
-      visionPublisher.set(UtilFuncs.ToPose(llBotpose));
-      _estimator.addVisionMeasurement(UtilFuncs.ToPose(llBotpose), _visionSubsystem.getLatency(), VecBuilder.fill(xyStds, xyStds, yawStd));
+      _estimator.addVisionMeasurement(
+        visionBotpose.get().pose,
+        visionBotpose.get().timestampSeconds
+      );
     }
 
     return true;

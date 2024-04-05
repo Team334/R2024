@@ -39,9 +39,13 @@ public class Robot extends TimedRobot {
     // for (int port = 5800; port <= 5807; port++) {
     //   PortForwarder.add(port, "limelight.local", port);
     // }
-    PortForwarder.add(5800, "limelight.local", 5800);
-    PortForwarder.add(5801, "limelight.local", 5801);
-    PortForwarder.add(5805, "limelight.local", 5805);
+    PortForwarder.add(5800, "limelight-main.local", 5800);
+    PortForwarder.add(5801, "limelight-main.local", 5801);
+    PortForwarder.add(5805, "limelight-main.local", 5805);
+
+    // PortForwarder.add(5810, "limelight-intake.local", 5810);
+    // PortForwarder.add(5811, "limelight-intake.local", 5811);
+    // PortForwarder.add(5815, "limelight-intake.local", 5815);
 
     // CameraServer.startAutomaticCapture(0);
     UtilFuncs.LoadField();
