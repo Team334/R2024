@@ -60,12 +60,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "actuateIn"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "Top Center Line Note to Shooting at the Center"
