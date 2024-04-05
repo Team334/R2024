@@ -149,6 +149,9 @@ public class RobotContainer {
       new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.OUTTAKE)
     );
 
+    _operatorController.povRight().onTrue(_lerpSaver);
+    _operatorController.povLeft().onTrue(Commands.runOnce(_lerpSaver :: showCode));
+
     // operator bindings
     _operatorController.L1().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.SHOOT));
     _operatorController.L2().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.AMP));
