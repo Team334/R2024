@@ -156,7 +156,8 @@ public class RobotContainer {
     _operatorController.R1().whileTrue(
       Commands.parallel(
         new SetShooter(_shooterSubsystem, () -> Presets.SHOOTER_AMP_HANDOFF),
-        new SetElevator(_elevatorSubsystem, () -> Presets.ELEVATOR_AMP_HANDOFF)
+        new SetElevator(_elevatorSubsystem, () -> Presets.ELEVATOR_AMP_HANDOFF),
+        new SpinShooter(_shooterSubsystem, ShooterState.NONE, true)
       )
     );
 
