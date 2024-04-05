@@ -2,15 +2,22 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.8093860062363999,
-      "y": 7.074963437676163
+      "x": 1.3367291599448063,
+      "y": 5.583800717150984
     },
     "rotation": 179.3839400916008
   },
   "command": {
     "type": "sequential",
     "data": {
-      "commands": []
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "stopShooter"
+          }
+        }
+      ]
     }
   },
   "folder": null,

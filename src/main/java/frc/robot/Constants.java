@@ -158,6 +158,7 @@ public final class Constants {
     public static final InterpolatingDoubleTreeMap SHOOTER_DISTANCE_ANGLE = new InterpolatingDoubleTreeMap();
     
     static {
+      //Old Points
       SHOOTER_DISTANCE_ANGLE.put(0.735, 57.50);
       SHOOTER_DISTANCE_ANGLE.put(1.755, 43.78);
       SHOOTER_DISTANCE_ANGLE.put(1.823, 43.44);
@@ -166,17 +167,15 @@ public final class Constants {
       SHOOTER_DISTANCE_ANGLE.put(3.500, 28.27);
       SHOOTER_DISTANCE_ANGLE.put(3.807, 33.56);
 
-      //SEPARTE
+      //NYC Regional
 
-      // SHOOTER_DISTANCE_ANGLE.put(1.2522372110383038, 50.09765625);
-      // SHOOTER_DISTANCE_ANGLE.put(2.110611636332603, 42.97694614955357);
-      // SHOOTER_DISTANCE_ANGLE.put(2.7223768570130944, 36.741420200892854);
-      // SHOOTER_DISTANCE_ANGLE.put(3.064532709736735, 35.127999441964285);
+
     };
 
     public static final InterpolatingDoubleTreeMap ELEVATOR_DISTANCE_HEIGHT = new InterpolatingDoubleTreeMap();
 
     static {
+      //Old Points
       ELEVATOR_DISTANCE_HEIGHT.put(0.735, 0.078);
       ELEVATOR_DISTANCE_HEIGHT.put(1.755, 0.061);
       ELEVATOR_DISTANCE_HEIGHT.put(1.823, 0.031);
@@ -185,11 +184,7 @@ public final class Constants {
       ELEVATOR_DISTANCE_HEIGHT.put(3.500, 0.010);
       ELEVATOR_DISTANCE_HEIGHT.put(3.807, 0.009);
 
-      //SEPARATE
-      // ELEVATOR_DISTANCE_HEIGHT.put(1.2522372110383038, 0.05915625);
-      // ELEVATOR_DISTANCE_HEIGHT.put(2.110611636332603, 0.027583007812499998);
-      // ELEVATOR_DISTANCE_HEIGHT.put(2.7223768570130944, 0.0274423828125);
-      // ELEVATOR_DISTANCE_HEIGHT.put(3.064532709736735, 0.0274541015625);
+      //NYC Regional
     }
   }
 

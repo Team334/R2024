@@ -83,7 +83,7 @@ public class ShooterSubsystem extends SubsystemBase {
     // soft limits
     SoftwareLimitSwitchConfigs softLimits = new SoftwareLimitSwitchConfigs();
 
-    softLimits.ForwardSoftLimitThreshold = 50 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360;
+    softLimits.ForwardSoftLimitThreshold = 65 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360;
     softLimits.ReverseSoftLimitThreshold = -25 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360;
 
     softLimits.ForwardSoftLimitEnable = true;
