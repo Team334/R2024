@@ -48,7 +48,7 @@ public class IntakeSubsystem extends SubsystemBase {
     _actuatorMotor = new CANSparkMax(Constants.CAN.INTAKE_ACTUATOR, MotorType.kBrushless);
 
     _actuatorEncoder = _actuatorMotor.getEncoder();
-    _actuatorEncoder.setPosition(0);
+    resetActuator();
 
     _actuatorController.setTolerance(0.5);
 
@@ -60,8 +60,8 @@ public class IntakeSubsystem extends SubsystemBase {
     _actuatorMotor.setSoftLimit(SoftLimitDirection.kForward, Constants.Encoders.INTAKE_OUT);
     _actuatorMotor.setSoftLimit(SoftLimitDirection.kReverse, Constants.Encoders.INTAKE_STOWED);
 
-    _actuatorMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
-    _actuatorMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    _actuatorMotor.enableSoftLimit(SoftLimitDirection.kForward, false);
+    _actuatorMotor.enableSoftLimit(SoftLimitDirection.kReverse, false);
   }
 
   public boolean hasNote() {
@@ -84,6 +84,10 @@ public class IntakeSubsystem extends SubsystemBase {
    */
   public void setHasNoteAuton(boolean hasNoteAuton) {
     _hasNoteAuton = hasNoteAuton;
+  }
+
+  public void resetActuator() {
+    _actuatorEncoder.setPosition(0);
   }
 
   /**

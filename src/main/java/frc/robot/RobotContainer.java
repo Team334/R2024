@@ -175,6 +175,14 @@ public class RobotContainer {
     _operatorController.triangle().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.OUTTAKE));
     _operatorController.cross().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.INTAKE));
 
+    _operatorController.povUp().whileTrue(
+      Commands.run(() -> {
+        _intakeSubsystem.actuate(-0.08);
+      }, _intakeSubsystem).handleInterrupt(
+        () -> { _intakeSubsystem.actuate(0); _intakeSubsystem.resetActuator(); } 
+      )
+    );
+
     // driver bindings
     _driveController.L1().onTrue(Commands.runOnce(_swerveSubsystem::toggleSpeed, _swerveSubsystem));
     _driveController.R1().onTrue(Commands.runOnce(() -> _swerveSubsystem.fieldOriented = !_swerveSubsystem.fieldOriented, _swerveSubsystem));
@@ -204,6 +212,10 @@ public class RobotContainer {
         Pose2d botpose = pose.get().pose;
         _swerveSubsystem.resetPose(botpose);
       }
+    }, _swerveSubsystem));
+
+    _driveController.povDown().onTrue(Commands.runOnce(() -> {
+      _swerveSubsystem.resetGyro(180);
     }, _swerveSubsystem));
 
     _driveController.R3().whileTrue(new NoteAlign(
