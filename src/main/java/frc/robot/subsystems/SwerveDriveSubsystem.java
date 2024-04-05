@@ -101,7 +101,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     new SwerveModulePosition[] {_frontLeft.getPosition(), _frontRight.getPosition(), _backRight.getPosition(), _backLeft.getPosition()},
     new Pose2d(), 
     VecBuilder.fill(0.03, 0.03, 0.01), 
-    VecBuilder.fill(0.9, 0.9, 9999999)
+    VecBuilder.fill(0.4, 0.4, 9999999)
   );
 
   // OTHER POSSIBLE STD DEV VALUES:
@@ -230,11 +230,11 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         0
       );
 
-      if (Math.toRadians(Math.abs(_gyro.getRate())) >= Math.PI * 2) return false;
+      if (Math.abs(_gyro.getRate()) >= 500) return false;
 
       _estimator.addVisionMeasurement(
         visionBotpose.get().pose,
-        visionBotpose.get().latency
+        visionBotpose.get().timestampSeconds
       );
     }
 
