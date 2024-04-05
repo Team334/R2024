@@ -23,6 +23,11 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 public final class Constants {
   public static final Alliance SAFE_ALLIANCE = Alliance.Red;
 
+  public static class Limelights {
+    public static final String MAIN = "limelight-main";
+    public static final String INTAKE = "limelight-intake";
+  }
+
   public static class CAN {
     public static final int DRIVE_FRONT_LEFT = 1;
     public static final int ROT_FRONT_LEFT = 2;

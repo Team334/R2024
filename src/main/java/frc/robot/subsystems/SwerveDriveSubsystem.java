@@ -31,10 +31,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.FieldConstants;
+import frc.robot.Constants.Limelights;
 import frc.robot.Constants.PID;
 import frc.robot.Constants.Speeds;
 import frc.robot.utils.SwerveModule;
 import frc.robot.utils.UtilFuncs;
+import frc.robot.utils.helpers.LimelightHelper;
+import frc.robot.utils.helpers.LimelightHelper.PoseEstimate;
 
 /**
  * @author Peter Gutkovich
@@ -211,39 +214,28 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       _backLeft.getPosition()
     });
 
-    Optional<double[]> visionBotpose = _visionSubsystem.getBotposeBlue();
+    Optional<PoseEstimate> visionBotpose = _visionSubsystem.getBotposeBlue();
 
     SmartDashboard.putBoolean("SEES TAG(S)", visionBotpose.isPresent());
 
     // UPDATE BOTPOSE WITH VISION
     if (visionBotpose.isPresent()) {
-      double[] llBotpose = visionBotpose.get();
+      LimelightHelper.SetRobotOrientation(
+        Limelights.MAIN,
+        getHeading().getDegrees(),
+        0,
+        0,
+        0,
+        0,
+        0
+      );
 
-      double tagDistance = llBotpose[9];
-      double tagCount = llBotpose[7];
+      if (Math.toRadians(Math.abs(_gyro.getRate())) >= Math.PI * 2) return false;
 
-      double xyStds = 0;
-      double yawStd = 9999999;
-
-      SmartDashboard.putNumber("TAG(S) DISTANCE", tagDistance);
-      SmartDashboard.putNumber("TAG COUNT", tagCount);
-
-      if (tagDistance <= FieldConstants.CLOSE_TAG_DISTANCE_THRESHOLD) {
-        if (tagCount >= 2) { xyStds = 0.25; yawStd = 9000; }
-        else { xyStds = 0.8; yawStd = 10000; }
-      }
-
-      else if (tagDistance <= FieldConstants.FAR_TAG_DISTANCE_THRESHOLD) {
-        if (tagCount >= 2) { xyStds = 0.9; yawStd = 13000; }
-        else { xyStds = 1.2; yawStd = 16000; }
-      }
-
-      else {
-        return false;
-      }
-
-      visionPublisher.set(UtilFuncs.ToPose(llBotpose));
-      _estimator.addVisionMeasurement(UtilFuncs.ToPose(llBotpose), _visionSubsystem.getLatency(), VecBuilder.fill(xyStds, xyStds, yawStd));
+      _estimator.addVisionMeasurement(
+        visionBotpose.get().pose,
+        visionBotpose.get().latency
+      );
     }
 
     return true;

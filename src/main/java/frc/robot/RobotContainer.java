@@ -39,6 +39,7 @@ import frc.robot.subsystems.IntakeSubsystem.ActuatorState;
 import frc.robot.subsystems.IntakeSubsystem.FeedMode;
 import frc.robot.subsystems.ShooterSubsystem.ShooterState;
 import frc.robot.utils.UtilFuncs;
+import frc.robot.utils.helpers.LimelightHelper.PoseEstimate;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
@@ -196,10 +197,10 @@ public class RobotContainer {
 
     // TESTING ONLY!!!
     _driveController.circle().onTrue(Commands.runOnce(() -> {
-      Optional<double[]> pose = _visionSubsystem.getBotposeBlue();
+      Optional<PoseEstimate> pose = _visionSubsystem.getBotposeBlue();
       
       if (pose.isPresent()) {
-        Pose2d botpose = UtilFuncs.ToPose(pose.get());
+        Pose2d botpose = pose.get().pose;
         _swerveSubsystem.resetPose(new Pose2d(botpose.getX(), botpose.getY(), _swerveSubsystem.getHeading()));
       }
     }, _swerveSubsystem));
