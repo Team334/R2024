@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.497586995173991,
-      "y": 5.55593454044051
+      "x": 0.6690561529271205,
+      "y": 6.817692039942485
     },
-    "rotation": 180.0
+    "rotation": -120.0
   },
   "command": {
     "type": "sequential",
@@ -20,7 +20,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Center Subwoofer to Top Note"
+            "pathName": "Top Subwoofer to Top Note"
           }
         },
         {
@@ -38,31 +38,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Top Note to Center Note"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "actuateInFast"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "shoot"
+            "pathName": "Top Note to Top Center Line Note"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Center Note to Middle Top Center Line Note"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Middle Top Center Line Note to Shooting at the Center"
+            "pathName": "Top Center Line Note to Shooting at the Center"
           }
         },
         {
@@ -74,6 +56,6 @@
       ]
     }
   },
-  "folder": "4 Piece",
+  "folder": "3 Piece",
   "choreoAuto": false
 }
