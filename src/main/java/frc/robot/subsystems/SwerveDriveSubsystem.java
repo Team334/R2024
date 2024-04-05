@@ -220,6 +220,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     // UPDATE BOTPOSE WITH VISION
     if (visionBotpose.isPresent()) {
+      System.out.println("PRESENT");
+
       LimelightHelper.SetRobotOrientation(
         Limelights.MAIN,
         getHeading().getDegrees(),
@@ -231,6 +233,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       );
 
       if (Math.abs(_gyro.getRate()) >= 500) return false;
+
+      visionPublisher.set(visionBotpose.get().pose);
 
       _estimator.addVisionMeasurement(
         visionBotpose.get().pose,
