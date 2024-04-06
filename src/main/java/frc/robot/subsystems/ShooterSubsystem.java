@@ -54,7 +54,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private final Timer _revTimer = new Timer();
 
-  private double _shooterTrim = 0;
+  private double _shooterTrim = 0; // was 5
   private double _shooterAdjust = 0;
 
   private boolean _holdNote = false;

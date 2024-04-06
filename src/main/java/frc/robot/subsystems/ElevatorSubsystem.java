@@ -27,7 +27,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   private boolean _usingClimberFeed = false;
 
-  private double _elevatorTrim = 0;
+  private double _elevatorTrim = 0; // was .01
 
   /** Creates a new ElevatorSubsystem . */
   public ElevatorSubsystem() {
