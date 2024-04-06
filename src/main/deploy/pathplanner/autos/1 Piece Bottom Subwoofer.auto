@@ -16,6 +16,12 @@
           "data": {
             "name": "shoot"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "stopShooter"
+          }
         }
       ]
     }
