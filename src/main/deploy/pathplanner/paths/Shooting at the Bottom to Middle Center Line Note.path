@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.04,
-        "y": 3.83
+        "x": 1.5,
+        "y": 4.05
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.908328699538306,
-        "y": 2.2741969808302183
+        "x": 3.368328699538306,
+        "y": 2.494196980830218
       },
       "isLocked": false,
       "linkedName": null
@@ -63,7 +63,7 @@
   "reversed": false,
   "folder": "Continuations",
   "previewStartingState": {
-    "rotation": 179.79988025467347,
+    "rotation": 133.55732438442578,
     "velocity": 0
   },
   "useDefaultConstraints": true

@@ -159,7 +159,7 @@ public final class Constants {
     
     static {
       //Old Points
-      //SHOOTER_DISTANCE_ANGLE.put(0.735, 57.50); Inside the subwoofer
+      SHOOTER_DISTANCE_ANGLE.put(0.735, 57.50); // Inside the subwoofer
       SHOOTER_DISTANCE_ANGLE.put(1.755, 43.78);
       SHOOTER_DISTANCE_ANGLE.put(1.823, 43.44);
       SHOOTER_DISTANCE_ANGLE.put(2.543, 38.15);
@@ -191,7 +191,7 @@ public final class Constants {
 
     static {
       //Old Points
-      //ELEVATOR_DISTANCE_HEIGHT.put(0.735, 0.078); Inside the subwoofer
+      ELEVATOR_DISTANCE_HEIGHT.put(0.735, 0.078); //Inside the subwoofer
       ELEVATOR_DISTANCE_HEIGHT.put(1.755, 0.061);
       ELEVATOR_DISTANCE_HEIGHT.put(1.823, 0.031);
       ELEVATOR_DISTANCE_HEIGHT.put(2.543, 0.024);
