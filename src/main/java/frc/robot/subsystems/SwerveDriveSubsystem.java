@@ -196,6 +196,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("CHASSIS X SPEED", getRobotRelativeSpeeds().vxMetersPerSecond);
     SmartDashboard.putNumber("CHASSIS Y SPEED", getRobotRelativeSpeeds().vyMetersPerSecond);
 
+    SmartDashboard.putBoolean("SWERVE REACHED HEADING", atDesiredHeading());
     _swerveTrim = SmartDashboard.getNumber("SWERVE TRIM", _swerveTrim);
 
     // field icon updates

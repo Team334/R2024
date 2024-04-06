@@ -53,6 +53,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     // harry chen code maybe fix
+    SmartDashboard.putBoolean("ELEVATOR REACHED HEIGHT", atDesiredHeight());
     SmartDashboard.putNumber("ELEVATOR SETPOINT", _heightController.getSetpoint());
     SmartDashboard.putNumber("ELEVATOR HEIGHT METERS", getHeight());
     SmartDashboard.putNumber("ELEVATOR PERCENT OUTPUT", _leftMotor.get());
