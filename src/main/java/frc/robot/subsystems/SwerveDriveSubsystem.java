@@ -129,7 +129,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     _headingController.setTolerance(2);
     _headingController.enableContinuousInput(-180, 180);
 
-    // resetPose(new Pose2d(5, 5, Rotation2d.fromDegrees(180)));
+    // resetPose(new Pose2d(1.43, 5.52, Rotation2d.fromDegrees(180)));
 
     // setupOrchestra();
 

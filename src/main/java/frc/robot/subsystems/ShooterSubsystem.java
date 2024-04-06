@@ -101,7 +101,7 @@ public class ShooterSubsystem extends SubsystemBase {
     boolean beamBroken = _beamDebouncer.calculate(true); // TODO: beam break input here
     _holdNote = beamBroken ? true : _holdNote;
 
-    // This method will be called once per scheduler run
+    // This method will be called once per scheduler ru
     SmartDashboard.putBoolean("SHOOTER REACHED ANGLE", atDesiredAngle());
     SmartDashboard.putNumber("SHOOTER SETPOINT", _angleController.getSetpoint());
     SmartDashboard.putNumber("SHOOTER ANGLE", getAngle());
