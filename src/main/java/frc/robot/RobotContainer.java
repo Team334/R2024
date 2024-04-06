@@ -182,6 +182,8 @@ public class RobotContainer {
       )
     );
 
+    _operatorController.povDown().whileTrue(new SetShooter(_shooterSubsystem, _shooterSubsystem::adjustedAngle));
+
     // driver bindings
     _driveController.L1().onTrue(Commands.runOnce(_swerveSubsystem::toggleSpeed, _swerveSubsystem));
     _driveController.R1().onTrue(Commands.runOnce(() -> _swerveSubsystem.fieldOriented = !_swerveSubsystem.fieldOriented, _swerveSubsystem));

@@ -55,6 +55,7 @@ public class ShooterSubsystem extends SubsystemBase {
   private final Timer _revTimer = new Timer();
 
   private double _shooterTrim = 0;
+  private double _shooterAdjust = 0;
 
   private boolean _holdNote = false;
 
@@ -94,6 +95,7 @@ public class ShooterSubsystem extends SubsystemBase {
     _angleController.setTolerance(2.5);
 
     SmartDashboard.putNumber("SHOOTER TRIM", _shooterTrim);
+    SmartDashboard.putNumber("SHOOTER ADJUST", _shooterAdjust);
   }
 
   @Override
@@ -110,6 +112,14 @@ public class ShooterSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("SHOOTER REVVED", isRevved());
 
     _shooterTrim = SmartDashboard.getNumber("SHOOTER TRIM", _shooterTrim);
+    _shooterAdjust = SmartDashboard.getNumber("SHOOTER ADJUST", _shooterAdjust);
+  }
+  
+  /**
+   * Returns the adjusted shooter angle.
+   */
+  public double adjustedAngle() {
+    return getAngle() + _shooterAdjust;
   }
 
   // for resetting the shooter's angle
