@@ -122,4 +122,11 @@ public final class UtilFuncs {
   public static Alliance GetAlliance() {
     return AllianceHelper.getInstance().getAlliance();
   }
+
+  /**
+   * Returns the speaker-facing heading for the robot (based on current alliance).
+   */
+  public static double GetAllianceResetHeading() {
+    return GetAlliance() == Alliance.Red ? 0 : 180;
+  }
 }

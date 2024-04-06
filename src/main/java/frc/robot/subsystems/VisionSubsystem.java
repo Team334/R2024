@@ -22,7 +22,7 @@ public class VisionSubsystem extends SubsystemBase {
   public void periodic() {
     Optional<double[]> noteAngles = getNoteAngles();
 
-    SmartDashboard.putBoolean("SEES NOTE", getNoteAngles().isPresent());
+    SmartDashboard.putBoolean("SEES NOTE(S)", getNoteAngles().isPresent());
 
     if (noteAngles.isPresent()) {
       SmartDashboard.putNumber("NOTE TX", noteAngles.get()[0]);
@@ -62,8 +62,6 @@ public class VisionSubsystem extends SubsystemBase {
    */
   public Optional<double[]> getNoteAngles() {
     if (!isNoteVisible()) return Optional.empty();
-
-    SmartDashboard.putNumber("SHOULD BE RIGHT TX", LimelightHelper.getTX(Limelights.INTAKE));
 
     double[] angles = {
       LimelightHelper.getTX(Limelights.INTAKE),

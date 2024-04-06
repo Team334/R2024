@@ -133,7 +133,6 @@ public class RobotContainer {
 
     _autonChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("AUTON CHOOSER", _autonChooser);
-    SmartDashboard.putNumber("DRIVE VOLTAGE", 0);
   }
 
   private void rumbleControllers(double rumble) {
@@ -164,9 +163,6 @@ public class RobotContainer {
         new SpinShooter(_shooterSubsystem, ShooterState.NONE, true)
       )
     );
-
-    // _operatorController.options().onTrue(_lerpSaver);
-    // _operatorController.touchpad().onTrue(Commands.runOnce(_lerpSaver::showCode));
     
     _operatorController.square().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE)).whileTrue(
       Commands.run(() -> {
@@ -194,33 +190,22 @@ public class RobotContainer {
     }, _ledSubsystem));
 
     // TESTING ONLY!!!
-    // _driveController.triangle().onTrue(Commands.runOnce(() -> _swerveSubsystem.resetGyro(180), _swerveSubsystem));
-    
-    // _driveController.triangle().onTrue(Commands.run(() -> {
-    //   SmartDashboard.putNumber("KV", SmartDashboard.getNumber("DRIVE VOLTAGE", 0) / _swerveSubsystem.getRobotRelativeSpeeds().vxMetersPerSecond);
-
-    //   _swerveSubsystem.driveChassis(new ChassisSpeeds(
-    //     SmartDashboard.getNumber("DRIVE VOLTAGE", 0),
-    //     0,
-    //     0
-    //   ));
-    // }, _swerveSubsystem));
-
-
-    // TESTING ONLY!!!
     _driveController.povUp().onTrue(Commands.runOnce(() -> {
       Optional<PoseEstimate> pose = _visionSubsystem.getBotposeBlue();
       
+
       if (pose.isPresent()) {
         Pose2d botpose = pose.get().pose;
         _swerveSubsystem.resetPose(botpose);
       }
     }, _swerveSubsystem));
 
+    // TESTING ONLY!
     _driveController.povDown().onTrue(Commands.runOnce(() -> {
-      _swerveSubsystem.resetGyro(180);
+      _swerveSubsystem.resetGyro(UtilFuncs.GetAllianceResetHeading());
     }, _swerveSubsystem));
 
+    
     _driveController.R3().whileTrue(new NoteAlign(
       _swerveSubsystem,
       _visionSubsystem,

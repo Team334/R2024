@@ -36,18 +36,14 @@ public class Robot extends TimedRobot {
     // FIRST THING THAT HAPPENS
     addPeriodic(() -> AllianceHelper.getInstance().updateAlliance(DriverStation.getAlliance()), 0.5);
 
-    // for (int port = 5800; port <= 5807; port++) {
-    //   PortForwarder.add(port, "limelight.local", port);
-    // }
     PortForwarder.add(5800, "limelight-main.local", 5800);
     PortForwarder.add(5801, "limelight-main.local", 5801);
     PortForwarder.add(5805, "limelight-main.local", 5805);
 
-    // PortForwarder.add(5810, "limelight-intake.local", 5810);
-    // PortForwarder.add(5811, "limelight-intake.local", 5811);
-    // PortForwarder.add(5815, "limelight-intake.local", 5815);
+    // PortForwarder.add(5810, "limelight-intake.local", 5800);
+    // PortForwarder.add(5811, "limelight-intake.local", 5801);
+    // PortForwarder.add(5815, "limelight-intake.local", 5805);
 
-    // CameraServer.startAutomaticCapture(0);
     UtilFuncs.LoadField();
 
     // Instantiate our RobotContainer. This will perform all our button bindings,

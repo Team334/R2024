@@ -4,7 +4,6 @@
 
 package frc.robot.commands.auto;
 
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
@@ -16,7 +15,6 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem.FeedMode;
 import frc.robot.subsystems.ShooterSubsystem.ShooterState;
-import frc.robot.utils.UtilFuncs;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -42,9 +40,5 @@ public class AutonShoot extends SequentialCommandGroup {
       new FeedActuate(intake, FeedMode.OUTTAKE).withTimeout(0.5)
       // new SpinShooter(shooter, ShooterState.IDLE, true)
     );
-  }
-
-  private double headingPreset() {
-    return (UtilFuncs.GetAlliance() == Alliance.Red) ? 0 : 180;
   }
 }

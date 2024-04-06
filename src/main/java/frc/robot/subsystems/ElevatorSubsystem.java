@@ -121,7 +121,6 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     ff = UtilFuncs.FromVolts(ff);
 
-    SmartDashboard.putNumber("FF PERCENT OUTPUT", ff);
     _leftMotor.set(ff + speed);
   }
 
