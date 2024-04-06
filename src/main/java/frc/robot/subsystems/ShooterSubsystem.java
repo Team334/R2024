@@ -129,7 +129,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   /** Returns whether the shooter (motor) is revved up (if enough time has elapsed). */
   public boolean isRevved() {
-    return _revTimer.hasElapsed(0.75);
+    return _revTimer.hasElapsed(1.5);
   }
 
   /**
