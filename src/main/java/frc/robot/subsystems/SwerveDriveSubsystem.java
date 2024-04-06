@@ -237,6 +237,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         visionBotpose.get().pose,
         visionBotpose.get().timestampSeconds
       );
+    } else {
+      return false;
     }
 
     return true;

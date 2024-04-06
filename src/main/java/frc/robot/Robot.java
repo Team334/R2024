@@ -45,6 +45,7 @@ public class Robot extends TimedRobot {
     // PortForwarder.add(5815, "limelight-intake.local", 5805);
 
     UtilFuncs.LoadField();
+    // CameraServer.startAutomaticCapture();
 
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our
