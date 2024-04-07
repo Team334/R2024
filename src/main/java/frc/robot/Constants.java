@@ -137,7 +137,8 @@ public final class Constants {
     public static final double ELEVATOR_KP = 5.2;
     public static final double ELEVATOR_KD = 0.2;
 
-    public static final double NOTE_HEADING_KP = 0.1;
+    public static final double NOTE_HEADING_KP = 0.7;
+    public static final double NOTE_HEADING_KD = 0.0005;
 
     public static final double SWERVE_HEADING_KP = 0.15;
     public static final double SWERVE_HEADING_KD = 0.01;
