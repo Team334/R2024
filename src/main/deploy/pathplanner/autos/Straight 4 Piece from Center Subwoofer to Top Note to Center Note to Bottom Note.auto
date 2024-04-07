@@ -60,9 +60,9 @@
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "actuateInFast"
+            "pathName": "Bottom Note to Subwoofer"
           }
         },
         {
