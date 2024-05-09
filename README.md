@@ -1,4 +1,4 @@
-<h1 align="center" style="font-size: 3.5rem"><b>Ascend</b></h1>
+<h1 align="center" style="font-size: 3.5rem"><b>Ascent</b></h1>
 
 <p align="center">This code is for 2024 FRC Competition, CRESCENDO.</p>
 
