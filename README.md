@@ -1,8 +1,10 @@
-# Techknights 2024 Code
+<h1 align="center" style="font-size: 3.5rem"><b>Ascend</b></h1>
 
-> This code is for 2024 FRC Competition, CRESCENDO.
+<p align="center">This code is for 2024 FRC Competition, CRESCENDO.</p>
 
-The code consists of Java using GradleRIO, WPIlib, Limelight, etc. Our robot uses swerve drive. You can find more below.:
+<img src="./robot.png" width=1000 />
+
+> The code consists of Java using GradleRIO, WPIlib, Limelight, etc. Our robot uses swerve drive. You can find more below.:
 
 ## Tools we use
 | Name | URL |
