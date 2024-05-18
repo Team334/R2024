@@ -64,7 +64,7 @@ public class NoteAlign extends Command {
     _swerve.driveChassis(new ChassisSpeeds(
       -_xSpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * _swerve.getDriveCoeff(),
       _ySpeed.getAsDouble() * Constants.Speeds.SWERVE_DRIVE_MAX_SPEED * _swerve.getDriveCoeff(),
-      rotationVelocity
+      -rotationVelocity
     ));
   }
 

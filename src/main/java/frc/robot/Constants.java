@@ -81,7 +81,7 @@ public final class Constants {
     public static final double INTAKE_FEED_SPEED = 0.6;
     public static final double OUTTAKE_FEED_SPEED = -0.4;
 
-    public static final double INTAKE_ACTUATE_MAX_SPEED = 0.6;
+    public static final double INTAKE_ACTUATE_MAX_SPEED = 0.3;
   }
 
   public static class Physical {

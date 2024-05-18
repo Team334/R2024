@@ -152,8 +152,8 @@ public class RobotContainer {
     _operatorController.povLeft().onTrue(Commands.runOnce(_lerpSaver :: showCode));
 
     // operator bindings
-    _operatorController.L1().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.SHOOT));
-    _operatorController.L2().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.AMP));
+    _operatorController.L1().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.AMP));
+    // _operatorController.L2().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.AMP));
     _operatorController.create().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.SLOW));
     _operatorController.R2().whileTrue(new AutoAmp(_shooterSubsystem, _intakeSubsystem));
     _operatorController.R1().whileTrue(
