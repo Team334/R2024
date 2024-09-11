@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import frc.robot.Constants.LEDColors;
 import frc.robot.Constants.Ports;
@@ -62,7 +63,7 @@ public class RobotContainer {
 
   // controllers (for driver and operator)
   private final CommandPS5Controller _driveController = new CommandPS5Controller(Constants.Ports.DRIVER_CONTROLLER);
-  private final CommandPS5Controller _operatorController = new CommandPS5Controller(Constants.Ports.OPERATOR_CONTROLLER);
+  private final CommandPS4Controller _operatorController = new CommandPS4Controller(Constants.Ports.OPERATOR_CONTROLLER);
 
   // slew rate limiters applied to joysticks
   private final SlewRateLimiter _driveFilterLeftX = new SlewRateLimiter(4);
@@ -153,7 +154,7 @@ public class RobotContainer {
     // operator bindings
     _operatorController.L1().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.AMP));
     // _operatorController.L2().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.AMP));
-    _operatorController.create().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.SLOW));
+    _operatorController.share().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.SLOW));
     _operatorController.R2().whileTrue(new AutoAmp(_shooterSubsystem, _intakeSubsystem));
     _operatorController.R1().whileTrue(
       Commands.parallel(
