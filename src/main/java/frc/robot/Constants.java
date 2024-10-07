@@ -71,7 +71,7 @@ public final class Constants {
     public static final double SHOOTER_FAST_SPIN_SPEED = 1;
     public static final double SHOOTER_SLOW_SPIN_SPEED = 0.8;
     public static final double SHOOTER_AMP_SPEED = 1;
-    public static final double SHOOTER_AMP_SLOW_SPEED = 0.5;
+    public static final double SHOOTER_AMP_SLOW_SPEED = 0.3;
     public static final double SHOOTER_INTAKE_SPEED = -0.15;
     public static final double SHOOTER_IDLE_SPEED = 0.3;
 
@@ -153,8 +153,8 @@ public final class Constants {
 
     public static final double ELEVATOR_HEIGHT_RATE = -0.025;
 
-    public static final double SHOOTER_AMP_HANDOFF = 50;
-    public static final double ELEVATOR_AMP_HANDOFF = 0.045;
+    public static final double SHOOTER_AMP_HANDOFF = 85;
+    public static final double ELEVATOR_AMP_HANDOFF = 0.120;
 
     public static final InterpolatingDoubleTreeMap SHOOTER_DISTANCE_ANGLE = new InterpolatingDoubleTreeMap();
     

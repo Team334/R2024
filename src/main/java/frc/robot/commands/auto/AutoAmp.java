@@ -6,8 +6,10 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.elevator.SetElevator;
 import frc.robot.commands.intake.FeedActuate;
 import frc.robot.commands.shooter.SpinShooter;
+import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.IntakeSubsystem.ActuatorState;
@@ -26,7 +28,8 @@ public class AutoAmp extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new SpinShooter(shooter, ShooterState.AMP, false).withTimeout(0.20),
+      new FeedActuate(intake, FeedMode.INTAKE).withTimeout(0.3),
+      new SpinShooter(shooter, ShooterState.SLOW, false).withTimeout(1.00),
       new FeedActuate(intake, ActuatorState.STOWED, FeedMode.OUTTAKE).withTimeout(0.5)
       // new SpinShooter(shooter, ShooterState.SLOW, false).withTimeout(0.1)
     );
