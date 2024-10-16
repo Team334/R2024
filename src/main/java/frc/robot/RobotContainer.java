@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.LEDColors;
 import frc.robot.Constants.Ports;
 import frc.robot.Constants.Presets;
@@ -63,7 +64,8 @@ public class RobotContainer {
 
   // controllers (for driver and operator)
   private final CommandPS5Controller _driveController = new CommandPS5Controller(Constants.Ports.DRIVER_CONTROLLER);
-  private final CommandPS4Controller _operatorController = new CommandPS4Controller(Constants.Ports.OPERATOR_CONTROLLER);
+  // private final CommandPS4Controller _operatorController = new CommandPS4Controller(Constants.Ports.OPERATOR_CONTROLLER);
+  private final CommandXboxController _operatorController = new CommandXboxController(Constants.Ports.OPERATOR_CONTROLLER);
 
   // slew rate limiters applied to joysticks
   private final SlewRateLimiter _driveFilterLeftX = new SlewRateLimiter(4);
@@ -152,11 +154,24 @@ public class RobotContainer {
     _operatorController.povLeft().onTrue(Commands.runOnce(_lerpSaver :: showCode));
 
     // operator bindings
-    _operatorController.L1().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.AMP));
-    // _operatorController.L2().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.AMP));
-    _operatorController.share().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.SLOW));
-    _operatorController.R2().whileTrue(new AutoAmp(_shooterSubsystem, _intakeSubsystem));
-    _operatorController.R1().whileTrue(
+
+    //ps4 bindings
+    // _operatorController.L1().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.AMP));
+    // // _operatorController.L2().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.AMP));
+    // _operatorController.share().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.SLOW));
+    // _operatorController.R2().whileTrue(new AutoAmp(_shooterSubsystem, _intakeSubsystem));
+    // _operatorController.R1().whileTrue(
+    //   Commands.parallel(
+    //     new SetShooter(_shooterSubsystem, () -> Presets.SHOOTER_AMP_HANDOFF),
+    //     new SetElevator(_elevatorSubsystem, () -> Presets.ELEVATOR_AMP_HANDOFF),
+    //     new SpinShooter(_shooterSubsystem, ShooterState.NONE, true)
+    //   )
+    // );
+
+    _operatorController.leftBumper().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.AMP));
+    _operatorController.back().whileTrue(new SpinShooter(_shooterSubsystem, ShooterState.SLOW));
+    _operatorController.rightTrigger().whileTrue(new AutoAmp(_shooterSubsystem, _intakeSubsystem));
+    _operatorController.rightBumper().whileTrue(
       Commands.parallel(
         new SetShooter(_shooterSubsystem, () -> Presets.SHOOTER_AMP_HANDOFF),
         new SetElevator(_elevatorSubsystem, () -> Presets.ELEVATOR_AMP_HANDOFF),
@@ -164,15 +179,15 @@ public class RobotContainer {
       )
     );
     
-    _operatorController.square().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE)).whileTrue(
+    _operatorController.x().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.OUT, FeedMode.INTAKE)).whileTrue(
       Commands.run(() -> {
         if (_intakeSubsystem.hasNote()) { _ledSubsystem.blink(LEDColors.GREEN, LEDColors.NOTHING, 0.1); rumbleControllers(1); }
         else { _ledSubsystem.setColor(LEDColors.ORANGE); rumbleControllers(0); }
       }, _ledSubsystem).handleInterrupt(() -> rumbleControllers(0))
     );
-    _operatorController.circle().whileTrue(feedOut);
-    _operatorController.triangle().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.OUTTAKE));
-    _operatorController.cross().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.INTAKE));
+    _operatorController.b().whileTrue(feedOut);
+    _operatorController.y().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.OUTTAKE));
+    _operatorController.a().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.INTAKE));
 
     _operatorController.povUp().whileTrue(
       Commands.run(() -> {
