@@ -2,6 +2,7 @@
 package frc.robot;
 
 import edu.wpi.first.net.PortForwarder;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -51,6 +52,8 @@ public class Robot extends TimedRobot {
     // and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+
+    // DataLogManager.start(DataLog);
   }
 
   /**
