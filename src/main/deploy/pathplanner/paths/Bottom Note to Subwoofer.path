@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.51,
-        "y": 4.36
+        "x": 2.46,
+        "y": 4.1
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.9500950687615666,
-        "y": 4.341275082550167
+        "x": 2.206027567560243,
+        "y": 4.630339884970349
       },
       "isLocked": false,
       "linkedName": null
@@ -20,8 +20,8 @@
         "y": 5.56
       },
       "prevControl": {
-        "x": 1.9251242788199865,
-        "y": 5.511956166769477
+        "x": 2.083991999993081,
+        "y": 4.808699560645432
       },
       "nextControl": null,
       "isLocked": false,
@@ -41,7 +41,7 @@
             {
               "type": "named",
               "data": {
-                "name": "actuateIn"
+                "name": "actuateInFast"
               }
             }
           ]
@@ -63,7 +63,7 @@
   "reversed": false,
   "folder": "Continuations",
   "previewStartingState": {
-    "rotation": 179.79988025467347,
+    "rotation": -179.46490264261854,
     "velocity": 0
   },
   "useDefaultConstraints": true
