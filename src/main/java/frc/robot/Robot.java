@@ -37,13 +37,13 @@ public class Robot extends TimedRobot {
     // FIRST THING THAT HAPPENS
     addPeriodic(() -> AllianceHelper.getInstance().updateAlliance(DriverStation.getAlliance()), 0.5);
 
-    // PortForwarder.add(5800, "limelight-main.local", 5800);
-    // PortForwarder.add(5801, "limelight-main.local", 5801);
-    // PortForwarder.add(5805, "limelight-main.local", 5805);
+    for (int port = 5800; port <= 5809; port++) {
+      PortForwarder.add(port, "limelight-intake.local", port);
+    }
 
-    // PortForwarder.add(5800, "limelight-main.local", 5800);
-    // PortForwarder.add(5801, "limelight-main.local", 5801);
-    // PortForwarder.add(5805, "limelight-main.local", 5805);
+    // for (int port = 5800; port <= 5809; port++) {
+    //   PortForwarder.add(port + 10, "limelight-intake.local", port);
+    // }
 
     UtilFuncs.LoadField();
     // CameraServer.startAutomaticCapture();

@@ -55,7 +55,7 @@ public class NoteAlign extends Command {
     }
 
     double rotationVelocity = MathUtil.clamp(
-      _headingController.calculate(noteX, 0),
+      _headingController.calculate(-noteX, 0),
       -Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED,
       Speeds.SWERVE_DRIVE_MAX_ANGULAR_SPEED
     );
