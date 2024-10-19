@@ -125,6 +125,22 @@ public class ElevatorSubsystem extends SubsystemBase {
     // _leftMotor.set(ff + speed);
   }
 
+  public void operateElevator(double speed) {
+    double ff = 0;
+
+    if (_usingClimberFeed)
+      // ff = _climbFeed.calculate(speed);
+      ff = _climbFeed.calculate(0);
+    else {
+      // ff = _elevatorFeed.calculate(speed);
+      ff = _elevatorFeed.calculate(speed);
+    }
+
+    ff = UtilFuncs.FromVolts(ff);
+
+    _leftMotor.set(ff + speed);
+  }
+
   /** Stops elevator movement. */
   public void stopElevator() {
     driveElevator(0);
