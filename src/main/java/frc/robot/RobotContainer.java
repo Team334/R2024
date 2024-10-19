@@ -191,7 +191,7 @@ public class RobotContainer {
 
     _operatorController.povUp().whileTrue(
       Commands.run(() -> {
-        _intakeSubsystem.actuate(-0.08);
+        _intakeSubsystem.actuate(-0.12);
       }, _intakeSubsystem).handleInterrupt(
         () -> { _intakeSubsystem.actuate(0); _intakeSubsystem.resetActuator(); } 
       )
