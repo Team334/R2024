@@ -50,12 +50,6 @@
         {
           "type": "named",
           "data": {
-            "name": "actuateInFast"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "shoot"
           }
         }

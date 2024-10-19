@@ -122,7 +122,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     ff = UtilFuncs.FromVolts(ff);
 
-    _leftMotor.set(ff + speed);
+    // _leftMotor.set(ff + speed);
   }
 
   /** Stops elevator movement. */

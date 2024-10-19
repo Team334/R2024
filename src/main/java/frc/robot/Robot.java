@@ -38,7 +38,7 @@ public class Robot extends TimedRobot {
     addPeriodic(() -> AllianceHelper.getInstance().updateAlliance(DriverStation.getAlliance()), 0.5);
 
     for (int port = 5800; port <= 5809; port++) {
-      PortForwarder.add(port, "limelight-intake.local", port);
+      PortForwarder.add(port, "limelight-main.local", port);
     }
 
     // for (int port = 5800; port <= 5809; port++) {

@@ -122,7 +122,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   // for resetting the shooter's angle
-  private void resetAngle() {
+  public void resetAngle() {
     double resetAngle = 0;
     _angleMotor.setPosition(resetAngle * Physical.SHOOTER_ANGLE_GEAR_RATIO / 360);
   }
@@ -197,7 +197,7 @@ public class ShooterSubsystem extends SubsystemBase {
    */
   public void driveAngle(double speed) {
     double ff = UtilFuncs.FromVolts(_angleFeed.calculate(Math.toRadians(getAngle()), 0));
-    _angleMotor.set(ff + speed);
+    // _angleMotor.set(ff + speed);
   }
 
   /** Stops the shooter's angular movement. */

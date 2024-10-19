@@ -189,6 +189,11 @@ public class RobotContainer {
     _operatorController.y().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.OUTTAKE));
     _operatorController.a().whileTrue(new FeedActuate(_intakeSubsystem, ActuatorState.STOWED, FeedMode.INTAKE));
 
+    _operatorController.povLeft().onTrue(Commands.runOnce(
+      () -> { _shooterSubsystem.resetAngle(); },
+      _shooterSubsystem
+    ));
+
     _operatorController.povUp().whileTrue(
       Commands.run(() -> {
         _intakeSubsystem.actuate(-0.12);

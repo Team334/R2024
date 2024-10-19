@@ -53,6 +53,7 @@ public class SetElevator extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return _runOnce && _elevator.atDesiredHeight();
+    // return _runOnce && _elevator.atDesiredHeight();
+    return true;
   }
 }
