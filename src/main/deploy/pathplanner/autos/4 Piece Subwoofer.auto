@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7352951848760846,
-      "y": 4.295221161870895
+      "x": 1.497586995173991,
+      "y": 5.55593454044051
     },
-    "rotation": 120.0
+    "rotation": 180.0
   },
   "command": {
     "type": "sequential",
@@ -18,9 +18,15 @@
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "stopShooter"
+            "pathName": "Center Subwoofer to Top Note"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Top Note to Center Sub"
           }
         }
       ]

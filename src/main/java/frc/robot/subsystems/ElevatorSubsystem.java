@@ -36,7 +36,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     SoftwareLimitSwitchConfigs softLimits = new SoftwareLimitSwitchConfigs();
 
-    softLimits.ForwardSoftLimitThreshold = 0.55 * Physical.ELEVATOR_GEAR_RATIO / Physical.ELEVATOR_DISTANCE_PER_ROTATION;
+    softLimits.ForwardSoftLimitThreshold = 0.5 * Physical.ELEVATOR_GEAR_RATIO / Physical.ELEVATOR_DISTANCE_PER_ROTATION;
     softLimits.ReverseSoftLimitThreshold = 0;
 
     softLimits.ForwardSoftLimitEnable = true;
@@ -122,24 +122,24 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     ff = UtilFuncs.FromVolts(ff);
 
-    // _leftMotor.set(ff + speed);
-  }
-
-  public void operateElevator(double speed) {
-    double ff = 0;
-
-    if (_usingClimberFeed)
-      // ff = _climbFeed.calculate(speed);
-      ff = _climbFeed.calculate(0);
-    else {
-      // ff = _elevatorFeed.calculate(speed);
-      ff = _elevatorFeed.calculate(speed);
-    }
-
-    ff = UtilFuncs.FromVolts(ff);
-
     _leftMotor.set(ff + speed);
   }
+
+  // public void operateElevator(double speed) {
+  //   double ff = 0;
+
+  //   if (_usingClimberFeed)
+  //     // ff = _climbFeed.calculate(speed);
+  //     ff = _climbFeed.calculate(0);
+  //   else {
+  //     // ff = _elevatorFeed.calculate(speed);
+  //     ff = _elevatorFeed.calculate(speed);
+  //   }
+
+  //   ff = UtilFuncs.FromVolts(ff);
+
+  //   _leftMotor.set(ff + speed);
+  // }
 
   /** Stops elevator movement. */
   public void stopElevator() {

@@ -2,9 +2,10 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
-
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.RelativeEncoder;
@@ -84,12 +85,16 @@ public class ShooterSubsystem extends SubsystemBase {
     SoftwareLimitSwitchConfigs softLimits = new SoftwareLimitSwitchConfigs();
 
     softLimits.ForwardSoftLimitThreshold = 85 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360;
-    softLimits.ReverseSoftLimitThreshold = -25 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360;
+    softLimits.ReverseSoftLimitThreshold = -25 * Constants.Physical.SHOOTER_ANGLE_GEAR_RATIO / 360; // -25 deg
 
     softLimits.ForwardSoftLimitEnable = true;
     softLimits.ReverseSoftLimitEnable = true;
 
+    MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs();
+    motorOutputConfigs.NeutralMode = NeutralModeValue.Coast;
+
     _angleMotor.getConfigurator().apply(softLimits);
+    // _angleMotor.getConfigurator().apply(motorOutputConfigs);
 
     _angleController.setTolerance(2.5);
 
@@ -197,7 +202,7 @@ public class ShooterSubsystem extends SubsystemBase {
    */
   public void driveAngle(double speed) {
     double ff = UtilFuncs.FromVolts(_angleFeed.calculate(Math.toRadians(getAngle()), 0));
-    // _angleMotor.set(ff + speed);
+    _angleMotor.set(ff + speed);
   }
 
   /** Stops the shooter's angular movement. */
