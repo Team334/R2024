@@ -233,7 +233,8 @@ public class RobotContainer {
       _visionSubsystem,
       () -> MathUtil.applyDeadband(-_driveFilterLeftY.calculate(_driveController.getLeftY()), 0.05),
       () -> MathUtil.applyDeadband(-_driveFilterLeftX.calculate(_driveController.getLeftX()), 0.05)
-    ));
+    )).whileTrue(Commands.run(() -> { _ledSubsystem.blink(LEDColors.ORANGE, LEDColors.NOTHING, 0.2);
+    }, _ledSubsystem));
 
     _driveController.L2().whileTrue(
       new AutoAim(
