@@ -30,7 +30,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Center Note to Center Sub"
+                  "pathName": "Top Note to Center Subwoofer"
                 }
               },
               {
@@ -49,33 +49,28 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "actuateInFast"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "shoot"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "Center Subwoofer to Center Note"
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Center Note to Center Sub"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "actuateInFast"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Center Note to Subwoofer"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "actuateInFast"
+                }
+              }
+            ]
           }
         },
         {
@@ -83,10 +78,35 @@
           "data": {
             "name": "shoot"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center Subwoofer to Bottom Note"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Bottom Note to Center Subwoofer"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "actuateInFast"
+                }
+              }
+            ]
+          }
         }
       ]
     }
   },
-  "folder": "4 Piece",
+  "folder": null,
   "choreoAuto": false
 }
