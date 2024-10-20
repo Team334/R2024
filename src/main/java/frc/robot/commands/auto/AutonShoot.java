@@ -33,9 +33,8 @@ public class AutonShoot extends SequentialCommandGroup {
       // This command will squeeze the note and rev up the shooter if needed, all while auto-aiming.
       new ParallelCommandGroup(
         new SpinShooter(shooter, ShooterState.SHOOT, true).andThen(new WaitUntilCommand(shooter::isRevved)),
-        new FeedActuate(intake, FeedMode.INTAKE).withTimeout(1).onlyIf(() -> !intake.hasNoteAuton())
-        // ,
-        // new AutoAim(swerve, shooter, elevator)
+        new FeedActuate(intake, FeedMode.INTAKE).withTimeout(1).onlyIf(() -> !intake.hasNoteAuton()),
+        new AutoAim(swerve, shooter, elevator)
       ),
 
       new FeedActuate(intake, FeedMode.OUTTAKE).withTimeout(0.5)
