@@ -147,7 +147,7 @@ public final class Constants {
 
 
   public static class Presets {
-    public static final double CLOSE_SHOOTER_ANGLE = 50.12;
+    public static final double CLOSE_SHOOTER_ANGLE = 57.12;
     public static final double CLOSE_ELEVATOR_HEIGHT = 0.06;
 
     public static final double ACTUATE_SHOOTER_ANGLE = 52;
