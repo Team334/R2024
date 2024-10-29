@@ -1,0 +1,37 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.3274844567707151,
+      "y": 5.574556013976893
+    },
+    "rotation": 180.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Tour Drive"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "actuateInFast"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Reverse Tour Drive"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}
